@@ -1,0 +1,34 @@
+<idea-plugin>
+    <id>com.pestphp.pest-intellij</id>
+    <name>Pest</name>
+    <vendor email="support@yourcompany.com" url="https://pestphp.com/">Pest</vendor>
+
+    <description><![CDATA[
+    Pest for Intellij <br>
+    This plugin adds support for using Pest PHP inside PHPStorm
+    ]]></description>
+
+    <!-- please see https://www.jetbrains.org/intellij/sdk/docs/basics/getting_started/plugin_compatibility.html
+         on how to target different products -->
+    <depends>com.intellij.modules.platform</depends>
+    <depends>com.jetbrains.php</depends>
+
+    <extensions defaultExtensionNs="com.intellij">
+        <runLineMarkerContributor
+                language="PHP"
+                implementationClass="com.pestphp.pest.PestTestRunLineMarkerProvider"
+        />
+        <configurationType
+                implementation="com.pestphp.pest.configuration.PestRunConfigurationType"
+        />
+        <iconProvider implementation="com.pestphp.pest.PestIconProvider"/>
+    </extensions>
+
+    <extensions defaultExtensionNs="com.jetbrains.php">
+        <testFrameworkType implementation="com.pestphp.pest.PestFrameworkType"/>
+    </extensions>
+
+    <actions>
+        <!-- Add your actions here -->
+    </actions>
+</idea-plugin>
