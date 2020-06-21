@@ -35,4 +35,8 @@ public class PestSettingsEditor {
             FileChooserDescriptorFactory.createSingleFileOrFolderDescriptor()
         );
     }
+
+    public JPanel getPanel() {
+        return panel;
+    }
 }

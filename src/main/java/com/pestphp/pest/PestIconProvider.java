@@ -14,6 +14,6 @@ public class PestIconProvider extends IconProvider {
             return null;
         }
 
-        return PestIcons.LOGO;
+        return PestIcons.FILE;
     }
 }

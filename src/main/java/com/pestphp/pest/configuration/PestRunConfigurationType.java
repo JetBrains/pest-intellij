@@ -38,7 +38,7 @@ public class PestRunConfigurationType implements ConfigurationType {
 
     @Override
     public Icon getIcon() {
-        return PestIcons.LOGO;
+        return PestIcons.CONFIG;
     }
 
     @Override
