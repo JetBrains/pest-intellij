@@ -39,10 +39,7 @@ public class PestTestRunLineMarkerProvider extends RunLineMarkerContributor {
         actions[0] = new RunSingleTestAction(element, testName);
         actions[1] = new CreateRunSingleTestAction(element, testName);
 
-        return new Info(
-            PestIcons.RUN_SINGLE_TEST,
-            actions,
-            RunLineMarkerContributor.RUN_TEST_TOOLTIP_PROVIDER
-        );
+        return  RunLineMarkerContributor.withExecutorActions(PestIcons.RUN_SINGLE_TEST);
+        // return new Info(PestIcons.RUN_SINGLE_TEST, actions, RunLineMarkerContributor.RUN_TEST_TOOLTIP_PROVIDER);
     }
 }

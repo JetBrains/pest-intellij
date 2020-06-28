@@ -85,21 +85,21 @@ public class PestUtil {
             );
             return null;
 
-        } else {
-            try {
-                mainConfiguration.checkConfiguration();
-                return mainConfiguration;
-
-            } catch (RuntimeConfigurationException ex) {
-                PestUtil.doNotify(
-                    PestBundle.message("runConfiguration.mainConfiguration.invalid.title"),
-                    PestBundle.message("runConfiguration.mainConfiguration.invalid.description"),
-                    NotificationType.ERROR,
-                    project
-                );
-            }
-            return null;
         }
+
+        try {
+            mainConfiguration.checkConfiguration();
+            return mainConfiguration;
+
+        } catch (RuntimeConfigurationException ex) {
+            PestUtil.doNotify(
+                PestBundle.message("runConfiguration.mainConfiguration.invalid.title"),
+                PestBundle.message("runConfiguration.mainConfiguration.invalid.description"),
+                NotificationType.ERROR,
+                project
+            );
+        }
+        return null;
     }
 
     public static void doNotify(

@@ -1,7 +1,7 @@
 <idea-plugin>
     <id>com.pestphp.pest-intellij</id>
     <name>Pest</name>
-    <vendor email="support@yourcompany.com" url="https://pestphp.com/">Pest</vendor>
+    <vendor email="olivernybroe@gmail.com" url="https://pestphp.com/">Pest</vendor>
 
     <description><![CDATA[
     Pest for Intellij <br>
@@ -18,14 +18,15 @@
                 language="PHP"
                 implementationClass="com.pestphp.pest.PestTestRunLineMarkerProvider"
         />
-        <configurationType
-                implementation="com.pestphp.pest.configuration.PestRunConfigurationType"
-        />
+
+        <configurationType implementation="com.pestphp.pest.configuration.PestRunConfigurationType"/>
+        <runConfigurationProducer implementation="com.pestphp.pest.configuration.PestRunConfigurationProducer"/>
         <iconProvider implementation="com.pestphp.pest.PestIconProvider"/>
     </extensions>
 
     <extensions defaultExtensionNs="com.jetbrains.php">
         <testFrameworkType implementation="com.pestphp.pest.PestFrameworkType"/>
+        <composerConfigClient implementation="com.pestphp.pest.PestComposerConfig"/>
     </extensions>
 
     <actions>

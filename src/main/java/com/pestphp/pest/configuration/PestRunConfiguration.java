@@ -1,37 +1,65 @@
 package com.pestphp.pest.configuration;
 
-import com.intellij.execution.Executor;
+import com.intellij.codeInsight.completion.CompletionResultSet;
 import com.intellij.execution.configurations.ConfigurationFactory;
 import com.intellij.execution.configurations.RunConfiguration;
-import com.intellij.execution.configurations.RunProfileState;
-import com.intellij.execution.runners.ExecutionEnvironment;
 import com.intellij.openapi.options.SettingsEditor;
 import com.intellij.openapi.project.Project;
-import com.jetbrains.php.run.PhpRunConfiguration;
-import com.pestphp.pest.configuration.editor.PestRunConfigurationEditor;
+import com.intellij.util.TextFieldCompletionProvider;
+import com.jetbrains.php.lang.PhpFileType;
+import com.jetbrains.php.testFramework.run.*;
+import com.jetbrains.php.testFramework.run.PhpTestRunnerSettings.Scope;
+import com.pestphp.pest.PestFrameworkType;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
-public class PestRunConfiguration extends PhpRunConfiguration<PestRunConfigurationSettings> {
+import java.util.Collections;
+import java.util.EnumMap;
+
+public class PestRunConfiguration extends PhpTestRunConfiguration {
+    private static final PhpDefaultTestRunnerSettingsValidator VALIDATOR;
+
     protected PestRunConfiguration(Project project, ConfigurationFactory factory, String name) {
-        super(project, factory, name);
+        super(
+            project,
+            factory,
+            name,
+            PestFrameworkType.getInstance(),
+            VALIDATOR,
+            PestRunConfigurationHandler.getInstance(),
+            PestVersionDetector.getInstance()
+        );
     }
 
     @NotNull
     @Override
-    protected PestRunConfigurationSettings createSettings() {
+    protected PhpTestRunConfigurationSettings createSettings() {
         return new PestRunConfigurationSettings();
     }
 
     @Override
     public @NotNull SettingsEditor<? extends RunConfiguration> getConfigurationEditor() {
-        return new PestRunConfigurationEditor(getProject());
+        EnumMap<Scope, String> names = new EnumMap<>(Scope.class);
+        PhpTestRunConfigurationEditor editor = this.getConfigurationEditor(names);
+        editor.setRunnerOptionsDocumentation("https://pestphp.com/docs/installation");
+        return editor;
     }
 
-    @Nullable
     @Override
-    public RunProfileState getState(@NotNull Executor executor, @NotNull ExecutionEnvironment executionEnvironment) {
-        return null;
+    protected @NotNull TextFieldCompletionProvider createMethodFieldCompletionProvider(@NotNull PhpTestRunnerConfigurationEditor editor) {
+        return new TextFieldCompletionProvider() {
+            @Override
+            protected void addCompletionVariants(@NotNull String text, int offset, @NotNull String prefix, @NotNull CompletionResultSet result) {
+                // TODO: add completions to results object.
+            }
+        };
     }
 
+    static {
+        VALIDATOR = new PhpDefaultTestRunnerSettingsValidator(
+            Collections.singletonList(PhpFileType.INSTANCE),
+            (file, name) -> true,
+            false,
+            false
+        );
+    }
 }

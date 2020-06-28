@@ -34,46 +34,6 @@ public class CreateRunSingleTestAction extends BasePestRunAction {
 
     @Nullable
     protected RunnerAndConfigurationSettings prepareAction() {
-        wasCreated = false;
-        List<PestRunConfiguration> configurations = PestUtil.getRunConfigurations(getProject());
-        List<PestRunConfiguration> samePath = configurations.stream()
-            .filter(configuration -> {
-                try {
-                    configuration.checkConfiguration();
-                } catch (RuntimeConfigurationException ex) {
-                    return false;
-                }
-                return path.equals(configuration.getSettings().getTestScope());
-            })
-            .collect(Collectors.toList());
-
-        RunManager manager = RunManager.getInstance(getProject());
-        if (samePath.size() == 0) {
-            PestRunConfiguration mainConfiguration = PestUtil.getMainConfiguration(getProject(), configurations);
-            if (mainConfiguration == null || mainConfiguration.getFactory() == null) {
-                return null;
-            }
-
-            PestRunConfiguration current = (PestRunConfiguration) mainConfiguration.clone();
-            current.setName("tests:" + testName);
-            current.getSettings().setTestScope(path);
-            RunnerAndConfigurationSettings action = manager.createConfiguration(current, mainConfiguration.getFactory());
-            action.setTemporary(isTemporary());
-
-            manager.addConfiguration(action);
-            manager.setSelectedConfiguration(action);
-            wasCreated = true;
-            return action;
-
-        } else {
-            PestRunConfiguration existing = samePath.get(0);
-            if (existing.getFactory() == null) {
-                return null;
-            }
-
-            RunnerAndConfigurationSettings action = manager.createConfiguration(existing, existing.getFactory());
-            manager.setSelectedConfiguration(action);
-            return action;
-        }
+        return null;
     }
 }
