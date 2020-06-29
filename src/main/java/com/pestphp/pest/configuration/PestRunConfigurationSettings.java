@@ -9,37 +9,5 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 public class PestRunConfigurationSettings extends PhpTestRunConfigurationSettings {
-    @Nullable private String testScope;
-
-    @NotNull private PhpCommandLineSettings phpCommandLineSettings = new PhpCommandLineSettings();
     @NotNull private PestRunnerSettings pestRunnerSettings = new PestRunnerSettings();
-
-    @Nullable
-    @Override
-    public String getWorkingDirectory() {
-        return phpCommandLineSettings.getWorkingDirectory();
-    }
-
-    @Override
-    public void setWorkingDirectory(@Nullable String workingDirectory) {
-        phpCommandLineSettings.setWorkingDirectory(workingDirectory);
-    }
-
-    @Property
-    @NotNull
-    public String getTestScope() {
-        return StringUtil.notNullize(testScope);
-    }
-
-    public void setTestScope(@Nullable String testScope) {
-        this.testScope = testScope;
-    }
-
-    public @NotNull PhpCommandLineSettings getPhpCommandLineSettings() {
-        return phpCommandLineSettings;
-    }
-
-    public @NotNull PestRunnerSettings getPestRunnerSettings() {
-        return pestRunnerSettings;
-    }
 }

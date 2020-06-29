@@ -3,11 +3,6 @@
     <name>Pest</name>
     <vendor email="olivernybroe@gmail.com" url="https://pestphp.com/">Pest</vendor>
 
-    <description><![CDATA[
-    Pest for Intellij <br>
-    This plugin adds support for using Pest PHP inside PHPStorm
-    ]]></description>
-
     <!-- please see https://www.jetbrains.org/intellij/sdk/docs/basics/getting_started/plugin_compatibility.html
          on how to target different products -->
     <depends>com.intellij.modules.platform</depends>
