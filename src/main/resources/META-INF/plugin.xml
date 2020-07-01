@@ -22,6 +22,8 @@
     <extensions defaultExtensionNs="com.jetbrains.php">
         <testFrameworkType implementation="com.pestphp.pest.PestFrameworkType"/>
         <composerConfigClient implementation="com.pestphp.pest.PestComposerConfig"/>
+
+        <typeProvider4 implementation="com.pestphp.pest.types.ThisTypeProvider"/>
     </extensions>
 
     <actions>
