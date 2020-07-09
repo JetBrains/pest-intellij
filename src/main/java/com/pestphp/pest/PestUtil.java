@@ -1,28 +1,23 @@
 package com.pestphp.pest;
 
-import com.intellij.execution.RunManager;
-import com.intellij.execution.RunnerAndConfigurationSettings;
-import com.intellij.execution.configurations.RuntimeConfigurationException;
 import com.intellij.notification.Notification;
 import com.intellij.notification.NotificationType;
 import com.intellij.notification.Notifications;
 import com.intellij.openapi.application.Application;
 import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.project.Project;
+import com.intellij.openapi.util.text.StringUtil;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.util.PsiTreeUtil;
 import com.jetbrains.php.lang.psi.PhpFile;
 import com.jetbrains.php.lang.psi.elements.FunctionReference;
 import com.jetbrains.php.lang.psi.elements.StringLiteralExpression;
-import com.pestphp.pest.configuration.PestRunConfiguration;
-import com.pestphp.pest.configuration.PestRunConfigurationType;
+import com.jetbrains.php.testFramework.PhpTestFrameworkSettingsManager;
 import org.jetbrains.annotations.Nls;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Collection;
-import java.util.List;
-import java.util.stream.Collectors;
 
 public class PestUtil {
     private static final String NOTIFICATION_GROUP = "Pest";
@@ -57,49 +52,12 @@ public class PestUtil {
         return ((StringLiteralExpression) parameter).getContents();
     }
 
-    public static List<PestRunConfiguration> getRunConfigurations(@NotNull Project project) {
-        return RunManager.getInstance(project)
-            .getConfigurationSettingsList(PestRunConfigurationType.class)
+    public static boolean isEnabled(@NotNull Project project) {
+        return PhpTestFrameworkSettingsManager
+            .getInstance(project)
+            .getConfigurations(PestFrameworkType.getInstance())
             .stream()
-            .map(RunnerAndConfigurationSettings::getConfiguration)
-            .filter(configuration -> configuration instanceof PestRunConfiguration)
-            .map(configuration -> (PestRunConfiguration) configuration)
-            .collect(Collectors.toList());
-    }
-
-    @Nullable
-    public static PestRunConfiguration getMainConfiguration(
-        @NotNull Project project,
-        @NotNull List<PestRunConfiguration> configurations
-    ) {
-        @Nullable PestRunConfiguration mainConfiguration = configurations.stream()
-            .filter(configuration -> "tests".equals(configuration.getName()))
-            .findAny()
-            .orElse(null);
-        if (mainConfiguration == null) {
-            PestUtil.doNotify(
-                PestBundle.message("runConfiguration.mainConfiguration.missing.title"),
-                PestBundle.message("runConfiguration.mainConfiguration.missing.description"),
-                NotificationType.ERROR,
-                project
-            );
-            return null;
-
-        }
-
-        try {
-            mainConfiguration.checkConfiguration();
-            return mainConfiguration;
-
-        } catch (RuntimeConfigurationException ex) {
-            PestUtil.doNotify(
-                PestBundle.message("runConfiguration.mainConfiguration.invalid.title"),
-                PestBundle.message("runConfiguration.mainConfiguration.invalid.description"),
-                NotificationType.ERROR,
-                project
-            );
-        }
-        return null;
+            .anyMatch(config -> StringUtil.isNotEmpty(config.getExecutablePath()));
     }
 
     public static void doNotify(

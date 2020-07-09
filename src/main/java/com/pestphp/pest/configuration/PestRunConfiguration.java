@@ -5,18 +5,37 @@ import com.intellij.execution.configurations.ConfigurationFactory;
 import com.intellij.execution.configurations.RunConfiguration;
 import com.intellij.openapi.options.SettingsEditor;
 import com.intellij.openapi.project.Project;
+import com.intellij.psi.xml.XmlFile;
 import com.intellij.util.TextFieldCompletionProvider;
 import com.jetbrains.php.lang.PhpFileType;
+import com.jetbrains.php.phpunit.PhpUnitUtil;
 import com.jetbrains.php.testFramework.run.*;
 import com.jetbrains.php.testFramework.run.PhpTestRunnerSettings.Scope;
 import com.pestphp.pest.PestFrameworkType;
+import com.pestphp.pest.PestUtil;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Collections;
 import java.util.EnumMap;
 
 public class PestRunConfiguration extends PhpTestRunConfiguration {
-    private static final PhpDefaultTestRunnerSettingsValidator VALIDATOR;
+    public static final PhpDefaultTestRunnerSettingsValidator VALIDATOR = new PhpDefaultTestRunnerSettingsValidator(
+        Collections.singletonList(PhpFileType.INSTANCE),
+        (file, name) -> {
+            if (PhpUnitUtil.isPhpUnitConfigurationFile(file)) {
+                return true;
+            }
+
+            if (PestUtil.isPestTestFile(file)) {
+                // TODO: Add a check for name being a valid test in the file.
+                return true;
+            }
+
+            return false;
+        },
+        false,
+        false
+    );
 
     protected PestRunConfiguration(Project project, ConfigurationFactory factory, String name) {
         super(
@@ -54,12 +73,4 @@ public class PestRunConfiguration extends PhpTestRunConfiguration {
         };
     }
 
-    static {
-        VALIDATOR = new PhpDefaultTestRunnerSettingsValidator(
-            Collections.singletonList(PhpFileType.INSTANCE),
-            (file, name) -> true,
-            false,
-            false
-        );
-    }
 }
