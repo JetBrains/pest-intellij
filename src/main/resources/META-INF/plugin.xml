@@ -14,6 +14,7 @@
                 implementationClass="com.pestphp.pest.PestTestRunLineMarkerProvider"
         />
 
+        <programRunner implementation="com.pestphp.pest.configuration.PestDebugRunner"/>
         <configurationType implementation="com.pestphp.pest.configuration.PestRunConfigurationType"/>
         <runConfigurationProducer implementation="com.pestphp.pest.configuration.PestRunConfigurationProducer"/>
         <iconProvider implementation="com.pestphp.pest.PestIconProvider"/>
