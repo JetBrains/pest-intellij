@@ -1,18 +1,10 @@
 package com.pestphp.pest.tests.types
 
-import com.pestphp.pest.tests.PestLightCodeFixture
-
-class ThisTypingTest: PestLightCodeFixture() {
+class ThisTypeTest: BaseTypeTest() {
     override fun setUp() {
         super.setUp()
 
-        myFixture.copyFileToProject("TestCase.php")
-        myFixture.copyFileToProject("this/itTest.txt", "itTest.php")
-        myFixture.copyFileToProject("this/testTest.txt", "testTest.php")
-    }
-
-    override fun getTestDataPath(): String? {
-        return basePath + "types/fixtures"
+        myFixture.copyDirectoryToProject("this", "/")
     }
 
     fun testItFunction() {
@@ -23,6 +15,12 @@ class ThisTypingTest: PestLightCodeFixture() {
 
     fun testTestFunction() {
         myFixture.configureByFile("testTest.php")
+
+        assertCompletion("expectException", "expectExceptionCode")
+    }
+
+    fun testShortLambda() {
+        myFixture.configureByFile("itShortLambdaTest.php")
 
         assertCompletion("expectException", "expectExceptionCode")
     }

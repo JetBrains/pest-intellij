@@ -25,6 +25,7 @@
         <composerConfigClient implementation="com.pestphp.pest.PestComposerConfig"/>
 
         <typeProvider4 implementation="com.pestphp.pest.types.ThisTypeProvider"/>
+        <typeProvider4 implementation="com.pestphp.pest.types.ThisFieldTypeProvider"/>
     </extensions>
 
     <actions>
