@@ -33,11 +33,11 @@ class PestRunConfigurationProducer : PhpTestConfigurationProducer<PestRunConfigu
     companion object {
         private val METHOD = Condition<PsiElement> { element: PsiElement? ->
             (element is FunctionReference
-                    && PestUtil.isPestTestFunction((element as FunctionReference?)!!))
+                    && PestUtil.isPestTestFunction(element))
         }
         private val METHOD_NAMER = Function<PsiElement, String?> { element: PsiElement? ->
             if (element is FunctionReference) {
-                PestUtil.getTestName(element)
+                return@Function PestUtil.getTestName(element)
             }
             null
         }

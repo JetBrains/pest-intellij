@@ -2,7 +2,6 @@ package com.pestphp.pest;
 
 import com.intellij.execution.configurations.ConfigurationType;
 import com.jetbrains.php.testFramework.PhpTestFrameworkComposerConfig;
-import com.jetbrains.php.testFramework.PhpTestFrameworkType;
 import com.pestphp.pest.configuration.PestRunConfigurationType;
 import org.jetbrains.annotations.NotNull;
 
