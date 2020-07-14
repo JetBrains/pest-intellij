@@ -1,7 +1,5 @@
 package com.pestphp.pest;
 
-import com.jetbrains.php.testFramework.PhpTestDescriptor;
-import com.jetbrains.php.testFramework.PhpTestFrameworkConfigurationFactory;
 import com.jetbrains.php.testFramework.PhpTestFrameworkFormDecorator;
 import com.jetbrains.php.testFramework.PhpTestFrameworkFormDecorator.PhpDownloadableTestFormDecorator;
 import com.jetbrains.php.testFramework.PhpTestFrameworkType;
@@ -11,7 +9,6 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import javax.swing.*;
-import java.util.List;
 
 public class PestFrameworkType extends PhpTestFrameworkType {
     @NonNls

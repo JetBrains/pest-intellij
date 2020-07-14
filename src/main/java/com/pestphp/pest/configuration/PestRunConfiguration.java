@@ -5,7 +5,6 @@ import com.intellij.execution.configurations.ConfigurationFactory;
 import com.intellij.execution.configurations.RunConfiguration;
 import com.intellij.openapi.options.SettingsEditor;
 import com.intellij.openapi.project.Project;
-import com.intellij.psi.xml.XmlFile;
 import com.intellij.util.TextFieldCompletionProvider;
 import com.jetbrains.php.lang.PhpFileType;
 import com.jetbrains.php.phpunit.PhpUnitUtil;
@@ -26,12 +25,8 @@ public class PestRunConfiguration extends PhpTestRunConfiguration {
                 return true;
             }
 
-            if (PestUtil.isPestTestFile(file)) {
-                // TODO: Add a check for name being a valid test in the file.
-                return true;
-            }
-
-            return false;
+            // TODO: Add a check for name being a valid test in the file.
+            return PestUtil.isPestTestFile(file);
         },
         false,
         false
@@ -44,7 +39,7 @@ public class PestRunConfiguration extends PhpTestRunConfiguration {
             name,
             PestFrameworkType.getInstance(),
             VALIDATOR,
-            PestRunConfigurationHandler.getInstance(),
+            PestRunConfigurationHandler.instance,
             PestVersionDetector.getInstance()
         );
     }

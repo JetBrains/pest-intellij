@@ -4,15 +4,9 @@ import com.intellij.execution.configurations.*;
 import com.intellij.openapi.project.DumbAware;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.util.NotNullLazyValue;
-import com.jetbrains.php.run.PhpRunConfigurationFactoryBase;
 import com.pestphp.pest.PestBundle;
-import com.pestphp.pest.PestFrameworkType;import com.pestphp.pest.PestIcons;
-import org.jetbrains.annotations.Nls;
-import org.jetbrains.annotations.Nls.Capitalization;
+import com.pestphp.pest.PestIcons;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
-
-import javax.swing.*;
 
 public class PestRunConfigurationType extends SimpleConfigurationType implements DumbAware {
     protected PestRunConfigurationType() {
