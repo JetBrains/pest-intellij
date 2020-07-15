@@ -1,82 +1,104 @@
-package com.pestphp.pest;
+package com.pestphp.pest
 
-import com.intellij.notification.Notification;
-import com.intellij.notification.NotificationType;
-import com.intellij.notification.Notifications;
-import com.intellij.openapi.application.Application;
-import com.intellij.openapi.application.ApplicationManager;
-import com.intellij.openapi.project.Project;
-import com.intellij.openapi.util.text.StringUtil;
-import com.intellij.psi.PsiElement;
-import com.intellij.psi.util.PsiTreeUtil;
-import com.jetbrains.php.lang.psi.PhpFile;
-import com.jetbrains.php.lang.psi.elements.FunctionReference;
-import com.jetbrains.php.lang.psi.elements.StringLiteralExpression;
-import com.jetbrains.php.testFramework.PhpTestFrameworkSettingsManager;
-import org.jetbrains.annotations.Nls;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import com.intellij.notification.Notification
+import com.intellij.notification.NotificationType
+import com.intellij.notification.Notifications
+import com.intellij.openapi.application.ApplicationManager
+import com.intellij.openapi.project.Project
+import com.intellij.openapi.util.text.StringUtil
+import com.intellij.psi.PsiElement
+import com.intellij.psi.util.PsiTreeUtil
+import com.intellij.util.ObjectUtils
+import com.jetbrains.php.lang.psi.PhpFile
+import com.jetbrains.php.lang.psi.elements.FunctionReference
+import com.jetbrains.php.lang.psi.elements.MethodReference
+import com.jetbrains.php.lang.psi.elements.StringLiteralExpression
+import com.jetbrains.php.testFramework.PhpTestFrameworkConfiguration
+import com.jetbrains.php.testFramework.PhpTestFrameworkSettingsManager
+import org.jetbrains.annotations.Nls
 
-import java.util.Collection;
+object PestUtil {
+    private const val NOTIFICATION_GROUP = "Pest"
 
-public class PestUtil {
-    private static final String NOTIFICATION_GROUP = "Pest";
-
-    public static boolean isPestTestFile(@Nullable PsiElement element) {
+    @JvmStatic
+    fun isPestTestFile(element: PsiElement?): Boolean {
         if (element == null) {
-            return false;
+            return false
         }
-
-        if (!(element instanceof PhpFile)) {
-            return false;
+        if (element !is PhpFile) {
+            return false
         }
-
-        Collection<FunctionReference> functions = PsiTreeUtil.findChildrenOfType(element, FunctionReference.class);
-
+        val functions = PsiTreeUtil.findChildrenOfType(element, FunctionReference::class.java)
         return functions.stream()
-            .anyMatch(PestUtil::isPestTestFunction);
+                .anyMatch { obj: FunctionReference? -> isPestTestFunction(obj) }
     }
 
-    public static boolean isPestTestFunction(@NotNull FunctionReference reference) {
-        String s = reference.getCanonicalText();
-        return s.equals("it") || s.equals("test");
-    }
-
-    public static @Nullable String getTestName(FunctionReference element) {
-        PsiElement parameter = element.getParameter(0);
-
-        if (!(parameter instanceof StringLiteralExpression)) {
-            return null;
+    @JvmStatic
+    fun isPestTestFunction(element: PsiElement?): Boolean {
+        return when (element) {
+            null -> false
+            is MethodReference -> isPestTestFunction(element)
+            is FunctionReference -> isPestTestFunction(element)
+            else -> false
         }
-
-        return ((StringLiteralExpression) parameter).getContents();
     }
 
-    public static boolean isEnabled(@NotNull Project project) {
+    @JvmStatic
+    fun isPestTestFunction(reference: FunctionReference): Boolean {
+        return reference.canonicalText in setOf("it", "test")
+    }
+
+    @JvmStatic
+    fun isPestTestFunction(methodReference: MethodReference): Boolean {
+        val reference = ObjectUtils.tryCast(methodReference.classReference, FunctionReference::class.java)
+        return reference != null && isPestTestFunction(reference)
+    }
+
+    @JvmStatic
+    fun getTestName(element: FunctionReference): String? {
+        return when (val parameter = element.getParameter(0)) {
+            is StringLiteralExpression -> parameter.contents
+            else -> null
+        }
+    }
+
+    @JvmStatic
+    fun getTestName(element: PsiElement?): String? {
+        return when (element) {
+            is MethodReference -> (element.classReference as? FunctionReference)?.let(this::getTestName)
+            is FunctionReference -> getTestName(element)
+            else -> null
+        }
+    }
+
+    @JvmStatic
+    fun isEnabled(project: Project): Boolean {
         return PhpTestFrameworkSettingsManager
-            .getInstance(project)
-            .getConfigurations(PestFrameworkType.getInstance())
-            .stream()
-            .anyMatch(config -> StringUtil.isNotEmpty(config.getExecutablePath()));
+                .getInstance(project)
+                .getConfigurations(PestFrameworkType.getInstance())
+                .stream()
+                .anyMatch { config: PhpTestFrameworkConfiguration -> StringUtil.isNotEmpty(config.executablePath) }
     }
 
-    public static void doNotify(
-        @NotNull String title,
-        @NotNull @Nls(capitalization = Nls.Capitalization.Sentence) String content,
-        @NotNull NotificationType type,
-        @Nullable Project project
+    @JvmStatic
+    fun doNotify(
+            title: String,
+            content: @Nls(capitalization = Nls.Capitalization.Sentence) String,
+            type: NotificationType,
+            project: Project?
     ) {
-        Notification notification = new Notification(NOTIFICATION_GROUP, title, content, type);
-        doNotify(notification, project);
+        val notification = Notification(NOTIFICATION_GROUP, title, content, type)
+        doNotify(notification, project)
     }
 
-    public static void doNotify(Notification notification, @Nullable Project project) {
-        if (project != null && !project.isDisposed() && !project.isDefault()) {
-            project.getMessageBus().syncPublisher(Notifications.TOPIC).notify(notification);
+    @JvmStatic
+    fun doNotify(notification: Notification?, project: Project?) {
+        if (project != null && !project.isDisposed && !project.isDefault) {
+            project.messageBus.syncPublisher(Notifications.TOPIC).notify(notification!!)
         } else {
-            Application app = ApplicationManager.getApplication();
-            if (!app.isDisposed()) {
-                app.getMessageBus().syncPublisher(Notifications.TOPIC).notify(notification);
+            val app = ApplicationManager.getApplication()
+            if (!app.isDisposed) {
+                app.messageBus.syncPublisher(Notifications.TOPIC).notify(notification!!)
             }
         }
     }
