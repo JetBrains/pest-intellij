@@ -1,6 +1,8 @@
 package com.pestphp.pest.configuration
 
 import com.intellij.execution.configurations.ConfigurationFactory
+import com.intellij.ide.highlighter.XmlFileType
+import com.intellij.openapi.fileTypes.FileType
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.util.Condition
 import com.intellij.openapi.vfs.VirtualFile
@@ -8,18 +10,21 @@ import com.intellij.psi.PsiDirectory
 import com.intellij.psi.PsiElement
 import com.intellij.psi.PsiFile
 import com.intellij.util.Function
+import com.jetbrains.php.lang.PhpFileType
+import com.jetbrains.php.testFramework.run.PhpDefaultTestRunnerSettingsValidator
+import com.jetbrains.php.testFramework.run.PhpDefaultTestRunnerSettingsValidator.PhpTestMethodFinder
 import com.jetbrains.php.testFramework.run.PhpTestConfigurationProducer
-import com.pestphp.pest.PestUtil
+import com.pestphp.pest.*
 
 class PestRunConfigurationProducer : PhpTestConfigurationProducer<PestRunConfiguration?>(
-        PestRunConfiguration.VALIDATOR,
+        VALIDATOR,
         FILE_TO_SCOPE,
         METHOD_NAMER,
         METHOD
 ) {
     override fun getConfigurationFactory(): ConfigurationFactory = PestRunConfigurationType.getInstance()
 
-    override fun isEnabled(project: Project): Boolean = PestUtil.isEnabled(project)
+    override fun isEnabled(project: Project): Boolean = project.isPestEnabled()
 
     override fun getWorkingDirectory(element: PsiElement): VirtualFile? {
         if (element is PsiDirectory) {
@@ -31,16 +36,28 @@ class PestRunConfigurationProducer : PhpTestConfigurationProducer<PestRunConfigu
 
     companion object {
         private val METHOD = Condition<PsiElement> { element: PsiElement? ->
-            return@Condition PestUtil.isPestTestFunction(element)
+            return@Condition element.isPestTestFunction()
         }
         private val METHOD_NAMER = Function<PsiElement, String?> { element: PsiElement? ->
-            return@Function PestUtil.getTestName(element)
+            return@Function element.getPestTestName()
         }
-        private val FILE_TO_SCOPE = Function<PsiFile, PsiElement?> { file: PsiFile? ->
-            if (PestUtil.isPestTestFile(file)) {
+        private val FILE_TO_SCOPE = Function<PsiFile, PsiElement?> { file: PsiFile ->
+            if (file.isPestTestFile()) {
                 return@Function file
             }
             null
         }
+        val VALIDATOR = PhpDefaultTestRunnerSettingsValidator(
+                setOf<FileType>(PhpFileType.INSTANCE, XmlFileType.INSTANCE).toList(),
+                PhpTestMethodFinder { file: PsiFile, _: String ->
+                    if (file.isPestConfigurationFile()) {
+                        return@PhpTestMethodFinder true
+                    }
+
+                    file.isPestTestFile()
+                },
+                false,
+                false
+        )
     }
 }

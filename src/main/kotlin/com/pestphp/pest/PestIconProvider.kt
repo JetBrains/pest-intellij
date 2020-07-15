@@ -1,19 +1,14 @@
-package com.pestphp.pest;
+package com.pestphp.pest
 
-import com.intellij.ide.IconProvider;
-import com.intellij.psi.PsiElement;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import com.intellij.ide.IconProvider
+import com.intellij.psi.PsiElement
+import com.intellij.psi.PsiFile
+import javax.swing.Icon
 
-import javax.swing.*;
-
-public class PestIconProvider extends IconProvider {
-    @Override
-    public @Nullable Icon getIcon(@NotNull PsiElement element, int flags) {
-        if (!PestUtil.isPestTestFile(element)) {
-            return null;
-        }
-
-        return PestIcons.FILE;
+class PestIconProvider : IconProvider() {
+    override fun getIcon(element: PsiElement, flags: Int): Icon? {
+        return (element as? PsiFile)
+                ?.isPestTestFile()
+                .let { PestIcons.FILE }
     }
 }
