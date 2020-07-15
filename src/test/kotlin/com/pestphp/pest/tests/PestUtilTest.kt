@@ -20,7 +20,7 @@ class PestUtilTest: PestLightCodeFixture() {
         val file = myFixture.configureByFile("SimpleTest.php")
 
         val functions = PsiTreeUtil.findChildrenOfType(file, FunctionReference::class.java)
-                .stream().filter(PestUtil::isPestTestFunction).collect(Collectors.toList())
+                .stream().filter { element -> PestUtil.isPestTestFunction(element)}.collect(Collectors.toList())
 
         assertEquals(1, functions.count())
 
