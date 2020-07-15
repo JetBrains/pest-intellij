@@ -8,7 +8,6 @@ import com.intellij.psi.PsiDirectory
 import com.intellij.psi.PsiElement
 import com.intellij.psi.PsiFile
 import com.intellij.util.Function
-import com.jetbrains.php.lang.psi.elements.FunctionReference
 import com.jetbrains.php.testFramework.run.PhpTestConfigurationProducer
 import com.pestphp.pest.PestUtil
 
@@ -32,14 +31,10 @@ class PestRunConfigurationProducer : PhpTestConfigurationProducer<PestRunConfigu
 
     companion object {
         private val METHOD = Condition<PsiElement> { element: PsiElement? ->
-            (element is FunctionReference
-                    && PestUtil.isPestTestFunction(element))
+            return@Condition PestUtil.isPestTestFunction(element)
         }
         private val METHOD_NAMER = Function<PsiElement, String?> { element: PsiElement? ->
-            if (element is FunctionReference) {
-                return@Function PestUtil.getTestName(element)
-            }
-            null
+            return@Function PestUtil.getTestName(element)
         }
         private val FILE_TO_SCOPE = Function<PsiFile, PsiElement?> { file: PsiFile? ->
             if (PestUtil.isPestTestFile(file)) {
