@@ -7,8 +7,10 @@ import javax.swing.Icon
 
 class PestIconProvider : IconProvider() {
     override fun getIcon(element: PsiElement, flags: Int): Icon? {
-        return (element as? PsiFile)
-                ?.isPestTestFile()
-                .let { PestIcons.FILE }
+        if (element is PsiFile && element.isPestTestFile()) {
+            return PestIcons.FILE
+        }
+
+        return null
     }
 }

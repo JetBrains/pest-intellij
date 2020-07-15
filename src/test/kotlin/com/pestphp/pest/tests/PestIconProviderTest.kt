@@ -30,8 +30,8 @@ class PestIconProviderTest: PestLightCodeFixture() {
         val file = myFixture.configureByFile("SimpleScript.php")
 
         assertNotEquals(
-            PestIconProvider().getIcon(file, ICON_FLAG_VISIBILITY),
-            PestIcons.FILE
+            PestIcons.FILE,
+            PestIconProvider().getIcon(file, ICON_FLAG_VISIBILITY)
         )
     }
 }
