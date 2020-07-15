@@ -8,9 +8,6 @@ import com.intellij.psi.PsiDirectory
 import com.intellij.psi.PsiElement
 import com.intellij.psi.PsiFile
 import com.intellij.util.Function
-import com.intellij.util.containers.stream
-import com.jetbrains.php.lang.psi.elements.FunctionReference
-import com.jetbrains.php.lang.psi.elements.MethodReference
 import com.jetbrains.php.testFramework.run.PhpTestConfigurationProducer
 import com.pestphp.pest.PestUtil
 
