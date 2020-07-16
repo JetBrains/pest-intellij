@@ -1,4 +1,4 @@
-<idea-plugin>
+<idea-plugin require-restart="true">
     <id>com.pestphp.pest-intellij</id>
     <name>Pest</name>
     <vendor email="olivernybroe@gmail.com" url="https://pestphp.com/">Pest</vendor>
