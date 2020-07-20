@@ -14,7 +14,6 @@ import com.jetbrains.php.phpunit.PhpUnitUtil
 import com.jetbrains.php.testFramework.PhpTestFrameworkConfiguration
 import com.jetbrains.php.testFramework.PhpTestFrameworkSettingsManager
 
-
 fun PsiElement?.isPestTestFunction(): Boolean {
     return when (this) {
         null -> false
@@ -33,7 +32,6 @@ fun MethodReference.isPestTestFunction(): Boolean {
     return reference != null && reference.isPestTestFunction()
 }
 
-
 fun FunctionReference.getPestTestName(): String? {
     return when (val parameter = this.getParameter(0)) {
         is StringLiteralExpression -> parameter.contents
@@ -49,13 +47,12 @@ fun PsiElement?.getPestTestName(): String? {
     }
 }
 
-
 fun PsiFile.isPestTestFile(): Boolean {
     return when (this) {
         is PhpFile -> {
             PsiTreeUtil.findChildrenOfType(this, FunctionReference::class.java)
-                    .asSequence()
-                    .any(FunctionReference::isPestTestFunction)
+                .asSequence()
+                .any(FunctionReference::isPestTestFunction)
         }
         else -> false
     }
@@ -67,8 +64,8 @@ fun PsiFile.isPestConfigurationFile(): Boolean {
 
 fun Project.isPestEnabled(): Boolean {
     return PhpTestFrameworkSettingsManager
-            .getInstance(this)
-            .getConfigurations(PestFrameworkType.getInstance())
-            .stream()
-            .anyMatch { config: PhpTestFrameworkConfiguration -> StringUtil.isNotEmpty(config.executablePath) }
+        .getInstance(this)
+        .getConfigurations(PestFrameworkType.getInstance())
+        .stream()
+        .anyMatch { config: PhpTestFrameworkConfiguration -> StringUtil.isNotEmpty(config.executablePath) }
 }

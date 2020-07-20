@@ -6,7 +6,7 @@ import com.jetbrains.php.lang.psi.elements.PhpNamedElement
 import com.jetbrains.php.lang.psi.resolve.types.PhpType
 import com.jetbrains.php.lang.psi.resolve.types.PhpTypeProvider4
 
-class ThisTypeProvider: BaseTypeProvider(), PhpTypeProvider4 {
+class ThisTypeProvider : BaseTypeProvider(), PhpTypeProvider4 {
     override fun getKey(): Char {
         return '\u0221'
     }

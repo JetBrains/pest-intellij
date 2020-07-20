@@ -5,6 +5,7 @@ import com.intellij.psi.PsiElement
 import com.jetbrains.php.lang.lexer.PhpTokenTypes
 import com.jetbrains.php.lang.psi.PhpPsiUtil
 import com.jetbrains.php.lang.psi.elements.FunctionReference
+import com.jetbrains.php.lang.psi.elements.impl.FunctionReferenceImpl
 
 class PestTestRunLineMarkerProvider : RunLineMarkerContributor() {
     override fun getInfo(leaf: PsiElement): Info? {
@@ -12,12 +13,10 @@ class PestTestRunLineMarkerProvider : RunLineMarkerContributor() {
             return null
         }
 
-        // return RunLineMarkerContributor.withExecutorActions(getTestStateIcon(getLocationHint(testName), leaf.getProject(), false));
         return when {
-            leaf.parent !is FunctionReference -> null
+            leaf.parent !is FunctionReferenceImpl -> null
             (leaf.parent as FunctionReference).isPestTestFunction() -> withExecutorActions(PestIcons.RUN_SINGLE_TEST)
             else -> null
         }
-
     }
 }

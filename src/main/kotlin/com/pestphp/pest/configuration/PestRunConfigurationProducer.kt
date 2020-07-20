@@ -14,13 +14,17 @@ import com.jetbrains.php.lang.PhpFileType
 import com.jetbrains.php.testFramework.run.PhpDefaultTestRunnerSettingsValidator
 import com.jetbrains.php.testFramework.run.PhpDefaultTestRunnerSettingsValidator.PhpTestMethodFinder
 import com.jetbrains.php.testFramework.run.PhpTestConfigurationProducer
-import com.pestphp.pest.*
+import com.pestphp.pest.getPestTestName
+import com.pestphp.pest.isPestEnabled
+import com.pestphp.pest.isPestTestFile
+import com.pestphp.pest.isPestTestFunction
+import com.pestphp.pest.isPestConfigurationFile
 
 class PestRunConfigurationProducer : PhpTestConfigurationProducer<PestRunConfiguration?>(
-        VALIDATOR,
-        FILE_TO_SCOPE,
-        METHOD_NAMER,
-        METHOD
+    VALIDATOR,
+    FILE_TO_SCOPE,
+    METHOD_NAMER,
+    METHOD
 ) {
     override fun getConfigurationFactory(): ConfigurationFactory = PestRunConfigurationType.getInstance()
 
@@ -35,7 +39,7 @@ class PestRunConfigurationProducer : PhpTestConfigurationProducer<PestRunConfigu
     }
 
     companion object {
-        private val METHOD = Condition<PsiElement> { element: PsiElement? ->
+        val METHOD = Condition<PsiElement> { element: PsiElement? ->
             return@Condition element.isPestTestFunction()
         }
         private val METHOD_NAMER = Function<PsiElement, String?> { element: PsiElement? ->
@@ -48,16 +52,16 @@ class PestRunConfigurationProducer : PhpTestConfigurationProducer<PestRunConfigu
             null
         }
         val VALIDATOR = PhpDefaultTestRunnerSettingsValidator(
-                setOf<FileType>(PhpFileType.INSTANCE, XmlFileType.INSTANCE).toList(),
-                PhpTestMethodFinder { file: PsiFile, _: String ->
-                    if (file.isPestConfigurationFile()) {
-                        return@PhpTestMethodFinder true
-                    }
+            setOf<FileType>(PhpFileType.INSTANCE, XmlFileType.INSTANCE).toList(),
+            PhpTestMethodFinder { file: PsiFile, _: String ->
+                if (file.isPestConfigurationFile()) {
+                    return@PhpTestMethodFinder true
+                }
 
-                    file.isPestTestFile()
-                },
-                false,
-                false
+                file.isPestTestFile()
+            },
+            false,
+            false
         )
     }
 }
