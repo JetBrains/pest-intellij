@@ -7,6 +7,7 @@ import com.jetbrains.php.lang.psi.elements.ParameterList
 import com.jetbrains.php.lang.psi.elements.Variable
 import com.jetbrains.php.lang.psi.elements.impl.FunctionReferenceImpl
 
+@Suppress("UnnecessaryAbstractClass")
 abstract class BaseTypeProvider {
     protected fun PsiElement?.isThisVariableInPestTest(): Boolean {
         if ((this as? Variable)?.name != "this") return false

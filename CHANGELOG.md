@@ -12,6 +12,7 @@
 
 ### Fixed
 - Plugin require restart as PhpTestFrameworkType does not support dynamic plugins
+- Line markers reported false positives with method calls([#31](https://github.com/pestphp/pest-intellij/pull/31))
 
 ## [v0.1.1]
 ### Added
