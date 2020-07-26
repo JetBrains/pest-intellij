@@ -3,7 +3,12 @@ package com.pestphp.pest.types
 import com.intellij.openapi.project.Project
 import com.intellij.psi.PsiElement
 import com.intellij.psi.util.PsiTreeUtil
-import com.jetbrains.php.lang.psi.elements.*
+import com.jetbrains.php.lang.psi.elements.AssignmentExpression
+import com.jetbrains.php.lang.psi.elements.FieldReference
+import com.jetbrains.php.lang.psi.elements.PhpNamedElement
+import com.jetbrains.php.lang.psi.elements.PhpTypedElement
+import com.jetbrains.php.lang.psi.elements.Statement
+import com.jetbrains.php.lang.psi.elements.Variable
 import com.jetbrains.php.lang.psi.elements.impl.FunctionReferenceImpl
 import com.jetbrains.php.lang.psi.resolve.types.PhpType
 import com.jetbrains.php.lang.psi.resolve.types.PhpTypeProvider4
@@ -19,7 +24,8 @@ class ThisFieldTypeProvider : BaseTypeProvider(), PhpTypeProvider4 {
     override fun getType(psiElement: PsiElement): PhpType? {
         val fieldReference = psiElement as? FieldReference ?: return null
 
-        if (!fieldReference.classReference.isThisVariableInPest { it.isPestTestFunction() || it.isPestAfterFunction() }) return null
+        if (!fieldReference.classReference.isThisVariableInPest { it.isPestTestFunction() || it.isPestAfterFunction() })
+            return null
 
         val fieldName = fieldReference.name ?: return null
 
