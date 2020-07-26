@@ -1,7 +1,7 @@
 package com.pestphp.pest.tests.PestUtil
 
 import com.intellij.psi.util.PsiTreeUtil
-import com.jetbrains.php.lang.psi.elements.FunctionReference
+import com.jetbrains.php.lang.psi.elements.impl.FunctionReferenceImpl
 import com.pestphp.pest.getPestTestName
 import com.pestphp.pest.isPestTestFunction
 import com.pestphp.pest.tests.PestLightCodeFixture
@@ -21,8 +21,8 @@ class PestUtilTest: PestLightCodeFixture() {
     fun testCanGetTestName() {
         val file = myFixture.configureByFile("SimpleTest.php")
 
-        val functions = PsiTreeUtil.findChildrenOfType(file, FunctionReference::class.java)
-                .stream().filter(FunctionReference::isPestTestFunction)
+        val functions = PsiTreeUtil.findChildrenOfType(file, FunctionReferenceImpl::class.java)
+                .stream().filter(FunctionReferenceImpl::isPestTestFunction)
                 .collect(Collectors.toList())
 
         assertEquals(1, functions.count())

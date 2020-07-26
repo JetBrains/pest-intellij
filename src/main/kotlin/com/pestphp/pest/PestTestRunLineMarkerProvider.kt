@@ -13,10 +13,10 @@ class PestTestRunLineMarkerProvider : RunLineMarkerContributor() {
             return null
         }
 
-        return when {
-            leaf.parent !is FunctionReferenceImpl -> null
-            (leaf.parent as FunctionReference).isPestTestFunction() -> withExecutorActions(PestIcons.RUN_SINGLE_TEST)
-            else -> null
+        if ((leaf.parent as? FunctionReferenceImpl)?.isPestTestFunction() == true) {
+            return withExecutorActions(PestIcons.RUN_SINGLE_TEST)
         }
+
+        return null
     }
 }
