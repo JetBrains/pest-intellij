@@ -24,8 +24,7 @@ class ThisFieldTypeProvider : BaseTypeProvider(), PhpTypeProvider4 {
     override fun getType(psiElement: PsiElement): PhpType? {
         val fieldReference = psiElement as? FieldReference ?: return null
 
-        if (!fieldReference.classReference.isThisVariableInPest { it.isPestTestFunction() || it.isPestAfterFunction() })
-            return null
+        if (!fieldReference.classReference.isThisVariableInPest { check(it) }) return null
 
         val fieldName = fieldReference.name ?: return null
 
@@ -41,6 +40,8 @@ class ThisFieldTypeProvider : BaseTypeProvider(), PhpTypeProvider4 {
             .filterIsInstance<PhpTypedElement>()
             .firstOrNull()?.type
     }
+
+    private fun check(it: FunctionReferenceImpl) = it.isPestTestFunction() || it.isPestAfterFunction()
 
     private fun isNeededFieldReference(psiElement: PsiElement?, fieldName: String): Boolean {
         if (psiElement !is FieldReference) return false
