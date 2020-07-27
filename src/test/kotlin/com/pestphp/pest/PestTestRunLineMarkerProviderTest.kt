@@ -11,7 +11,7 @@ class PestTestRunLineMarkerProviderTest : PestLightCodeFixture() {
     fun testMethodCallNamedItAndVariableTestIsNotPestTest() {
         val file = myFixture.configureByFile("MethodCallNamedItAndVariableTest.php")
 
-        val testElement = file.firstChild.lastChild.firstChild
+        val testElement = file.firstChild.lastChild.firstChild.firstChild
 
         assertNull(PestTestRunLineMarkerProvider().getInfo(testElement))
     }
@@ -19,7 +19,7 @@ class PestTestRunLineMarkerProviderTest : PestLightCodeFixture() {
     fun testFunctionCallNamedItWithDescriptionAndClosure() {
         val file = myFixture.configureByFile("PestItFunctionCallWithDescriptionAndClosure.php")
 
-        val testElement = file.firstChild.lastChild.firstChild
+        val testElement = file.firstChild.lastChild.firstChild.firstChild
 
         assertNotNull(PestTestRunLineMarkerProvider().getInfo(testElement))
     }
