@@ -17,7 +17,7 @@ import com.jetbrains.php.testFramework.run.PhpTestConfigurationProducer
 import com.pestphp.pest.getPestTestName
 import com.pestphp.pest.isPestEnabled
 import com.pestphp.pest.isPestTestFile
-import com.pestphp.pest.isPestTestFunction
+import com.pestphp.pest.isPestTestReference
 import com.pestphp.pest.isPestConfigurationFile
 
 class PestRunConfigurationProducer : PhpTestConfigurationProducer<PestRunConfiguration?>(
@@ -40,25 +40,18 @@ class PestRunConfigurationProducer : PhpTestConfigurationProducer<PestRunConfigu
 
     companion object {
         val METHOD = Condition<PsiElement> { element: PsiElement? ->
-            return@Condition element.isPestTestFunction()
+            element.isPestTestReference()
         }
         private val METHOD_NAMER = Function<PsiElement, String?> { element: PsiElement? ->
-            return@Function element.getPestTestName()
+            element.getPestTestName()
         }
         private val FILE_TO_SCOPE = Function<PsiFile, PsiElement?> { file: PsiFile ->
-            if (file.isPestTestFile()) {
-                return@Function file
-            }
-            null
+            if (file.isPestTestFile()) file else null
         }
         val VALIDATOR = PhpDefaultTestRunnerSettingsValidator(
             setOf<FileType>(PhpFileType.INSTANCE, XmlFileType.INSTANCE).toList(),
             PhpTestMethodFinder { file: PsiFile, _: String ->
-                if (file.isPestConfigurationFile()) {
-                    return@PhpTestMethodFinder true
-                }
-
-                file.isPestTestFile()
+                file.isPestConfigurationFile() || file.isPestTestFile()
             },
             false,
             false

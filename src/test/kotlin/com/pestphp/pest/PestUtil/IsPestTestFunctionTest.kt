@@ -1,9 +1,9 @@
 package com.pestphp.pest.PestUtil
 
-import com.pestphp.pest.isPestTestFunction
+import com.pestphp.pest.isPestTestReference
 import com.pestphp.pest.tests.PestLightCodeFixture
 
-class IsPestTestFunctionTest: PestLightCodeFixture() {
+class IsPestTestFunctionTest : PestLightCodeFixture() {
     override fun getTestDataPath(): String? {
         return "src/test/resources/com/pestphp/pest/PestUtil/IsPestTestFunctionTest"
     }
@@ -13,7 +13,7 @@ class IsPestTestFunctionTest: PestLightCodeFixture() {
 
         val testElement = file.firstChild.lastChild.firstChild
 
-        assertFalse(testElement.isPestTestFunction())
+        assertFalse(testElement.isPestTestReference())
     }
 
     fun testMethodCallNamedItIsNotPestTest() {
@@ -21,7 +21,7 @@ class IsPestTestFunctionTest: PestLightCodeFixture() {
 
         val testElement = file.firstChild.lastChild.firstChild
 
-        assertFalse(testElement.isPestTestFunction())
+        assertFalse(testElement.isPestTestReference())
     }
 
     fun testFunctionCallNamedItWithDescriptionAndClosure() {
@@ -29,7 +29,7 @@ class IsPestTestFunctionTest: PestLightCodeFixture() {
 
         val testElement = file.firstChild.lastChild.firstChild
 
-        assertTrue(testElement.isPestTestFunction())
+        assertTrue(testElement.isPestTestReference())
     }
 
     fun testFunctionCallNamedItWithDescriptionAndHigherOrder() {
@@ -37,7 +37,7 @@ class IsPestTestFunctionTest: PestLightCodeFixture() {
 
         val testElement = file.firstChild.lastChild.firstChild
 
-        assertTrue(testElement.isPestTestFunction())
+        assertTrue(testElement.isPestTestReference())
     }
 
     fun testFunctionCallNamedTestWithDescriptionAndHigherOrder() {
@@ -45,6 +45,14 @@ class IsPestTestFunctionTest: PestLightCodeFixture() {
 
         val testElement = file.firstChild.lastChild.firstChild
 
-        assertTrue(testElement.isPestTestFunction())
+        assertTrue(testElement.isPestTestReference())
+    }
+
+    fun testMethodCallNamedItAndVariableTestIsNotPestTest() {
+        val file = myFixture.configureByFile("MethodCallNamedItAndVariableTest.php")
+
+        val testElement = file.firstChild.lastChild.firstChild
+
+        assertFalse(testElement.isPestTestReference())
     }
 }

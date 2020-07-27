@@ -9,19 +9,25 @@ class ThisTypeTest: BaseTypeTest() {
 
     fun testItFunction() {
         myFixture.configureByFile("itTest.php")
-
-        assertCompletion("expectException", "expectExceptionCode")
+        assertThisCompletion()
     }
 
     fun testTestFunction() {
         myFixture.configureByFile("testTest.php")
-
-        assertCompletion("expectException", "expectExceptionCode")
+        assertThisCompletion()
     }
 
     fun testShortLambda() {
         myFixture.configureByFile("itShortLambdaTest.php")
+        assertThisCompletion()
+    }
 
+    fun testBeforeEach() {
+        myFixture.configureByFile("beforeEach.php")
+        assertThisCompletion()
+    }
+
+    private fun assertThisCompletion() {
         assertCompletion("expectException", "expectExceptionCode")
     }
 }

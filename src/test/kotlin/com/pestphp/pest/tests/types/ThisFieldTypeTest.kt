@@ -18,4 +18,10 @@ class ThisFieldTypeTest: BaseTypeTest() {
 
         assertCompletion("a", "b")
     }
+
+    fun testAfterEach() {
+        myFixture.configureByFile("afterEach.php")
+
+        assertCompletion("a", "b")
+    }
 }
