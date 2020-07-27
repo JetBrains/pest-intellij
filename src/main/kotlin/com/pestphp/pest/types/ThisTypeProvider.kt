@@ -5,6 +5,7 @@ import com.intellij.psi.PsiElement
 import com.jetbrains.php.lang.psi.elements.PhpNamedElement
 import com.jetbrains.php.lang.psi.resolve.types.PhpType
 import com.jetbrains.php.lang.psi.resolve.types.PhpTypeProvider4
+import com.pestphp.pest.isAnyPestFunction
 
 class ThisTypeProvider : BaseTypeProvider(), PhpTypeProvider4 {
     override fun getKey(): Char {
@@ -12,7 +13,7 @@ class ThisTypeProvider : BaseTypeProvider(), PhpTypeProvider4 {
     }
 
     override fun getType(psiElement: PsiElement): PhpType? {
-        if (psiElement.isThisVariableInPestTest()) return TEST_CASE_TYPE
+        if (psiElement.isThisVariableInPest { it.isAnyPestFunction() }) return TEST_CASE_TYPE
 
         return null
     }

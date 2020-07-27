@@ -4,7 +4,6 @@ import com.intellij.execution.lineMarker.RunLineMarkerContributor
 import com.intellij.psi.PsiElement
 import com.jetbrains.php.lang.lexer.PhpTokenTypes
 import com.jetbrains.php.lang.psi.PhpPsiUtil
-import com.jetbrains.php.lang.psi.elements.FunctionReference
 import com.jetbrains.php.lang.psi.elements.impl.FunctionReferenceImpl
 
 class PestTestRunLineMarkerProvider : RunLineMarkerContributor() {
@@ -13,10 +12,10 @@ class PestTestRunLineMarkerProvider : RunLineMarkerContributor() {
             return null
         }
 
-        return when {
-            leaf.parent !is FunctionReferenceImpl -> null
-            (leaf.parent as FunctionReference).isPestTestFunction() -> withExecutorActions(PestIcons.RUN_SINGLE_TEST)
-            else -> null
+        if (leaf.parent !is FunctionReferenceImpl || !leaf.parent.isPestTestReference()) {
+            return null
         }
+
+        return withExecutorActions(PestIcons.RUN_SINGLE_TEST)
     }
 }
