@@ -3,7 +3,7 @@ package com.pestphp.pest.PestUtil
 import com.pestphp.pest.isPestTestReference
 import com.pestphp.pest.tests.PestLightCodeFixture
 
-class IsPestTestFunctionTest: PestLightCodeFixture() {
+class IsPestTestFunctionTest : PestLightCodeFixture() {
     override fun getTestDataPath(): String? {
         return "src/test/resources/com/pestphp/pest/PestUtil/IsPestTestFunctionTest"
     }
@@ -46,5 +46,13 @@ class IsPestTestFunctionTest: PestLightCodeFixture() {
         val testElement = file.firstChild.lastChild.firstChild
 
         assertTrue(testElement.isPestTestReference())
+    }
+
+    fun testMethodCallNamedItAndVariableTestIsNotPestTest() {
+        val file = myFixture.configureByFile("MethodCallNamedItAndVariableTest.php")
+
+        val testElement = file.firstChild.lastChild.firstChild
+
+        assertFalse(testElement.isPestTestReference())
     }
 }
