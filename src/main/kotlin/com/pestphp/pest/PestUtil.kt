@@ -47,6 +47,11 @@ fun PsiElement?.getPestTestName(): String? {
     }
 }
 
+fun PsiFile.getPestTests(): Set<FunctionReference> {
+    return PsiTreeUtil.findChildrenOfType(this, FunctionReference::class.java)
+        .toSet()
+}
+
 fun PsiFile.isPestTestFile(): Boolean {
     return when (this) {
         is PhpFile -> {
