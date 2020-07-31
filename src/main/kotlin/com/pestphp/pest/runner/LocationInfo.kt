@@ -4,5 +4,5 @@ import com.intellij.openapi.vfs.VirtualFile
 
 class LocationInfo(
     val file: VirtualFile,
-    val testName: String
+    val testName: String?
 )

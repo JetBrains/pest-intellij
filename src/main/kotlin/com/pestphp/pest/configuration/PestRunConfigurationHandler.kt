@@ -40,6 +40,9 @@ class PestRunConfigurationHandler : PhpTestRunConfigurationHandler {
         directory: String,
         workingDirectory: String
     ) {
+        if (directory.isEmpty()) {
+            return
+        }
         phpCommandSettings.addPathArgument(directory)
     }
 
@@ -49,6 +52,9 @@ class PestRunConfigurationHandler : PhpTestRunConfigurationHandler {
         file: String,
         workingDirectory: String
     ) {
+        if (file.isEmpty()) {
+            return
+        }
         phpCommandSettings.addPathArgument(file)
     }
 
@@ -59,6 +65,9 @@ class PestRunConfigurationHandler : PhpTestRunConfigurationHandler {
         methodName: String,
         workingDirectory: String
     ) {
+        if (file.isEmpty()) {
+            return
+        }
         phpCommandSettings.addPathArgument(file)
         phpCommandSettings.addArgument(String.format("--filter=/%s$/", methodName.replace(" ", "\\s")))
     }

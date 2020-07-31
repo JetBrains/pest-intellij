@@ -6,7 +6,6 @@ import com.intellij.execution.runners.ExecutionEnvironment
 import com.jetbrains.php.config.commandLine.PhpCommandSettingsBuilder
 import com.jetbrains.php.config.interpreters.PhpInterpreter
 import com.jetbrains.php.phpunit.coverage.PhpCoverageRunner
-import com.jetbrains.php.phpunit.coverage.PhpUntCoverageProgramRunner
 import com.jetbrains.php.run.PhpRunConfigurationHolder
 import com.pestphp.pest.configuration.PestRunConfiguration
 import com.pestphp.pest.configuration.PestRunConfigurationSettings
@@ -41,7 +40,14 @@ class PestCoverageProgramRunner : PhpCoverageRunner() {
         val settings = runConfigurationHolder.settings as PestRunConfigurationSettings
         val project = env.project
 
-        val command = PhpCommandSettingsBuilder(project, interpreter).loadAndStartDebug(true).build()
+        val command = runConfiguration.createCommand(
+            interpreter,
+            mapOf(),
+            listOf(),
+            true
+        )
+
+        command.addArguments(coverageArguments)
 
         setAdditionalMapping(localCoverage, targetCoverage, command)
         return runConfiguration.checkAndGetState(env, command)

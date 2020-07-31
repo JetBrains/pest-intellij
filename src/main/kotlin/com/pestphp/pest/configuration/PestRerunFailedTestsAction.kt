@@ -8,10 +8,12 @@ import com.intellij.execution.testframework.actions.AbstractRerunFailedTestsActi
 import com.intellij.execution.testframework.sm.runner.SMTRunnerConsoleProperties
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.ui.ComponentContainer
+import com.intellij.psi.search.GlobalSearchScope
 import com.jetbrains.php.config.commandLine.PhpCommandSettings
 import com.jetbrains.php.config.interpreters.PhpInterpreter
 import com.jetbrains.php.testFramework.PhpTestFrameworkSettingsManager
 import com.pestphp.pest.PestFrameworkType
+import com.pestphp.pest.getPestTestName
 
 class PestRerunFailedTestsAction(
     componentContainer: ComponentContainer,
@@ -42,10 +44,13 @@ class PestRerunFailedTestsAction(
                 val failed = this@PestRerunFailedTestsAction.getFailedTests(project)
                     .filter { it.isLeaf }
                     .filter { it.parent != null }
-                // .map { it.getLocation(project, GlobalSearchScope.allScope(project)) }
+                    .map { it.getLocation(project, GlobalSearchScope.allScope(project)) }
+                    .mapNotNull { it.psiElement.getPestTestName() }
 
                 val clone: PestRunConfiguration = runConfiguration.clone() as PestRunConfiguration
-                clone.settings.workingDirectory = null
+
+                clone.settings.runnerSettings.directoryPath = null
+                clone.settings.runnerSettings.filePath = null
                 val command: PhpCommandSettings = clone.createCommand(
                     interpreter,
                     mapOf(),
@@ -53,7 +58,16 @@ class PestRerunFailedTestsAction(
                     false
                 )
 
-                return runConfiguration.getState(environment, command, null as ProcessListener?)
+                command.addArgument(String.format(
+                    "--filter=/%s$/",
+                    failed.reduce { result, testName -> result + '|' + testName.replace(" ", "\\s")}
+                ))
+
+                return runConfiguration.getState(
+                    environment,
+                    command,
+                    null as ProcessListener?
+                )
             }
         }
     }
