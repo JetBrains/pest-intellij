@@ -58,10 +58,9 @@ class PestRerunFailedTestsAction(
                     false
                 )
 
-                command.addArgument(String.format(
-                    "--filter=/%s$/",
-                    failed.reduce { result, testName -> result + '|' + testName.replace(" ", "\\s")}
-                ))
+                command.addArgument(
+                    "--filter=/${failed.reduce { result, testName -> result + '|' + testName.replace(" ", "\\s") }}$/"
+                )
 
                 return runConfiguration.getState(
                     environment,
