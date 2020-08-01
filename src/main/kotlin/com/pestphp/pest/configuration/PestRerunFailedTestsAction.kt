@@ -2,7 +2,6 @@ package com.pestphp.pest.configuration
 
 import com.intellij.execution.Executor
 import com.intellij.execution.configurations.RunProfileState
-import com.intellij.execution.process.ProcessListener
 import com.intellij.execution.runners.ExecutionEnvironment
 import com.intellij.execution.testframework.actions.AbstractRerunFailedTestsAction
 import com.intellij.execution.testframework.sm.runner.SMTRunnerConsoleProperties
@@ -43,9 +42,24 @@ class PestRerunFailedTestsAction(
                     .filter { it.isLeaf }
                     .filter { it.parent != null }
                     .map { it.getLocation(project, GlobalSearchScope.allScope(project)) }
-                    .mapNotNull { it.psiElement.getPestTestName() }
+                    .mapNotNull { it?.psiElement?.getPestTestName() }
 
                 val clone: PestRunConfiguration = peerRunConfiguration.clone() as PestRunConfiguration
+
+                // If there are no failed tests found, it's prob.
+                // because it's an pest version before the new printer
+                if (failed.isEmpty()) {
+                    return peerRunConfiguration.getState(
+                        environment,
+                        clone.createCommand(
+                            interpreter,
+                            mapOf(),
+                            listOf(),
+                            false
+                        ),
+                        null
+                    )
+                }
 
                 clone.settings.runnerSettings.directoryPath = null
                 clone.settings.runnerSettings.filePath = null
@@ -63,7 +77,7 @@ class PestRerunFailedTestsAction(
                 return peerRunConfiguration.getState(
                     environment,
                     command,
-                    null as ProcessListener?
+                    null
                 )
             }
         }
