@@ -1,4 +1,3 @@
-package com.pestphp.pest.configuration;
+package com.pestphp.pest.configuration
 
-public class PestRunnerSettings {
-}
+class PestRunnerSettings

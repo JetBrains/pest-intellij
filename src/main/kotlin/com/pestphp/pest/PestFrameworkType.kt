@@ -1,41 +1,33 @@
-package com.pestphp.pest;
+package com.pestphp.pest
 
-import com.jetbrains.php.testFramework.PhpTestFrameworkFormDecorator;
-import com.jetbrains.php.testFramework.PhpTestFrameworkFormDecorator.PhpDownloadableTestFormDecorator;
-import com.jetbrains.php.testFramework.PhpTestFrameworkType;
-import org.jetbrains.annotations.Nls;
-import org.jetbrains.annotations.NonNls;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import com.jetbrains.php.testFramework.PhpTestFrameworkFormDecorator
+import com.jetbrains.php.testFramework.PhpTestFrameworkFormDecorator.PhpDownloadableTestFormDecorator
+import com.jetbrains.php.testFramework.PhpTestFrameworkType
+import org.jetbrains.annotations.Nls
+import org.jetbrains.annotations.NonNls
+import javax.swing.Icon
 
-import javax.swing.*;
-
-public class PestFrameworkType extends PhpTestFrameworkType {
-    @NonNls
-    public static final String ID = "Pest";
-
-    @NotNull
-    public static PhpTestFrameworkType getInstance() {
-        return PhpTestFrameworkType.getTestFrameworkType(ID);
+class PestFrameworkType : PhpTestFrameworkType() {
+    override fun getDisplayName(): @Nls String {
+        return PestBundle.message("FRAMEWORK_NAME")
     }
 
-    @Override
-    public @NotNull @Nls String getDisplayName() {
-        return PestBundle.message("FRAMEWORK_NAME");
+    override fun getID(): String {
+        return ID
     }
 
-    @Override
-    public @NotNull String getID() {
-        return ID;
+    override fun getIcon(): Icon {
+        return PestIcons.LOGO
     }
 
-    @Override
-    public @NotNull Icon getIcon() {
-        return PestIcons.LOGO;
+    override fun getDecorator(): PhpTestFrameworkFormDecorator? {
+        return PhpDownloadableTestFormDecorator("https://github.com/pestphp/pest/releases")
     }
 
-    @Override
-    public @Nullable PhpTestFrameworkFormDecorator getDecorator() {
-        return new PhpDownloadableTestFormDecorator("https://github.com/pestphp/pest/releases");
+    companion object {
+        @NonNls
+        val ID = "Pest"
+        val instance: PhpTestFrameworkType
+            get() = getTestFrameworkType(ID)
     }
 }

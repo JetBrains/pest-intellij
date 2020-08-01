@@ -26,7 +26,7 @@ class PestRunConfigurationProducer : PhpTestConfigurationProducer<PestRunConfigu
     METHOD_NAMER,
     METHOD
 ) {
-    override fun getConfigurationFactory(): ConfigurationFactory = PestRunConfigurationType.getInstance()
+    override fun getConfigurationFactory(): ConfigurationFactory = PestRunConfigurationType.instance
 
     override fun isEnabled(project: Project): Boolean = project.isPestEnabled()
 

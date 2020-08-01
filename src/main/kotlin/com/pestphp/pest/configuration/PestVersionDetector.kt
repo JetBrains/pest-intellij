@@ -1,33 +1,22 @@
-package com.pestphp.pest.configuration;
+package com.pestphp.pest.configuration
 
-import com.intellij.openapi.diagnostic.Logger;
-import com.jetbrains.php.PhpTestFrameworkVersionDetector;
-import com.pestphp.pest.PestBundle;
-import org.jetbrains.annotations.Nls;
-import org.jetbrains.annotations.NotNull;
+import com.intellij.openapi.diagnostic.Logger
+import com.jetbrains.php.PhpTestFrameworkVersionDetector
+import com.pestphp.pest.PestBundle
+import org.jetbrains.annotations.Nls
 
-public class PestVersionDetector extends PhpTestFrameworkVersionDetector<String> {
-    private static final Logger LOG = Logger.getInstance(PestVersionDetector.class);
-    private static PestVersionDetector myInstance;
-
-
-    public static PestVersionDetector getInstance() {
-        if (myInstance == null) {
-            myInstance = new PestVersionDetector();
-        }
-
-        return myInstance;
+class PestVersionDetector : PhpTestFrameworkVersionDetector<String>() {
+    override fun getPresentableName(): @Nls String {
+        return PestBundle.message("FRAMEWORK_NAME")
     }
 
-    @Override
-    protected @NotNull @Nls String getPresentableName() {
-        return PestBundle.message("FRAMEWORK_NAME");
+    override fun parse(s: String): String {
+        LOG.info(String.format("Parsing version: %s", s))
+        return s
     }
 
-    @NotNull
-    @Override
-    protected String parse(@NotNull String s) {
-        LOG.info(String.format("Parsing version: %s", s));
-        return "0.2";
+    companion object {
+        private val LOG = Logger.getInstance(PestVersionDetector::class.java)
+        val instance = PestVersionDetector()
     }
 }

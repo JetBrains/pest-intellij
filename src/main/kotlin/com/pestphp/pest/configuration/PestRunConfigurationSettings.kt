@@ -1,8 +1,7 @@
-package com.pestphp.pest.configuration;
+package com.pestphp.pest.configuration
 
-import com.jetbrains.php.testFramework.run.PhpTestRunConfigurationSettings;
-import org.jetbrains.annotations.NotNull;
+import com.jetbrains.php.testFramework.run.PhpTestRunConfigurationSettings
 
-public class PestRunConfigurationSettings extends PhpTestRunConfigurationSettings {
-    @NotNull private final PestRunnerSettings pestRunnerSettings = new PestRunnerSettings();
+class PestRunConfigurationSettings : PhpTestRunConfigurationSettings() {
+    private val pestRunnerSettings = PestRunnerSettings()
 }

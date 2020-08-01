@@ -1,28 +1,29 @@
-package com.pestphp.pest.configuration;
+package com.pestphp.pest.configuration
 
-import com.intellij.execution.configurations.*;
-import com.intellij.openapi.project.DumbAware;
-import com.intellij.openapi.project.Project;
-import com.intellij.openapi.util.NotNullLazyValue;
-import com.pestphp.pest.PestBundle;
-import com.pestphp.pest.PestIcons;
-import org.jetbrains.annotations.NotNull;
+import com.intellij.execution.configurations.ConfigurationTypeUtil.findConfigurationType
+import com.intellij.execution.configurations.RunConfiguration
+import com.intellij.execution.configurations.SimpleConfigurationType
+import com.intellij.openapi.project.DumbAware
+import com.intellij.openapi.project.Project
+import com.intellij.openapi.util.NotNullLazyValue
+import com.pestphp.pest.PestBundle
+import com.pestphp.pest.PestIcons
 
-public class PestRunConfigurationType extends SimpleConfigurationType implements DumbAware {
-    protected PestRunConfigurationType() {
-        super(
-            "PestRunConfigurationType",
-            PestBundle.message("FRAMEWORK_NAME"),
-            PestBundle.message("FRAMEWORK_NAME"),
-            NotNullLazyValue.createValue(() -> PestIcons.CONFIG));
+class PestRunConfigurationType private constructor() :
+    SimpleConfigurationType(
+        "PestRunConfigurationType",
+        PestBundle.message("FRAMEWORK_NAME"),
+        PestBundle.message("FRAMEWORK_NAME"),
+        NotNullLazyValue.createValue { PestIcons.CONFIG }
+    ),
+    DumbAware {
+    override fun createTemplateConfiguration(project: Project): RunConfiguration {
+        return PestRunConfiguration(project, this)
     }
 
-    public static PestRunConfigurationType getInstance() {
-        return ConfigurationTypeUtil.findConfigurationType(PestRunConfigurationType.class);
-    }
-
-    @Override
-    public @NotNull RunConfiguration createTemplateConfiguration(@NotNull Project project) {
-        return new PestRunConfiguration(project, this, PestBundle.message("FRAMEWORK_NAME"));
+    companion object {
+        @JvmStatic
+        val instance: PestRunConfigurationType
+            get() = findConfigurationType(PestRunConfigurationType::class.java)
     }
 }

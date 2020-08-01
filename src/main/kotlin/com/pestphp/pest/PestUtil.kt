@@ -23,6 +23,6 @@ fun PsiFile.isPestConfigurationFile(): Boolean {
 fun Project.isPestEnabled(): Boolean {
     return PhpTestFrameworkSettingsManager
         .getInstance(this)
-        .getConfigurations(PestFrameworkType.getInstance())
+        .getConfigurations(PestFrameworkType.instance)
         .any { StringUtil.isNotEmpty(it.executablePath) }
 }

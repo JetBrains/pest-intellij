@@ -32,7 +32,7 @@ class PestCoverageProgramRunner : PhpCoverageRunner() {
         coverageArguments: MutableList<String>,
         localCoverage: String,
         targetCoverage: String
-    ): RunProfileState {
+    ): RunProfileState? {
         val runConfiguration = runConfigurationHolder.runConfiguration as PestRunConfiguration
 
         val command = runConfiguration.createCommand(
