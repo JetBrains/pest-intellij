@@ -45,7 +45,10 @@ fun PsiFile.getAllBeforeThisAssignments(): List<AssignmentExpression> {
 private val cacheKey = Key<CachedValue<List<AssignmentExpression>>>("com.pestphp.pest_assignments")
 private fun FunctionReferenceImpl.getThisStatements(): List<AssignmentExpression> {
     return CachedValuesManager.getCachedValue(this, cacheKey) {
-        val result = PsiTreeUtil.findChildrenOfType(this.parameterList?.getParameter(0), AssignmentExpression::class.java)
+        val result = PsiTreeUtil.findChildrenOfType(
+            this.parameterList?.getParameter(0),
+            AssignmentExpression::class.java
+        )
             .filter { ((it.variable as? FieldReference)?.classReference as? Variable)?.name == "this" }
 
         CachedValueProvider.Result.create(result, this)

@@ -6,7 +6,6 @@ import com.intellij.psi.PsiElement
 import com.jetbrains.php.lang.psi.elements.FieldReference
 import com.jetbrains.php.lang.psi.elements.PhpNamedElement
 import com.jetbrains.php.lang.psi.elements.PhpTypedElement
-import com.jetbrains.php.lang.psi.elements.Variable
 import com.jetbrains.php.lang.psi.elements.impl.FunctionReferenceImpl
 import com.jetbrains.php.lang.psi.resolve.types.PhpType
 import com.jetbrains.php.lang.psi.resolve.types.PhpTypeProvider4
@@ -30,23 +29,13 @@ class ThisFieldTypeProvider : PhpTypeProvider4 {
         val fieldName = fieldReference.name ?: return null
 
         return (psiElement.containingFile ?: return null).getAllBeforeThisAssignments()
-            .filter { (it.variable as? FieldReference)?.name ==  fieldName }
+            .filter { (it.variable as? FieldReference)?.name == fieldName }
             .mapNotNull { it.value }
             .filterIsInstance<PhpTypedElement>()
             .firstOrNull()?.type
     }
 
     private fun check(it: FunctionReferenceImpl) = it.isPestTestFunction() || it.isPestAfterFunction()
-
-    private fun isNeededFieldReference(psiElement: PsiElement?, fieldName: String): Boolean {
-        if (psiElement !is FieldReference) return false
-
-        if (psiElement.name != fieldName) return false
-
-        if ((psiElement.classReference as? Variable)?.name != "this") return false
-
-        return true
-    }
 
     override fun complete(s: String, project: Project): PhpType? {
         return null

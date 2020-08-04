@@ -32,18 +32,17 @@ class PestConfigurationFileParser(private val settings: PestSettings) {
             val inPaths = mutableListOf<Pair<String, PhpType>>()
             val testsPath = settings.pestFilePath.replaceAfterLast('/', "")
 
-            psiFile.acceptChildren(Visitor { type, inPath ->
-                if (inPath != null) {
-                    inPaths.add(Pair(testsPath + inPath, type))
-                } else {
-                    baseType = type
+            psiFile.acceptChildren(
+                Visitor { type, inPath ->
+                    if (inPath != null) {
+                        inPaths.add(Pair(testsPath + inPath, type))
+                    } else {
+                        baseType = type
+                    }
                 }
-            })
+            )
 
-            CachedValueProvider.Result.create(PestConfigurationFile(
-                baseType,
-                inPaths
-            ), psiFile)
+            CachedValueProvider.Result.create(PestConfigurationFile(baseType, inPaths), psiFile)
         } ?: defaultConfig
     }
 
@@ -62,8 +61,6 @@ class PestConfigurationFileParser(private val settings: PestSettings) {
             super.visitElement(element)
         }
 
-
-
         private fun visitInReference(inReference: MethodReference) {
             var reference = inReference
             var usesType: PhpType? = null
@@ -73,9 +70,10 @@ class PestConfigurationFileParser(private val settings: PestSettings) {
                 if (ref is MethodReference) {
                     reference = ref
                 } else if (ref is FunctionReferenceImpl) {
-                    if (ref.name != "uses") break
+                    if (ref.name == "uses") {
+                        usesType = ref.getUsesPhpType()
+                    }
 
-                    usesType = ref.getUsesPhpType()
                     break
                 } else {
                     return
