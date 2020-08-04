@@ -20,17 +20,15 @@ fun FunctionReferenceImpl.isPestTestFunction(): Boolean {
     return this.canonicalText in testNames
 }
 
-private val beforeNames = setOf("beforeEach", "beforeAll")
 fun FunctionReferenceImpl.isPestBeforeFunction(): Boolean {
-    return this.canonicalText in beforeNames
+    return this.canonicalText == "beforeEach"
 }
 
-private val afterNames = setOf("afterEach", "afterAll")
 fun FunctionReferenceImpl.isPestAfterFunction(): Boolean {
-    return this.canonicalText in afterNames
+    return this.canonicalText == "afterEach"
 }
 
-private val allPestNames = setOf("it", "test", "beforeEach", "beforeAll", "afterAll", "afterEach")
+private val allPestNames = setOf("it", "test", "beforeEach", "afterEach")
 fun FunctionReferenceImpl.isAnyPestFunction(): Boolean {
     return this.canonicalText in allPestNames
 }
