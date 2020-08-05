@@ -6,6 +6,18 @@
 ### Added
 
 ### Changed
+
+### Deprecated
+
+### Removed
+
+### Fixed
+
+### Security
+## [0.3.1]
+### Added
+
+### Changed
 - Change the name of the plugin
 
 ### Deprecated
