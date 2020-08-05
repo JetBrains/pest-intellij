@@ -6,7 +6,7 @@ import com.pestphp.pest.PestIcons
 import junit.framework.TestCase
 import kotlin.test.assertNotEquals
 
-class PestIconProviderTest: PestLightCodeFixture() {
+class PestIconProviderTest : PestLightCodeFixture() {
     override fun setUp() {
         super.setUp()
 
