@@ -6,6 +6,7 @@
 ### Added
 
 ### Changed
+- Change the name of the plugin
 
 ### Deprecated
 
