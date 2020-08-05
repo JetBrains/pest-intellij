@@ -19,6 +19,8 @@
         <configurationType implementation="com.pestphp.pest.configuration.PestRunConfigurationType"/>
         <runConfigurationProducer implementation="com.pestphp.pest.configuration.PestRunConfigurationProducer"/>
         <iconProvider implementation="com.pestphp.pest.PestIconProvider"/>
+
+        <projectService serviceImplementation="com.pestphp.pest.PestSettings"/>
     </extensions>
 
     <extensions defaultExtensionNs="com.jetbrains.php">
