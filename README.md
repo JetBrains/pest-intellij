@@ -1,6 +1,8 @@
 # Pest IntelliJ
 
 ![Build](https://github.com/pestphp/pest-intellij/workflows/Build/badge.svg)
+![JetBrains IntelliJ plugins](https://img.shields.io/jetbrains/plugin/d/14636)
+![JetBrains IntelliJ Plugins](https://img.shields.io/jetbrains/plugin/v/14636)
 
 <!-- Plugin description -->
 This plugin adds support for using Pest PHP inside PHPStorm
