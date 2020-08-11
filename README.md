@@ -9,7 +9,9 @@
 
 # Pest IntelliJ
 
+<!-- Plugin description -->
 This plugin adds support for using Pest PHP inside PHPStorm
+<!-- Plugin description end -->
 
 ## Installation
 
