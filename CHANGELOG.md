@@ -4,6 +4,18 @@
 
 ## [Unreleased]
 ### Added
+
+### Changed
+
+### Deprecated
+
+### Removed
+
+### Fixed
+
+### Security
+## [0.3.2]
+### Added
 - Added dark/light mode icons ([#45](https://github.com/pestphp/pest-intellij/pull/45))
 
 ## [0.3.1]
