@@ -4,29 +4,12 @@
 
 ## [Unreleased]
 ### Added
+- Added dark/light mode icons ([#45](https://github.com/pestphp/pest-intellij/pull/45))
 
-### Changed
-
-### Deprecated
-
-### Removed
-
-### Fixed
-
-### Security
 ## [0.3.1]
-### Added
-
 ### Changed
 - Change the name of the plugin
 
-### Deprecated
-
-### Removed
-
-### Fixed
-
-### Security
 ## [0.3.0]
 ### Added
 - Basic autocompletion for `$this` for PhpUnit TestCase base class ([#11](https://github.com/pestphp/pest-intellij/pull/11))
