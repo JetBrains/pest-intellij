@@ -68,7 +68,10 @@ class PestRunConfigurationHandler : PhpTestRunConfigurationHandler {
         if (file.isEmpty()) {
             return
         }
+
         phpCommandSettings.addPathArgument(file)
-        phpCommandSettings.addArgument(String.format("--filter=/%s$/", methodName.replace(" ", "\\s")))
+        phpCommandSettings.addArgument(
+            String.format("--filter=/%s(\\swith\\s\\(.*\\)(\\s#\\d+)?)?$/", methodName.replace(" ", "\\s"))
+        )
     }
 }
