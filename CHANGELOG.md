@@ -3,6 +3,18 @@
 # PEST IntelliJ Changelog
 
 ## [Unreleased]
+### Added
+
+### Changed
+
+### Deprecated
+
+### Removed
+
+### Fixed
+
+### Security
+## [0.3.3]
 ### Fixed
 - Fixed running with dataset ([#47](https://github.com/pestphp/pest-intellij/pull/47))
 
