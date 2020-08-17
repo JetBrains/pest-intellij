@@ -3,7 +3,6 @@ package com.pestphp.pest.indexers
 import com.intellij.psi.search.GlobalSearchScope
 import com.intellij.util.indexing.FileBasedIndex
 import com.pestphp.pest.tests.PestLightCodeFixture
-import junit.framework.TestCase
 
 class PestTestIndexTest : PestLightCodeFixture() {
     override fun getTestDataPath(): String? {
@@ -11,31 +10,26 @@ class PestTestIndexTest : PestLightCodeFixture() {
     }
 
     fun testPestTestFileIsIndexed() {
-        val file = myFixture.configureByFile("FileWithPestTest.php")
+        myFixture.copyFileToProject("FileWithPestTest.php", "tests/FileWithPestTest.php")
 
-        val indexes = FileBasedIndex.getInstance().getAllKeys(PestTestIndex.key, project)
+        val fileBasedIndex = FileBasedIndex.getInstance()
 
-        val files = FileBasedIndex.getInstance().getContainingFiles(
-            PestTestIndex.key,
-            indexes.first(),
-            GlobalSearchScope.projectScope(project)
-        )
+        val indexKeys = fileBasedIndex.getAllKeys(PestTestIndex.key, project).filter {
+            fileBasedIndex.getContainingFiles(PestTestIndex.key, it, GlobalSearchScope.allScope(project)).isNotEmpty()
+        }
 
-        assertNotNull(file.virtualFile)
-        assertContainsElements(files, file.virtualFile)
+        assertContainsElements(indexKeys, "FileWithPestTest.php")
     }
 
     fun testPhpFileIsNotIndexed() {
-        val file = myFixture.configureByFile("FileWithoutPestTest.php")
+        myFixture.copyFileToProject("FileWithoutPestTest.php", "tests/FileWithoutPestTest.php")
 
-        val indexes = FileBasedIndex.getInstance().getAllKeys(PestTestIndex.key, project)
+        val fileBasedIndex = FileBasedIndex.getInstance()
 
-        val files = FileBasedIndex.getInstance().getContainingFiles(
-            PestTestIndex.key,
-            indexes.first(),
-            GlobalSearchScope.projectScope(project)
-        )
+        val indexKeys = fileBasedIndex.getAllKeys(PestTestIndex.key, project).filter {
+            fileBasedIndex.getContainingFiles(PestTestIndex.key, it, GlobalSearchScope.allScope(project)).isNotEmpty()
+        }
 
-        assertDoesntContain(files, file.virtualFile)
+        assertDoesntContain(indexKeys, "FileWithoutPestTest.php")
     }
 }
