@@ -1,6 +1,5 @@
 package com.pestphp.pest.configuration
 
-import com.intellij.openapi.diagnostic.Logger
 import com.jetbrains.php.PhpTestFrameworkVersionDetector
 import com.pestphp.pest.PestBundle
 import org.jetbrains.annotations.Nls
@@ -11,12 +10,10 @@ class PestVersionDetector : PhpTestFrameworkVersionDetector<String>() {
     }
 
     override fun parse(s: String): String {
-        LOG.info(String.format("Parsing version: %s", s))
-        return s
+        return s.removePrefix("Pest").substringBefore("\n").trim()
     }
 
     companion object {
-        private val LOG = Logger.getInstance(PestVersionDetector::class.java)
         val instance = PestVersionDetector()
     }
 }

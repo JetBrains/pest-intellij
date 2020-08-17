@@ -4,6 +4,7 @@
 
 ## [Unreleased]
 ### Added
+- Add support for showing pest version
 
 ### Changed
 
