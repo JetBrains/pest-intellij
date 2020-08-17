@@ -4,7 +4,8 @@
 
 ## [Unreleased]
 ### Added
-- Add support for showing pest version
+- Added support for showing pest version
+- Added support for navigation between tests and test subject
 
 ### Changed
 

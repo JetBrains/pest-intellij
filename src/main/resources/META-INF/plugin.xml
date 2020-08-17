@@ -21,6 +21,8 @@
         <iconProvider implementation="com.pestphp.pest.PestIconProvider"/>
 
         <projectService serviceImplementation="com.pestphp.pest.PestSettings"/>
+        <testFinder implementation="com.pestphp.pest.goto.PestTestFinder"/>
+        <fileBasedIndex implementation="com.pestphp.pest.indexers.PestTestIndex"/>
     </extensions>
 
     <extensions defaultExtensionNs="com.jetbrains.php">
