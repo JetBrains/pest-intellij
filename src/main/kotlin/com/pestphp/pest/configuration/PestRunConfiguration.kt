@@ -27,10 +27,10 @@ import com.jetbrains.php.testFramework.run.PhpTestRunnerConfigurationEditor
 import com.jetbrains.php.testFramework.run.PhpTestRunnerSettings
 import com.pestphp.pest.PestBundle
 import com.pestphp.pest.PestFrameworkType
+import com.pestphp.pest.PestIcons
 import com.pestphp.pest.configuration.PestRunConfigurationProducer.Companion.VALIDATOR
 import com.pestphp.pest.getPestTestName
 import com.pestphp.pest.isPestTestFunction
-import com.pestphp.pest.PestIcons
 import com.pestphp.pest.runner.PestConsoleProperties
 import java.util.EnumMap
 
@@ -72,8 +72,10 @@ class PestRunConfiguration(project: Project, factory: ConfigurationFactory) : Ph
             override fun addCompletionVariants(text: String, offset: Int, prefix: String, result: CompletionResultSet) {
                 val file = PhpRunUtil.findPsiFile(project, settings.runnerSettings.filePath)
                 PsiTreeUtil.findChildrenOfType(file, FunctionReferenceImpl::class.java)
-                    .stream().filter(FunctionReferenceImpl::isPestTestFunction)
-                    .map { LookupElementBuilder.create(it.getPestTestName()!!).withIcon(PestIcons.FILE) }
+                    .asSequence()
+                    .filter(FunctionReferenceImpl::isPestTestFunction)
+                    .mapNotNull { it.getPestTestName() }
+                    .map { LookupElementBuilder.create(it).withIcon(PestIcons.FILE) }
                     .forEach { result.addElement(it) }
             }
         }

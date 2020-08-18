@@ -23,7 +23,10 @@ class ThisTypeProvider : PhpTypeProvider4 {
     override fun getType(psiElement: PsiElement): PhpType? {
         if (DumbService.isDumb(psiElement.project)) return null
 
-        if (!psiElement.isThisVariableInPest { it.isAnyPestFunction() }) return null
+        if (
+            ((psiElement as? FunctionReferenceImpl)?.isAnyPestFunction() != true) &&
+            !psiElement.isThisVariableInPest { it.isAnyPestFunction() }
+        ) return null
 
         val virtualFile = psiElement.containingFile?.originalFile?.virtualFile ?: return null
 

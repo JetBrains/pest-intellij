@@ -5,7 +5,7 @@
 ## [Unreleased]
 ### Added
 - Add support for showing pest version
-
+- Type provider for Pest test functions ([#48](https://github.com/pestphp/pest-intellij/pull/48))
 ### Changed
 
 ### Deprecated
