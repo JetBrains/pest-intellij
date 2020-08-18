@@ -1,13 +1,17 @@
 package com.pestphp.pest.indexers
 
+import com.intellij.openapi.project.ProjectManager
+import com.intellij.openapi.roots.TestSourcesFilter
+import com.intellij.openapi.vfs.VirtualFile
 import com.intellij.util.indexing.DataIndexer
+import com.intellij.util.indexing.DefaultFileTypeSpecificInputFilter
 import com.intellij.util.indexing.FileBasedIndex
 import com.intellij.util.indexing.FileContent
 import com.intellij.util.indexing.ID
 import com.intellij.util.indexing.ScalarIndexExtension
 import com.intellij.util.io.EnumeratorStringDescriptor
 import com.intellij.util.io.KeyDescriptor
-import com.jetbrains.php.lang.psi.stubs.indexes.PhpConstantNameIndex
+import com.jetbrains.php.lang.PhpFileType
 import com.pestphp.pest.isPestTestFile
 import gnu.trove.THashMap
 
@@ -39,7 +43,17 @@ class PestTestIndex : ScalarIndexExtension<String>() {
     }
 
     override fun getInputFilter(): FileBasedIndex.InputFilter {
-        return PhpConstantNameIndex.PHP_INPUT_FILTER
+        return object : DefaultFileTypeSpecificInputFilter(PhpFileType.INSTANCE) {
+            override fun acceptInput(file: VirtualFile): Boolean {
+                if (file.path.contains(""".*?test.*?/.*\..*""".toRegex())) {
+                    return true
+                }
+
+                return ProjectManager.getInstance().openProjects.any {
+                    TestSourcesFilter.isTestSources(file, it)
+                }
+            }
+        }
     }
 
     override fun getKeyDescriptor(): KeyDescriptor<String> {
