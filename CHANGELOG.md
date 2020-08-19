@@ -4,8 +4,10 @@
 
 ## [Unreleased]
 ### Added
-- Add support for showing pest version
+- Added support for showing pest version ([#52](https://github.com/pestphp/pest-intellij/pull/52))
 - Type provider for Pest test functions ([#48](https://github.com/pestphp/pest-intellij/pull/48))
+- Added support for navigation between tests and test subject ([#53](https://github.com/pestphp/pest-intellij/pull/53))
+
 ### Changed
 
 ### Deprecated
