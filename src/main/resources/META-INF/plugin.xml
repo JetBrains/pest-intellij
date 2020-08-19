@@ -23,6 +23,7 @@
         <projectService serviceImplementation="com.pestphp.pest.PestSettings"/>
         <testFinder implementation="com.pestphp.pest.goto.PestTestFinder"/>
         <fileBasedIndex implementation="com.pestphp.pest.indexers.PestTestIndex"/>
+        <errorHandler implementation="com.pestphp.pest.GithubErrorReporter"/>
     </extensions>
 
     <extensions defaultExtensionNs="com.jetbrains.php">
