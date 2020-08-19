@@ -86,4 +86,3 @@ class GithubErrorReporter : ErrorReportSubmitter() {
         return true
     }
 }
-
