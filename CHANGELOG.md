@@ -9,6 +9,7 @@
 - Added support for navigation between tests and test subject ([#53](https://github.com/pestphp/pest-intellij/pull/53))
 - Added error reporting to GitHub issues ([#55](https://github.com/pestphp/pest-intellij/pull/55))
 - Added inspection for duplicate test names in same file. ([#56](https://github.com/pestphp/pest-intellij/pull/56))
+- Added pcov coverage engine support
 
 ### Changed
 

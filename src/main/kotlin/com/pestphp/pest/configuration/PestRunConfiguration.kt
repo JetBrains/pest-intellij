@@ -19,10 +19,11 @@ import com.intellij.openapi.util.text.StringUtil
 import com.intellij.psi.util.PsiTreeUtil
 import com.intellij.util.PathUtil
 import com.intellij.util.TextFieldCompletionProvider
+import com.jetbrains.php.PhpBundle
 import com.jetbrains.php.config.commandLine.PhpCommandSettings
 import com.jetbrains.php.lang.psi.elements.impl.FunctionReferenceImpl
 import com.jetbrains.php.run.PhpRunUtil
-import com.jetbrains.php.testFramework.run.PhpTestRunConfigurationSettings
+import com.jetbrains.php.testFramework.PhpTestFrameworkSettingsManager
 import com.jetbrains.php.testFramework.run.PhpTestRunnerConfigurationEditor
 import com.jetbrains.php.testFramework.run.PhpTestRunnerSettings
 import com.pestphp.pest.PestBundle
@@ -43,15 +44,16 @@ class PestRunConfiguration(project: Project, factory: ConfigurationFactory) : Ph
     PestRunConfigurationHandler.instance,
     PestVersionDetector.instance
 ) {
-    override fun createSettings(): PhpTestRunConfigurationSettings {
+    override fun createSettings(): PestRunConfigurationSettings {
         return PestRunConfigurationSettings()
     }
 
     override fun getConfigurationEditor(): SettingsEditor<out RunConfiguration?> {
         val names = EnumMap<PhpTestRunnerSettings.Scope, String>(PhpTestRunnerSettings.Scope::class.java)
         val editor = this.getConfigurationEditor(names)
+
         editor.setRunnerOptionsDocumentation("https://pestphp.com/docs/installation")
-        return editor
+        return PestTestRunConfigurationEditor(editor, project, this)
     }
 
     @Throws(ExecutionException::class)
@@ -114,4 +116,42 @@ class PestRunConfiguration(project: Project, factory: ConfigurationFactory) : Ph
             }
         }
     }
+
+    fun applyTestArguments(command: PhpCommandSettings, coverageArguments: List<String>) {
+        val config = PhpTestFrameworkSettingsManager.getInstance(project)
+            .getOrCreateByInterpreter(PestFrameworkType.instance, interpreter, true)
+            ?: throw ExecutionException("Could not find php interpreter.")
+
+        val version = PestVersionDetector.instance.getVersionWithCache(
+            project,
+            interpreter,
+            config,
+            config.executablePath
+        )
+        val workingDirectory = getWorkingDirectory(project, settings, config)
+            ?: throw ExecutionException(PhpBundle.message("php.interpreter.base.configuration.working.directory"))
+
+        PestRunConfigurationHandler.instance.prepareCommand(
+            project,
+            command,
+            config.executablePath!!,
+            version
+        )
+
+        command.importCommandLineSettings(settings.commandLineSettings, workingDirectory)
+        fillTestRunnerArguments(
+            project,
+            workingDirectory,
+            settings.runnerSettings,
+            coverageArguments,
+            command,
+            config,
+            PestRunConfigurationHandler.instance
+        )
+    }
+
+    val pestSettings: PestRunConfigurationSettings
+        get() {
+            return super.getSettings() as PestRunConfigurationSettings
+        }
 }
