@@ -24,6 +24,15 @@
         <testFinder implementation="com.pestphp.pest.goto.PestTestFinder"/>
         <fileBasedIndex implementation="com.pestphp.pest.indexers.PestTestIndex"/>
         <errorHandler implementation="com.pestphp.pest.GithubErrorReporter"/>
+        <localInspection
+                language="PHP"
+                groupPath="PHP"
+                groupName="Pest"
+                shortName="DuplicateTestNameInspection"
+                enabledByDefault="true"
+                displayName="Duplicate test name"
+                implementationClass="com.pestphp.pest.inspections.DuplicateTestNameInspection"
+        />
     </extensions>
 
     <extensions defaultExtensionNs="com.jetbrains.php">

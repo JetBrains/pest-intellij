@@ -2,9 +2,10 @@ package com.pestphp.pest
 
 import com.intellij.psi.PsiElement
 import com.intellij.psi.PsiFile
-import com.intellij.psi.util.PsiTreeUtil
+import com.jetbrains.php.lang.psi.PhpFile
 import com.jetbrains.php.lang.psi.elements.FunctionReference
 import com.jetbrains.php.lang.psi.elements.MethodReference
+import com.jetbrains.php.lang.psi.elements.Statement
 import com.jetbrains.php.lang.psi.elements.StringLiteralExpression
 import com.jetbrains.php.lang.psi.elements.impl.FunctionReferenceImpl
 
@@ -56,5 +57,12 @@ fun PsiElement?.getPestTestName(): String? {
 }
 
 fun PsiFile.getPestTests(): Set<FunctionReference> {
-    return PsiTreeUtil.findChildrenOfType(this, FunctionReference::class.java).toSet()
+    if (this !is PhpFile) return setOf()
+
+    return this.firstChild.children
+        .filterIsInstance<Statement>()
+        .mapNotNull { it.firstChild }
+        .filter { it.isPestTestReference() }
+        .filterIsInstance<FunctionReference>()
+        .toSet()
 }
