@@ -20,7 +20,8 @@ class DuplicateTestNameInspection : PhpInspection() {
         return object : PhpElementVisitor() {
             override fun visitPhpFile(file: PhpFile) {
                 file.getPestTests()
-                    .groupBy { it.getPestTestName()!! }
+                    .groupBy { it.getPestTestName() }
+                    .filterKeys { it != null }
                     .filter { it.value.count() > 1 }
                     .forEach {
                         declareProblemType(holder, it.value)

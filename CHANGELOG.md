@@ -17,6 +17,7 @@
 ### Removed
 
 ### Fixed
+- Fixed duplicate test name error when no test name is given yet. ([#61](https://github.com/pestphp/pest-intellij/pull/61))
 
 ### Security
 ## [0.3.3]

@@ -6,7 +6,11 @@ import com.intellij.openapi.diagnostic.ErrorReportSubmitter
 import com.intellij.openapi.diagnostic.IdeaLoggingEvent
 import com.intellij.openapi.diagnostic.SubmittedReportInfo
 import com.intellij.openapi.extensions.PluginId
+import com.intellij.openapi.project.Project
+import com.intellij.openapi.project.ProjectManager
 import com.intellij.util.Consumer
+import com.jetbrains.php.testFramework.PhpTestFrameworkSettingsManager
+import com.jetbrains.php.testFramework.PhpTestFrameworkVersionCache
 import java.awt.Component
 import java.io.UnsupportedEncodingException
 import java.net.URLEncoder
@@ -39,6 +43,9 @@ class GithubErrorReporter : ErrorReportSubmitter() {
         val body = event?.throwableText ?: "Please paste the full stacktrace from the IDEA error popup."
         val version = PluginManagerCore.getPlugin(PluginId.getId("com.pestphp.pest-intellij"))?.version
 
+        val project: Project? = ProjectManager.getInstance().openProjects.first()
+        val pestVersion = getPestVersion(project)
+
         val builder = StringBuilder(URL)
         try {
             builder.append(URLEncoder.encode(title, ENCODING))
@@ -50,7 +57,7 @@ class GithubErrorReporter : ErrorReportSubmitter() {
                     || ---------------- | -----
                     || Bug report?      | yes
                     || Plugin version   | $version
-                    || Pest version     | x.y.z
+                    || Pest version     | $pestVersion
                     || OS               | ${System.getProperty("os.name")}
                     |
                     |### Description
@@ -84,5 +91,12 @@ class GithubErrorReporter : ErrorReportSubmitter() {
             )
         )
         return true
+    }
+
+    private fun getPestVersion(project: Project?): String {
+        return PhpTestFrameworkSettingsManager.getInstance(project)
+            .getLocalConfig(PestFrameworkType.instance)?.let {
+            PhpTestFrameworkVersionCache.getCache(project, it)
+        } ?: "x.y.z"
     }
 }
