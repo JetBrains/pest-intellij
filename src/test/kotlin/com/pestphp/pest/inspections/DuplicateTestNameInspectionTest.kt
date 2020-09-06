@@ -2,7 +2,6 @@ package com.pestphp.pest.inspections
 
 import com.pestphp.pest.tests.PestLightCodeFixture
 
-
 class DuplicateTestNameInspectionTest : PestLightCodeFixture() {
     override fun getTestDataPath(): String? {
         return "src/test/resources/com/pestphp/pest/inspections"

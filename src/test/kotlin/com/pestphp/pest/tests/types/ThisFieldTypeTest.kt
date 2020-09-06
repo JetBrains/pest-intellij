@@ -1,6 +1,6 @@
 package com.pestphp.pest.tests.types
 
-class ThisFieldTypeTest: BaseTypeTest() {
+class ThisFieldTypeTest : BaseTypeTest() {
     override fun setUp() {
         super.setUp()
 

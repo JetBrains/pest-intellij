@@ -5,6 +5,7 @@ import com.intellij.openapi.util.text.StringUtil
 import com.intellij.psi.PsiElement
 import com.intellij.psi.PsiFile
 import com.jetbrains.php.lang.psi.PhpFile
+import com.jetbrains.php.lang.psi.elements.PhpNamespace
 import com.jetbrains.php.lang.psi.elements.Statement
 import com.jetbrains.php.phpunit.PhpUnitUtil
 import com.jetbrains.php.testFramework.PhpTestFrameworkSettingsManager
@@ -12,7 +13,14 @@ import com.jetbrains.php.testFramework.PhpTestFrameworkSettingsManager
 fun PsiFile.isPestTestFile(): Boolean {
     if (this !is PhpFile) return false
 
-    return this.firstChild.children
+    val element = this.firstChild
+
+    return element.children.filterIsInstance<PhpNamespace>()
+        .mapNotNull { it.statements }
+        .getOrElse(
+            0
+        ) { element }
+        .children
         .filterIsInstance<Statement>()
         .mapNotNull { it.firstChild }
         .any(PsiElement::isPestTestReference)
