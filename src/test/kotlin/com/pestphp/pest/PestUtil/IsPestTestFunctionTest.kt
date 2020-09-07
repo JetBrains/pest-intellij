@@ -5,7 +5,7 @@ import com.pestphp.pest.tests.PestLightCodeFixture
 
 class IsPestTestFunctionTest : PestLightCodeFixture() {
     override fun getTestDataPath(): String? {
-        return "src/test/resources/com/pestphp/pest/PestUtil/IsPestTestFunctionTest"
+        return "src/test/resources/com/pestphp/pest/PestUtil"
     }
 
     fun testMethodCallNamedTestIsNotPestTest() {

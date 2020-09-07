@@ -86,28 +86,28 @@ tasks {
     patchPluginXml {
         version(pluginVersion)
         sinceBuild(pluginSinceBuild)
-        if (pluginUntilBuild.equals("null")) {
+        if (pluginUntilBuild == "null") {
             untilBuild(null)
         } else {
             untilBuild(pluginUntilBuild)
         }
 
         // Extract the <!-- Plugin description --> section from README.md and provide for the plugin's manifest
-        pluginDescription(closure {
-            File("./README.md").readText().lines().run {
-                subList(indexOf("<!-- Plugin description -->") + 1, indexOf("<!-- Plugin description end -->"))
-            }.joinToString("\n").run { markdownToHTML(this) }
-        })
+        pluginDescription(
+            closure {
+                File("./README.md").readText().lines().run {
+                    subList(indexOf("<!-- Plugin description -->") + 1, indexOf("<!-- Plugin description end -->"))
+                }.joinToString("\n").run { markdownToHTML(this) }
+            }
+        )
 
         // Get the latest available change notes from the changelog file
-        changeNotes(closure {
-            changelog.getLatest().toHTML()
-        })
+        changeNotes(closure { changelog.getLatest().toHTML() })
     }
 
     publishPlugin {
         dependsOn("patchChangelog")
         token(System.getenv("PUBLISH_TOKEN"))
-        channels(System.getenv("PUBLISH_CHANNEL"))
+        channels(System.getenv("PUBLISH_CHANNEL")?.split(", "))
     }
 }

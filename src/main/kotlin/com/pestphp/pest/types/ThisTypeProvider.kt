@@ -23,14 +23,17 @@ class ThisTypeProvider : PhpTypeProvider4 {
     override fun getType(psiElement: PsiElement): PhpType? {
         if (DumbService.isDumb(psiElement.project)) return null
 
-        if (!psiElement.isThisVariableInPest { it.isAnyPestFunction() }) return null
+        if (
+            ((psiElement as? FunctionReferenceImpl)?.isAnyPestFunction() != true) &&
+            !psiElement.isThisVariableInPest { it.isAnyPestFunction() }
+        ) return null
 
         val virtualFile = psiElement.containingFile?.originalFile?.virtualFile ?: return null
 
         val config = PestSettings.getInstance(psiElement.project).getPestConfiguration(psiElement.project)
 
-        val relativePath = VfsUtil.getRelativePath(virtualFile, psiElement.project.guessProjectDir() ?: return config.baseTestType)
-            ?: return config.baseTestType
+        val baseDir = (psiElement.project.guessProjectDir() ?: return config.baseTestType)
+        val relativePath = VfsUtil.getRelativePath(virtualFile, baseDir) ?: return config.baseTestType
 
         val result = PhpType().add(config.baseTestType)
 

@@ -31,6 +31,7 @@ jobs:
       - name: Publish Plugin
         env:
           PUBLISH_TOKEN: ${{ secrets.PUBLISH_TOKEN }}
+          PUBLISH_CHANNEL: EAP, Stable
         run: ./gradlew publishPlugin
 
       # Commit patched Changelog

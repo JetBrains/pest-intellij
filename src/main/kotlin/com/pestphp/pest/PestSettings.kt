@@ -10,7 +10,7 @@ import com.pestphp.pest.parser.PestConfigurationFile
 import com.pestphp.pest.parser.PestConfigurationFileParser
 
 @State(name = "PestSettings", storages = [Storage("pest.xml")])
-class PestSettings: PersistentStateComponent<PestSettings> {
+class PestSettings : PersistentStateComponent<PestSettings> {
     var pestFilePath = "tests/Pest.php"
 
     override fun getState(): PestSettings? {

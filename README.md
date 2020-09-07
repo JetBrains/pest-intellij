@@ -1,6 +1,13 @@
-# Pest IntelliJ
+<p align="center">
+    <img src="/art/banner.png" width="914" title="PEST IntelliJ Banner">
+    <p align="center">
+        <a href="https://github.com/pestphp/pest/actions"><img alt="GitHub Workflow Status (master)" src="https://github.com/pestphp/pest-intellij/workflows/Build/badge.svg"></a>
+        <a href="https://plugins.jetbrains.com/plugin/14636-pest"><img alt="Total Downloads" src="https://img.shields.io/jetbrains/plugin/d/14636"></a>
+        <a href="https://plugins.jetbrains.com/plugin/14636-pest"><img alt="Latest Version" src="https://img.shields.io/jetbrains/plugin/v/14636"></a>
+    </p>
+</p>
 
-![Build](https://github.com/pestphp/pest-intellij/workflows/Build/badge.svg)
+# Pest IntelliJ
 
 <!-- Plugin description -->
 This plugin adds support for using Pest PHP inside PHPStorm
@@ -9,10 +16,10 @@ This plugin adds support for using Pest PHP inside PHPStorm
 ## Installation
 
 - Using IDE built-in plugin system:
-  
+
   <kbd>Preferences</kbd> > <kbd>Plugins</kbd> > <kbd>Marketplace</kbd> > <kbd>Search for "Pest"</kbd> >
   <kbd>Install Plugin</kbd>
-  
+
 - Manually:
 
   Download the [latest release](https://github.com/pestphp/pest-intellij/releases/latest) and install it manually using
