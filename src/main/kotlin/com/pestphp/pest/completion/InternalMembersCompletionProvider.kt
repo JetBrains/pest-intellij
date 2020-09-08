@@ -11,8 +11,12 @@ import com.jetbrains.php.lang.psi.elements.Variable
 import com.pestphp.pest.isAnyPestFunction
 import com.pestphp.pest.isThisVariableInPest
 
-class InternalMembersCompletionProvider: CompletionProvider<CompletionParameters>() {
-    override fun addCompletions(parameters: CompletionParameters, context: ProcessingContext, result: CompletionResultSet) {
+class InternalMembersCompletionProvider : CompletionProvider<CompletionParameters>() {
+    override fun addCompletions(
+        parameters: CompletionParameters,
+        context: ProcessingContext,
+        result: CompletionResultSet
+    ) {
         val fieldReference = parameters.position.parent as? FieldReference ?: return
 
         val variable = fieldReference.classReference as? Variable ?: return
@@ -20,9 +24,11 @@ class InternalMembersCompletionProvider: CompletionProvider<CompletionParameters
         if (!variable.isThisVariableInPest { it.isAnyPestFunction() }) return
 
         val phpIndex = PhpIndex.getInstance(fieldReference.project)
-        val classes = phpIndex.completeType(fieldReference.project, variable.type, null).types.filter { it.startsWith("\\") }.flatMap {
-            phpIndex.getAnyByFQN(it)
-        }
+        val classes = phpIndex.completeType(fieldReference.project, variable.type, null).types
+            .filter { it.startsWith("\\") }
+            .flatMap {
+                phpIndex.getAnyByFQN(it)
+            }
 
         classes.flatMap { phpClass ->
             phpClass.methods.filter { it.access.isProtected || (!it.access.isPrivate && it.isStatic) }
@@ -35,7 +41,5 @@ class InternalMembersCompletionProvider: CompletionProvider<CompletionParameters
         }.forEach {
             result.addElement(PhpVariantsUtil.getLookupItem(it, null))
         }
-
-        //PhpStaticAsDynamicMethodCallInspection
     }
 }

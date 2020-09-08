@@ -43,7 +43,7 @@ class PestTestFinder : TestFinder {
                     GlobalSearchScope.projectScope(element.project)
                 )
             }
-            .map { PsiManager.getInstance(element.project).findFile(it)!! }
+            .mapNotNull { PsiManager.getInstance(element.project).findFile(it) }
             .toCollection(ArrayList())
     }
 }

@@ -18,7 +18,11 @@ import com.pestphp.pest.isAnyPestFunction
 import com.pestphp.pest.isThisVariableInPest
 
 class ThisFieldsCompletionProvider : CompletionProvider<CompletionParameters>(), GotoDeclarationHandler {
-    override fun addCompletions(parameters: CompletionParameters, context: ProcessingContext, result: CompletionResultSet) {
+    override fun addCompletions(
+        parameters: CompletionParameters,
+        context: ProcessingContext,
+        result: CompletionResultSet
+    ) {
         val fieldReference = parameters.position.parent as? FieldReference ?: return
 
         val variable = fieldReference.classReference as? Variable ?: return
@@ -32,12 +36,21 @@ class ThisFieldsCompletionProvider : CompletionProvider<CompletionParameters>(),
             }
     }
 
-    override fun getGotoDeclarationTargets(sourceElement: PsiElement?, offset: Int, editor: Editor?): Array<PsiElement> {
-        if (sourceElement?.elementType != PhpTokenTypes.IDENTIFIER) return PsiElement.EMPTY_ARRAY
+    override fun getGotoDeclarationTargets(
+        sourceElement: PsiElement?,
+        offset: Int,
+        editor: Editor?
+    ): Array<PsiElement> {
+        if (sourceElement?.elementType != PhpTokenTypes.IDENTIFIER) {
+            return PsiElement.EMPTY_ARRAY
+        }
 
-        val fieldReference = sourceElement?.parent as? FieldReference ?: return PsiElement.EMPTY_ARRAY
+        val fieldReference = sourceElement?.parent as? FieldReference
+            ?: return PsiElement.EMPTY_ARRAY
 
-        if (fieldReference.classReference?.isThisVariableInPest { it.isAnyPestFunction() } != true) return PsiElement.EMPTY_ARRAY
+        if (fieldReference.classReference?.isThisVariableInPest { it.isAnyPestFunction() } != true) {
+            return PsiElement.EMPTY_ARRAY
+        }
 
         return (fieldReference.containingFile ?: return PsiElement.EMPTY_ARRAY).getAllBeforeThisAssignments()
             .filter { it.variable?.name == fieldReference.name }

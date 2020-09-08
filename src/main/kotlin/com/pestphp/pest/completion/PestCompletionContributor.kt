@@ -10,13 +10,17 @@ class PestCompletionContributor : CompletionContributor() {
     init {
         extend(
             CompletionType.BASIC,
-            PlatformPatterns.psiElement().withElementType(PhpTokenTypes.IDENTIFIER).withParent(FieldReference::class.java),
+            PlatformPatterns.psiElement()
+                .withElementType(PhpTokenTypes.IDENTIFIER)
+                .withParent(FieldReference::class.java),
             InternalMembersCompletionProvider()
         )
 
         extend(
             CompletionType.BASIC,
-            PlatformPatterns.psiElement().withElementType(PhpTokenTypes.IDENTIFIER).withParent(FieldReference::class.java),
+            PlatformPatterns.psiElement()
+                .withElementType(PhpTokenTypes.IDENTIFIER)
+                .withParent(FieldReference::class.java),
             ThisFieldsCompletionProvider()
         )
     }
