@@ -3,6 +3,8 @@
 namespace PHPUnit\Framework;
 
 abstract class TestCase {
+    protected $protectedField;
+
     /**
      * @param string $exception
      */
@@ -12,4 +14,8 @@ abstract class TestCase {
      * @param int|string $code
      */
     public function expectExceptionCode($code){}
+
+    protected function someProtectedMethod(){}
+
+    public static function someStaticMethod(){}
 }
