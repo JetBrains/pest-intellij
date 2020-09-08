@@ -28,6 +28,6 @@ class ThisTypeTest : BaseTypeTest() {
     }
 
     private fun assertThisCompletion() {
-        assertCompletion("expectException", "expectExceptionCode")
+        assertCompletion("expectException", "expectExceptionCode", "someProtectedMethod", "someStaticMethod", "protectedField")
     }
 }

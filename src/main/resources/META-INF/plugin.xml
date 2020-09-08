@@ -33,6 +33,9 @@
                 displayName="Duplicate test name"
                 implementationClass="com.pestphp.pest.inspections.DuplicateTestNameInspection"
         />
+
+        <completion.contributor implementationClass="com.pestphp.pest.completion.PestCompletionContributor" language="PHP"/>
+        <gotoDeclarationHandler implementation="com.pestphp.pest.completion.ThisFieldsCompletionProvider"/>
     </extensions>
 
     <extensions defaultExtensionNs="com.jetbrains.php">
