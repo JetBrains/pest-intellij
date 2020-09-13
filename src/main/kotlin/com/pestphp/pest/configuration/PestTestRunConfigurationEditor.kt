@@ -56,11 +56,9 @@ class PestTestRunConfigurationEditor(
 
     private fun doReset(configuration: PestRunConfiguration) {
         val settings = configuration.settings as PestRunConfigurationSettings
-        val runnerSettings = settings.runnerSettings as? PestRunnerSettings
+        val runnerSettings = settings.runnerSettings as PestRunnerSettings
 
-        if (runnerSettings != null) {
-            coverageEngineComboBox.selectedItem = runnerSettings.coverageEngine
-        }
+        coverageEngineComboBox.selectedItem = runnerSettings.coverageEngine
     }
 
     override fun resetEditorFrom(settings: PestRunConfiguration) {
