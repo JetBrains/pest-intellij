@@ -1,7 +1,6 @@
 package com.pestphp.pest.PestUtil
 
 import com.pestphp.pest.isPestTestFile
-import com.pestphp.pest.isPestTestReference
 import com.pestphp.pest.tests.PestLightCodeFixture
 
 class IsPestTestFileTest : PestLightCodeFixture() {
@@ -43,5 +42,11 @@ class IsPestTestFileTest : PestLightCodeFixture() {
         val file = myFixture.configureByFile("MethodCallNamedItAndVariableTest.php")
 
         assertFalse(file.isPestTestFile())
+    }
+
+    fun testPestTestWithNamespaceIsPestTest() {
+        val file = myFixture.configureByFile("PestTestFunctionCallWithNamesapce.php")
+
+        assertTrue(file.isPestTestFile())
     }
 }
