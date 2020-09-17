@@ -71,6 +71,6 @@ class PestLocationProvider : SMTestLocator {
             return file
         }
 
-        return (file as PhpFile).getPestTests().first { it.getPestTestName() == testName }
+        return (file as PhpFile).getPestTests().firstOrNull { it.getPestTestName() == testName }
     }
 }
