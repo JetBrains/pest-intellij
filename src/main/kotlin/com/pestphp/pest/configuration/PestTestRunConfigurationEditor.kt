@@ -62,11 +62,11 @@ class PestTestRunConfigurationEditor(
     }
 
     override fun resetEditorFrom(settings: PestRunConfiguration) {
+        doReset(settings)
         parentEditor.javaClass.declaredMethods.find { it.name == "resetEditorFrom" }!!.let {
             it.isAccessible = true
             it.invoke(parentEditor, settings)
         }
-        doReset(settings)
     }
 
     override fun applyEditorTo(settings: PestRunConfiguration) {

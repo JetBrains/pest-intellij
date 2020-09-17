@@ -5,7 +5,7 @@ import com.intellij.util.xmlb.annotations.Tag
 import com.jetbrains.php.phpunit.coverage.PhpUnitCoverageEngine.CoverageEngine
 import com.jetbrains.php.testFramework.run.PhpTestRunnerSettings
 
-//@Tag("PestRunner")
+@Tag("PestRunner")
 class PestRunnerSettings : PhpTestRunnerSettings() {
     @Attribute("coverage_engine")
     var coverageEngine: CoverageEngine = CoverageEngine.XDEBUG

@@ -23,7 +23,7 @@ class GithubErrorReporter : ErrorReportSubmitter() {
     companion object {
         private const val URL = "https://github.com/pestphp/pest-intellij/issues/new?title="
         private const val ENCODING = "UTF-8"
-        private const val STACKTRACE_LENGTH = 7000
+        private const val STACKTRACE_LENGTH = 3000
     }
 
     override fun getReportActionText(): String {

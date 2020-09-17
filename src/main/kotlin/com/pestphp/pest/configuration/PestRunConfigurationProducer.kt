@@ -1,5 +1,7 @@
 package com.pestphp.pest.configuration
 
+import com.intellij.execution.actions.ConfigurationContext
+import com.intellij.execution.actions.ConfigurationFromContext
 import com.intellij.execution.configurations.ConfigurationFactory
 import com.intellij.ide.highlighter.XmlFileType
 import com.intellij.openapi.fileTypes.FileType
@@ -20,7 +22,7 @@ import com.pestphp.pest.isPestTestFile
 import com.pestphp.pest.isPestTestReference
 import com.pestphp.pest.isPestConfigurationFile
 
-class PestRunConfigurationProducer : PhpTestConfigurationProducer<PestRunConfiguration?>(
+class PestRunConfigurationProducer : PhpTestConfigurationProducer<PestRunConfiguration>(
     VALIDATOR,
     FILE_TO_SCOPE,
     METHOD_NAMER,
@@ -38,6 +40,10 @@ class PestRunConfigurationProducer : PhpTestConfigurationProducer<PestRunConfigu
         return element.containingFile?.containingDirectory?.virtualFile
     }
 
+    override fun createConfigurationFromContext(context: ConfigurationContext): ConfigurationFromContext? {
+        return super.createConfigurationFromContext(context)
+    }
+
     companion object {
         val METHOD = Condition<PsiElement> { element: PsiElement? ->
             element.isPestTestReference()
@@ -50,7 +56,7 @@ class PestRunConfigurationProducer : PhpTestConfigurationProducer<PestRunConfigu
         }
         val VALIDATOR = PhpDefaultTestRunnerSettingsValidator(
             setOf<FileType>(PhpFileType.INSTANCE, XmlFileType.INSTANCE).toList(),
-            PhpTestMethodFinder { file: PsiFile, _: String ->
+            { file: PsiFile, _: String ->
                 file.isPestConfigurationFile() || file.isPestTestFile()
             },
             false,
