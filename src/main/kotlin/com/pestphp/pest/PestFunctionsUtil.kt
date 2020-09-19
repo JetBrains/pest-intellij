@@ -5,6 +5,7 @@ import com.intellij.psi.PsiFile
 import com.jetbrains.php.lang.psi.PhpFile
 import com.jetbrains.php.lang.psi.elements.FunctionReference
 import com.jetbrains.php.lang.psi.elements.MethodReference
+import com.jetbrains.php.lang.psi.elements.PhpNamespace
 import com.jetbrains.php.lang.psi.elements.Statement
 import com.jetbrains.php.lang.psi.elements.StringLiteralExpression
 import com.jetbrains.php.lang.psi.elements.impl.FunctionReferenceImpl
@@ -59,10 +60,17 @@ fun PsiElement?.getPestTestName(): String? {
 fun PsiFile.getPestTests(): Set<FunctionReference> {
     if (this !is PhpFile) return setOf()
 
-    return this.firstChild.children
+    val element = this.firstChild
+
+    return element.children.filterIsInstance<PhpNamespace>()
+        .mapNotNull { it.statements }
+        .getOrElse(
+            0
+        ) { element }
+        .children
         .filterIsInstance<Statement>()
         .mapNotNull { it.firstChild }
-        .filter { it.isPestTestReference() }
+        .filter(PsiElement::isPestTestReference)
         .filterIsInstance<FunctionReference>()
         .toSet()
 }

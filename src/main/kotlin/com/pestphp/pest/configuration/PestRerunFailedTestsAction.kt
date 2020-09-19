@@ -11,10 +11,11 @@ import com.jetbrains.php.config.commandLine.PhpCommandSettings
 import com.jetbrains.php.testFramework.PhpTestFrameworkSettingsManager
 import com.pestphp.pest.PestFrameworkType
 import com.pestphp.pest.getPestTestName
+import com.pestphp.pest.isPestTestReference
 
 class PestRerunFailedTestsAction(
     componentContainer: ComponentContainer,
-    properties: SMTRunnerConsoleProperties?
+    properties: SMTRunnerConsoleProperties
 ) : AbstractRerunFailedTestsAction(componentContainer) {
     override fun getRunProfile(environment: ExecutionEnvironment): MyRunProfile? {
         val profile = myConsoleProperties.configuration
@@ -38,11 +39,21 @@ class PestRerunFailedTestsAction(
                     return null
                 }
 
-                val failed = this@PestRerunFailedTestsAction.getFailedTests(project)
+                val failed = getFailedTests(project)
+                    .asSequence()
                     .filter { it.isLeaf }
                     .filter { it.parent != null }
                     .map { it.getLocation(project, GlobalSearchScope.allScope(project)) }
-                    .mapNotNull { it?.psiElement?.getPestTestName() }
+                    .mapNotNull { it?.psiElement }
+                    .mapNotNull {
+                        if (it.isPestTestReference()) {
+                            return@mapNotNull it.getPestTestName()
+                        } else {
+                            return@mapNotNull null
+                        }
+                        // TODO: add condition for phpunit test
+                    }
+                    .toList()
 
                 val clone: PestRunConfiguration = peerRunConfiguration.clone() as PestRunConfiguration
 
