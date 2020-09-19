@@ -7,15 +7,20 @@ import com.intellij.openapi.vfs.VirtualFile
 import com.intellij.psi.PsiElement
 import com.intellij.psi.PsiManager
 import com.intellij.psi.search.GlobalSearchScope
+import com.jetbrains.php.config.commandLine.PhpCommandLinePathProcessor
 import com.jetbrains.php.lang.psi.PhpFile
 import com.jetbrains.php.phpunit.PhpPsiLocationWithDataSet
+import com.jetbrains.php.phpunit.PhpUnitQualifiedNameLocationProvider
 import com.jetbrains.php.util.pathmapper.PhpLocalPathMapper
 import com.pestphp.pest.getPestTestName
 import com.pestphp.pest.getPestTests
 import com.pestphp.pest.runner.LocationInfo
 
-class PestLocationProvider : SMTestLocator {
+class PestLocationProvider(project: Project) : SMTestLocator {
     private val protocolId = "pest_qn"
+    private val phpUnitLocationProvider = PhpUnitQualifiedNameLocationProvider.create(
+        PhpCommandLinePathProcessor.LOCAL.createPathMapper(project)
+    )
 
     override fun getLocation(
         protocol: String,
@@ -24,7 +29,7 @@ class PestLocationProvider : SMTestLocator {
         scope: GlobalSearchScope
     ): MutableList<Location<PsiElement>> {
         if (protocol != protocolId) {
-            return mutableListOf()
+            return phpUnitLocationProvider.getLocation(protocol, path, project, scope)
         }
 
         val locationInfo = getLocationInfo(path, project)
@@ -71,6 +76,6 @@ class PestLocationProvider : SMTestLocator {
             return file
         }
 
-        return (file as PhpFile).getPestTests().first { it.getPestTestName() == testName }
+        return (file as PhpFile).getPestTests().firstOrNull { it.getPestTestName() == testName }
     }
 }
