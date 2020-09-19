@@ -7,3 +7,5 @@ formatting:
 style:
   ReturnCount:
     max: 10
+  ForbiddenComment:
+    allowedPatterns: 'TODO'
