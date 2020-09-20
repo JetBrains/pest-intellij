@@ -12,15 +12,14 @@ import com.intellij.psi.PsiFile
 import com.intellij.util.Function
 import com.jetbrains.php.lang.PhpFileType
 import com.jetbrains.php.testFramework.run.PhpDefaultTestRunnerSettingsValidator
-import com.jetbrains.php.testFramework.run.PhpDefaultTestRunnerSettingsValidator.PhpTestMethodFinder
 import com.jetbrains.php.testFramework.run.PhpTestConfigurationProducer
 import com.pestphp.pest.getPestTestName
+import com.pestphp.pest.isPestConfigurationFile
 import com.pestphp.pest.isPestEnabled
 import com.pestphp.pest.isPestTestFile
 import com.pestphp.pest.isPestTestReference
-import com.pestphp.pest.isPestConfigurationFile
 
-class PestRunConfigurationProducer : PhpTestConfigurationProducer<PestRunConfiguration?>(
+class PestRunConfigurationProducer : PhpTestConfigurationProducer<PestRunConfiguration>(
     VALIDATOR,
     FILE_TO_SCOPE,
     METHOD_NAMER,
@@ -50,7 +49,7 @@ class PestRunConfigurationProducer : PhpTestConfigurationProducer<PestRunConfigu
         }
         val VALIDATOR = PhpDefaultTestRunnerSettingsValidator(
             setOf<FileType>(PhpFileType.INSTANCE, XmlFileType.INSTANCE).toList(),
-            PhpTestMethodFinder { file: PsiFile, _: String ->
+            { file: PsiFile, _: String ->
                 file.isPestConfigurationFile() || file.isPestTestFile()
             },
             false,
