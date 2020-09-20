@@ -10,7 +10,6 @@ import com.jetbrains.php.phpunit.coverage.PhpUnitCoverageEngine.CoverageEngine
 import com.jetbrains.php.run.PhpConfigurationOption
 import com.jetbrains.php.run.PhpRunConfigurationHolder
 import com.pestphp.pest.configuration.PestRunConfiguration
-import com.pestphp.pest.configuration.PestRunnerSettings
 
 class PestCoverageProgramRunner : PhpCoverageRunner() {
     override fun canRun(executorId: String, profile: RunProfile): Boolean {
@@ -44,7 +43,7 @@ class PestCoverageProgramRunner : PhpCoverageRunner() {
                 runConfiguration.applyTestArguments(this, coverageArguments)
             }
 
-        val option = when ((runConfiguration.pestSettings.runnerSettings as PestRunnerSettings).coverageEngine) {
+        val option = when (runConfiguration.pestSettings.runnerSettings.coverageEngine) {
             CoverageEngine.XDEBUG -> "xdebug.coverage_enable"
             CoverageEngine.PCOV -> "pcov.enabled"
             else -> throw IllegalArgumentException("Unsupported coverage engine.")

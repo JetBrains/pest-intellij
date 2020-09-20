@@ -1,7 +1,5 @@
 package com.pestphp.pest.configuration
 
-import com.intellij.execution.actions.ConfigurationContext
-import com.intellij.execution.actions.ConfigurationFromContext
 import com.intellij.execution.configurations.ConfigurationFactory
 import com.intellij.ide.highlighter.XmlFileType
 import com.intellij.openapi.fileTypes.FileType
@@ -14,13 +12,12 @@ import com.intellij.psi.PsiFile
 import com.intellij.util.Function
 import com.jetbrains.php.lang.PhpFileType
 import com.jetbrains.php.testFramework.run.PhpDefaultTestRunnerSettingsValidator
-import com.jetbrains.php.testFramework.run.PhpDefaultTestRunnerSettingsValidator.PhpTestMethodFinder
 import com.jetbrains.php.testFramework.run.PhpTestConfigurationProducer
 import com.pestphp.pest.getPestTestName
+import com.pestphp.pest.isPestConfigurationFile
 import com.pestphp.pest.isPestEnabled
 import com.pestphp.pest.isPestTestFile
 import com.pestphp.pest.isPestTestReference
-import com.pestphp.pest.isPestConfigurationFile
 
 class PestRunConfigurationProducer : PhpTestConfigurationProducer<PestRunConfiguration>(
     VALIDATOR,
@@ -38,10 +35,6 @@ class PestRunConfigurationProducer : PhpTestConfigurationProducer<PestRunConfigu
         }
 
         return element.containingFile?.containingDirectory?.virtualFile
-    }
-
-    override fun createConfigurationFromContext(context: ConfigurationContext): ConfigurationFromContext? {
-        return super.createConfigurationFromContext(context)
     }
 
     companion object {

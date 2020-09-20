@@ -23,7 +23,7 @@ class PestRunConfigurationTest : PestLightCodeFixture() {
         )!!.configuration as? PestRunConfiguration
 
         assertNotNull(configuration)
-        assertTrue(configuration!!.settings is PestRunConfigurationSettings)
-        assertTrue(configuration.settings.runnerSettings is PestRunnerSettings)
+        assertInstanceOf(configuration!!.settings, PestRunConfigurationSettings::class.java)
+        assertInstanceOf(configuration.settings.runnerSettings, PestRunnerSettings::class.java)
     }
 }

@@ -1,21 +1,27 @@
 package com.pestphp.pest.configuration
 
+import com.intellij.util.xmlb.annotations.Property
 import com.jetbrains.php.testFramework.run.PhpTestRunConfigurationSettings
-import com.jetbrains.php.testFramework.run.PhpTestRunnerSettings
 
 class PestRunConfigurationSettings : PhpTestRunConfigurationSettings() {
     override fun createDefault(): PestRunnerSettings {
         return PestRunnerSettings()
     }
 
-    override fun getRunnerSettings(): PhpTestRunnerSettings {
-        return super.getRunnerSettings()
+    @Property(surroundWithTag = false)
+    override fun getRunnerSettings(): PestRunnerSettings {
+        return pestRunnerSettings
     }
 
-    val pestRunnerSettings: PestRunnerSettings
+    var pestRunnerSettings: PestRunnerSettings
         get() {
-            val copy = PestRunnerSettings.fromPhpTestRunnerSettings(runnerSettings)
-            this.runnerSettings = copy
+            if (super.getRunnerSettings() is PestRunnerSettings) {
+                return super.getRunnerSettings() as PestRunnerSettings
+            }
+
+            val copy = PestRunnerSettings.fromPhpTestRunnerSettings(super.getRunnerSettings())
+            super.setRunnerSettings(copy)
             return copy
         }
+        set(value) = super.setRunnerSettings(value)
 }

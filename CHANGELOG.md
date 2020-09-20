@@ -11,7 +11,7 @@
 - Added inspection for duplicate test names in same file. ([#56](https://github.com/pestphp/pest-intellij/pull/56))
 - Added completions for static and protected $this methods. ([#66](https://github.com/pestphp/pest-intellij/pull/66))
 - Added completions $this fields declared in beforeEach functions. ([#66](https://github.com/pestphp/pest-intellij/pull/66))
-- Added pcov coverage engine support
+- Added pcov coverage engine support ([#64](https://github.com/pestphp/pest-intellij/pull/64))
 
 ### Changed
 

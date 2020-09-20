@@ -33,7 +33,6 @@ import com.pestphp.pest.configuration.PestRunConfigurationProducer.Companion.VAL
 import com.pestphp.pest.getPestTestName
 import com.pestphp.pest.isPestTestFunction
 import com.pestphp.pest.runner.PestConsoleProperties
-import org.jdom.Element
 import java.util.EnumMap
 
 class PestRunConfiguration(project: Project, factory: ConfigurationFactory) : PhpTestRunConfiguration(
@@ -49,21 +48,12 @@ class PestRunConfiguration(project: Project, factory: ConfigurationFactory) : Ph
         return PestRunConfigurationSettings()
     }
 
-    override fun readExternal(element: Element) {
-        super.readExternal(element)
-    }
-
-    override fun writeExternal(element: Element) {
-        super.writeExternal(element)
-    }
-
     override fun getConfigurationEditor(): SettingsEditor<out RunConfiguration?> {
         val names = EnumMap<PhpTestRunnerSettings.Scope, String>(PhpTestRunnerSettings.Scope::class.java)
         val editor = this.getConfigurationEditor(names)
 
         editor.setRunnerOptionsDocumentation("https://pestphp.com/docs/installation")
-        // return PestTestRunConfigurationEditor(editor, project, this)
-        return editor
+        return PestTestRunConfigurationEditor(editor, project, this)
     }
 
     @Throws(ExecutionException::class)

@@ -3,7 +3,7 @@ package com.pestphp.pest.configuration
 import com.intellij.openapi.options.SettingsEditor
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.ui.ComboBox
-import com.intellij.util.ui.FormBuilder
+import com.intellij.util.ui.UI
 import com.jetbrains.php.config.interpreters.PhpInterpretersManagerImpl
 import com.jetbrains.php.phpunit.coverage.PhpUnitCoverageEngine.CoverageEngine
 import com.jetbrains.php.testFramework.run.PhpTestRunConfigurationEditor
@@ -21,9 +21,9 @@ class PestTestRunConfigurationEditor(
     private val coverageEngineComboBox = ComboBox(arrayOf(CoverageEngine.XDEBUG, CoverageEngine.PCOV))
 
     init {
-        coveragePanel = FormBuilder.createFormBuilder()
-            .addLabeledComponent("Preferred Coverage engine: ", coverageEngineComboBox, 1, false)
-            .panel
+        coveragePanel = UI.PanelFactory.grid().add(
+            UI.PanelFactory.panel(coverageEngineComboBox).withLabel("Preferred Coverage engine: ")
+        ).createPanel()
 
         myMainPanel.layout = BorderLayout()
         myMainPanel.add(parentEditor.component, BorderLayout.CENTER)
@@ -49,14 +49,14 @@ class PestTestRunConfigurationEditor(
 
     private fun doApply(configuration: PestRunConfiguration) {
         val settings = configuration.settings as PestRunConfigurationSettings
-        val runnerSettings = settings.runnerSettings as PestRunnerSettings
+        val runnerSettings = settings.runnerSettings
 
         runnerSettings.coverageEngine = coverageEngineComboBox.selectedItem as CoverageEngine
     }
 
     private fun doReset(configuration: PestRunConfiguration) {
         val settings = configuration.settings as PestRunConfigurationSettings
-        val runnerSettings = settings.runnerSettings as PestRunnerSettings
+        val runnerSettings = settings.runnerSettings
 
         coverageEngineComboBox.selectedItem = runnerSettings.coverageEngine
     }

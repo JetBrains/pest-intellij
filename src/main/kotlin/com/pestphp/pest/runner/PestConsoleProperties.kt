@@ -6,8 +6,6 @@ import com.intellij.execution.testframework.actions.AbstractRerunFailedTestsActi
 import com.intellij.execution.testframework.sm.runner.SMTRunnerConsoleProperties
 import com.intellij.execution.testframework.sm.runner.SMTestLocator
 import com.intellij.execution.ui.ConsoleView
-import com.intellij.openapi.project.Project
-import com.intellij.pom.Navigatable
 import com.pestphp.pest.PestBundle
 import com.pestphp.pest.configuration.PestLocationProvider
 import com.pestphp.pest.configuration.PestRerunFailedTestsAction
@@ -27,9 +25,5 @@ class PestConsoleProperties(config: RunConfiguration, executor: Executor) :
 
     override fun serviceMessageHasNewLinePrefix(): Boolean {
         return true
-    }
-
-    override fun getErrorNavigatable(project: Project, stacktrace: String): Navigatable? {
-        return super.getErrorNavigatable(project, stacktrace)
     }
 }
