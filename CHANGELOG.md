@@ -25,19 +25,12 @@
 - Added completions $this fields declared in beforeEach functions. ([#66](https://github.com/pestphp/pest-intellij/pull/66))
 - Added pcov coverage engine support ([#64](https://github.com/pestphp/pest-intellij/pull/64))
 
-### Changed
-
-### Deprecated
-
-### Removed
-
 ### Fixed
 - Fixed duplicate test name error when no test name is given yet. ([#61](https://github.com/pestphp/pest-intellij/pull/61))
 - Fixed finding tests with namespace at the top. ([#65](https://github.com/pestphp/pest-intellij/pull/65))
 - Fixed allow location to be null in location provider. ([#68](https://github.com/pestphp/pest-intellij/pull/68))
 - Fixed rerunning tests with namespaces ([#69](https://github.com/pestphp/pest-intellij/pull/69))
 
-### Security
 ## [0.3.3]
 ### Fixed
 - Fixed running with dataset ([#47](https://github.com/pestphp/pest-intellij/pull/47))
