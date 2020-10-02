@@ -4,6 +4,18 @@
 
 ## [Unreleased]
 ### Added
+
+### Changed
+
+### Deprecated
+
+### Removed
+
+### Fixed
+
+### Security
+## [0.4.1]
+### Added
 - Added support for auto-generated `it` test names. ([#72](https://github.com/pestphp/pest-intellij/pull/72))
 
 ### Changed
