@@ -4,18 +4,10 @@
 
 ## [Unreleased]
 ### Added
-
-### Changed
-
-### Deprecated
-
-### Removed
-
-### Fixed
-- Made the regex tightly bound and reused the same regex in rerun action. ([#72](https://github.com/pestphp/pest-intellij/pull/72))
 - Added support for auto-generated `it` test names. ([#72](https://github.com/pestphp/pest-intellij/pull/72))
 
-### Security
+### Changed
+- Made the regex tightly bound and reused the same regex in rerun action. ([#72](https://github.com/pestphp/pest-intellij/pull/72))
 
 ## [0.4.0]
 ### Added
