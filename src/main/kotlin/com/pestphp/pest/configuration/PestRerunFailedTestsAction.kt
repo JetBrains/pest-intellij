@@ -9,9 +9,11 @@ import com.intellij.openapi.ui.ComponentContainer
 import com.intellij.psi.search.GlobalSearchScope
 import com.jetbrains.php.config.commandLine.PhpCommandSettings
 import com.jetbrains.php.testFramework.PhpTestFrameworkSettingsManager
+import com.pestphp.pest.PestBundle
 import com.pestphp.pest.PestFrameworkType
-import com.pestphp.pest.getPestTestName
 import com.pestphp.pest.isPestTestReference
+import com.pestphp.pest.notifications.OutdatedNotification
+import com.pestphp.pest.toPestTestRegex
 
 class PestRerunFailedTestsAction(
     componentContainer: ComponentContainer,
@@ -45,14 +47,7 @@ class PestRerunFailedTestsAction(
                     .filter { it.parent != null }
                     .map { it.getLocation(project, GlobalSearchScope.allScope(project)) }
                     .mapNotNull { it?.psiElement }
-                    .mapNotNull {
-                        if (it.isPestTestReference()) {
-                            return@mapNotNull it.getPestTestName()
-                        } else {
-                            return@mapNotNull null
-                        }
-                        // TODO: add condition for phpunit test
-                    }
+                    .filter { it.isPestTestReference() }
                     .toList()
 
                 val clone: PestRunConfiguration = peerRunConfiguration.clone() as PestRunConfiguration
@@ -60,6 +55,11 @@ class PestRerunFailedTestsAction(
                 // If there are no failed tests found, it's prob.
                 // because it's an pest version before the new printer
                 if (failed.isEmpty()) {
+                    OutdatedNotification().notify(
+                        project,
+                        PestBundle.message("NO_FAILED_TESTS_FOUND")
+                    )
+
                     return peerRunConfiguration.getState(
                         environment,
                         clone.createCommand(
@@ -72,8 +72,6 @@ class PestRerunFailedTestsAction(
                     )
                 }
 
-                clone.settings.runnerSettings.directoryPath = null
-                clone.settings.runnerSettings.filePath = null
                 val command: PhpCommandSettings = clone.createCommand(
                     interpreter,
                     mapOf(),
@@ -81,8 +79,11 @@ class PestRerunFailedTestsAction(
                     false
                 )
 
+                val testcases = failed.mapNotNull { it.toPestTestRegex(command.workingDirectory) }
+                    .reduce { result, testName -> "$result|$testName" }
+
                 command.addArgument(
-                    "--filter=/${failed.reduce { result, testName -> result + '|' + testName.replace(" ", "\\s") }}$/"
+                    "--filter=/$testcases/"
                 )
 
                 return peerRunConfiguration.getState(
