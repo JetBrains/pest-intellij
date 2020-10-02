@@ -28,7 +28,7 @@ class PestUtilTest: PestLightCodeFixture() {
         assertEquals(1, functions.count())
 
         assertEquals(
-                "basic",
+                "it basic",
                 functions.first().getPestTestName()
         )
     }

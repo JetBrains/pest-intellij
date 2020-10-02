@@ -7,7 +7,6 @@ import com.jetbrains.php.lang.psi.elements.FunctionReference
 import com.jetbrains.php.lang.psi.elements.MethodReference
 import com.jetbrains.php.lang.psi.elements.PhpNamespace
 import com.jetbrains.php.lang.psi.elements.Statement
-import com.jetbrains.php.lang.psi.elements.StringLiteralExpression
 import com.jetbrains.php.lang.psi.elements.impl.FunctionReferenceImpl
 
 fun PsiElement?.isPestTestReference(): Boolean {
@@ -42,18 +41,6 @@ fun MethodReference.isPestTestMethodReference(): Boolean {
         is FunctionReferenceImpl -> reference.isPestTestFunction()
         is MethodReference -> reference.isPestTestMethodReference()
         else -> false
-    }
-}
-
-fun FunctionReferenceImpl.getPestTestName(): String? {
-    return (getParameter(0) as? StringLiteralExpression)?.contents
-}
-
-fun PsiElement?.getPestTestName(): String? {
-    return when (this) {
-        is MethodReference -> (this.classReference as? FunctionReference)?.getPestTestName()
-        is FunctionReferenceImpl -> this.getPestTestName()
-        else -> null
     }
 }
 

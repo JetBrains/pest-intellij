@@ -16,12 +16,10 @@ import com.intellij.execution.ui.ConsoleView
 import com.intellij.openapi.options.SettingsEditor
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.util.text.StringUtil
-import com.intellij.psi.util.PsiTreeUtil
 import com.intellij.util.PathUtil
 import com.intellij.util.TextFieldCompletionProvider
 import com.jetbrains.php.PhpBundle
 import com.jetbrains.php.config.commandLine.PhpCommandSettings
-import com.jetbrains.php.lang.psi.elements.impl.FunctionReferenceImpl
 import com.jetbrains.php.run.PhpRunUtil
 import com.jetbrains.php.testFramework.PhpTestFrameworkSettingsManager
 import com.jetbrains.php.testFramework.run.PhpTestRunnerConfigurationEditor
@@ -31,7 +29,7 @@ import com.pestphp.pest.PestFrameworkType
 import com.pestphp.pest.PestIcons
 import com.pestphp.pest.configuration.PestRunConfigurationProducer.Companion.VALIDATOR
 import com.pestphp.pest.getPestTestName
-import com.pestphp.pest.isPestTestFunction
+import com.pestphp.pest.getPestTests
 import com.pestphp.pest.runner.PestConsoleProperties
 import java.util.EnumMap
 
@@ -73,12 +71,10 @@ class PestRunConfiguration(project: Project, factory: ConfigurationFactory) : Ph
         return object : TextFieldCompletionProvider() {
             override fun addCompletionVariants(text: String, offset: Int, prefix: String, result: CompletionResultSet) {
                 val file = PhpRunUtil.findPsiFile(project, settings.runnerSettings.filePath)
-                PsiTreeUtil.findChildrenOfType(file, FunctionReferenceImpl::class.java)
-                    .asSequence()
-                    .filter(FunctionReferenceImpl::isPestTestFunction)
-                    .mapNotNull { it.getPestTestName() }
-                    .map { LookupElementBuilder.create(it).withIcon(PestIcons.FILE) }
-                    .forEach { result.addElement(it) }
+                file?.getPestTests()
+                    ?.mapNotNull { it.getPestTestName() }
+                    ?.map { LookupElementBuilder.create(it).withIcon(PestIcons.FILE) }
+                    ?.forEach { result.addElement(it) }
             }
         }
     }

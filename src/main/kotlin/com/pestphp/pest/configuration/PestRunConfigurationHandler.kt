@@ -4,6 +4,7 @@ import com.intellij.execution.ExecutionException
 import com.intellij.openapi.project.Project
 import com.jetbrains.php.config.commandLine.PhpCommandSettings
 import com.jetbrains.php.testFramework.run.PhpTestRunConfigurationHandler
+import com.pestphp.pest.toPestTestRegex
 
 class PestRunConfigurationHandler : PhpTestRunConfigurationHandler {
     companion object {
@@ -71,7 +72,7 @@ class PestRunConfigurationHandler : PhpTestRunConfigurationHandler {
 
         phpCommandSettings.addPathArgument(file)
         phpCommandSettings.addArgument(
-            String.format("--filter=/%s(\\swith\\s\\(.*\\)(\\s#\\d+)?)?$/", methodName.replace(" ", "\\s"))
+            "--filter=/${methodName.toPestTestRegex(workingDirectory, file)}/"
         )
     }
 }
