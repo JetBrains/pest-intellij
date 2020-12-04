@@ -32,8 +32,4 @@ class PestUtilTest: PestLightCodeFixture() {
                 functions.first().getPestTestName()
         )
     }
-
-    fun testIsPestTestFunction() {
-
-    }
 }

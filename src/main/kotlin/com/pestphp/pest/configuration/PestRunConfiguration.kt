@@ -40,7 +40,7 @@ class PestRunConfiguration(project: Project, factory: ConfigurationFactory) : Ph
     PestFrameworkType.instance,
     VALIDATOR,
     PestRunConfigurationHandler.instance,
-    PestVersionDetector.instance
+    null // PestVersionDetector.instance
 ) {
     override fun createSettings(): PestRunConfigurationSettings {
         return PestRunConfigurationSettings()
@@ -118,12 +118,8 @@ class PestRunConfiguration(project: Project, factory: ConfigurationFactory) : Ph
             .getOrCreateByInterpreter(PestFrameworkType.instance, interpreter, true)
             ?: throw ExecutionException("Could not find php interpreter.")
 
-        val version = PestVersionDetector.instance.getVersionWithCache(
-            project,
-            interpreter,
-            config,
-            config.executablePath
-        )
+        val version = null
+
         val workingDirectory = getWorkingDirectory(project, settings, config)
             ?: throw ExecutionException(PhpBundle.message("php.interpreter.base.configuration.working.directory"))
 

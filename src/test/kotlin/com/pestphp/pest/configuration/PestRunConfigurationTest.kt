@@ -4,7 +4,6 @@ import com.intellij.execution.PsiLocation
 import com.intellij.execution.actions.ConfigurationContext
 import com.pestphp.pest.tests.PestLightCodeFixture
 
-
 class PestRunConfigurationTest : PestLightCodeFixture() {
     override fun getTestDataPath(): String? {
         return "src/test/resources/com/pestphp/pest/configuration"

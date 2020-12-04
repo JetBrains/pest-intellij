@@ -1,8 +1,6 @@
 package com.pestphp.pest.PestUtil
 
 import com.pestphp.pest.getPestTestName
-import com.pestphp.pest.getPestTests
-import com.pestphp.pest.isPestTestReference
 import com.pestphp.pest.tests.PestLightCodeFixture
 import junit.framework.TestCase
 
