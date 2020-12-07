@@ -35,4 +35,14 @@ class PestVersionDetector : PhpTestFrameworkVersionDetector<String>() {
 
         return super.getVersion(project, interpreter, executable)
     }
+
+    fun getCachedVersion(project: Project, config: PhpTestFrameworkConfiguration): String? {
+        val cached = PhpTestFrameworkVersionCache.getCache(project, config)
+
+        if (cached.isNotBlank()) {
+            return cached
+        }
+
+        return null
+    }
 }

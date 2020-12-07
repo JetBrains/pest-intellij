@@ -4,16 +4,12 @@
 
 ## [Unreleased]
 ### Added
-
-### Changed
-
-### Deprecated
+- Added path mapping support ([#77](https://github.com/pestphp/pest-intellij/pull/77))
 
 ### Removed
+- Disabled version checking (did not work with path mapping) ([#77](https://github.com/pestphp/pest-intellij/pull/77))
 
 ### Fixed
-
-### Security
 ## [0.4.1]
 ### Added
 - Added support for auto-generated `it` test names. ([#72](https://github.com/pestphp/pest-intellij/pull/72))

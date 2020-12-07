@@ -69,10 +69,11 @@ class PestRunConfigurationHandler : PhpTestRunConfigurationHandler {
         if (file.isEmpty()) {
             return
         }
+        val pathMapper = phpCommandSettings.pathProcessor.createPathMapper(project)
 
         phpCommandSettings.addPathArgument(file)
         phpCommandSettings.addArgument(
-            "--filter=/${methodName.toPestTestRegex(workingDirectory, file)}/"
+            "--filter=/${methodName.toPestTestRegex(workingDirectory, file, pathMapper)}/"
         )
     }
 }
