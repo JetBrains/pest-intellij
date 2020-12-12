@@ -31,10 +31,10 @@ class GithubErrorReporter : ErrorReportSubmitter() {
     }
 
     override fun submit(
-        events: Array<IdeaLoggingEvent>,
+        events: Array<out IdeaLoggingEvent>,
         additionalInfo: String?,
         parentComponent: Component,
-        consumer: Consumer<SubmittedReportInfo>
+        consumer: Consumer<in SubmittedReportInfo>
     ): Boolean {
         val event = events.firstOrNull()
         val title = event?.throwableText?.lineSequence()?.first()
@@ -43,7 +43,7 @@ class GithubErrorReporter : ErrorReportSubmitter() {
         val body = event?.throwableText ?: "Please paste the full stacktrace from the IDEA error popup."
         val version = PluginManagerCore.getPlugin(PluginId.getId("com.pestphp.pest-intellij"))?.version
 
-        val project: Project? = ProjectManager.getInstance().openProjects.first()
+        val project: Project = ProjectManager.getInstance().openProjects.first()
         val pestVersion = getPestVersion(project)
 
         val builder = StringBuilder(URL)
@@ -96,7 +96,7 @@ class GithubErrorReporter : ErrorReportSubmitter() {
     private fun getPestVersion(project: Project?): String {
         return PhpTestFrameworkSettingsManager.getInstance(project)
             .getLocalConfig(PestFrameworkType.instance)?.let {
-            PhpTestFrameworkVersionCache.getCache(project, it)
-        } ?: "x.y.z"
+                PhpTestFrameworkVersionCache.getCache(project, it)
+            } ?: "x.y.z"
     }
 }

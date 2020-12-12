@@ -32,12 +32,11 @@ class PestRerunFailedTestsAction(
                 val peerRunConfiguration = this.peer as PestRunConfiguration
                 val project = peerRunConfiguration.project
                 val interpreter = peerRunConfiguration.interpreter
-                if (
-                    PhpTestFrameworkSettingsManager.getInstance(project).getConfigByInterpreter(
-                        PestFrameworkType.instance,
-                        interpreter
-                    ) == null
-                ) {
+                val config = PhpTestFrameworkSettingsManager.getInstance(project).getConfigByInterpreter(
+                    PestFrameworkType.instance,
+                    interpreter
+                )
+                if (config == null) {
                     return null
                 }
 

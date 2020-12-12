@@ -1,10 +1,10 @@
-package com.pestphp.pest.PestUtil
+package com.pestphp.pest.pestUtil
 
+import com.pestphp.pest.PestLightCodeFixture
 import com.pestphp.pest.getPestTests
-import com.pestphp.pest.tests.PestLightCodeFixture
 
 class GetPestTestsTest : PestLightCodeFixture() {
-    override fun getTestDataPath(): String? {
+    override fun getTestDataPath(): String {
         return "src/test/resources/com/pestphp/pest/PestUtil"
     }
 

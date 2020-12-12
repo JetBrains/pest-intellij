@@ -1,16 +1,16 @@
-package com.pestphp.pest.tests.configuration
+package com.pestphp.pest.configuration
 
-import com.pestphp.pest.tests.PestLightCodeFixture
+import com.pestphp.pest.PestLightCodeFixture
 
-class PestConfigurationFileTest: PestLightCodeFixture() {
+class PestConfigurationFileTest : PestLightCodeFixture() {
     override fun setUp() {
         super.setUp()
 
-        myFixture.copyDirectoryToProject("tests", "tests")
+        myFixture.copyDirectoryToProject(".", "tests")
     }
 
-    override fun getTestDataPath(): String? {
-        return basePath + "configuration/fixtures"
+    override fun getTestDataPath(): String {
+        return basePath + "/configuration"
     }
 
     fun testUnit() {

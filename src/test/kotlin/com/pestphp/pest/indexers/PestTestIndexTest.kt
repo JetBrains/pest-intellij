@@ -2,7 +2,7 @@ package com.pestphp.pest.indexers
 
 import com.intellij.psi.search.GlobalSearchScope
 import com.intellij.util.indexing.FileBasedIndex
-import com.pestphp.pest.tests.PestLightCodeFixture
+import com.pestphp.pest.PestLightCodeFixture
 
 class PestTestIndexTest : PestLightCodeFixture() {
     override fun getTestDataPath(): String? {

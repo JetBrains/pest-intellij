@@ -10,11 +10,11 @@ import com.pestphp.pest.configuration.PestRunConfiguration
 import java.util.Date
 
 class PestCoverageEngine : PhpUnitCoverageEngine() {
-    override fun isApplicableTo(conf: RunConfigurationBase<*>?): Boolean {
+    override fun isApplicableTo(conf: RunConfigurationBase<*>): Boolean {
         return conf is PestRunConfiguration
     }
 
-    override fun createCoverageEnabledConfiguration(conf: RunConfigurationBase<*>?): CoverageEnabledConfiguration {
+    override fun createCoverageEnabledConfiguration(conf: RunConfigurationBase<*>): CoverageEnabledConfiguration {
         return PestCoverageEnabledConfiguration(conf as PestRunConfiguration)
     }
 
