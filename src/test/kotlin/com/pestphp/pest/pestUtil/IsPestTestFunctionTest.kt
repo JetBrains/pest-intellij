@@ -1,7 +1,7 @@
-package com.pestphp.pest.PestUtil
+package com.pestphp.pest.pestUtil
 
+import com.pestphp.pest.PestLightCodeFixture
 import com.pestphp.pest.isPestTestReference
-import com.pestphp.pest.tests.PestLightCodeFixture
 
 class IsPestTestFunctionTest : PestLightCodeFixture() {
     override fun getTestDataPath(): String? {

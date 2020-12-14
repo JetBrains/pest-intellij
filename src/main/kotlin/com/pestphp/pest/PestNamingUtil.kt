@@ -51,7 +51,11 @@ fun String.toPestTestRegex(workingDirectory: String, file: String, pathMapper: P
         // 5. Add P as a namespace before the generated namespace.
         .let { "P\\\\$it" }
 
-    val testName = this.replace(" ", "\\s")
+    // Escape characters
+    val testName = this
+        .replace(" ", "\\s")
+        .replace("(", "\\(")
+        .replace(")", "\\)")
 
     return "^$fqn::$testName(\\swith\\s\\(.*\\)(\\s#\\d+)?)?\$"
 }

@@ -2,7 +2,7 @@ package com.pestphp.pest.goto
 
 import com.jetbrains.php.lang.psi.PhpFile
 import com.jetbrains.php.lang.psi.PhpPsiUtil
-import com.pestphp.pest.tests.PestLightCodeFixture
+import com.pestphp.pest.PestLightCodeFixture
 import junit.framework.TestCase
 
 class PestTestFinderTest : PestLightCodeFixture() {

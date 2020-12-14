@@ -1,9 +1,9 @@
 package com.pestphp.pest.inspections
 
-import com.pestphp.pest.tests.PestLightCodeFixture
+import com.pestphp.pest.PestLightCodeFixture
 
 class DuplicateTestNameInspectionTest : PestLightCodeFixture() {
-    override fun getTestDataPath(): String? {
+    override fun getTestDataPath(): String {
         return "src/test/resources/com/pestphp/pest/inspections"
     }
 
@@ -14,13 +14,13 @@ class DuplicateTestNameInspectionTest : PestLightCodeFixture() {
     }
 
     fun testHasDuplicateTest() {
-        val file = myFixture.configureByFile("DuplicateTestName.php")
+        myFixture.configureByFile("DuplicateTestName.php")
 
         myFixture.checkHighlighting()
     }
 
     fun testNoDuplicateTest() {
-        val file = myFixture.configureByFile("NoDuplicateTestName.php")
+        myFixture.configureByFile("NoDuplicateTestName.php")
 
         myFixture.checkHighlighting()
     }

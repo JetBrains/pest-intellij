@@ -1,4 +1,4 @@
-package com.pestphp.pest.tests.types
+package com.pestphp.pest.types
 
 class ThisTypeTest : BaseTypeTest() {
     override fun setUp() {
@@ -28,6 +28,12 @@ class ThisTypeTest : BaseTypeTest() {
     }
 
     private fun assertThisCompletion() {
-        assertCompletion("expectException", "expectExceptionCode", "someProtectedMethod", "someStaticMethod", "protectedField")
+        assertCompletion(
+            "expectException",
+            "expectExceptionCode",
+            "someProtectedMethod",
+            "someStaticMethod",
+            "protectedField",
+        )
     }
 }

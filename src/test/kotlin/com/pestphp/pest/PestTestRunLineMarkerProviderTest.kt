@@ -1,8 +1,5 @@
 package com.pestphp.pest
 
-import com.pestphp.pest.tests.PestLightCodeFixture
-
-
 class PestTestRunLineMarkerProviderTest : PestLightCodeFixture() {
     override fun getTestDataPath(): String? {
         return "src/test/resources/com/pestphp/pest/PestTestRunLineMarkerProviderTest"

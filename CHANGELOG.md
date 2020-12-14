@@ -10,6 +10,8 @@
 - Disabled version checking (did not work with path mapping) ([#77](https://github.com/pestphp/pest-intellij/pull/77))
 
 ### Fixed
+- Escape parenthesis in regex for single test ([#80](https://github.com/pestphp/pest-intellij/pull/80))
+
 ## [0.4.1]
 ### Added
 - Added support for auto-generated `it` test names. ([#72](https://github.com/pestphp/pest-intellij/pull/72))
@@ -63,6 +65,6 @@
 - Plugin require restart as PhpTestFrameworkType does not support dynamic plugins
 - Line markers reported false positives with method calls([#31](https://github.com/pestphp/pest-intellij/pull/31))
 
-## [v0.1.1]
+## [0.1.1]
 ### Added
 - Initial scaffold created from [IntelliJ Platform Plugin Template](https://github.com/JetBrains/intellij-platform-plugin-template)

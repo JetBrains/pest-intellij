@@ -1,11 +1,10 @@
-package com.pestphp.pest.PestUtil
+package com.pestphp.pest.pestUtil
 
+import com.pestphp.pest.PestLightCodeFixture
 import com.pestphp.pest.getPestTestName
-import com.pestphp.pest.tests.PestLightCodeFixture
-import junit.framework.TestCase
 
 class GetPestTestNameTests : PestLightCodeFixture() {
-    override fun getTestDataPath(): String? {
+    override fun getTestDataPath(): String {
         return "src/test/resources/com/pestphp/pest/PestUtil"
     }
 

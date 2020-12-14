@@ -1,8 +1,6 @@
-package com.pestphp.pest.tests
+package com.pestphp.pest
 
 import com.intellij.openapi.util.Iconable.ICON_FLAG_VISIBILITY
-import com.pestphp.pest.PestIconProvider
-import com.pestphp.pest.PestIcons
 import junit.framework.TestCase
 import kotlin.test.assertNotEquals
 
@@ -13,8 +11,8 @@ class PestIconProviderTest : PestLightCodeFixture() {
         myFixture.copyFileToProject("SimpleTest.php")
     }
 
-    override fun getTestDataPath(): String? {
-        return basePath + "fixtures"
+    override fun getTestDataPath(): String {
+        return basePath
     }
 
     fun testCanGetPestIconForPestFile() {
