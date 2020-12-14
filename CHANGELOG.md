@@ -6,6 +6,10 @@
 ### Added
 - Added path mapping support ([#77](https://github.com/pestphp/pest-intellij/pull/77))
 
+### Changed
+- Bumped min plugin version to 2020.2
+- Bumped Java version to 11
+
 ### Removed
 - Disabled version checking (did not work with path mapping) ([#77](https://github.com/pestphp/pest-intellij/pull/77))
 
