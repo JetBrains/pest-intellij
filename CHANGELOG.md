@@ -15,6 +15,7 @@
 
 ### Fixed
 - Escape parenthesis in regex for single test ([#80](https://github.com/pestphp/pest-intellij/pull/80))
+- Suppressed expression result unused inspection when on Pest test function element. ([#84](https://github.com/pestphp/pest-intellij/pull/84))
 
 ## [0.4.1]
 ### Added
