@@ -27,7 +27,7 @@ class GithubErrorReporter : ErrorReportSubmitter() {
     }
 
     override fun getReportActionText(): String {
-        return "Report to Pest issue tracker"
+        return "Report to Pest Issue Tracker"
     }
 
     override fun submit(

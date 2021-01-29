@@ -59,7 +59,7 @@ fun FunctionReference.getUsesPhpType(): PhpType? {
     parameters.mapNotNull {
         val classRef = it as? ClassConstantReference ?: return@mapNotNull null
 
-        if (classRef.fqn != "\\class") return@mapNotNull null
+        if (classRef.name != "class") return@mapNotNull null
 
         (classRef.classReference as? ClassReference)?.fqn
     }.apply {

@@ -10,7 +10,7 @@ class PestConfigurationFileTest : PestLightCodeFixture() {
     }
 
     override fun getTestDataPath(): String {
-        return basePath + "/configuration"
+        return "$basePath/configuration"
     }
 
     fun testUnit() {
