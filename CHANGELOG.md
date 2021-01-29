@@ -3,6 +3,13 @@
 # PEST IntelliJ Changelog
 
 ## [Unreleased]
+### Fixed
+- Fix support for 2021.1
+
+### Changed
+- Bumped min IntelliJ version t0 2020.3
+
+## [0.4.2]
 ### Added
 - Added path mapping support ([#77](https://github.com/pestphp/pest-intellij/pull/77))
 
