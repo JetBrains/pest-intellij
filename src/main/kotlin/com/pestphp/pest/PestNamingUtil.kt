@@ -56,6 +56,7 @@ fun String.toPestTestRegex(workingDirectory: String, file: String, pathMapper: P
         .replace(" ", "\\s")
         .replace("(", "\\(")
         .replace(")", "\\)")
+        .replace("^", "\\^")
 
     return "^$fqn::$testName(\\swith\\s\\(.*\\)(\\s#\\d+)?)?\$"
 }
