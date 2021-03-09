@@ -4,6 +4,11 @@
 
 ## [Unreleased]
 ### Added
+- Added structure support for tests
+- Added autocompletion for custom expectations
+
+## [0.4.3]
+### Added
 - Added IntelliJ version to bug report
 - Added new Dataset icons (Thanks @caneco!)
 - Added test state icons
@@ -14,7 +19,7 @@
 - Fix running tests with circumflex (^)
 
 ### Changed
-- Bumped min IntelliJ version t0 2020.3
+- Bumped min IntelliJ version to 2020.3
 
 ## [0.4.2]
 ### Added

@@ -17,6 +17,14 @@ abstract class PestLightCodeFixture : BasePlatformTestCase() {
         assertContainsElements(strings, shouldContain.asList())
     }
 
+    protected fun assertNoCompletion() {
+        myFixture.completeBasic()
+
+        val strings = myFixture.lookupElementStrings
+
+        assertNullOrEmpty(strings)
+    }
+
     protected fun createPestFrameworkConfiguration(): PhpTestFrameworkConfiguration? {
         val configuration = PhpTestFrameworkSettingsManager
             .getInstance(myFixture.project)

@@ -1,6 +1,5 @@
 package com.pestphp.pest.pestUtil
 
-import com.intellij.psi.PsiManager
 import com.pestphp.pest.PestLightCodeFixture
 import com.pestphp.pest.toPestTestRegex
 
@@ -10,13 +9,11 @@ class ToPestTestRegexTests : PestLightCodeFixture() {
     }
 
     fun testRegexContainsStartAndEndBounds() {
-        val virtualFile = myFixture.copyFileToProject(
+        val file = myFixture.configureByFile(
             "PestItFunctionCallWithDescriptionAndClosure.php",
-            "tests/Unit/PestTest.php"
         )
-        val file = PsiManager.getInstance(project).findFile(virtualFile)
 
-        val testElement = file?.firstChild?.lastChild?.firstChild
+        val testElement = file.firstChild?.lastChild?.firstChild
 
         val regex = testElement?.toPestTestRegex("src")
 
@@ -25,13 +22,11 @@ class ToPestTestRegexTests : PestLightCodeFixture() {
     }
 
     fun testRegexContainsPestNamespacePrefix() {
-        val virtualFile = myFixture.copyFileToProject(
-            "PestItFunctionCallWithDescriptionAndClosure.php",
-            "tests/Unit/PestTest.php"
+        val file = myFixture.configureByFile(
+            "PestItFunctionCallWithDescriptionAndClosure.php"
         )
-        val file = PsiManager.getInstance(project).findFile(virtualFile)
 
-        val testElement = file?.firstChild?.lastChild?.firstChild
+        val testElement = file.firstChild?.lastChild?.firstChild
 
         val regex = testElement?.toPestTestRegex("src")
 
@@ -39,13 +34,11 @@ class ToPestTestRegexTests : PestLightCodeFixture() {
     }
 
     fun testRegexContainsClassMethodSeparator() {
-        val virtualFile = myFixture.copyFileToProject(
-            "PestItFunctionCallWithDescriptionAndClosure.php",
-            "tests/Unit/PestTest.php"
+        val file = myFixture.configureByFile(
+            "PestItFunctionCallWithDescriptionAndClosure.php"
         )
-        val file = PsiManager.getInstance(project).findFile(virtualFile)
 
-        val testElement = file?.firstChild?.lastChild?.firstChild
+        val testElement = file.firstChild?.lastChild?.firstChild
 
         val regex = testElement?.toPestTestRegex("src")
 
@@ -53,13 +46,11 @@ class ToPestTestRegexTests : PestLightCodeFixture() {
     }
 
     fun testRegexContainsItWhenItFunctionCall() {
-        val virtualFile = myFixture.copyFileToProject(
-            "PestItFunctionCallWithDescriptionAndClosure.php",
-            "tests/Unit/PestTest.php"
+        val file = myFixture.configureByFile(
+            "PestItFunctionCallWithDescriptionAndClosure.php"
         )
-        val file = PsiManager.getInstance(project).findFile(virtualFile)
 
-        val testElement = file?.firstChild?.lastChild?.firstChild
+        val testElement = file.firstChild?.lastChild?.firstChild
 
         val regex = testElement?.toPestTestRegex("src")
 
@@ -67,13 +58,11 @@ class ToPestTestRegexTests : PestLightCodeFixture() {
     }
 
     fun testRegexEscapesParenthesis() {
-        val virtualFile = myFixture.copyFileToProject(
-            "PestTestFunctionCallWithParenthesis.php",
-            "tests/Unit/PestTest.php"
+        val file = myFixture.configureByFile(
+            "PestTestFunctionCallWithParenthesis.php"
         )
-        val file = PsiManager.getInstance(project).findFile(virtualFile)
 
-        val testElement = file?.firstChild?.lastChild?.firstChild
+        val testElement = file.firstChild?.lastChild?.firstChild
 
         val regex = testElement?.toPestTestRegex("src")
 
@@ -82,13 +71,11 @@ class ToPestTestRegexTests : PestLightCodeFixture() {
     }
 
     fun testRegexEscapesCircumflexes() {
-        val virtualFile = myFixture.copyFileToProject(
-            "PestTestFunctionCallWithCircumflex.php",
-            "tests/Unit/PestTest.php"
+        val file = myFixture.configureByFile(
+            "PestTestFunctionCallWithCircumflex.php"
         )
-        val file = PsiManager.getInstance(project).findFile(virtualFile)
 
-        val testElement = file?.firstChild?.lastChild?.firstChild
+        val testElement = file.firstChild?.lastChild?.firstChild
 
         val regex = testElement?.toPestTestRegex("src")
 

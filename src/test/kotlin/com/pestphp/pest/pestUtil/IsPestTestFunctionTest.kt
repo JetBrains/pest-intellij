@@ -4,7 +4,7 @@ import com.pestphp.pest.PestLightCodeFixture
 import com.pestphp.pest.isPestTestReference
 
 class IsPestTestFunctionTest : PestLightCodeFixture() {
-    override fun getTestDataPath(): String? {
+    override fun getTestDataPath(): String {
         return "src/test/resources/com/pestphp/pest/PestUtil"
     }
 

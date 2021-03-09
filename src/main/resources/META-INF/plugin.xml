@@ -39,8 +39,11 @@
         <lang.inspectionSuppressor
                 language="PHP"
                 implementationClass="com.pestphp.pest.inspections.SuppressExpressionResultUnusedInspection"/>
-
         <notificationGroup displayType="BALLOON" id="Outdated Pest" isLogByDefault="true"/>
+        <vfs.asyncListener implementation="com.pestphp.pest.fileListeners.ExtendAsyncFileListener"/>
+        <projectService serviceImplementation="com.pestphp.pest.services.ExpectationFileService"/>
+        <lang.structureViewExtension implementation="com.pestphp.pest.structureView.PestStructureViewExtension"/>
+        <postStartupActivity implementation="com.pestphp.pest.startupActivity.ExpectationFileStartupActivity"/>
     </extensions>
 
     <extensions defaultExtensionNs="com.jetbrains.php">
@@ -49,6 +52,8 @@
 
         <typeProvider4 implementation="com.pestphp.pest.types.ThisTypeProvider"/>
         <typeProvider4 implementation="com.pestphp.pest.types.ThisFieldTypeProvider"/>
+        <typeProvider4 implementation="com.pestphp.pest.types.ThisExtendTypeProvider"/>
+        <libraryRoot id="pestphp" path="/library/Pest" runtime="false"/>
     </extensions>
 
     <actions>
