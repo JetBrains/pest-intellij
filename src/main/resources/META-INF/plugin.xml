@@ -49,6 +49,7 @@
 
         <typeProvider4 implementation="com.pestphp.pest.types.ThisTypeProvider"/>
         <typeProvider4 implementation="com.pestphp.pest.types.ThisFieldTypeProvider"/>
+        <typeProvider4 implementation="com.pestphp.pest.types.ExpectExtendTypeProvider"/>
     </extensions>
 
     <actions>

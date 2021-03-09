@@ -10,7 +10,7 @@ class PestRunConfigurationTest : PestLightCodeFixture() {
     }
 
     fun testRunConfigurationRunnerSettingsIsPestRunnerSettings() {
-        val file = myFixture.configureByFile("FileWithPestTest.php")
+        val file = myFixture.configureByFile("FileWithExpectExtension.php")
         val elementAtCaret = file.findElementAt(myFixture.editor.caretModel.offset)
 
         createPestFrameworkConfiguration()
