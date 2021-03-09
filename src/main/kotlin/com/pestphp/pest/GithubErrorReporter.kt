@@ -2,6 +2,7 @@ package com.pestphp.pest
 
 import com.intellij.ide.BrowserUtil
 import com.intellij.ide.plugins.PluginManagerCore
+import com.intellij.openapi.application.ApplicationInfo
 import com.intellij.openapi.diagnostic.ErrorReportSubmitter
 import com.intellij.openapi.diagnostic.IdeaLoggingEvent
 import com.intellij.openapi.diagnostic.SubmittedReportInfo
@@ -45,6 +46,7 @@ class GithubErrorReporter : ErrorReportSubmitter() {
 
         val project: Project = ProjectManager.getInstance().openProjects.first()
         val pestVersion = getPestVersion(project)
+        val intelliJVersion = ApplicationInfo.getInstance().build.asString()
 
         val builder = StringBuilder(URL)
         try {
@@ -58,6 +60,7 @@ class GithubErrorReporter : ErrorReportSubmitter() {
                     || Bug report?      | yes
                     || Plugin version   | $version
                     || Pest version     | $pestVersion
+                    || IntelliJ version | $intelliJVersion
                     || OS               | ${System.getProperty("os.name")}
                     |
                     |### Description

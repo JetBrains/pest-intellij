@@ -3,6 +3,9 @@
 # PEST IntelliJ Changelog
 
 ## [Unreleased]
+### Added
+- Added IntelliJ version to bug report
+
 ### Fixed
 - Fix support for 2021.1
 
