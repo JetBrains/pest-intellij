@@ -8,6 +8,7 @@
 
 ### Fixed
 - Fix support for 2021.1
+- Fix running tests with circumflex (^)
 
 ### Changed
 - Bumped min IntelliJ version t0 2020.3

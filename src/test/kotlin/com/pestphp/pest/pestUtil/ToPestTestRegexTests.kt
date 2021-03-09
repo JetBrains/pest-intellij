@@ -80,4 +80,18 @@ class ToPestTestRegexTests : PestLightCodeFixture() {
         assertTrue(regex?.contains("\\(") == true)
         assertTrue(regex?.contains("\\)") == true)
     }
+
+    fun testRegexEscapesCircumflexes() {
+        val virtualFile = myFixture.copyFileToProject(
+            "PestTestFunctionCallWithCircumflex.php",
+            "tests/Unit/PestTest.php"
+        )
+        val file = PsiManager.getInstance(project).findFile(virtualFile)
+
+        val testElement = file?.firstChild?.lastChild?.firstChild
+
+        val regex = testElement?.toPestTestRegex("src")
+
+        assertTrue(regex?.contains("\\^") == true)
+    }
 }
