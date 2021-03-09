@@ -9,21 +9,27 @@ import com.jetbrains.php.lang.psi.elements.PhpNamespace
 import com.jetbrains.php.lang.psi.elements.Statement
 import com.jetbrains.php.phpunit.PhpUnitUtil
 import com.jetbrains.php.testFramework.PhpTestFrameworkSettingsManager
+import java.lang.Exception
 
+@Suppress("TooGenericExceptionCaught")
 fun PsiFile.isPestTestFile(): Boolean {
     if (this !is PhpFile) return false
 
-    val element = this.firstChild
+    return try {
+        val element = this.firstChild
 
-    return element.children.filterIsInstance<PhpNamespace>()
-        .mapNotNull { it.statements }
-        .getOrElse(
-            0
-        ) { element }
-        .children
-        .filterIsInstance<Statement>()
-        .mapNotNull { it.firstChild }
-        .any(PsiElement::isPestTestReference)
+        element.children.filterIsInstance<PhpNamespace>()
+            .mapNotNull { it.statements }
+            .getOrElse(
+                0
+            ) { element }
+            .children
+            .filterIsInstance<Statement>()
+            .mapNotNull { it.firstChild }
+            .any(PsiElement::isPestTestReference)
+    } catch (e: Exception) {
+        false
+    }
 }
 
 fun PsiFile.isPestConfigurationFile(): Boolean {
