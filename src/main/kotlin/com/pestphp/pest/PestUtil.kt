@@ -11,7 +11,7 @@ import com.jetbrains.php.phpunit.PhpUnitUtil
 import com.jetbrains.php.testFramework.PhpTestFrameworkSettingsManager
 import java.lang.Exception
 
-@Suppress("TooGenericExceptionCaught")
+@Suppress("TooGenericExceptionCaught", "SwallowedException")
 fun PsiFile.isPestTestFile(): Boolean {
     if (this !is PhpFile) return false
 

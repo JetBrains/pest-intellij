@@ -5,7 +5,8 @@
 ## [Unreleased]
 ### Added
 - Added IntelliJ version to bug report
-- Added new Dataset icons
+- Added new Dataset icons (not used yet)
+- Added test state icons
 
 ### Fixed
 - Fix support for 2021.1
