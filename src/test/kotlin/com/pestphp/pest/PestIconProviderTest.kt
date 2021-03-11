@@ -2,7 +2,6 @@ package com.pestphp.pest
 
 import com.intellij.openapi.util.Iconable.ICON_FLAG_VISIBILITY
 import junit.framework.TestCase
-import kotlin.test.assertNotEquals
 
 class PestIconProviderTest : PestLightCodeFixture() {
     override fun setUp() {
@@ -19,17 +18,34 @@ class PestIconProviderTest : PestLightCodeFixture() {
         val file = myFixture.configureByFile("SimpleTest.php")
 
         TestCase.assertEquals(
+            PestIcons.FILE,
             PestIconProvider().getIcon(file, ICON_FLAG_VISIBILITY),
-            PestIcons.FILE
         )
     }
 
     fun testCanGetOtherIconForNonPestFile() {
         val file = myFixture.configureByFile("SimpleScript.php")
 
-        assertNotEquals(
-            PestIcons.FILE,
+        assertNull(
             PestIconProvider().getIcon(file, ICON_FLAG_VISIBILITY)
+        )
+    }
+
+    fun testCanGetPestIconForDatasetFile() {
+        val file = myFixture.configureByFile("Dataset.php")
+
+        assertEquals(
+            PestIcons.DATASET_FILE,
+            PestIconProvider().getIcon(file, ICON_FLAG_VISIBILITY),
+        )
+    }
+
+    fun testCanGetPestIconForDatasetFileWithTests() {
+        val file = myFixture.configureByFile("TestWithDataset.php")
+
+        assertEquals(
+            PestIcons.FILE,
+            PestIconProvider().getIcon(file, ICON_FLAG_VISIBILITY),
         )
     }
 }

@@ -5,7 +5,7 @@
 ## [Unreleased]
 ### Added
 - Added IntelliJ version to bug report
-- Added new Dataset icons (not used yet)
+- Added new Dataset icons (Thanks @caneco!)
 - Added test state icons
 
 ### Fixed

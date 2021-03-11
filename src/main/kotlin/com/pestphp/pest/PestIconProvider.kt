@@ -12,8 +12,14 @@ class PestIconProvider : IconProvider() {
 
         if (element !is PsiFile) return null
 
-        if (!element.isPestTestFile()) return null
+        if (element.isPestTestFile()) {
+            return PestIcons.FILE
+        }
 
-        return PestIcons.FILE
+        if (element.isPestDatasetFile()) {
+            return PestIcons.DATASET_FILE
+        }
+
+        return null
     }
 }

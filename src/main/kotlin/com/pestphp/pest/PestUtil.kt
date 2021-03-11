@@ -7,9 +7,9 @@ import com.intellij.psi.PsiFile
 import com.jetbrains.php.lang.psi.PhpFile
 import com.jetbrains.php.lang.psi.elements.PhpNamespace
 import com.jetbrains.php.lang.psi.elements.Statement
+import com.jetbrains.php.lang.psi.elements.impl.FunctionReferenceImpl
 import com.jetbrains.php.phpunit.PhpUnitUtil
 import com.jetbrains.php.testFramework.PhpTestFrameworkSettingsManager
-import java.lang.Exception
 
 @Suppress("TooGenericExceptionCaught", "SwallowedException")
 fun PsiFile.isPestTestFile(): Boolean {
@@ -41,4 +41,32 @@ fun Project.isPestEnabled(): Boolean {
         .getInstance(this)
         .getConfigurations(PestFrameworkType.instance)
         .any { StringUtil.isNotEmpty(it.executablePath) }
+}
+
+fun PsiFile.isPestDatasetFile(): Boolean {
+    if (this !is PhpFile) return false
+
+    val element = this.firstChild
+
+    return element.children.filterIsInstance<PhpNamespace>()
+        .mapNotNull { it.statements }
+        .getOrElse(
+            0
+        ) { element }
+        .children
+        .filterIsInstance<Statement>()
+        .mapNotNull { it.firstChild }
+        .any(PsiElement::isPestDataset)
+}
+
+fun PsiElement?.isPestDataset(): Boolean {
+    return when (this) {
+        null -> false
+        is FunctionReferenceImpl -> this.isPestDatasetFunction()
+        else -> false
+    }
+}
+
+fun FunctionReferenceImpl.isPestDatasetFunction(): Boolean {
+    return this.canonicalText in setOf("dataset")
 }
