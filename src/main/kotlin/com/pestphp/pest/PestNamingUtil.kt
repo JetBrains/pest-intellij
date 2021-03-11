@@ -1,10 +1,13 @@
 package com.pestphp.pest
 
 import com.intellij.psi.PsiElement
+import com.intellij.remote.RemoteSdkProperties
+import com.jetbrains.php.config.interpreters.PhpInterpretersManagerImpl
 import com.jetbrains.php.lang.psi.elements.FunctionReference
 import com.jetbrains.php.lang.psi.elements.MethodReference
 import com.jetbrains.php.lang.psi.elements.StringLiteralExpression
 import com.jetbrains.php.lang.psi.elements.impl.FunctionReferenceImpl
+import com.jetbrains.php.run.remote.PhpRemoteInterpreterManager
 import com.jetbrains.php.util.pathmapper.PhpPathMapper
 
 fun FunctionReferenceImpl.getPestTestName(): String? {
@@ -30,6 +33,28 @@ fun PsiElement.toPestTestRegex(workingDirectory: String): String? {
         this.containingFile.virtualFile.path,
         PhpPathMapper.create(this.project)
     )
+}
+
+fun PsiElement.toPestFqn(): List<String> {
+    val testName = this.getPestTestName() ?: return emptyList()
+
+    val file = this.containingFile.virtualFile.path
+
+    return PhpInterpretersManagerImpl.getInstance(this.project)
+        .interpreters
+        .asSequence()
+        .map { it.phpSdkAdditionalData }
+        .filter { it is RemoteSdkProperties }
+        .mapNotNull {
+            PhpRemoteInterpreterManager.getInstance()?.createPathMappings(
+                this.project,
+                it
+            )
+        }
+        .map { it.convertToRemote(file) }
+        .map { "pest_qn://$it::$testName" }
+        .plus("pest_qn://$file::$testName")
+        .toList()
 }
 
 fun String.toPestTestRegex(workingDirectory: String, file: String, pathMapper: PhpPathMapper): String {

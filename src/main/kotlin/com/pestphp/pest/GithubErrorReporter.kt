@@ -31,6 +31,7 @@ class GithubErrorReporter : ErrorReportSubmitter() {
         return "Report to Pest Issue Tracker"
     }
 
+    @Suppress("SwallowedException")
     override fun submit(
         events: Array<out IdeaLoggingEvent>,
         additionalInfo: String?,

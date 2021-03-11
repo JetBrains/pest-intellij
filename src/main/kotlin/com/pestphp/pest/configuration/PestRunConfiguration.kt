@@ -55,12 +55,13 @@ class PestRunConfiguration(project: Project, factory: ConfigurationFactory) : Ph
     }
 
     @Throws(ExecutionException::class)
+    @Suppress("SwallowedException")
     fun checkAndGetState(env: ExecutionEnvironment, command: PhpCommandSettings): RunProfileState? {
         try {
             checkConfiguration()
         } catch (ignored: RuntimeConfigurationWarning) {
-        } catch (var5: RuntimeConfigurationException) {
-            throw ExecutionException(var5.message + " for " + this.name + " run-configuration")
+        } catch (exception: RuntimeConfigurationException) {
+            throw ExecutionException(exception.message + " for " + this.name + " run-configuration")
         }
         return this.getState(env, command, null)
     }
