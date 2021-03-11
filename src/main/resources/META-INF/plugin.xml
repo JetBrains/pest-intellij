@@ -39,6 +39,8 @@
         <lang.inspectionSuppressor
                 language="PHP"
                 implementationClass="com.pestphp.pest.inspections.SuppressExpressionResultUnusedInspection"/>
+
+        <notificationGroup displayType="BALLOON" id="Outdated Pest" isLogByDefault="true"/>
     </extensions>
 
     <extensions defaultExtensionNs="com.jetbrains.php">
