@@ -20,4 +20,12 @@ class PestTestRunLineMarkerProviderTest : PestLightCodeFixture() {
 
         assertNotNull(PestTestRunLineMarkerProvider().getInfo(testElement))
     }
+
+    fun testPestTestRunAllButtonOnPhpTag() {
+        val file = myFixture.configureByFile("PestItFunctionCallWithDescriptionAndClosure.php")
+
+        val testElement = file.firstChild.firstChild
+
+        assertNotNull(PestTestRunLineMarkerProvider().getInfo(testElement))
+    }
 }
