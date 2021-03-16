@@ -7,6 +7,7 @@
 - Added IntelliJ version to bug report
 - Added new Dataset icons (Thanks @caneco!)
 - Added test state icons
+- Added run all test in file icon
 
 ### Fixed
 - Fix support for 2021.1

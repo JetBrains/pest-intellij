@@ -83,7 +83,7 @@ class PestRunConfiguration(project: Project, factory: ConfigurationFactory) : Ph
     override fun createRerunAction(
         consoleView: ConsoleView,
         properties: SMTRunnerConsoleProperties
-    ): AbstractRerunFailedTestsAction? {
+    ): AbstractRerunFailedTestsAction {
         return PestRerunFailedTestsAction(consoleView, properties)
     }
 

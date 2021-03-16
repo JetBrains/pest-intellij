@@ -1,5 +1,6 @@
 package com.pestphp.pest.configuration
 
+import com.intellij.execution.actions.ConfigurationFromContext
 import com.intellij.execution.configurations.ConfigurationFactory
 import com.intellij.ide.highlighter.XmlFileType
 import com.intellij.openapi.fileTypes.FileType
@@ -55,5 +56,13 @@ class PestRunConfigurationProducer : PhpTestConfigurationProducer<PestRunConfigu
             false,
             false
         )
+    }
+
+    override fun isPreferredConfiguration(self: ConfigurationFromContext?, other: ConfigurationFromContext?): Boolean {
+        return true
+    }
+
+    override fun shouldReplace(self: ConfigurationFromContext, other: ConfigurationFromContext): Boolean {
+        return true
     }
 }
