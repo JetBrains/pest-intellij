@@ -17,7 +17,7 @@ class ExpectExtendTypeTest: BaseTypeTest() {
     fun testExpectInvalidExtendNoReturnType() {
         myFixture.configureByFile("tests/expectInvalidExtendNoReturnType.php")
 
-        assertNoCompletion()
+        assertCompletion("toBeWithinRange")
     }
 
     fun testExtendCallOnNonExpectFunction() {

@@ -5,7 +5,7 @@ import com.intellij.util.indexing.FileBasedIndex
 import com.pestphp.pest.PestLightCodeFixture
 
 class PestTestIndexTest : PestLightCodeFixture() {
-    override fun getTestDataPath(): String? {
+    override fun getTestDataPath(): String {
         return "src/test/resources/com/pestphp/pest/indexers/PestTestIndexTest"
     }
 

@@ -12,7 +12,7 @@ import com.jetbrains.php.lang.psi.elements.impl.FunctionReferenceImpl
 import com.jetbrains.php.lang.psi.elements.impl.MethodReferenceImpl
 import com.jetbrains.php.lang.psi.resolve.types.PhpType
 
-private val expectationType = PhpType().apply {
+val expectationType = PhpType().apply {
     this.add("\\Pest\\Expectations\\Expectation")
 }
 

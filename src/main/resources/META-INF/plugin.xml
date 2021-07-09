@@ -23,6 +23,7 @@
         <projectService serviceImplementation="com.pestphp.pest.PestSettings"/>
         <testFinder implementation="com.pestphp.pest.goto.PestTestFinder"/>
         <fileBasedIndex implementation="com.pestphp.pest.indexers.PestTestIndex"/>
+        <fileBasedIndex implementation="com.pestphp.pest.indexers.ExpectExtendIndex"/>
         <errorHandler implementation="com.pestphp.pest.GithubErrorReporter"/>
         <localInspection
                 language="PHP"

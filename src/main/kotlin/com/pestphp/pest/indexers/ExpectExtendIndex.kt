@@ -11,8 +11,6 @@ import com.intellij.util.io.KeyDescriptor
 import com.jetbrains.php.lang.PhpFileType
 import com.pestphp.pest.expectExtends
 import com.pestphp.pest.extendName
-import com.pestphp.pest.isPestTestFile
-import gnu.trove.THashMap
 
 class ExpectExtendIndex : ScalarIndexExtension<String>() {
     override fun getName(): ID<String, Void> {
@@ -38,8 +36,7 @@ class ExpectExtendIndex : ScalarIndexExtension<String>() {
 
             return@DataIndexer expectExtends
                 .mapNotNull { it.extendName }
-                .map { it to null }
-                .toMap()
+                .associateWith { null }
         }
     }
 

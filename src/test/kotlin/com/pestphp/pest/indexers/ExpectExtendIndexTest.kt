@@ -10,15 +10,20 @@ class ExpectExtendIndexTest : PestLightCodeFixture() {
     }
 
     fun testExpectExtendIsIndexed() {
-        myFixture.copyFileToProject("FileWithExpectExtension.php", "tests/FileWithExpectExtension.php")
+        val file = myFixture.copyFileToProject("FileWithExpectExtension.php", "tests/FileWithExpectExtension.php")
 
         val fileBasedIndex = FileBasedIndex.getInstance()
 
-        val indexKeys = fileBasedIndex.getAllKeys(PestTestIndex.key, project).filter {
-            fileBasedIndex.getContainingFiles(PestTestIndex.key, it, GlobalSearchScope.allScope(project)).isNotEmpty()
-        }
+        val indexKeys = fileBasedIndex.getAllKeys(ExpectExtendIndex.key, project)
 
-        assertContainsElements(indexKeys, "FileWithExpectExtension.php")
+        assertContainsElements(indexKeys, "toBeWithinRange")
+        val files = fileBasedIndex.getContainingFiles(
+            ExpectExtendIndex.key,
+            "toBeWithinRange",
+            GlobalSearchScope.allScope(project)
+        )
+
+        assertContainsElements(files, file)
     }
 
     fun testNonExpectExtendIsNotIndexed() {
@@ -26,8 +31,8 @@ class ExpectExtendIndexTest : PestLightCodeFixture() {
 
         val fileBasedIndex = FileBasedIndex.getInstance()
 
-        val indexKeys = fileBasedIndex.getAllKeys(PestTestIndex.key, project).filter {
-            fileBasedIndex.getContainingFiles(PestTestIndex.key, it, GlobalSearchScope.allScope(project)).isNotEmpty()
+        val indexKeys = fileBasedIndex.getAllKeys(ExpectExtendIndex.key, project).filter {
+            fileBasedIndex.getContainingFiles(ExpectExtendIndex.key, it, GlobalSearchScope.allScope(project)).isNotEmpty()
         }
 
         assertDoesntContain(indexKeys, "FileWithoutExpectExtension.php")
