@@ -3,11 +3,15 @@ package com.pestphp.pest
 import com.intellij.openapi.project.Project
 import com.intellij.psi.PsiElement
 import com.intellij.psi.PsiFile
+import com.intellij.psi.util.PsiTreeUtil
 import com.jetbrains.php.PhpIndex
 import com.jetbrains.php.lang.psi.PhpFile
+import com.jetbrains.php.lang.psi.elements.Function
+import com.jetbrains.php.lang.psi.elements.ParameterList
 import com.jetbrains.php.lang.psi.elements.PhpNamespace
 import com.jetbrains.php.lang.psi.elements.Statement
 import com.jetbrains.php.lang.psi.elements.StringLiteralExpression
+import com.jetbrains.php.lang.psi.elements.Variable
 import com.jetbrains.php.lang.psi.elements.impl.FunctionReferenceImpl
 import com.jetbrains.php.lang.psi.elements.impl.MethodReferenceImpl
 import com.jetbrains.php.lang.psi.resolve.types.PhpType
@@ -27,6 +31,18 @@ fun PhpType.isExpectation(project: Project): Boolean {
         filteredType,
         PhpIndex.getInstance(project)
     )
+}
+
+fun PsiElement?.isThisVariableInExtend(): Boolean {
+    if ((this as? Variable)?.name != "this") return false
+
+    val closure = PsiTreeUtil.getParentOfType(this, Function::class.java)
+
+    if (closure == null || !closure.isClosure) return false
+
+    val parameterList = closure.parent?.parent as? ParameterList ?: return false
+
+    return parameterList.parent.isPestExtendReference()
 }
 
 fun PsiElement.isPestExtendReference(): Boolean {

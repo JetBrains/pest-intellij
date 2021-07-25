@@ -25,21 +25,5 @@ class PestCompletionContributor : CompletionContributor() {
                 .withParent(FieldReference::class.java),
             ThisFieldsCompletionProvider()
         )
-
-        val arrowedCase = PlatformPatterns.psiElement(PhpTokenTypes.IDENTIFIER)
-            //.afterLeaf("-->")
-
-        StandardPatterns.or(
-            arrowedCase.withParent(FieldReference::class.java),
-            arrowedCase.withParent(MethodReference::class.java)
-        );
-
-        extend(
-            CompletionType.BASIC,
-            PlatformPatterns.psiElement()
-                .withElementType(PhpTokenTypes.IDENTIFIER)
-                .withParent(FieldReference::class.java),
-            ExpectCallReferenceProvider(),
-        )
     }
 }
