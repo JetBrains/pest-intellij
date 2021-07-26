@@ -13,7 +13,7 @@ import com.pestphp.pest.parser.PestConfigurationFileParser
 class PestSettings : PersistentStateComponent<PestSettings> {
     var pestFilePath = "tests/Pest.php"
 
-    override fun getState(): PestSettings? {
+    override fun getState(): PestSettings {
         return this
     }
 

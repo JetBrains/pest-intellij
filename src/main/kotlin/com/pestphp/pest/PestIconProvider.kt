@@ -2,6 +2,7 @@ package com.pestphp.pest
 
 import com.intellij.ide.IconProvider
 import com.intellij.openapi.project.DumbService
+import com.intellij.openapi.project.guessProjectDir
 import com.intellij.psi.PsiElement
 import com.intellij.psi.PsiFile
 import javax.swing.Icon
@@ -18,6 +19,12 @@ class PestIconProvider : IconProvider() {
 
         if (element.isPestDatasetFile()) {
             return PestIcons.DATASET_FILE
+        }
+
+        val projectDir = element.project.guessProjectDir() ?: return null
+        val pestFilePath = PestSettings.getInstance(element.project).pestFilePath
+        if (element.virtualFile.path == projectDir.path + "/" + pestFilePath) {
+            return PestIcons.LOGO
         }
 
         return null

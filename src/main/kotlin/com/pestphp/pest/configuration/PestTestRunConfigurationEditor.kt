@@ -1,5 +1,6 @@
 package com.pestphp.pest.configuration
 
+import com.intellij.openapi.editor.ReadOnlyModificationException
 import com.intellij.openapi.options.SettingsEditor
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.ui.ComboBox
@@ -8,6 +9,7 @@ import com.jetbrains.php.config.interpreters.PhpInterpretersManagerImpl
 import com.jetbrains.php.phpunit.coverage.PhpUnitCoverageEngine.CoverageEngine
 import com.jetbrains.php.testFramework.run.PhpTestRunConfigurationEditor
 import java.awt.BorderLayout
+import java.lang.reflect.InvocationTargetException
 import javax.swing.JComponent
 import javax.swing.JPanel
 
@@ -72,7 +74,16 @@ class PestTestRunConfigurationEditor(
     override fun applyEditorTo(settings: PestRunConfiguration) {
         parentEditor.javaClass.declaredMethods.find { it.name == "applyEditorTo" }!!.let {
             it.isAccessible = true
-            it.invoke(parentEditor, settings)
+            try {
+                it.invoke(parentEditor, settings)
+            } catch (exception: InvocationTargetException) {
+                // In case the method throws a read only error (happens in code with me) we ignore it.
+                if (exception.cause is ReadOnlyModificationException) {
+                    return@let
+                }
+
+                throw exception
+            }
         }
         doApply(settings)
     }

@@ -1,6 +1,5 @@
 package com.pestphp.pest.pestUtil
 
-import com.intellij.psi.PsiManager
 import com.pestphp.pest.PestLightCodeFixture
 import com.pestphp.pest.toPestFqn
 
@@ -10,11 +9,9 @@ class ToPestFqnTests : PestLightCodeFixture() {
     }
 
     fun testCanGeneratePqn() {
-        val virtualFile = myFixture.copyFileToProject(
+        val file = myFixture.configureByFile(
             "PestItFunctionCallWithDescriptionAndClosure.php",
-            "tests/Unit/PestTest.php"
         )
-        val file = PsiManager.getInstance(project).findFile(virtualFile)
 
         val testElement = file?.firstChild?.lastChild?.firstChild
 

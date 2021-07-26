@@ -1,6 +1,7 @@
 package com.pestphp.pest
 
 import com.intellij.openapi.util.Iconable.ICON_FLAG_VISIBILITY
+import com.intellij.psi.PsiManager
 import junit.framework.TestCase
 
 class PestIconProviderTest : PestLightCodeFixture() {
@@ -46,6 +47,17 @@ class PestIconProviderTest : PestLightCodeFixture() {
         assertEquals(
             PestIcons.FILE,
             PestIconProvider().getIcon(file, ICON_FLAG_VISIBILITY),
+        )
+    }
+
+    fun testCanGetPestIconForPestBaseFile() {
+        val virtualFile = myFixture.copyFileToProject("Pest.php", "tests/Pest.php")
+
+        val file = PsiManager.getInstance(project).findFile(virtualFile)!!
+
+        assertEquals(
+            PestIcons.LOGO,
+            PestIconProvider().getIcon(file, ICON_FLAG_VISIBILITY)
         )
     }
 }

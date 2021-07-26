@@ -6,7 +6,7 @@ import com.pestphp.pest.PestLightCodeFixture
 import junit.framework.TestCase
 
 class PestTestFinderTest : PestLightCodeFixture() {
-    override fun getTestDataPath(): String? {
+    override fun getTestDataPath(): String {
         return "src/test/resources/com/pestphp/pest/goto/PestTestFinder"
     }
 
