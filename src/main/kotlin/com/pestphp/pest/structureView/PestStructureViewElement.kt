@@ -5,6 +5,7 @@ import com.intellij.ide.structureView.StructureViewTreeElement
 import com.intellij.ide.util.treeView.smartTree.TreeElement
 import com.intellij.navigation.ItemPresentation
 import com.intellij.psi.NavigatablePsiElement
+import com.jetbrains.php.PhpPresentationUtil
 import com.pestphp.pest.PestIcons
 import com.pestphp.pest.getPestTestName
 import com.pestphp.pest.isPestTestReference
