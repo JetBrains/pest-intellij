@@ -7,6 +7,7 @@
 - Added structure support for tests
 - Added autocompletion for custom expectations
 - Added pest icon for the Pest.php config file
+- Added symbol contributor for pest tests
 
 ### Fixed
 - Fixed a read only permission bug when used with Code with me
