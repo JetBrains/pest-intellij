@@ -1,13 +1,13 @@
 <?php
 
-use Pest\Expectations\Expectation;
+use Pest\Expectation;
 
 function expect($value = null)
 {
     return new Expectation($value);
 }
 
-namespace Pest\Expectations {
+namespace Pest {
     /**
      * @internal
      *

@@ -11,6 +11,7 @@
 
 ### Fixed
 - Fixed a read only permission bug when used with Code with me
+- Fixed wrong namespace in custom expectations file generation
 
 ## [0.4.3]
 ### Added

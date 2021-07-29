@@ -1,6 +1,6 @@
 <?php
 
-namespace Pest\Expectations;
+namespace Pest;
 
 /**
  * @method bool works()
