@@ -20,7 +20,7 @@ class ExpectationGenerator {
                 """
                 |<?php
                 |
-                |namespace Pest\Expectations;
+                |namespace Pest;
                 |
                 |/**
                 |$it

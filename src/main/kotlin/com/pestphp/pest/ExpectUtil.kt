@@ -17,7 +17,7 @@ import com.jetbrains.php.lang.psi.elements.impl.MethodReferenceImpl
 import com.jetbrains.php.lang.psi.resolve.types.PhpType
 
 val expectationType = PhpType().apply {
-    this.add("\\Pest\\Expectations\\Expectation")
+    this.add("\\Pest\\Expectation")
 }
 
 fun PhpType.isExpectation(project: Project): Boolean {
