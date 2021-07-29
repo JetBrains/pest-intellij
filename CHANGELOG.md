@@ -3,6 +3,8 @@
 # PEST IntelliJ Changelog
 
 ## [Unreleased]
+
+## [1.0.0]
 ### Added
 - Added structure support for tests
 - Added autocompletion for custom expectations
