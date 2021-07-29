@@ -3,6 +3,8 @@
 # PEST IntelliJ Changelog
 
 ## [Unreleased]
+### Fixed
+- Removed usage of globalType (needed for 2020.3 support)
 
 ## [1.0.0]
 ### Added

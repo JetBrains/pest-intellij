@@ -15,7 +15,7 @@ class PestConsoleProperties(config: RunConfiguration, executor: Executor) :
 
     private val testLocator = PestLocationProvider(this.project)
 
-    override fun getTestLocator(): SMTestLocator? {
+    override fun getTestLocator(): SMTestLocator {
         return testLocator
     }
 

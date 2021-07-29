@@ -48,7 +48,7 @@ class ExpectationGenerator {
     class Method(val name: String, val returnType: PhpType, val parameters: List<Parameter>) {
         fun parametersAsString(): List<String> {
             return parameters.map {
-                var parameterAsString = "${it.globalType.toStringResolved()} $${it.name}"
+                var parameterAsString = "${it.type.global(it.project).toStringResolved()} $${it.name}"
 
                 if (it.defaultValuePresentation !== null) {
                     parameterAsString += " = ${it.defaultValuePresentation}"

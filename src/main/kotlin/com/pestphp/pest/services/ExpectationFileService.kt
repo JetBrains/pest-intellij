@@ -37,7 +37,7 @@ class ExpectationFileService(val project: Project) {
 
                 ExpectationGenerator.Method(
                     extendName,
-                    closure.globalType,
+                    closure.type.global(project),
                     closure.parameters.asList()
                 )
             }

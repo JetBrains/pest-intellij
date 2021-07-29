@@ -70,3 +70,4 @@ jobs:
         with:
           branch: main
           github_token: ${{ secrets.GITHUB_TOKEN }}
+          force: true
