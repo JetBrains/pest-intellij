@@ -24,32 +24,41 @@ class ExtendAsyncFileListener : AsyncFileChangeListenerBase() {
     }
 
     override fun updateFile(file: VirtualFile, event: VFileEvent) {
-        ProjectManager.getInstance()
-            .openProjects
-            // Only look at projects where the file is inside.
-            .filter { ProjectFileIndex.getInstance(it).isInContent(file) }
-            // Get the PSI file inside each of the projects.
-            .mapNotNull { PsiManager.getInstance(it).findFile(file) }
-            // Only look at PHP files
-            .filterIsInstance<PhpFile>()
-            .filter { it.expectExtends.isNotEmpty() }
-            .forEach {
-                val expectationFileService = it.project.service<ExpectationFileService>()
+        try {
+            ProjectManager.getInstance()
+                .openProjects
+                // Only look at projects where the file is inside.
+                .filter { ProjectFileIndex.getInstance(it).isInContent(file) }
+                // Get the PSI file inside each of the projects.
+                .mapNotNull { PsiManager.getInstance(it).findFile(file) }
+                // Only look at PHP files
+                .filterIsInstance<PhpFile>()
+                .filter { it.expectExtends.isNotEmpty() }
+                .forEach {
+                    val expectationFileService = it.project.service<ExpectationFileService>()
 
-                // In case file is deleted.
-                if (event is VFileDeleteEvent) {
-                    expectationFileService.removeExtends(it.virtualFile)
-                    return@forEach
+                    // In case file is deleted.
+                    if (event is VFileDeleteEvent) {
+                        expectationFileService.removeExtends(it.virtualFile)
+                        return@forEach
+                    }
+
+                    // Add all the extends
+                    val hasChanges = expectationFileService.updateExtends(it)
+
+                    if (hasChanges) {
+                        // Generate the file if any changes
+                        expectationFileService.generateFile()
+                    }
                 }
-
-                // Add all the extends
-                val hasChanges = expectationFileService.updateExtends(it)
-
-                if (hasChanges) {
-                    // Generate the file if any changes
-                    expectationFileService.generateFile()
-                }
+        } catch (exception: Exception) {
+            // Ignore up to date stub exceptions
+            if (exception.javaClass.simpleName.equals("UpToDateStubIndexMismatch")) {
+                return
             }
+
+            throw exception
+        }
     }
 
     override fun isRelevant(file: VirtualFile, event: VFileEvent): Boolean {
