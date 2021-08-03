@@ -12,6 +12,7 @@ import com.intellij.psi.PsiManager
 import com.jetbrains.php.lang.PhpFileType
 import com.jetbrains.php.lang.psi.PhpFile
 import com.pestphp.pest.expectExtends
+import com.pestphp.pest.isPestEnabled
 import com.pestphp.pest.services.ExpectationFileService
 
 class ExtendAsyncFileListener : AsyncFileChangeListenerBase() {
@@ -65,7 +66,9 @@ class ExtendAsyncFileListener : AsyncFileChangeListenerBase() {
         // Check if any of the projects has the file
         return ProjectManager.getInstance()
             .openProjects
-            .any { ProjectFileIndex.getInstance(it).isInContent(file) }
+            .any {
+                it.isPestEnabled() && ProjectFileIndex.getInstance(it).isInContent(file)
+            }
     }
 
     override fun isRelevant(path: String): Boolean {
