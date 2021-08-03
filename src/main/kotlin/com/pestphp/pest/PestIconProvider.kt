@@ -13,18 +13,25 @@ class PestIconProvider : IconProvider() {
 
         if (element !is PsiFile) return null
 
-        if (element.isPestTestFile()) {
-            return PestIcons.FILE
-        }
+        try {
+            if (element.isPestTestFile()) {
+                return PestIcons.FILE
+            }
 
-        if (element.isPestDatasetFile()) {
-            return PestIcons.DATASET_FILE
-        }
+            if (element.isPestDatasetFile()) {
+                return PestIcons.DATASET_FILE
+            }
 
-        val projectDir = element.project.guessProjectDir() ?: return null
-        val pestFilePath = PestSettings.getInstance(element.project).pestFilePath
-        if (element.virtualFile.path == projectDir.path + "/" + pestFilePath) {
-            return PestIcons.LOGO
+            val projectDir = element.project.guessProjectDir() ?: return null
+            val pestFilePath = PestSettings.getInstance(element.project).pestFilePath
+            if (element.virtualFile.path == projectDir.path + "/" + pestFilePath) {
+                return PestIcons.LOGO
+            }
+        } catch (exception: Exception) {
+            if (exception.message?.contains("Outdated stub") == true) {
+                return null
+            }
+            throw exception
         }
 
         return null
