@@ -1,9 +1,10 @@
 package com.pestphp.pest.generators
 
 import com.jetbrains.php.lang.psi.resolve.types.PhpType
+import com.pestphp.pest.PestLightCodeFixture
 import junit.framework.TestCase
 
-class ExpectationGeneratorTest : TestCase() {
+class ExpectationGeneratorTest : PestLightCodeFixture() {
     fun testCanGenerateFileWithMethod() {
         val generator = ExpectationGenerator()
         generator.docMethods.add(
@@ -14,7 +15,7 @@ class ExpectationGeneratorTest : TestCase() {
             )
         )
 
-        val result = generator.generate()
+        val result = generator.generate(project)
 
         val expectedClass = ExpectationGeneratorTest::class.java
             .getResource("/com/pestphp/pest/generators/ExpectationGenerator/GeneratedWithMethod.php")

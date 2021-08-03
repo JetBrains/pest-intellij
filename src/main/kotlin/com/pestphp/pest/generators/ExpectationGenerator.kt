@@ -13,9 +13,9 @@ import com.jetbrains.php.lang.psi.resolve.types.PhpType
 class ExpectationGenerator {
     val docMethods: MutableList<Method> = mutableListOf()
 
-    fun generate(): String {
+    fun generate(project: Project): String {
         return docMethods
-            .joinToString("\n") { methodString(it) }
+            .joinToString("\n") { methodString(it, project) }
             .let { //language=InjectablePHP
                 """
                 |<?php
@@ -30,8 +30,8 @@ class ExpectationGenerator {
             }
     }
 
-    private fun methodString(method: Method): String {
-        val returnType = method.returnType.toStringResolved()
+    private fun methodString(method: Method, project: Project): String {
+        val returnType = method.returnType.global(project).toStringResolved()
         val parameters = method.parametersAsString().joinToString(separator = ", ")
 
         return " * @method $returnType ${method.name}($parameters)"
@@ -41,7 +41,7 @@ class ExpectationGenerator {
         return PsiFileFactory.getInstance(project).createFileFromText(
             "Expectation." + PhpFileType.INSTANCE.defaultExtension,
             PhpFileType.INSTANCE,
-            generate()
+            generate(project)
         )
     }
 

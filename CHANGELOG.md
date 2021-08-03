@@ -4,6 +4,10 @@
 
 ## [Unreleased]
 ### Fixed
+- Fixed indexes being out of date in file listener
+
+## [1.0.1]
+### Fixed
 - Removed usage of globalType (needed for 2020.3 support)
 
 ## [1.0.0]
