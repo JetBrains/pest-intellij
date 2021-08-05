@@ -2,6 +2,7 @@ package com.pestphp.pest.fileListeners
 
 import com.intellij.openapi.components.service
 import com.intellij.openapi.externalSystem.autoimport.AsyncFileChangeListenerBase
+import com.intellij.openapi.project.NoAccessDuringPsiEvents
 import com.intellij.openapi.project.ProjectManager
 import com.intellij.openapi.roots.ProjectFileIndex
 import com.intellij.openapi.util.io.FileUtilRt
@@ -53,8 +54,14 @@ class ExtendAsyncFileListener : AsyncFileChangeListenerBase() {
                     }
                 }
         } catch (exception: Exception) {
-            // Ignore up to date stub exceptions
+            // Ignore up to date stub mismatch exceptions
             if (exception.javaClass.simpleName.equals("UpToDateStubIndexMismatch")) {
+                return
+            }
+            if (exception.stackTrace.any { it.methodName.equals("stubTreeAndIndexDoNotMatch") }) {
+                return
+            }
+            if (exception.stackTrace.any { it.className.equals(NoAccessDuringPsiEvents::class.java.name)}) {
                 return
             }
 

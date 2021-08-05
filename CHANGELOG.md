@@ -4,6 +4,11 @@
 
 ## [Unreleased]
 ### Fixed
+- Fixed php type resolving during event dispatching on file listener
+- Fixed PSI and index mismatch on file listener
+
+## [1.0.2]
+### Fixed
 - Fixed indexes being out of date in file listener
 
 ## [1.0.1]
