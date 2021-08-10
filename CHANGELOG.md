@@ -3,6 +3,10 @@
 # PEST IntelliJ Changelog
 
 ## [Unreleased]
+### Changed
+- Bumped min IntelliJ version to 2021.1
+
+## [1.0.4]
 ### Added
 - Added Suppress inspection for `$this->field`
 
