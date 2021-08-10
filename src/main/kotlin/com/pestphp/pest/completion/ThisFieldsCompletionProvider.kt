@@ -10,6 +10,7 @@ import com.intellij.psi.PsiElement
 import com.intellij.psi.util.elementType
 import com.intellij.util.ProcessingContext
 import com.jetbrains.php.PhpIcons
+import com.jetbrains.php.completion.PhpLookupElement
 import com.jetbrains.php.lang.lexer.PhpTokenTypes
 import com.jetbrains.php.lang.psi.elements.FieldReference
 import com.jetbrains.php.lang.psi.elements.Variable
@@ -29,10 +30,14 @@ class ThisFieldsCompletionProvider : CompletionProvider<CompletionParameters>(),
 
         if (!variable.isThisVariableInPest { it.isAnyPestFunction() }) return
 
-        return (fieldReference.containingFile ?: return).getAllBeforeThisAssignments()
-            .mapNotNull { it.variable?.name }
+        return (fieldReference.containingFile).getAllBeforeThisAssignments()
+            .filter { it.variable?.name  !== null }
             .forEach {
-                result.addElement(LookupElementBuilder.create(it).withIcon(PhpIcons.FIELD))
+                result.addElement(
+                    LookupElementBuilder.create(it.variable!!.name!!)
+                        .withIcon(PhpIcons.FIELD)
+                        .withTypeText(it.type.toStringRelativized("\\"))
+                )
             }
     }
 

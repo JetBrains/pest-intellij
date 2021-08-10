@@ -3,6 +3,10 @@
 # PEST IntelliJ Changelog
 
 ## [Unreleased]
+### Added
+- Added Suppress inspection for `$this->field`
+
+## [1.0.3]
 ### Fixed
 - Fixed php type resolving during event dispatching on file listener
 - Fixed PSI and index mismatch on file listener

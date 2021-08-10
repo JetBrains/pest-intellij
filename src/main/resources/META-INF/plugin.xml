@@ -39,6 +39,10 @@
         <lang.inspectionSuppressor
                 language="PHP"
                 implementationClass="com.pestphp.pest.inspections.SuppressExpressionResultUnusedInspection"/>
+        <lang.inspectionSuppressor
+                language="PHP"
+                implementationClass="com.pestphp.pest.inspections.SuppressUndefinedPropertyInspection"
+        />
         <notificationGroup displayType="BALLOON" id="Outdated Pest" isLogByDefault="true"/>
         <vfs.asyncListener implementation="com.pestphp.pest.fileListeners.ExtendAsyncFileListener"/>
         <projectService serviceImplementation="com.pestphp.pest.services.ExpectationFileService"/>
