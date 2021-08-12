@@ -1,6 +1,9 @@
 package com.pestphp.pest.services
 
 import com.intellij.openapi.application.ApplicationManager
+import com.intellij.openapi.application.invokeLater
+import com.intellij.openapi.application.runWriteAction
+import com.intellij.openapi.progress.runSuspendingAction
 import com.intellij.openapi.project.DumbService
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.vfs.VirtualFile
@@ -73,8 +76,8 @@ class ExpectationFileService(val project: Project) {
         val file = generator.generateToFile(project)
 
         // Save the file in vendor folder
-        ApplicationManager.getApplication().invokeLater {
-            ApplicationManager.getApplication().runWriteAction {
+        invokeLater {
+            runWriteAction {
                 DumbService.getInstance(project).suspendIndexingAndRun(
                     "Indexing Pest expect extends"
                 ) {

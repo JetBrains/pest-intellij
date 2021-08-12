@@ -3,6 +3,10 @@
 # PEST IntelliJ Changelog
 
 ## [Unreleased]
+### Fixed
+- Invoke the FileListener PSI part later (should fix indexing issues)
+
+## [1.0.5]
 ### Changed
 - Bumped min IntelliJ version to 2021.1
 

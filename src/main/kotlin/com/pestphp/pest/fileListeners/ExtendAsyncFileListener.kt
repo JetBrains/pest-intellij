@@ -1,5 +1,6 @@
 package com.pestphp.pest.fileListeners
 
+import com.intellij.openapi.application.invokeLater
 import com.intellij.openapi.components.service
 import com.intellij.openapi.externalSystem.autoimport.AsyncFileChangeListenerBase
 import com.intellij.openapi.project.NoAccessDuringPsiEvents
@@ -26,25 +27,24 @@ class ExtendAsyncFileListener : AsyncFileChangeListenerBase() {
     }
 
     override fun updateFile(file: VirtualFile, event: VFileEvent) {
-        try {
-            ProjectManager.getInstance()
-                .openProjects
-                // Only look at projects where the file is inside.
-                .filter { ProjectFileIndex.getInstance(it).isInContent(file) }
-                // Get the PSI file inside each of the projects.
-                .mapNotNull { PsiManager.getInstance(it).findFile(file) }
-                // Only look at PHP files
-                .filterIsInstance<PhpFile>()
-                .filter { it.expectExtends.isNotEmpty() }
-                .forEach {
-                    val expectationFileService = it.project.service<ExpectationFileService>()
+        ProjectManager.getInstance()
+            .openProjects
+            // Only look at projects where the file is inside.
+            .filter { ProjectFileIndex.getInstance(it).isInContent(file) }
+            // Get the PSI file inside each of the projects.
+            .mapNotNull { PsiManager.getInstance(it).findFile(file) }
+            // Only look at PHP files
+            .filterIsInstance<PhpFile>()
+            .forEach {
+                val expectationFileService = it.project.service<ExpectationFileService>()
 
-                    // In case file is deleted.
-                    if (event is VFileDeleteEvent) {
-                        expectationFileService.removeExtends(it.virtualFile)
-                        return@forEach
-                    }
+                // In case file is deleted.
+                if (event is VFileDeleteEvent) {
+                    expectationFileService.removeExtends(it.virtualFile)
+                    return@forEach
+                }
 
+                invokeLater {
                     // Add all the extends
                     val hasChanges = expectationFileService.updateExtends(it)
 
@@ -53,20 +53,7 @@ class ExtendAsyncFileListener : AsyncFileChangeListenerBase() {
                         expectationFileService.generateFile()
                     }
                 }
-        } catch (exception: Exception) {
-            // Ignore up to date stub mismatch exceptions
-            if (exception.javaClass.simpleName.equals("UpToDateStubIndexMismatch")) {
-                return
             }
-            if (exception.stackTrace.any { it.methodName.equals("stubTreeAndIndexDoNotMatch") }) {
-                return
-            }
-            if (exception.stackTrace.any { it.className.equals(NoAccessDuringPsiEvents::class.java.name)}) {
-                return
-            }
-
-            throw exception
-        }
     }
 
     override fun isRelevant(file: VirtualFile, event: VFileEvent): Boolean {
