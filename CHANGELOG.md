@@ -5,6 +5,7 @@
 ## [Unreleased]
 ### Fixed
 - Invoke the FileListener PSI part later (should fix indexing issues)
+- Fixed stub issues on PestIconProvider by wrapping `runReadAction`
 
 ## [1.0.5]
 ### Changed

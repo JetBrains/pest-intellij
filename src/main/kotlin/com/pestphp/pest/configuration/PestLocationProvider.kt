@@ -16,6 +16,9 @@ import com.pestphp.pest.getPestTestName
 import com.pestphp.pest.getPestTests
 import com.pestphp.pest.runner.LocationInfo
 
+/**
+ * Adds support for goto test from test results.
+ */
 class PestLocationProvider(project: Project) : SMTestLocator {
     private val protocolId = "pest_qn"
     private val phpUnitLocationProvider = PhpUnitQualifiedNameLocationProvider.create(

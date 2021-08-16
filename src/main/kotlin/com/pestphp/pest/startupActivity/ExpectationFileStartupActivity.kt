@@ -1,6 +1,7 @@
 package com.pestphp.pest.startupActivity
 
 import com.intellij.openapi.application.ApplicationManager
+import com.intellij.openapi.application.runReadAction
 import com.intellij.openapi.components.service
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.startup.StartupActivity
@@ -11,6 +12,9 @@ import com.jetbrains.php.lang.psi.PhpFile
 import com.pestphp.pest.expectExtends
 import com.pestphp.pest.services.ExpectationFileService
 
+/**
+ * Finds all `expect->extend` and generate our phpstorm helper file.
+ */
 class ExpectationFileStartupActivity : StartupActivity {
     override fun runActivity(project: Project) {
         val expectationFileService = project.service<ExpectationFileService>()
@@ -20,28 +24,34 @@ class ExpectationFileStartupActivity : StartupActivity {
             PhpFileType.INSTANCE,
         )
 
-        ApplicationManager.getApplication().runReadAction {
-            PsiSearchHelper.getInstance(project)
-                .processAllFilesWithWord(
-                    "expect()->extend(",
-                    searchScope,
-                    {
-                        if (it !is PhpFile) {
-                            return@processAllFilesWithWord true
-                        }
+        ApplicationManager.getApplication().executeOnPooledThread {
+            runReadAction {
+                PsiSearchHelper.getInstance(project)
+                    .processAllFilesWithWord(
+                        "expect()->extend(",
+                        searchScope,
+                        {
+                            if (it !is PhpFile) {
+                                return@processAllFilesWithWord true
+                            }
 
-                        if (it.expectExtends.isEmpty()) {
-                            return@processAllFilesWithWord true
-                        }
+                            if (! it.isValid) {
+                                return@processAllFilesWithWord true
+                            }
 
-                        expectationFileService.updateExtends(it)
+                            if (it.expectExtends.isEmpty()) {
+                                return@processAllFilesWithWord true
+                            }
 
+                            expectationFileService. updateExtends(it)
+
+                            true
+                        },
                         true
-                    },
-                    true
-                )
+                    )
 
-            expectationFileService.generateFile()
+                expectationFileService.generateFile()
+            }
         }
     }
 }

@@ -14,6 +14,9 @@ import com.pestphp.pest.isPestAfterFunction
 import com.pestphp.pest.isPestTestFunction
 import com.pestphp.pest.isThisVariableInPest
 
+/**
+ * Adds type for fields registered in `beforeEach`.
+ */
 class ThisFieldTypeProvider : PhpTypeProvider4 {
     override fun getKey(): Char {
         return '\u0222'

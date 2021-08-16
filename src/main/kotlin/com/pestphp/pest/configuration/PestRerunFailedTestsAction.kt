@@ -15,6 +15,9 @@ import com.pestphp.pest.isPestTestReference
 import com.pestphp.pest.notifications.OutdatedNotification
 import com.pestphp.pest.toPestTestRegex
 
+/**
+ * Adds support for rerunning failed tests
+ */
 class PestRerunFailedTestsAction(
     componentContainer: ComponentContainer,
     properties: SMTRunnerConsoleProperties

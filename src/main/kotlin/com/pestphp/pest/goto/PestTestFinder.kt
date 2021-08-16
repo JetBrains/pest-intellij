@@ -10,7 +10,6 @@ import com.jetbrains.php.PhpIndex
 import com.jetbrains.php.lang.psi.elements.PhpClass
 import com.pestphp.pest.indexers.PestTestIndex
 import com.pestphp.pest.isPestTestFile
-import java.util.ArrayList
 
 class PestTestFinder : TestFinder {
     override fun findClassesForTest(element: PsiElement): MutableCollection<PhpClass> {

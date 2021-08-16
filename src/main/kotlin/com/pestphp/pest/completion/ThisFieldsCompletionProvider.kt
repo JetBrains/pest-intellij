@@ -10,7 +10,6 @@ import com.intellij.psi.PsiElement
 import com.intellij.psi.util.elementType
 import com.intellij.util.ProcessingContext
 import com.jetbrains.php.PhpIcons
-import com.jetbrains.php.completion.PhpLookupElement
 import com.jetbrains.php.lang.lexer.PhpTokenTypes
 import com.jetbrains.php.lang.psi.elements.FieldReference
 import com.jetbrains.php.lang.psi.elements.Variable
@@ -18,6 +17,10 @@ import com.pestphp.pest.getAllBeforeThisAssignments
 import com.pestphp.pest.isAnyPestFunction
 import com.pestphp.pest.isThisVariableInPest
 
+/**
+ * Adds completion for variable assignments from `beforeEach` when using `$this`
+ * inside a pest test.
+ */
 class ThisFieldsCompletionProvider : CompletionProvider<CompletionParameters>(), GotoDeclarationHandler {
     override fun addCompletions(
         parameters: CompletionParameters,

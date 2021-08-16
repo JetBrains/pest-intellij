@@ -10,6 +10,12 @@ import org.jetbrains.annotations.Nls
 import org.jetbrains.annotations.NonNls
 import javax.swing.Icon
 
+/**
+ * Registers a framework type for PHP.
+ *
+ * This class is used to show the menu in
+ * `Preferences -> Languages & Frameworks -> PHP -> Test Frameworks`
+ */
 class PestFrameworkType : PhpTestFrameworkType() {
     private val pestUrl = "https://github.com/pestphp/pest/releases"
 

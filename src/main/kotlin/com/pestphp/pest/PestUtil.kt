@@ -1,6 +1,7 @@
 package com.pestphp.pest
 
 import com.intellij.openapi.project.Project
+import com.intellij.openapi.project.guessProjectDir
 import com.intellij.openapi.util.text.StringUtil
 import com.intellij.psi.PsiElement
 import com.intellij.psi.PsiFile
@@ -69,4 +70,15 @@ fun PsiElement?.isPestDataset(): Boolean {
 
 fun FunctionReferenceImpl.isPestDatasetFunction(): Boolean {
     return this.canonicalText in setOf("dataset")
+}
+
+/**
+ * Checks if the file is the `tests/Pest.php` file.
+ */
+fun PsiFile.isPestFile(): Boolean {
+    val projectDir = this.project.guessProjectDir() ?: return false
+
+    val pestFilePath = PestSettings.getInstance(this.project).pestFilePath
+
+    return this.virtualFile.path == projectDir.path + "/" + pestFilePath
 }

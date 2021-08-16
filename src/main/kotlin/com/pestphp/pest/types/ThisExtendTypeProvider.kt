@@ -9,6 +9,9 @@ import com.jetbrains.php.lang.psi.resolve.types.PhpTypeProvider4
 import com.pestphp.pest.expectationType
 import com.pestphp.pest.isThisVariableInExtend
 
+/**
+ * Adds autocompletion for `$this` variable in `expect->extend`.
+ */
 class ThisExtendTypeProvider : PhpTypeProvider4 {
     override fun getKey(): Char {
         return '\u0223'

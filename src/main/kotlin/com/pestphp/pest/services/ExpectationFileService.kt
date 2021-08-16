@@ -1,9 +1,7 @@
 package com.pestphp.pest.services
 
-import com.intellij.openapi.application.ApplicationManager
-import com.intellij.openapi.application.invokeLater
+import com.intellij.openapi.application.runReadAction
 import com.intellij.openapi.application.runWriteAction
-import com.intellij.openapi.progress.runSuspendingAction
 import com.intellij.openapi.project.DumbService
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.vfs.VirtualFile
@@ -27,26 +25,28 @@ class ExpectationFileService(val project: Project) {
     fun updateExtends(phpFile: PhpFile): Boolean {
         val beforeMethods = methods[phpFile.virtualFile.path]
 
-        val newMethods = phpFile.expectExtends
-            .filter { it.extendName !== null }
-            .mapNotNull {
-                val extendName = it.extendName ?: return@mapNotNull null
+        val newMethods = runReadAction {
+            phpFile.expectExtends
+                .filter { it.extendName !== null }
+                .mapNotNull {
+                    val extendName = it.extendName ?: return@mapNotNull null
 
-                val closure = (it.parameters[1] as? PhpExpression)?.firstChild as? Function
+                    val closure = (it.parameters[1] as? PhpExpression)?.firstChild as? Function
 
-                if (closure === null) {
-                    return@mapNotNull null
+                    if (closure === null) {
+                        return@mapNotNull null
+                    }
+
+                    ExpectationGenerator.Method(
+                        extendName,
+                        closure.type,
+                        closure.parameters.asList()
+                    )
                 }
-
-                ExpectationGenerator.Method(
-                    extendName,
-                    closure.type,
-                    closure.parameters.asList()
-                )
-            }
-            .also {
-                methods[phpFile.virtualFile.path] = it.toMutableList()
-            }
+                .also {
+                    methods[phpFile.virtualFile.path] = it.toMutableList()
+                }
+        }
 
         if (beforeMethods === null && newMethods.isEmpty()) {
             return false
@@ -76,7 +76,7 @@ class ExpectationFileService(val project: Project) {
         val file = generator.generateToFile(project)
 
         // Save the file in vendor folder
-        invokeLater {
+        DumbService.getInstance(project).smartInvokeLater {
             runWriteAction {
                 DumbService.getInstance(project).suspendIndexingAndRun(
                     "Indexing Pest expect extends"
