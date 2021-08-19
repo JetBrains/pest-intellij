@@ -1,0 +1,3 @@
+<?php
+it("can test this", function() {
+};

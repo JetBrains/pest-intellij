@@ -49,6 +49,11 @@
         <lang.structureViewExtension implementation="com.pestphp.pest.structureView.PestStructureViewExtension"/>
         <postStartupActivity implementation="com.pestphp.pest.startupActivity.ExpectationFileStartupActivity"/>
         <gotoSymbolContributor implementation="com.pestphp.pest.goto.PestTestGoToSymbolContributor"/>
+        <liveTemplateContext implementation="com.pestphp.pest.templates.PestRootTemplateContextType"/>
+        <defaultLiveTemplates file="/liveTemplates/PestPHP.xml"/>
+        <codeInsight.template.postfixTemplateProvider
+                language="PHP"
+                implementationClass="com.pestphp.pest.templates.PestPostfixTemplateProvider"/>
     </extensions>
 
     <extensions defaultExtensionNs="com.jetbrains.php">

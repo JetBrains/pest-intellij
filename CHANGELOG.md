@@ -6,6 +6,16 @@
 ### Fixed
 - Invoke the FileListener PSI part later (should fix indexing issues)
 - Fixed stub issues on PestIconProvider by wrapping `runReadAction`
+- Fixed `$this->field` not working when namespace exist
+- Fixed Concurrent modification errors on expectation file service
+- Fixed file generation triggering on projects without pest
+
+### Added
+- Added new context type for the root of a pest file
+- Added post fix template for `it` tests
+- Added live template for `it` test
+- Added live template for `test` test
+- Added light icon for `pest.php` file
 
 ## [1.0.5]
 ### Changed

@@ -1,6 +1,7 @@
 package com.pestphp.pest.services
 
 import com.intellij.openapi.application.runReadAction
+import com.intellij.openapi.application.runUndoTransparentWriteAction
 import com.intellij.openapi.application.runWriteAction
 import com.intellij.openapi.project.DumbService
 import com.intellij.openapi.project.Project
@@ -15,7 +16,7 @@ import com.pestphp.pest.extendName
 import com.pestphp.pest.generators.ExpectationGenerator
 
 class ExpectationFileService(val project: Project) {
-    private val methods: MutableMap<String, List<ExpectationGenerator.Method>> = mutableMapOf()
+    private var methods: Map<String, List<ExpectationGenerator.Method>> = mutableMapOf()
 
     /**
      * Update te extends coming from a specific file.
@@ -23,6 +24,7 @@ class ExpectationFileService(val project: Project) {
      * then true would be returned.
      */
     fun updateExtends(phpFile: PhpFile): Boolean {
+        val methods = this.methods.toMutableMap()
         val beforeMethods = methods[phpFile.virtualFile.path]
 
         val newMethods = runReadAction {
@@ -52,15 +54,20 @@ class ExpectationFileService(val project: Project) {
             return false
         }
 
+        this.methods = methods
         return beforeMethods != newMethods
     }
 
     fun removeExtends(virtualFile: VirtualFile): Boolean {
+        val methods = this.methods.toMutableMap()
+
         if (methods[virtualFile.path]?.isEmpty() != false) {
             return false
         }
 
         methods.remove(virtualFile.path)
+
+        this.methods = methods
         return true
     }
 
@@ -73,7 +80,7 @@ class ExpectationFileService(val project: Project) {
             .let { generator.docMethods.addAll(it) }
 
         // Generate the file
-        val file = generator.generateToFile(project)
+        val newFile = runReadAction { generator.generateToFile(project) }
 
         // Save the file in vendor folder
         DumbService.getInstance(project).smartInvokeLater {
@@ -89,10 +96,16 @@ class ExpectationFileService(val project: Project) {
                         PsiManager.getInstance(project).findDirectory(composer) ?: return@suspendIndexingAndRun
 
                     // Check if file already exist and delete it so we can make it again.
-                    val expectationFile = directory.findFile(file.viewProvider.virtualFile.name)
-                    expectationFile?.delete()
+                    val oldExpectationFile = directory.findFile(newFile.viewProvider.virtualFile.name)
 
-                    directory.add(file)
+                    if (oldExpectationFile === null) {
+                        directory.add(newFile)
+                        return@suspendIndexingAndRun
+                    }
+
+                    runUndoTransparentWriteAction {
+                        oldExpectationFile.firstChild.replace(newFile.firstChild)
+                    }
                 }
             }
         }

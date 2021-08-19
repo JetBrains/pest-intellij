@@ -10,6 +10,7 @@ import com.intellij.psi.search.PsiSearchHelper
 import com.jetbrains.php.lang.PhpFileType
 import com.jetbrains.php.lang.psi.PhpFile
 import com.pestphp.pest.expectExtends
+import com.pestphp.pest.isPestEnabled
 import com.pestphp.pest.services.ExpectationFileService
 
 /**
@@ -17,6 +18,10 @@ import com.pestphp.pest.services.ExpectationFileService
  */
 class ExpectationFileStartupActivity : StartupActivity {
     override fun runActivity(project: Project) {
+        if(! project.isPestEnabled()) {
+            return
+        }
+
         val expectationFileService = project.service<ExpectationFileService>()
 
         val searchScope = GlobalSearchScope.getScopeRestrictedByFileTypes(

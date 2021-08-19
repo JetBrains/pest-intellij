@@ -4,6 +4,7 @@ import com.intellij.openapi.components.PersistentStateComponent
 import com.intellij.openapi.components.ServiceManager
 import com.intellij.openapi.components.State
 import com.intellij.openapi.components.Storage
+import com.intellij.openapi.components.service
 import com.intellij.openapi.project.Project
 import com.intellij.util.xmlb.XmlSerializerUtil
 import com.pestphp.pest.parser.PestConfigurationFile
@@ -29,7 +30,7 @@ class PestSettings : PersistentStateComponent<PestSettings> {
 
     companion object {
         fun getInstance(project: Project): PestSettings {
-            return ServiceManager.getService(project, PestSettings::class.java)
+            return project.service()
         }
     }
 }

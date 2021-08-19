@@ -28,6 +28,8 @@ class ExtendAsyncFileListener : AsyncFileChangeListenerBase() {
     override fun updateFile(file: VirtualFile, event: VFileEvent) {
         ProjectManager.getInstance()
             .openProjects
+            // Only look at projects where pest is enabled
+            .filter { it.isPestEnabled() }
             // Only look at projects where the file is inside.
             .filter { ProjectFileIndex.getInstance(it).isInContent(file) }
             // Get the PSI file inside each of the projects.
