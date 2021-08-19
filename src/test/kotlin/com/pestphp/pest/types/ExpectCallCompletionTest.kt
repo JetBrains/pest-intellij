@@ -37,8 +37,8 @@ class ExpectCallCompletionTest : BaseTypeTest() {
         assertCompletion("someExtend")
     }
 
-    fun testFieldCompletionsChainedAndProperty() {
-        val file = myFixture.configureByFile("tests/expectCallCompletionChainedAndProperty.php")
+    fun testFieldCompletionsChainedNotProperty() {
+        val file = myFixture.configureByFile("tests/expectCallCompletionChainedNotProperty.php")
 
         val service = project.service<ExpectationFileService>()
         service.updateExtends(file as PhpFile)
@@ -48,8 +48,8 @@ class ExpectCallCompletionTest : BaseTypeTest() {
         assertCompletion("someExtend")
     }
 
-    fun testFieldCompletionsChainedAndMethod() {
-        val file = myFixture.configureByFile("tests/expectCallCompletionChainedAndMethod.php")
+    fun testFieldCompletionsChainedNotMethod() {
+        val file = myFixture.configureByFile("tests/expectCallCompletionChainedNotMethod.php")
 
         val service = project.service<ExpectationFileService>()
         service.updateExtends(file as PhpFile)

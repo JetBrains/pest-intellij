@@ -1,9 +1,9 @@
 package com.pestphp.pest.fileListeners
 
-import com.intellij.openapi.application.invokeLater
+import com.intellij.openapi.application.ApplicationManager
+import com.intellij.openapi.application.runReadAction
 import com.intellij.openapi.components.service
 import com.intellij.openapi.externalSystem.autoimport.AsyncFileChangeListenerBase
-import com.intellij.openapi.project.NoAccessDuringPsiEvents
 import com.intellij.openapi.project.ProjectManager
 import com.intellij.openapi.roots.ProjectFileIndex
 import com.intellij.openapi.util.io.FileUtilRt
@@ -13,7 +13,6 @@ import com.intellij.openapi.vfs.newvfs.events.VFileEvent
 import com.intellij.psi.PsiManager
 import com.jetbrains.php.lang.PhpFileType
 import com.jetbrains.php.lang.psi.PhpFile
-import com.pestphp.pest.expectExtends
 import com.pestphp.pest.isPestEnabled
 import com.pestphp.pest.services.ExpectationFileService
 
@@ -29,6 +28,8 @@ class ExtendAsyncFileListener : AsyncFileChangeListenerBase() {
     override fun updateFile(file: VirtualFile, event: VFileEvent) {
         ProjectManager.getInstance()
             .openProjects
+            // Only look at projects where pest is enabled
+            .filter { it.isPestEnabled() }
             // Only look at projects where the file is inside.
             .filter { ProjectFileIndex.getInstance(it).isInContent(file) }
             // Get the PSI file inside each of the projects.
@@ -44,7 +45,12 @@ class ExtendAsyncFileListener : AsyncFileChangeListenerBase() {
                     return@forEach
                 }
 
-                invokeLater {
+                ApplicationManager.getApplication().executeOnPooledThread {
+                    // Check if PSI tree is valid
+                    if (runReadAction { ! it.isValid }) {
+                        return@executeOnPooledThread
+                    }
+
                     // Add all the extends
                     val hasChanges = expectationFileService.updateExtends(it)
 

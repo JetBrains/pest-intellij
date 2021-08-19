@@ -9,6 +9,7 @@ import com.jetbrains.php.lang.psi.elements.StringLiteralExpression
 import com.jetbrains.php.lang.psi.elements.impl.FunctionReferenceImpl
 import com.jetbrains.php.run.remote.PhpRemoteInterpreterManager
 import com.jetbrains.php.util.pathmapper.PhpPathMapper
+import java.util.Locale
 
 fun FunctionReferenceImpl.getPestTestName(): String? {
     val testName = (getParameter(0) as? StringLiteralExpression)?.contents
@@ -67,7 +68,7 @@ fun String.toPestTestRegex(workingDirectory: String, file: String, pathMapper: P
         .removePrefix(mappedWorkingDirectory.withoutFirstFileSeparator)
         .withoutFirstFileSeparator
         // 2. Make the first folder's first letter uppercase.
-        .capitalize()
+        .replaceFirstChar { if (it.isLowerCase()) it.titlecase(Locale.getDefault()) else it.toString() }
         // 3. Remove file extension.
         .substringBeforeLast('.')
         // 4. Make directory separators to namespace separators.

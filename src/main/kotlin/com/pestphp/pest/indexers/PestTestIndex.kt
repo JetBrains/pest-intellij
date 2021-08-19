@@ -19,6 +19,10 @@ import com.pestphp.pest.getPestTests
 import com.pestphp.pest.isPestTestFile
 import gnu.trove.THashMap
 
+/**
+ * Indexes all pest test files with the following key-value store
+ * `pest-test-file-name => ['it test', 'it should work']`
+ */
 class PestTestIndex : FileBasedIndexExtension<String, Set<String>>() {
     override fun getName(): ID<String, Set<String>> {
         return key

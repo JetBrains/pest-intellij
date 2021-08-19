@@ -1,9 +1,8 @@
 package com.pestphp.pest.services
 
-import com.intellij.openapi.application.ApplicationManager
-import com.intellij.openapi.application.invokeLater
+import com.intellij.openapi.application.runReadAction
+import com.intellij.openapi.application.runUndoTransparentWriteAction
 import com.intellij.openapi.application.runWriteAction
-import com.intellij.openapi.progress.runSuspendingAction
 import com.intellij.openapi.project.DumbService
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.vfs.VirtualFile
@@ -17,7 +16,7 @@ import com.pestphp.pest.extendName
 import com.pestphp.pest.generators.ExpectationGenerator
 
 class ExpectationFileService(val project: Project) {
-    private val methods: MutableMap<String, List<ExpectationGenerator.Method>> = mutableMapOf()
+    private var methods: Map<String, List<ExpectationGenerator.Method>> = mutableMapOf()
 
     /**
      * Update te extends coming from a specific file.
@@ -25,42 +24,50 @@ class ExpectationFileService(val project: Project) {
      * then true would be returned.
      */
     fun updateExtends(phpFile: PhpFile): Boolean {
+        val methods = this.methods.toMutableMap()
         val beforeMethods = methods[phpFile.virtualFile.path]
 
-        val newMethods = phpFile.expectExtends
-            .filter { it.extendName !== null }
-            .mapNotNull {
-                val extendName = it.extendName ?: return@mapNotNull null
+        val newMethods = runReadAction {
+            phpFile.expectExtends
+                .filter { it.extendName !== null }
+                .mapNotNull {
+                    val extendName = it.extendName ?: return@mapNotNull null
 
-                val closure = (it.parameters[1] as? PhpExpression)?.firstChild as? Function
+                    val closure = (it.parameters[1] as? PhpExpression)?.firstChild as? Function
 
-                if (closure === null) {
-                    return@mapNotNull null
+                    if (closure === null) {
+                        return@mapNotNull null
+                    }
+
+                    ExpectationGenerator.Method(
+                        extendName,
+                        closure.type,
+                        closure.parameters.asList()
+                    )
                 }
-
-                ExpectationGenerator.Method(
-                    extendName,
-                    closure.type,
-                    closure.parameters.asList()
-                )
-            }
-            .also {
-                methods[phpFile.virtualFile.path] = it.toMutableList()
-            }
+                .also {
+                    methods[phpFile.virtualFile.path] = it.toMutableList()
+                }
+        }
 
         if (beforeMethods === null && newMethods.isEmpty()) {
             return false
         }
 
+        this.methods = methods
         return beforeMethods != newMethods
     }
 
     fun removeExtends(virtualFile: VirtualFile): Boolean {
+        val methods = this.methods.toMutableMap()
+
         if (methods[virtualFile.path]?.isEmpty() != false) {
             return false
         }
 
         methods.remove(virtualFile.path)
+
+        this.methods = methods
         return true
     }
 
@@ -73,10 +80,10 @@ class ExpectationFileService(val project: Project) {
             .let { generator.docMethods.addAll(it) }
 
         // Generate the file
-        val file = generator.generateToFile(project)
+        val newFile = runReadAction { generator.generateToFile(project) }
 
         // Save the file in vendor folder
-        invokeLater {
+        DumbService.getInstance(project).smartInvokeLater {
             runWriteAction {
                 DumbService.getInstance(project).suspendIndexingAndRun(
                     "Indexing Pest expect extends"
@@ -89,10 +96,16 @@ class ExpectationFileService(val project: Project) {
                         PsiManager.getInstance(project).findDirectory(composer) ?: return@suspendIndexingAndRun
 
                     // Check if file already exist and delete it so we can make it again.
-                    val expectationFile = directory.findFile(file.viewProvider.virtualFile.name)
-                    expectationFile?.delete()
+                    val oldExpectationFile = directory.findFile(newFile.viewProvider.virtualFile.name)
 
-                    directory.add(file)
+                    if (oldExpectationFile === null) {
+                        directory.add(newFile)
+                        return@suspendIndexingAndRun
+                    }
+
+                    runUndoTransparentWriteAction {
+                        oldExpectationFile.firstChild.replace(newFile.firstChild)
+                    }
                 }
             }
         }

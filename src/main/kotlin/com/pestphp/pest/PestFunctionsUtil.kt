@@ -44,9 +44,7 @@ fun MethodReference.isPestTestMethodReference(): Boolean {
     }
 }
 
-fun PsiFile.getPestTests(): Set<FunctionReference> {
-    if (this !is PhpFile) return setOf()
-
+fun PsiFile.getRoot(): List<PsiElement> {
     val element = this.firstChild
 
     return element.children.filterIsInstance<PhpNamespace>()
@@ -57,6 +55,12 @@ fun PsiFile.getPestTests(): Set<FunctionReference> {
         .children
         .filterIsInstance<Statement>()
         .mapNotNull { it.firstChild }
+}
+
+fun PsiFile.getPestTests(): Set<FunctionReference> {
+    if (this !is PhpFile) return setOf()
+
+    return this.getRoot()
         .filter(PsiElement::isPestTestReference)
         .filterIsInstance<FunctionReference>()
         .toSet()

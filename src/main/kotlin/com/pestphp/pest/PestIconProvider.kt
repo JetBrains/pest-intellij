@@ -1,8 +1,8 @@
 package com.pestphp.pest
 
 import com.intellij.ide.IconProvider
+import com.intellij.openapi.application.runReadAction
 import com.intellij.openapi.project.DumbService
-import com.intellij.openapi.project.guessProjectDir
 import com.intellij.psi.PsiElement
 import com.intellij.psi.PsiFile
 import javax.swing.Icon
@@ -13,25 +13,21 @@ class PestIconProvider : IconProvider() {
 
         if (element !is PsiFile) return null
 
-        try {
-            if (element.isPestTestFile()) {
-                return PestIcons.FILE
-            }
+        return runReadAction { findIconFromPsiFile(element) }
+    }
 
-            if (element.isPestDatasetFile()) {
-                return PestIcons.DATASET_FILE
-            }
+    private fun findIconFromPsiFile(file: PsiFile): Icon?
+    {
+        if (file.isPestTestFile()) {
+            return PestIcons.FILE
+        }
 
-            val projectDir = element.project.guessProjectDir() ?: return null
-            val pestFilePath = PestSettings.getInstance(element.project).pestFilePath
-            if (element.virtualFile.path == projectDir.path + "/" + pestFilePath) {
-                return PestIcons.LOGO
-            }
-        } catch (exception: Exception) {
-            if (exception.message?.contains("Outdated stub") == true) {
-                return null
-            }
-            throw exception
+        if (file.isPestDatasetFile()) {
+            return PestIcons.DATASET_FILE
+        }
+
+        if (file.isPestFile()) {
+            return PestIcons.LOGO
         }
 
         return null

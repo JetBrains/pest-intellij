@@ -2,20 +2,14 @@ package com.pestphp.pest.goto
 
 import com.intellij.ide.projectView.PresentationData
 import com.intellij.navigation.ChooseByNameContributor
-import com.intellij.navigation.ChooseByNameContributorEx
 import com.intellij.navigation.ItemPresentation
 import com.intellij.navigation.NavigationItem
 import com.intellij.openapi.project.Project
 import com.intellij.psi.PsiManager
-import com.intellij.psi.search.GlobalSearchScope
 import com.intellij.psi.search.ProjectScope
-import com.intellij.util.Processor
 import com.intellij.util.indexing.FileBasedIndex
-import com.intellij.util.indexing.FindSymbolParameters
-import com.intellij.util.indexing.IdFilter
 import com.jetbrains.php.PhpPresentationUtil
 import com.jetbrains.php.lang.psi.elements.FunctionReference
-import com.jetbrains.php.lang.psi.elements.impl.FunctionReferenceImpl
 import com.pestphp.pest.PestIcons
 import com.pestphp.pest.getPestTestName
 import com.pestphp.pest.getPestTests

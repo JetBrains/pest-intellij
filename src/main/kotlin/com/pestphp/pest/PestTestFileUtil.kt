@@ -34,9 +34,7 @@ inline fun PsiElement?.isThisVariableInPest(condition: (FunctionReferenceImpl) -
 }
 
 fun PsiFile.getAllBeforeThisAssignments(): List<AssignmentExpression> {
-    return this.firstChild.children
-        .filterIsInstance<Statement>()
-        .mapNotNull { it.firstChild }
+    return this.getRoot()
         .filterIsInstance<FunctionReferenceImpl>()
         .filter { it.isPestBeforeFunction() }
         .flatMap { it.getThisStatements() }

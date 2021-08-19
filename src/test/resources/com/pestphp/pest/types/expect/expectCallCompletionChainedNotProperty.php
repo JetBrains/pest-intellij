@@ -7,6 +7,6 @@ expect()->extend('someExtend', function ($min, $max) {
 
 test('numeric ranges', function () {
     expect(100)->toBeInt()
-        ->and
+        ->not
         -><caret>
 });

@@ -6,6 +6,9 @@ import com.intellij.patterns.PlatformPatterns
 import com.jetbrains.php.lang.lexer.PhpTokenTypes
 import com.jetbrains.php.lang.psi.elements.FieldReference
 
+/**
+ * Registers the completion providers
+ */
 class PestCompletionContributor : CompletionContributor() {
     init {
         extend(

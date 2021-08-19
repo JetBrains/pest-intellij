@@ -15,6 +15,11 @@ import com.pestphp.pest.getUsesPhpType
 import com.pestphp.pest.isAnyPestFunction
 import com.pestphp.pest.isThisVariableInPest
 
+/**
+ * Extend `$this` type with types from `uses`.
+ * Both `uses` from the same file, the pest config file
+ * and `uses` with paths from pest config file.
+ */
 class ThisTypeProvider : PhpTypeProvider4 {
     override fun getKey(): Char {
         return '\u0221'

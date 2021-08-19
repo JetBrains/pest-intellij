@@ -12,4 +12,10 @@ class ThisFieldCompletionTest : BaseTypeTest() {
 
         assertCompletion("foo")
     }
+
+    fun testFieldCompletionWithNamespace() {
+        myFixture.configureByFile("tests/beforeEachNamespaceCompletion.php")
+
+        assertCompletion("foo")
+    }
 }

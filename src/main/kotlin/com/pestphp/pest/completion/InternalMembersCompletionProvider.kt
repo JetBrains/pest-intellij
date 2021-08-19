@@ -11,6 +11,10 @@ import com.jetbrains.php.lang.psi.elements.Variable
 import com.pestphp.pest.isAnyPestFunction
 import com.pestphp.pest.isThisVariableInPest
 
+/**
+ * Adds completion for private and protected methods of `$this` variable
+ * when inside a pest test.
+ */
 class InternalMembersCompletionProvider : CompletionProvider<CompletionParameters>() {
     override fun addCompletions(
         parameters: CompletionParameters,
