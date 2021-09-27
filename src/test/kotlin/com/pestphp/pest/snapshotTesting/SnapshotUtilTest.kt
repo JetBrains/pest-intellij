@@ -1,12 +1,11 @@
 package com.pestphp.pest.snapshotTesting
 
-import com.intellij.testFramework.UsefulTestCase
 import com.jetbrains.php.lang.psi.elements.impl.FunctionImpl
 import com.jetbrains.php.lang.psi.elements.impl.FunctionReferenceImpl
 import com.pestphp.pest.PestLightCodeFixture
-import com.pestphp.pest.getPestTestName
-import com.pestphp.pest.isPestExtendReference
 import junit.framework.TestCase
+import org.junit.Ignore
+import org.junit.Test
 
 class SnapshotUtilTest: PestLightCodeFixture() {
     override fun getTestDataPath(): String {
@@ -37,7 +36,9 @@ class SnapshotUtilTest: PestLightCodeFixture() {
         assertFalse(functionReference.isSnapshotAssertionCall)
     }
 
-    fun testItCanFindSnapshotFiles() {
+    @Ignore
+    @Test
+    fun ttCanFindSnapshotFiles() {
         val file = myFixture.configureByFile("snapshotTest.php")
 
         val pestTest = file.firstChild.children[0].firstChild as FunctionReferenceImpl

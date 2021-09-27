@@ -1,4 +1,4 @@
-package com.pestphp.pest.generators
+package com.pestphp.pest.customExpectations.generators
 
 import com.intellij.openapi.project.Project
 import com.intellij.psi.PsiFile

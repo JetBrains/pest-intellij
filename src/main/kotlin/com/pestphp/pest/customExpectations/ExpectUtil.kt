@@ -16,8 +16,8 @@ import com.jetbrains.php.lang.psi.elements.Variable
 import com.jetbrains.php.lang.psi.elements.impl.FunctionReferenceImpl
 import com.jetbrains.php.lang.psi.elements.impl.MethodReferenceImpl
 import com.jetbrains.php.lang.psi.resolve.types.PhpType
-import com.pestphp.pest.generators.Method
-import com.pestphp.pest.generators.Parameter
+import com.pestphp.pest.customExpectations.generators.Method
+import com.pestphp.pest.customExpectations.generators.Parameter
 
 val expectationType = PhpType().apply {
     this.add("\\Pest\\Expectation")

@@ -1,4 +1,4 @@
-package com.pestphp.pest.services
+package com.pestphp.pest.customExpectations
 
 import com.intellij.openapi.application.runReadAction
 import com.intellij.openapi.application.runUndoTransparentWriteAction
@@ -9,8 +9,8 @@ import com.intellij.psi.PsiManager
 import com.jetbrains.php.composer.lib.ComposerLibraryManager
 import com.jetbrains.php.lang.psi.PhpFile
 import com.jetbrains.rd.util.first
-import com.pestphp.pest.generators.ExpectationGenerator
-import com.pestphp.pest.generators.Method
+import com.pestphp.pest.customExpectations.generators.ExpectationGenerator
+import com.pestphp.pest.customExpectations.generators.Method
 import com.pestphp.pest.realPath
 
 class ExpectationFileService(val project: Project) {

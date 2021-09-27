@@ -4,12 +4,10 @@ import com.intellij.psi.PsiFile
 import com.intellij.psi.PsiManager
 import com.intellij.psi.search.GlobalSearchScope
 import com.intellij.util.indexing.FileBasedIndex
-import com.jetbrains.php.lang.PhpFileType
 import com.pestphp.pest.PestLightCodeFixture
 import com.pestphp.pest.customExpects
-import com.pestphp.pest.generators.Method
+import com.pestphp.pest.customExpectations.generators.Method
 import com.pestphp.pest.toMethod
-import junit.framework.TestCase
 
 class CustomExpectationIndexTest : PestLightCodeFixture() {
     override fun getTestDataPath(): String {
@@ -98,8 +96,8 @@ class CustomExpectationIndexTest : PestLightCodeFixture() {
         project.messageBus.connect().subscribe(
             CustomExpectationNotifier.TOPIC,
             object: CustomExpectationNotifier {
-                override fun changedExpectation(psiFile: PsiFile, customExpectations: List<Method>) {
-                    if (psiFile.name == "CustomExpectation.php") {
+                override fun changedExpectation(file: PsiFile, customExpectations: List<Method>) {
+                    if (file.name == "CustomExpectation.php") {
                         changedCount++
                     }
                 }

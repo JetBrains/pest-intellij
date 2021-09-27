@@ -3,8 +3,10 @@ package com.pestphp.pest.customExpectations
 import com.intellij.util.io.DataOutputStream
 import com.jetbrains.php.lang.psi.resolve.types.PhpType
 import com.pestphp.pest.PestLightCodeFixture
-import com.pestphp.pest.generators.Method
-import com.pestphp.pest.generators.Parameter
+import com.pestphp.pest.customExpectations.externalizers.ListDataExternalizer
+import com.pestphp.pest.customExpectations.externalizers.MethodDataExternalizer
+import com.pestphp.pest.customExpectations.generators.Method
+import com.pestphp.pest.customExpectations.generators.Parameter
 import java.io.ByteArrayInputStream
 import java.io.ByteArrayOutputStream
 import java.io.DataInputStream
@@ -13,7 +15,7 @@ class ListMethodDataExternalizerTest : PestLightCodeFixture() {
     private fun saveAndRead(method: List<Method>): List<Method> {
         val dataOutput = ByteArrayOutputStream()
 
-        val externalizer = ListMethodDataExternalizer()
+        val externalizer = ListDataExternalizer(MethodDataExternalizer.INSTANCE)
         externalizer.save(
             DataOutputStream(dataOutput),
             method

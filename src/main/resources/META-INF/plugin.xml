@@ -52,7 +52,7 @@
                 implementationClass="com.pestphp.pest.inspections.SuppressUndefinedPropertyInspection"
         />
         <notificationGroup displayType="BALLOON" id="Outdated Pest" isLogByDefault="true"/>
-        <projectService serviceImplementation="com.pestphp.pest.services.ExpectationFileService"/>
+        <projectService serviceImplementation="com.pestphp.pest.customExpectations.ExpectationFileService"/>
         <lang.structureViewExtension implementation="com.pestphp.pest.structureView.PestStructureViewExtension"/>
         <gotoSymbolContributor implementation="com.pestphp.pest.goto.PestTestGoToSymbolContributor"/>
         <liveTemplateContext implementation="com.pestphp.pest.templates.PestRootTemplateContextType"/>

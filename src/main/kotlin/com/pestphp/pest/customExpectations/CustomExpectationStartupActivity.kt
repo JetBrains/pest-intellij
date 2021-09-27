@@ -8,7 +8,6 @@ import com.intellij.psi.PsiManager
 import com.intellij.psi.search.GlobalSearchScope
 import com.intellij.util.indexing.FileBasedIndex
 import com.jetbrains.php.lang.psi.PhpFile
-import com.pestphp.pest.services.ExpectationFileService
 
 /**
  * Adds all methods to the expectation file service which has been indexed already.

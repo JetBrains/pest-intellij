@@ -2,7 +2,6 @@ package com.pestphp.pest.customExpectations
 
 
 import com.intellij.openapi.vfs.VirtualFile
-import com.intellij.testFramework.LightVirtualFile
 import com.intellij.util.indexing.DataIndexer
 import com.intellij.util.indexing.DefaultFileTypeSpecificInputFilter
 import com.intellij.util.indexing.FileBasedIndex
@@ -14,8 +13,10 @@ import com.intellij.util.io.EnumeratorStringDescriptor
 import com.intellij.util.io.KeyDescriptor
 import com.jetbrains.php.lang.PhpFileType
 import com.jetbrains.php.lang.psi.PhpFile
+import com.pestphp.pest.customExpectations.externalizers.ListDataExternalizer
+import com.pestphp.pest.customExpectations.externalizers.MethodDataExternalizer
 import com.pestphp.pest.customExpects
-import com.pestphp.pest.generators.Method
+import com.pestphp.pest.customExpectations.generators.Method
 import com.pestphp.pest.realPath
 import com.pestphp.pest.toMethod
 
@@ -63,7 +64,7 @@ class CustomExpectationIndex : FileBasedIndexExtension<String, List<Method>>() {
     }
 
     override fun getValueExternalizer(): DataExternalizer<List<Method>> {
-        return ListMethodDataExternalizer()
+        return ListDataExternalizer(MethodDataExternalizer.INSTANCE)
     }
 
     override fun getInputFilter(): FileBasedIndex.InputFilter {
