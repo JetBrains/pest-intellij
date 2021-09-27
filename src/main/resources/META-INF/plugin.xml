@@ -14,6 +14,11 @@
                 language="PHP"
                 implementationClass="com.pestphp.pest.PestTestRunLineMarkerProvider"
         />
+        <codeInsight.lineMarkerProvider
+                language="PHP"
+                implementationClass="com.pestphp.pest.snapshotTesting.SnapshotLineMarkerProvider"
+        />
+
 
         <programRunner implementation="com.pestphp.pest.configuration.PestDebugRunner"/>
         <configurationType implementation="com.pestphp.pest.configuration.PestRunConfigurationType"/>
@@ -23,6 +28,9 @@
         <projectService serviceImplementation="com.pestphp.pest.PestSettings"/>
         <testFinder implementation="com.pestphp.pest.goto.PestTestFinder"/>
         <fileBasedIndex implementation="com.pestphp.pest.indexers.PestTestIndex"/>
+        <fileBasedIndex implementation="com.pestphp.pest.customExpectations.CustomExpectationIndex"/>
+        <backgroundPostStartupActivity
+                implementation="com.pestphp.pest.customExpectations.CustomExpectationStartupActivity"/>
         <errorHandler implementation="com.pestphp.pest.GithubErrorReporter"/>
         <localInspection
                 language="PHP"
@@ -44,10 +52,8 @@
                 implementationClass="com.pestphp.pest.inspections.SuppressUndefinedPropertyInspection"
         />
         <notificationGroup displayType="BALLOON" id="Outdated Pest" isLogByDefault="true"/>
-        <vfs.asyncListener implementation="com.pestphp.pest.fileListeners.ExtendAsyncFileListener"/>
         <projectService serviceImplementation="com.pestphp.pest.services.ExpectationFileService"/>
         <lang.structureViewExtension implementation="com.pestphp.pest.structureView.PestStructureViewExtension"/>
-        <postStartupActivity implementation="com.pestphp.pest.startupActivity.ExpectationFileStartupActivity"/>
         <gotoSymbolContributor implementation="com.pestphp.pest.goto.PestTestGoToSymbolContributor"/>
         <liveTemplateContext implementation="com.pestphp.pest.templates.PestRootTemplateContextType"/>
         <defaultLiveTemplates file="/liveTemplates/PestPHP.xml"/>
@@ -55,6 +61,11 @@
                 language="PHP"
                 implementationClass="com.pestphp.pest.templates.PestPostfixTemplateProvider"/>
     </extensions>
+
+    <projectListeners>
+        <listener class="com.pestphp.pest.customExpectations.CustomExpectationListener"
+                  topic="com.pestphp.pest.customExpectations.CustomExpectationNotifier"/>
+    </projectListeners>
 
     <extensions defaultExtensionNs="com.jetbrains.php">
         <testFrameworkType implementation="com.pestphp.pest.PestFrameworkType"/>

@@ -2,13 +2,12 @@ package com.pestphp.pest.generators
 
 import com.jetbrains.php.lang.psi.resolve.types.PhpType
 import com.pestphp.pest.PestLightCodeFixture
-import junit.framework.TestCase
 
 class ExpectationGeneratorTest : PestLightCodeFixture() {
     fun testCanGenerateFileWithMethod() {
         val generator = ExpectationGenerator()
         generator.docMethods.add(
-            ExpectationGenerator.Method(
+            Method(
                 "works",
                 PhpType.BOOLEAN,
                 emptyList()

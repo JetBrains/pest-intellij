@@ -2,6 +2,7 @@ package com.pestphp.pest
 
 import com.intellij.testFramework.fixtures.BasePlatformTestCase
 import com.jetbrains.php.config.interpreters.PhpInterpreter
+import com.jetbrains.php.lang.PhpFileType
 import com.jetbrains.php.testFramework.PhpTestFrameworkConfiguration
 import com.jetbrains.php.testFramework.PhpTestFrameworkSettingsManager
 
@@ -32,5 +33,9 @@ abstract class PestLightCodeFixture : BasePlatformTestCase() {
         configuration?.executablePath = "randomPath"
 
         return configuration
+    }
+
+    protected fun configureByPhpCode(code: String) {
+        myFixture.configureByText(PhpFileType.INSTANCE, "<?php $code")
     }
 }

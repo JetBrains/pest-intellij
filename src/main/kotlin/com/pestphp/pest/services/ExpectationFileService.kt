@@ -5,78 +5,48 @@ import com.intellij.openapi.application.runUndoTransparentWriteAction
 import com.intellij.openapi.application.runWriteAction
 import com.intellij.openapi.project.DumbService
 import com.intellij.openapi.project.Project
-import com.intellij.openapi.vfs.VirtualFile
 import com.intellij.psi.PsiManager
 import com.jetbrains.php.composer.lib.ComposerLibraryManager
 import com.jetbrains.php.lang.psi.PhpFile
-import com.jetbrains.php.lang.psi.elements.Function
-import com.jetbrains.php.lang.psi.elements.PhpExpression
-import com.pestphp.pest.expectExtends
-import com.pestphp.pest.extendName
+import com.jetbrains.rd.util.first
 import com.pestphp.pest.generators.ExpectationGenerator
+import com.pestphp.pest.generators.Method
+import com.pestphp.pest.realPath
 
 class ExpectationFileService(val project: Project) {
-    private var methods: Map<String, List<ExpectationGenerator.Method>> = mutableMapOf()
+    private var methods: Map<String, List<Method>> = mutableMapOf()
 
     /**
      * Update te extends coming from a specific file.
      * If nothing was updated, false will be returned, if changes were made,
      * then true would be returned.
      */
-    fun updateExtends(phpFile: PhpFile): Boolean {
+    fun updateExtends(file: PhpFile, customExpectations: List<Method>): Boolean {
+        val fileName = file.realPath
+
         val methods = this.methods.toMutableMap()
-        val beforeMethods = methods[phpFile.virtualFile.path]
+        val beforeMethods = methods[fileName]
 
-        val newMethods = runReadAction {
-            phpFile.expectExtends
-                .filter { it.extendName !== null }
-                .mapNotNull {
-                    val extendName = it.extendName ?: return@mapNotNull null
+        val newMethods = mapOf(
+            fileName to customExpectations
+        )
 
-                    val closure = (it.parameters[1] as? PhpExpression)?.firstChild as? Function
-
-                    if (closure === null) {
-                        return@mapNotNull null
-                    }
-
-                    ExpectationGenerator.Method(
-                        extendName,
-                        closure.type,
-                        closure.parameters.asList()
-                    )
-                }
-                .also {
-                    methods[phpFile.virtualFile.path] = it.toMutableList()
-                }
-        }
-
-        if (beforeMethods === null && newMethods.isEmpty()) {
+        // If no methods were registered before and no methods were found, skip.
+        if (beforeMethods === null && newMethods.first().value.isEmpty()) {
             return false
         }
 
-        this.methods = methods
+        this.methods = methods.plus(newMethods)
         return beforeMethods != newMethods
     }
 
-    fun removeExtends(virtualFile: VirtualFile): Boolean {
-        val methods = this.methods.toMutableMap()
-
-        if (methods[virtualFile.path]?.isEmpty() != false) {
-            return false
-        }
-
-        methods.remove(virtualFile.path)
-
-        this.methods = methods
-        return true
-    }
-
-    fun generateFile() {
+    fun generateFile(afterGenerationRunnable: () -> Unit) {
         val generator = ExpectationGenerator()
 
         // Add all methods to the generator
         methods.values
             .flatten()
+            .distinct()
             .let { generator.docMethods.addAll(it) }
 
         // Generate the file
@@ -105,6 +75,7 @@ class ExpectationFileService(val project: Project) {
 
                     runUndoTransparentWriteAction {
                         oldExpectationFile.firstChild.replace(newFile.firstChild)
+                        afterGenerationRunnable()
                     }
                 }
             }

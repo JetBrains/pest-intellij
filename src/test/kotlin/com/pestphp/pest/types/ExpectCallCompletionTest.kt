@@ -30,8 +30,8 @@ class ExpectCallCompletionTest : BaseTypeTest() {
         val file = myFixture.configureByFile("tests/expectCallCompletion.php")
 
         val service = project.service<ExpectationFileService>()
-        service.updateExtends(file as PhpFile)
-        service.generateFile()
+        service.updateExtends(file as PhpFile, listOf())
+        service.generateFile {}
         waitForAppLeakingThreads(10, TimeUnit.SECONDS)
 
         assertCompletion("someExtend")
@@ -41,8 +41,8 @@ class ExpectCallCompletionTest : BaseTypeTest() {
         val file = myFixture.configureByFile("tests/expectCallCompletionChainedNotProperty.php")
 
         val service = project.service<ExpectationFileService>()
-        service.updateExtends(file as PhpFile)
-        service.generateFile()
+        service.updateExtends(file as PhpFile, listOf())
+        service.generateFile {}
         waitForAppLeakingThreads(10, TimeUnit.SECONDS)
 
         assertCompletion("someExtend")
@@ -52,8 +52,8 @@ class ExpectCallCompletionTest : BaseTypeTest() {
         val file = myFixture.configureByFile("tests/expectCallCompletionChainedNotMethod.php")
 
         val service = project.service<ExpectationFileService>()
-        service.updateExtends(file as PhpFile)
-        service.generateFile()
+        service.updateExtends(file as PhpFile, listOf())
+        service.generateFile {}
         waitForAppLeakingThreads(10, TimeUnit.SECONDS)
 
         assertCompletion("someExtend")
