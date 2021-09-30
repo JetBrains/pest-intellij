@@ -16,6 +16,9 @@ import com.pestphp.pest.getPestTests
 import com.pestphp.pest.indexers.PestTestIndex
 import javax.swing.Icon
 
+/**
+ * Adds support for navigating to pest tests via the symbol searching
+ */
 class PestTestGoToSymbolContributor: ChooseByNameContributor {
     override fun getNames(project: Project, includeNonProjectItems: Boolean): Array<String> {
         val index = FileBasedIndex.getInstance()

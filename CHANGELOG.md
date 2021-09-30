@@ -3,6 +3,14 @@
 # PEST IntelliJ Changelog
 
 ## [Unreleased]
+### Added
+- Added gutter icon for snapshots
+- Added goto snapshot file
+
+### Fixed
+- Rewrote the custom expectation system to use a more robust system
+
+## [1.1.0]
 ### Fixed
 - Invoke the FileListener PSI part later (should fix indexing issues)
 - Fixed stub issues on PestIconProvider by wrapping `runReadAction`

@@ -8,6 +8,7 @@ import com.jetbrains.php.PhpIndex
 import com.jetbrains.php.lang.psi.PhpFile
 import com.jetbrains.php.lang.psi.elements.Function
 import com.jetbrains.php.lang.psi.elements.ParameterList
+import com.jetbrains.php.lang.psi.elements.PhpExpression
 import com.jetbrains.php.lang.psi.elements.PhpNamespace
 import com.jetbrains.php.lang.psi.elements.Statement
 import com.jetbrains.php.lang.psi.elements.StringLiteralExpression
@@ -15,6 +16,8 @@ import com.jetbrains.php.lang.psi.elements.Variable
 import com.jetbrains.php.lang.psi.elements.impl.FunctionReferenceImpl
 import com.jetbrains.php.lang.psi.elements.impl.MethodReferenceImpl
 import com.jetbrains.php.lang.psi.resolve.types.PhpType
+import com.pestphp.pest.customExpectations.generators.Method
+import com.pestphp.pest.customExpectations.generators.Parameter
 
 val expectationType = PhpType().apply {
     this.add("\\Pest\\Expectation")
@@ -78,7 +81,7 @@ val MethodReferenceImpl.extendName: String?
         return name.contents
     }
 
-val PsiFile.expectExtends: List<MethodReferenceImpl>
+val PsiFile.customExpects: List<MethodReferenceImpl>
     get() {
         if (this !is PhpFile) return emptyList()
 
@@ -95,3 +98,25 @@ val PsiFile.expectExtends: List<MethodReferenceImpl>
             .filterIsInstance<MethodReferenceImpl>()
             .filter { it.isPestExtendReference() }
     }
+
+fun MethodReferenceImpl.toMethod(): Method? {
+    val extendName = this.extendName ?: return null
+
+    val closure = (this.parameters[1] as? PhpExpression)?.firstChild as? Function
+
+    if (closure === null) {
+        return null
+    }
+
+    return Method(
+        extendName,
+        closure.type,
+        closure.parameters.map { parameter ->
+            Parameter(
+                parameter.name,
+                parameter.type,
+                parameter.defaultValuePresentation
+            )
+        }
+    )
+}

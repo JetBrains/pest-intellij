@@ -12,7 +12,6 @@
 
 <!-- Plugin description -->
 This plugin adds support for using Pest PHP inside PHPStorm
-<!-- Plugin description end -->
 
 ## Installation
 
@@ -50,6 +49,11 @@ To configure pest to run properly, you need to setup the the proper local test f
   Set the "Test Runner" to
 	<code>/path/to/your/project/phpunit.xml</code>
 
+
+## Resources
+For a great video course on how to write tests with Pest, check out [Testing Laravel](https://testing-laravel.com/)
+
+<!-- Plugin description end -->
 
 ---
 Plugin based on the [IntelliJ Platform Plugin Template](https://github.com/JetBrains/intellij-platform-plugin-template).
