@@ -10,9 +10,6 @@
 ### Fixed
 - Rewrote the custom expectation system to use a more robust system
 
-### Changed
-- Removed decorator in favor of implementing interface
-
 ## [1.1.0]
 ### Fixed
 - Invoke the FileListener PSI part later (should fix indexing issues)
