@@ -81,27 +81,29 @@ class PestTestGoToSymbolContributor: ChooseByNameContributor {
             .toTypedArray()
     }
 
-    class PestTestFunctionReference(val b: FunctionReference): FunctionReference by b {
+    class PestTestFunctionReference(private val functionReference: FunctionReference): NavigationItem {
         override fun getPresentation(): ItemPresentation {
             val location = PhpPresentationUtil.getPresentablePathForFile(
-                b.containingFile.virtualFile,
-                b.project
+                functionReference.containingFile.virtualFile,
+                functionReference.project
             )
 
             return PresentationData(
-                b.getPestTestName(),
+                functionReference.getPestTestName(),
                 location,
                 PestIcons.LOGO,
                 null,
             )
         }
 
-        override fun getName(): String? {
-            return b.getPestTestName()
-        }
+        override fun navigate(requestFocus: Boolean) = functionReference.navigate(requestFocus)
 
-        override fun getIcon(flags: Int): Icon {
-            return PestIcons.LOGO
+        override fun canNavigate(): Boolean = functionReference.canNavigate()
+
+        override fun canNavigateToSource(): Boolean = canNavigateToSource()
+
+        override fun getName(): String? {
+            return functionReference.getPestTestName()
         }
     }
 }
