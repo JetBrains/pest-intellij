@@ -4,8 +4,8 @@ import com.intellij.util.io.DataExternalizer
 import com.intellij.util.io.EnumeratorStringDescriptor
 import com.jetbrains.php.lang.psi.resolve.types.PhpType
 import com.jetbrains.php.lang.psi.stubs.indexes.StringSetDataExternalizer
-import com.pestphp.pest.generators.Method
-import com.pestphp.pest.generators.Parameter
+import com.pestphp.pest.customExpectations.generators.Method
+import com.pestphp.pest.customExpectations.generators.Parameter
 import java.io.DataInput
 import java.io.DataOutput
 

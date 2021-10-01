@@ -1,7 +1,7 @@
 package com.pestphp.pest.customExpectations
 
 import com.intellij.util.io.DataExternalizer
-import com.pestphp.pest.generators.Method
+import com.pestphp.pest.customExpectations.generators.Method
 import java.io.DataInput
 import java.io.DataOutput
 
