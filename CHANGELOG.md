@@ -9,6 +9,7 @@
 
 ### Fixed
 - Rewrote the custom expectation system to use a more robust system
+- Updated custom expectation indexer to v2
 
 ### Changed
 - Removed decorator in favor of implementing interface

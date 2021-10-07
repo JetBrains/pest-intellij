@@ -30,7 +30,7 @@ class CustomExpectationIndex : FileBasedIndexExtension<String, List<Method>>() {
     }
 
     override fun getVersion(): Int {
-        return 1
+        return 2
     }
 
     override fun getIndexer(): DataIndexer<String, List<Method>, FileContent> {
