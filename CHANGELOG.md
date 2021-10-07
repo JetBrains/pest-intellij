@@ -3,6 +3,8 @@
 # PEST IntelliJ Changelog
 
 ## [Unreleased]
+
+## [1.2.0]
 ### Added
 - Added gutter icon for snapshots
 - Added goto snapshot file
