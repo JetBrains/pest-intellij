@@ -49,11 +49,11 @@ class ExpectationFileService(val project: Project) {
             .distinct()
             .let { generator.docMethods.addAll(it) }
 
-        // Generate the file
-        val newFile = runReadAction { generator.generateToFile(project) }
-
         // Save the file in vendor folder
         DumbService.getInstance(project).smartInvokeLater {
+            // Generate the file
+            val newFile = runReadAction { generator.generateToFile(project) }
+
             runWriteAction {
                 DumbService.getInstance(project).suspendIndexingAndRun(
                     "Indexing Pest expect extends"

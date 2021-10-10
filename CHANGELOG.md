@@ -3,6 +3,8 @@
 # PEST IntelliJ Changelog
 
 ## [Unreleased]
+### Fixed
+- Moved file generation into smart invocation
 
 ## [1.2.0]
 ### Added
