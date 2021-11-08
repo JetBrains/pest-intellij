@@ -10,13 +10,19 @@ import com.intellij.psi.PsiRecursiveElementWalkingVisitor
 import com.intellij.psi.util.CachedValue
 import com.intellij.psi.util.CachedValueProvider
 import com.intellij.psi.util.CachedValuesManager
+import com.intellij.util.PathUtil
 import com.jetbrains.php.lang.psi.PhpFile
+import com.jetbrains.php.lang.psi.elements.ConcatenationExpression
 import com.jetbrains.php.lang.psi.elements.MethodReference
 import com.jetbrains.php.lang.psi.elements.StringLiteralExpression
 import com.jetbrains.php.lang.psi.elements.impl.FunctionReferenceImpl
+import com.jetbrains.php.lang.psi.elements.impl.PhpFilePathUtils
 import com.jetbrains.php.lang.psi.resolve.types.PhpType
 import com.pestphp.pest.PestSettings
 import com.pestphp.pest.getUsesPhpType
+import kotlin.io.path.Path
+import kotlin.io.path.name
+import kotlin.io.path.pathString
 
 class PestConfigurationFileParser(private val settings: PestSettings) {
     fun parse(project: Project): PestConfigurationFile {
@@ -33,8 +39,10 @@ class PestConfigurationFileParser(private val settings: PestSettings) {
             val testsPath = settings.pestFilePath.replaceAfterLast('/', "")
 
             psiFile.acceptChildren(
-                Visitor { type, inPath ->
-                    if (inPath != null) {
+                Visitor { type, inPath, fullPath ->
+                    if (fullPath && inPath != null) {
+                        inPaths.add(Pair(inPath.replaceBefore(testsPath, ""), type))
+                    } else if (inPath != null) {
                         inPaths.add(Pair(testsPath + inPath, type))
                     } else {
                         baseType = type
@@ -46,14 +54,14 @@ class PestConfigurationFileParser(private val settings: PestSettings) {
         } ?: defaultConfig
     }
 
-    private class Visitor(private val collect: (PhpType, String?) -> Unit) : PsiRecursiveElementWalkingVisitor() {
+    private class Visitor(private val collect: (PhpType, String?, Boolean) -> Unit) : PsiRecursiveElementWalkingVisitor() {
         override fun visitElement(element: PsiElement) {
             if (element is MethodReference) {
                 visitInReference(element)
                 return
             } else if (element is FunctionReferenceImpl) {
                 if (element.name == "uses") {
-                    collect(element.getUsesPhpType() ?: return, null)
+                    collect(element.getUsesPhpType() ?: return, null, false)
                 }
                 return
             }
@@ -82,8 +90,15 @@ class PestConfigurationFileParser(private val settings: PestSettings) {
 
             if (usesType == null) return
 
-            inReference.parameters.filterIsInstance<StringLiteralExpression>().forEach {
-                collect(usesType, it.contents)
+            inReference.parameters.forEach {
+                when (it) {
+                    is StringLiteralExpression -> collect(usesType, PhpFilePathUtils.getFileName(it), false)
+                    is ConcatenationExpression -> collect(
+                        usesType,
+                        Path(PhpFilePathUtils.getFileName(it)!!).pathString,
+                        true
+                    )
+                }
             }
         }
     }

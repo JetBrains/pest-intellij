@@ -3,6 +3,8 @@
 # PEST IntelliJ Changelog
 
 ## [Unreleased]
+### Added
+- Add support for `__DIR__` in `uses->in` calls 
 
 ## [1.2.1]
 ### Fixed
