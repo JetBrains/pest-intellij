@@ -45,11 +45,6 @@ class ThisTypeProvider : PhpTypeProvider4 {
 
         val result = PhpType().add(config.baseTestType)
 
-        config.pathsClasses[2].first
-
-        Path(relativePath).startsWith(config.pathsClasses[2].first)
-        Path(config.pathsClasses[2].first).startsWith(relativePath)
-
         config.pathsClasses.forEach { (path, type) ->
             if (relativePath.startsWith(path)) {
                 result.add(type)
