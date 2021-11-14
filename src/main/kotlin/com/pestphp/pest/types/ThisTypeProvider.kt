@@ -6,6 +6,8 @@ import com.intellij.openapi.project.guessProjectDir
 import com.intellij.openapi.vfs.VfsUtil
 import com.intellij.psi.PsiElement
 import com.intellij.psi.util.PsiTreeUtil
+import com.intellij.util.PathUtil
+import com.intellij.util.PathUtilRt
 import com.jetbrains.php.lang.psi.elements.PhpNamedElement
 import com.jetbrains.php.lang.psi.elements.impl.FunctionReferenceImpl
 import com.jetbrains.php.lang.psi.resolve.types.PhpType
@@ -14,6 +16,7 @@ import com.pestphp.pest.PestSettings
 import com.pestphp.pest.getUsesPhpType
 import com.pestphp.pest.isAnyPestFunction
 import com.pestphp.pest.isThisVariableInPest
+import kotlin.io.path.Path
 
 /**
  * Extend `$this` type with types from `uses`.

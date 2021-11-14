@@ -36,4 +36,10 @@ class PestConfigurationFileTest : PestLightCodeFixture() {
 
         assertCompletion("baseTestFunc", "featureTestFunc", "someBaseTraitFunc")
     }
+
+    fun testDIRFeature() {
+        myFixture.configureByFile("tests/DIRFeature/FeatureTest.php")
+
+        assertCompletion("baseTestFunc", "featureTestFunc")
+    }
 }

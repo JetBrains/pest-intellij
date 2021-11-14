@@ -3,6 +3,12 @@
 # PEST IntelliJ Changelog
 
 ## [Unreleased]
+### Fixed
+- Hide snapshot icon for import statements
+- Fix ArrayIndex error from ExpectationFileService
+
+### Added
+- Add support for `__DIR__` in `uses->in` calls
 
 ## [1.2.1]
 ### Fixed

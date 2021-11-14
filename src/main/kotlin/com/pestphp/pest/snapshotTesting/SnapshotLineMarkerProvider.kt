@@ -6,6 +6,7 @@ import com.intellij.codeInsight.navigation.NavigationGutterIconBuilder
 import com.intellij.psi.PsiElement
 import com.jetbrains.php.lang.lexer.PhpTokenTypes
 import com.jetbrains.php.lang.psi.PhpPsiUtil
+import com.jetbrains.php.lang.psi.elements.PhpUse
 import com.jetbrains.php.lang.psi.elements.impl.FunctionReferenceImpl
 import com.pestphp.pest.PestIcons
 
@@ -21,6 +22,10 @@ class SnapshotLineMarkerProvider: RelatedItemLineMarkerProvider() {
         val functionReference = element.parent as? FunctionReferenceImpl ?: return
 
         if (! functionReference.isSnapshotAssertionCall) {
+            return
+        }
+
+        if (functionReference.parent is PhpUse) {
             return
         }
 

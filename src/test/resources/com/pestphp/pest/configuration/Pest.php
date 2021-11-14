@@ -20,3 +20,5 @@ uses(BaseTestCase::class);
 uses(FeatureTestCase::class)->in("Feature");
 
 uses(FeatureTestCase::class, SomeBaseTrait::class)->group("some group")->in("GroupedFeature");
+
+uses(FeatureTestCase::class)->in(__DIR__ . "/DIRFeature");

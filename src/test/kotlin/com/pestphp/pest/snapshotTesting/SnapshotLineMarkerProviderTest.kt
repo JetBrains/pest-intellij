@@ -16,4 +16,10 @@ class SnapshotLineMarkerProviderTest: PestLightCodeFixture() {
 
         assertSize(identifiers.count(), this.myFixture.findAllGutters())
     }
+
+    fun testDoNotShowIconForSnapshotUse() {
+        myFixture.configureByFile("snapshotAssertionUseStatement.php")
+
+        assertSize(0, this.myFixture.findAllGutters())
+    }
 }

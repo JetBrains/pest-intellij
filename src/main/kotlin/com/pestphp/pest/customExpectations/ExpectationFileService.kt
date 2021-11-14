@@ -32,7 +32,7 @@ class ExpectationFileService(val project: Project) {
         )
 
         // If no methods were registered before and no methods were found, skip.
-        if (beforeMethods === null && newMethods.first().value.isEmpty()) {
+        if (beforeMethods === null && newMethods.isEmpty()) {
             return false
         }
 
