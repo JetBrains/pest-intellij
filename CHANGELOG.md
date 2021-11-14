@@ -5,6 +5,7 @@
 ## [Unreleased]
 ### Fixed
 - Hide snapshot icon for import statements
+- Fix ArrayIndex error from ExpectationFileService
 
 ### Added
 - Add support for `__DIR__` in `uses->in` calls
