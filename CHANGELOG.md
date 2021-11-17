@@ -10,6 +10,9 @@
 ### Added
 - Add support for `__DIR__` in `uses->in` calls
 
+### Changed
+- Changed root path for regex to be based of vendor dir location instead of working directory
+
 ## [1.2.1]
 ### Fixed
 - Moved file generation into smart invocation

@@ -7,6 +7,7 @@ import com.intellij.execution.testframework.actions.AbstractRerunFailedTestsActi
 import com.intellij.execution.testframework.sm.runner.SMTRunnerConsoleProperties
 import com.intellij.openapi.ui.ComponentContainer
 import com.intellij.psi.search.GlobalSearchScope
+import com.jetbrains.php.composer.lib.ComposerLibraryManager
 import com.jetbrains.php.config.commandLine.PhpCommandSettings
 import com.jetbrains.php.testFramework.PhpTestFrameworkSettingsManager
 import com.pestphp.pest.PestBundle
@@ -81,7 +82,11 @@ class PestRerunFailedTestsAction(
                     false
                 )
 
-                val testcases = failed.mapNotNull { it.toPestTestRegex(command.workingDirectory) }
+                val rootPath =
+                    ComposerLibraryManager.getInstance(project).findVendorDirForUpsource()?.parent?.path
+                        ?: command.workingDirectory
+
+                val testcases = failed.mapNotNull { it.toPestTestRegex(rootPath) }
                     .reduce { result, testName -> "$result|$testName" }
 
                 command.addArgument(

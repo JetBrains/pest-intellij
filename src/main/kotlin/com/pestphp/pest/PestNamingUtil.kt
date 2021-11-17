@@ -58,8 +58,8 @@ fun PsiElement.toPestFqn(): List<String> {
         .toList()
 }
 
-fun String.toPestTestRegex(workingDirectory: String, file: String, pathMapper: PhpPathMapper): String {
-    val mappedWorkingDirectory = pathMapper.getRemoteFilePath(workingDirectory) ?: workingDirectory
+fun String.toPestTestRegex(rootPath: String, file: String, pathMapper: PhpPathMapper): String {
+    val mappedWorkingDirectory = pathMapper.getRemoteFilePath(rootPath) ?: rootPath
     val mappedFile = pathMapper.getRemoteFilePath(file) ?: file
 
     // Follow the steps for class name generation TODO: add link
