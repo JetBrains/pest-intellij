@@ -3,12 +3,14 @@
 # PEST IntelliJ Changelog
 
 ## [Unreleased]
+
+## [1.2.2-EAP.4]
 ### Fixed
 - Hide snapshot icon for import statements
 - Fix ArrayIndex error from ExpectationFileService
 
 ### Added
-- Add support for `__DIR__` in `uses->in` calls
+- Add support for  in  calls
 
 ### Changed
 - Changed root path for regex to be based of vendor dir location instead of working directory
