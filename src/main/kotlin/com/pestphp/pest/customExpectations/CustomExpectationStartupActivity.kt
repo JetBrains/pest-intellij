@@ -18,7 +18,6 @@ class CustomExpectationStartupActivity: StartupActivity, StartupActivity.Backgro
         val expectationFileService = project.service<ExpectationFileService>()
         val psiManager = PsiManager.getInstance(project)
 
-
         runReadAction {
             fileBasedIndex
                 .getAllKeys(CustomExpectationIndex.key, project)
