@@ -22,8 +22,4 @@ class PestConsoleProperties(config: RunConfiguration, executor: Executor) :
     override fun createRerunFailedTestsAction(consoleView: ConsoleView?): AbstractRerunFailedTestsAction? {
         return consoleView?.let { PestRerunFailedTestsAction(it, this) }
     }
-
-    override fun serviceMessageHasNewLinePrefix(): Boolean {
-        return true
-    }
 }
