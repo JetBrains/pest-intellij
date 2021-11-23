@@ -6,6 +6,7 @@ import com.intellij.openapi.application.runWriteAction
 import com.intellij.openapi.project.DumbService
 import com.intellij.openapi.project.Project
 import com.intellij.psi.PsiManager
+import com.intellij.util.SlowOperations
 import com.jetbrains.php.composer.lib.ComposerLibraryManager
 import com.jetbrains.php.lang.psi.PhpFile
 import com.jetbrains.rd.util.first
@@ -32,12 +33,16 @@ class ExpectationFileService(val project: Project) {
         )
 
         // If no methods were registered before and no methods were found, skip.
-        if (beforeMethods === null && newMethods.isEmpty()) {
+        if (beforeMethods === null && newMethods.values.all { it.isEmpty() }) {
+            return false
+        }
+
+        if (beforeMethods == newMethods.flatMap { it.value }) {
             return false
         }
 
         this.methods = methods.plus(newMethods)
-        return beforeMethods != newMethods
+        return true
     }
 
     fun generateFile(afterGenerationRunnable: () -> Unit) {
@@ -58,6 +63,8 @@ class ExpectationFileService(val project: Project) {
                 DumbService.getInstance(project).suspendIndexingAndRun(
                     "Indexing Pest expect extends"
                 ) {
+                    SlowOperations.assertSlowOperationsAreAllowed()
+
                     // Get the composer directory
                     val composer =
                         ComposerLibraryManager.getInstance(project).findVendorDirForUpsource()
