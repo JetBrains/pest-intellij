@@ -3,13 +3,15 @@
 # PEST IntelliJ Changelog
 
 ## [Unreleased]
+
+## [1.2.2-EAP.7]
 ### Fixed
 - Hide snapshot icon for import statements
 - Fix ArrayIndex error from ExpectationFileService
 - Fixed wrong file expectation matching in ExpectationFileService
 
 ### Added
-- Add support for `__DIR__` in `uses->in` calls
+- Add support for  in  calls
 - Added support for running key value datasets
 
 ### Changed
