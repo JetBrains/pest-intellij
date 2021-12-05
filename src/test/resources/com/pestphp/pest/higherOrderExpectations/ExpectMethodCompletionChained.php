@@ -1,9 +1,17 @@
 <?php
 
-class Example {
-    public function getDate(): DateTime
+class Chained
+{
+    public function getTimestamp()
     {
-        return new DateTime();
+    }
+}
+
+class Example
+{
+    public function getDate(): Chained
+    {
+        return new Chained();
     }
 }
 
