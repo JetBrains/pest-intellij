@@ -25,7 +25,6 @@
         <runConfigurationProducer implementation="com.pestphp.pest.configuration.PestRunConfigurationProducer"/>
         <iconProvider implementation="com.pestphp.pest.PestIconProvider"/>
 
-        <projectService serviceImplementation="com.pestphp.pest.PestSettings"/>
         <testFinder implementation="com.pestphp.pest.goto.PestTestFinder"/>
         <fileBasedIndex implementation="com.pestphp.pest.indexers.PestTestIndex"/>
         <fileBasedIndex implementation="com.pestphp.pest.customExpectations.CustomExpectationIndex"/>
@@ -52,7 +51,6 @@
                 implementationClass="com.pestphp.pest.inspections.SuppressUndefinedPropertyInspection"
         />
         <notificationGroup displayType="BALLOON" id="Outdated Pest" isLogByDefault="true"/>
-        <projectService serviceImplementation="com.pestphp.pest.customExpectations.ExpectationFileService"/>
         <lang.structureViewExtension implementation="com.pestphp.pest.structureView.PestStructureViewExtension"/>
         <gotoSymbolContributor implementation="com.pestphp.pest.goto.PestTestGoToSymbolContributor"/>
         <liveTemplateContext implementation="com.pestphp.pest.templates.PestRootTemplateContextType"/>

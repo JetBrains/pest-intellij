@@ -3,6 +3,7 @@ package com.pestphp.pest.customExpectations
 import com.intellij.openapi.application.runReadAction
 import com.intellij.openapi.application.runUndoTransparentWriteAction
 import com.intellij.openapi.application.runWriteAction
+import com.intellij.openapi.components.Service
 import com.intellij.openapi.project.DumbService
 import com.intellij.openapi.project.Project
 import com.intellij.psi.PsiManager
@@ -14,6 +15,7 @@ import com.pestphp.pest.customExpectations.generators.ExpectationGenerator
 import com.pestphp.pest.customExpectations.generators.Method
 import com.pestphp.pest.realPath
 
+@Service
 class ExpectationFileService(val project: Project) {
     private var methods: Map<String, List<Method>> = mutableMapOf()
 

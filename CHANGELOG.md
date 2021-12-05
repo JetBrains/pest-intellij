@@ -3,6 +3,8 @@
 # PEST IntelliJ Changelog
 
 ## [Unreleased]
+### Fixed
+- Changed services to light services for auto disposable
 
 ## [1.2.2]
 ### Fixed

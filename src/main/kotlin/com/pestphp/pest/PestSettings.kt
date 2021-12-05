@@ -1,6 +1,7 @@
 package com.pestphp.pest
 
 import com.intellij.openapi.components.PersistentStateComponent
+import com.intellij.openapi.components.Service
 import com.intellij.openapi.components.ServiceManager
 import com.intellij.openapi.components.State
 import com.intellij.openapi.components.Storage
@@ -10,6 +11,7 @@ import com.intellij.util.xmlb.XmlSerializerUtil
 import com.pestphp.pest.parser.PestConfigurationFile
 import com.pestphp.pest.parser.PestConfigurationFileParser
 
+@Service
 @State(name = "PestSettings", storages = [Storage("pest.xml")])
 class PestSettings : PersistentStateComponent<PestSettings> {
     var pestFilePath = "tests/Pest.php"
