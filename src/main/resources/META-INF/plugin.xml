@@ -10,6 +10,8 @@
     <depends optional="true" config-file="pest-coverage.xml">com.intellij.modules.coverage</depends>
 
     <extensions defaultExtensionNs="com.intellij">
+        <projectService serviceImplementation="com.pestphp.pest.PestSettings"/>
+
         <runLineMarkerContributor
                 language="PHP"
                 implementationClass="com.pestphp.pest.PestTestRunLineMarkerProvider"
@@ -72,6 +74,7 @@
         <typeProvider4 implementation="com.pestphp.pest.types.ThisTypeProvider"/>
         <typeProvider4 implementation="com.pestphp.pest.types.ThisFieldTypeProvider"/>
         <typeProvider4 implementation="com.pestphp.pest.types.ThisExtendTypeProvider"/>
+        <typeProvider4 implementation="com.pestphp.pest.types.HigherOrderExtendTypeProvider"/>
         <libraryRoot id="pestphp" path="/library/Pest" runtime="false"/>
     </extensions>
 

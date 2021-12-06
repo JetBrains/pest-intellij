@@ -26,7 +26,7 @@ class ExpectCallCompletionTest : BaseTypeTest() {
     }
 
     fun testFieldCompletions() {
-        val file = myFixture.configureByFile("tests/expectCallCompletion.php")
+        myFixture.configureByFile("tests/expectCallCompletion.php")
 
         waitForAppLeakingThreads(10, TimeUnit.SECONDS)
 
@@ -34,13 +34,13 @@ class ExpectCallCompletionTest : BaseTypeTest() {
     }
 
     fun testFieldCompletionsChainedNotProperty() {
-        val file = myFixture.configureByFile("tests/expectCallCompletionChainedNotProperty.php")
+        myFixture.configureByFile("tests/expectCallCompletionChainedNotProperty.php")
 
         assertCompletion("someExtend")
     }
 
     fun testFieldCompletionsChainedNotMethod() {
-        val file = myFixture.configureByFile("tests/expectCallCompletionChainedNotMethod.php")
+        myFixture.configureByFile("tests/expectCallCompletionChainedNotMethod.php")
 
         assertCompletion("someExtend")
     }
