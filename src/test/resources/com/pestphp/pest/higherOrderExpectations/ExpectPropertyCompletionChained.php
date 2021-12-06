@@ -1,11 +1,18 @@
 <?php
 
+class Chained
+{
+    public function getTimestamp()
+    {
+    }
+}
+
 class Example {
-    public DateTime $date;
+    public Chained $date;
 
     public function __construct()
     {
-        $this->date = new DateTime();
+        $this->date = new Chained();
     }
 }
 
