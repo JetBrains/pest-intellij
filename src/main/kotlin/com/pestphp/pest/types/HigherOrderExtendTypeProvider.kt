@@ -13,11 +13,7 @@ import com.jetbrains.php.lang.psi.resolve.types.PhpType
 import com.jetbrains.php.lang.psi.resolve.types.PhpTypeProvider4
 import com.pestphp.pest.expectationType
 
-/**
- * Extend `$this` type with types from `uses`.
- * Both `uses` from the same file, the pest config file
- * and `uses` with paths from pest config file.
- */
+
 class HigherOrderExtendTypeProvider : PhpTypeProvider4 {
     override fun getKey(): Char {
         return '\u0224'

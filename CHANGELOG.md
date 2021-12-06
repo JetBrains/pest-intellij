@@ -6,6 +6,9 @@
 ### Fixed
 - Changed services to light services for auto disposable
 
+### Added
+- Added higher order expectation type provider
+
 ## [1.2.2]
 ### Fixed
 - Hide snapshot icon for import statements
