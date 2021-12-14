@@ -5,6 +5,7 @@
 ## [Unreleased]
 ### Fixed
 - Changed services to light services for auto disposable
+- Fixed null pointer error when no virtual file
 
 ### Changed
 - Change reporting on GitHub to contain full stacktrace

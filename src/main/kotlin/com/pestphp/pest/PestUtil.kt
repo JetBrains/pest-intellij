@@ -80,5 +80,5 @@ fun PsiFile.isPestFile(): Boolean {
 
     val pestFilePath = PestSettings.getInstance(this.project).pestFilePath
 
-    return this.virtualFile.path == projectDir.path + "/" + pestFilePath
+    return this.virtualFile?.path == projectDir.path + "/" + pestFilePath
 }
