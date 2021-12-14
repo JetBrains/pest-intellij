@@ -6,6 +6,9 @@
 ### Fixed
 - Changed services to light services for auto disposable
 
+### Changed
+- Change reporting on GitHub to contain full stacktrace
+
 ### Added
 - Added higher order expectation type provider
 

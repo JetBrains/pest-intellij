@@ -17,14 +17,14 @@ import java.io.UnsupportedEncodingException
 import java.net.URLEncoder
 
 /**
- * Generates a issue creation link
+ * Generates an issue creation link
  * https://github.com/pestphp/pest-intellij/issues/new?title=foo&body=bar
  */
 class GithubErrorReporter : ErrorReportSubmitter() {
     companion object {
-        private const val URL = "https://github.com/pestphp/pest-intellij/issues/new?title="
+        private const val URL = "https://github.com/pestphp/pest-intellij/issues/new?"
         private const val ENCODING = "UTF-8"
-        private const val STACKTRACE_LENGTH = 3000
+        private const val TOO_LONG_STACKTRACE_MESSAGE = "Please paste the full stacktrace from the IDEA error popup."
     }
 
     override fun getReportActionText(): String {
@@ -42,7 +42,9 @@ class GithubErrorReporter : ErrorReportSubmitter() {
         val title = event?.throwableText?.lineSequence()?.first()
             ?: event?.message
             ?: "Crash Report: <Fill in title>"
-        val body = event?.throwableText ?: "Please paste the full stacktrace from the IDEA error popup."
+
+        val body = event?.throwableText ?: TOO_LONG_STACKTRACE_MESSAGE
+
         val version = PluginManagerCore.getPlugin(PluginId.getId("com.pestphp.pest-intellij"))?.version
 
         val project: Project = ProjectManager.getInstance().openProjects.first()
@@ -51,8 +53,7 @@ class GithubErrorReporter : ErrorReportSubmitter() {
 
         val builder = StringBuilder(URL)
         try {
-            builder.append(URLEncoder.encode(title, ENCODING))
-            builder.append("&body=")
+            builder.append("body=")
             builder.append(
                 URLEncoder.encode(
                     """
@@ -65,11 +66,13 @@ class GithubErrorReporter : ErrorReportSubmitter() {
                     || OS               | ${System.getProperty("os.name")}
                     |
                     |### Description
-                    |${additionalInfo ?: ""}
+                    |${additionalInfo ?: "<FILL OUT THE DESCRIPTION>"}
                     |
                     |### Stacktrace
+                    |`${title}`
+                    |
                     |```
-                    |${body.take(STACKTRACE_LENGTH)}
+                    |${body}
                     |```
                     """.trimMargin(),
                     ENCODING
