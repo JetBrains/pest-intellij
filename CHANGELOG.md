@@ -3,6 +3,8 @@
 # PEST IntelliJ Changelog
 
 ## [Unreleased]
+### Added
+- Added support for dynamic paths in `uses->in` statements
 
 ## [1.3.0]
 ### Fixed
@@ -10,7 +12,7 @@
 - Fixed null pointer error when no virtual file
 
 ### Changed
-- Change reporting on GitHub to contain full stacktrace
+- Change reporting on GitHub to contain full stacktracepa
 
 ### Added
 - Added higher order expectation type provider

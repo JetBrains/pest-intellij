@@ -17,6 +17,8 @@ import com.pestphp.pest.getUsesPhpType
 import com.pestphp.pest.isAnyPestFunction
 import com.pestphp.pest.isThisVariableInPest
 import kotlin.io.path.Path
+import kotlin.io.path.name
+import kotlin.io.path.pathString
 
 /**
  * Extend `$this` type with types from `uses`.
@@ -46,7 +48,9 @@ class ThisTypeProvider : PhpTypeProvider4 {
         val result = PhpType().add(config.baseTestType)
 
         config.pathsClasses.forEach { (path, type) ->
-            if (relativePath.startsWith(path)) {
+            val normalizedPath = Path(path).normalize().pathString
+
+            if (relativePath.startsWith(normalizedPath)) {
                 result.add(type)
             }
         }
