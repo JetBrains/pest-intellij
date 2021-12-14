@@ -3,8 +3,10 @@
 # PEST IntelliJ Changelog
 
 ## [Unreleased]
+
+## [1.3.1-EAP.1]
 ### Added
-- Added support for dynamic paths in `uses->in` statements
+- Added support for dynamic paths in  statements
 
 ## [1.3.0]
 ### Fixed
