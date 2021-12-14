@@ -12,6 +12,7 @@
 
 ### Added
 - Added higher order expectation type provider
+- Added support for xdebug3 and xdebug2 coverage option 
 
 ## [1.2.2]
 ### Fixed

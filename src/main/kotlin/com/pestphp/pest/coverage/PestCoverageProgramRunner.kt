@@ -5,6 +5,7 @@ import com.intellij.execution.configurations.RunProfileState
 import com.intellij.execution.runners.ExecutionEnvironment
 import com.jetbrains.php.config.commandLine.PhpCommandSettingsBuilder
 import com.jetbrains.php.config.interpreters.PhpInterpreter
+import com.jetbrains.php.debug.xdebug.options.XdebugConfigurationOptionsManager
 import com.jetbrains.php.phpunit.coverage.PhpCoverageRunner
 import com.jetbrains.php.phpunit.coverage.PhpUnitCoverageEngine.CoverageEngine
 import com.jetbrains.php.run.PhpConfigurationOption
@@ -43,12 +44,15 @@ class PestCoverageProgramRunner : PhpCoverageRunner() {
                 runConfiguration.applyTestArguments(this, coverageArguments)
             }
 
-        val option = when (runConfiguration.pestSettings.runnerSettings.coverageEngine) {
-            CoverageEngine.XDEBUG -> "xdebug.coverage_enable"
-            CoverageEngine.PCOV -> "pcov.enabled"
+        val options = when (runConfiguration.pestSettings.runnerSettings.coverageEngine) {
+            CoverageEngine.XDEBUG -> XdebugConfigurationOptionsManager
+                .getConfigurationOptionsProvider(env.project, interpreter)
+                .enableCoverage()
+                .createXdebugConfigurations()
+            CoverageEngine.PCOV -> listOf(PhpConfigurationOption("pcov.enabled", 1))
             else -> throw IllegalArgumentException("Unsupported coverage engine.")
         }
-        command.addConfigurationOptions(listOf(PhpConfigurationOption(option, 1)))
+        command.addConfigurationOptions(options)
 
         setAdditionalMapping(localCoverage, targetCoverage, command)
         return runConfiguration.checkAndGetState(env, command)
