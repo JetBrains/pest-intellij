@@ -14,9 +14,11 @@ import com.intellij.util.PathUtil
 import com.jetbrains.php.lang.psi.PhpFile
 import com.jetbrains.php.lang.psi.elements.ConcatenationExpression
 import com.jetbrains.php.lang.psi.elements.MethodReference
+import com.jetbrains.php.lang.psi.elements.PhpPsiElement
 import com.jetbrains.php.lang.psi.elements.StringLiteralExpression
 import com.jetbrains.php.lang.psi.elements.impl.FunctionReferenceImpl
 import com.jetbrains.php.lang.psi.elements.impl.PhpFilePathUtils
+import com.jetbrains.php.lang.psi.elements.impl.PhpFileReferenceSet
 import com.jetbrains.php.lang.psi.resolve.types.PhpType
 import com.pestphp.pest.PestSettings
 import com.pestphp.pest.getUsesPhpType
@@ -90,16 +92,13 @@ class PestConfigurationFileParser(private val settings: PestSettings) {
 
             if (usesType == null) return
 
-            inReference.parameters.forEach {
-                when (it) {
-                    is StringLiteralExpression -> collect(usesType, PhpFilePathUtils.getFileName(it), false)
-                    is ConcatenationExpression -> collect(
-                        usesType,
-                        Path(PhpFilePathUtils.getFileName(it)!!).pathString,
-                        true
-                    )
+            inReference.parameters
+                .map {
+                    PhpFilePathUtils.getStaticPath(it as PhpPsiElement?)
                 }
-            }
+                .forEach {
+                    collect(usesType, it, false)
+                }
         }
     }
 
