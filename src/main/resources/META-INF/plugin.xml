@@ -42,6 +42,15 @@
                 displayName="Duplicate test name"
                 implementationClass="com.pestphp.pest.inspections.DuplicateTestNameInspection"
         />
+        <localInspection
+                language="PHP"
+                groupPath="PHP"
+                groupName="Pest"
+                shortName="DuplicateExtendNameInspection"
+                enabledByDefault="true"
+                displayName="Duplicate extend name"
+                implementationClass="com.pestphp.pest.inspections.DuplicateCustomExpectationInspection"
+        />
 
         <completion.contributor implementationClass="com.pestphp.pest.completion.PestCompletionContributor" language="PHP"/>
         <gotoDeclarationHandler implementation="com.pestphp.pest.completion.ThisFieldsCompletionProvider"/>
