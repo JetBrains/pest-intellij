@@ -5,6 +5,7 @@
 ## [Unreleased]
 ### Added
 - Added support for dynamic paths in `uses->in` statements
+- Added inspection for duplicate custom expectation name
 
 ## [1.3.0]
 ### Fixed
