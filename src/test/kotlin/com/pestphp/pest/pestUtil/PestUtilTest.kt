@@ -11,7 +11,7 @@ class PestUtilTest : PestLightCodeFixture() {
     override fun setUp() {
         super.setUp()
 
-        myFixture.copyFileToProject("SimpleTest.php")
+        myFixture.copyFileToProject("simpleTest.php")
     }
 
     override fun getTestDataPath(): String {
@@ -19,7 +19,7 @@ class PestUtilTest : PestLightCodeFixture() {
     }
 
     fun testCanGetTestName() {
-        val file = myFixture.configureByFile("SimpleTest.php")
+        val file = myFixture.configureByFile("simpleTest.php")
 
         val functions = PsiTreeUtil.findChildrenOfType(file, FunctionReferenceImpl::class.java)
             .stream().filter(FunctionReferenceImpl::isPestTestFunction)

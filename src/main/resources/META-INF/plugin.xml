@@ -46,7 +46,7 @@
                 language="PHP"
                 groupPath="PHP"
                 groupName="Pest"
-                shortName="DuplicateExtendNameInspection"
+                shortName="DuplicateCustomExpectationInspection"
                 enabledByDefault="true"
                 displayName="Duplicate extend name"
                 implementationClass="com.pestphp.pest.inspections.DuplicateCustomExpectationInspection"
@@ -69,6 +69,9 @@
         <codeInsight.template.postfixTemplateProvider
                 language="PHP"
                 implementationClass="com.pestphp.pest.templates.PestPostfixTemplateProvider"/>
+        <lang.surroundDescriptor
+                language="PHP"
+                implementationClass="com.pestphp.pest.surrounders.StatementSurroundDescriptor"/>
     </extensions>
 
     <projectListeners>
