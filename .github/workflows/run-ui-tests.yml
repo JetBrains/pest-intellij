@@ -1,9 +1,9 @@
-# GitHub Actions Workflow created for launching UI tests on Linux, Windows, and Mac in the following steps:
-# - prepare and launch Idea with your plugin and robot-server plugin, which is need to interact with UI
-# - wait for the Idea started
+# GitHub Actions Workflow for launching UI tests on Linux, Windows, and Mac in the following steps:
+# - prepare and launch IDE with your plugin and robot-server plugin, which is needed to interact with UI
+# - wait for IDE to start
 # - run UI tests with separate Gradle task
 #
-# Please check https://github.com/JetBrains/intellij-ui-test-robot for information about UI tests with IntelliJ IDEA.
+# Please check https://github.com/JetBrains/intellij-ui-test-robot for information about UI tests with IntelliJ Platform
 #
 # Workflow is triggered manually.
 
@@ -33,7 +33,7 @@ jobs:
 
       # Check out current repository
       - name: Fetch Sources
-        uses: actions/checkout@v2.3.4
+        uses: actions/checkout@v2.4.0
 
       # Setup Java 11 environment for the next steps
       - name: Setup Java
@@ -49,7 +49,7 @@ jobs:
 
       # Wait for IDEA to be started
       - name: Health Check
-        uses: jtalk/url-health-check-action@v1.5
+        uses: jtalk/url-health-check-action@v2
         with:
           url: http://127.0.0.1:8082
           max-attempts: 15

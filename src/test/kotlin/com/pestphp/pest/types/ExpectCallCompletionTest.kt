@@ -8,7 +8,7 @@ import org.mockito.kotlin.mock
 import java.util.concurrent.TimeUnit
 
 @Ignore
-class ExpectCallCompletionTest : BaseTypeTest() {
+class ExpectCallCompletionTest : BaseTypeTestCase() {
     override fun setUp() {
         super.setUp()
 

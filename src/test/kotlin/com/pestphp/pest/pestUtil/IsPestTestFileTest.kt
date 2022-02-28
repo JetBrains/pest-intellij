@@ -1,8 +1,10 @@
 package com.pestphp.pest.pestUtil
 
+import com.intellij.testFramework.TestDataPath
 import com.pestphp.pest.PestLightCodeFixture
 import com.pestphp.pest.isPestTestFile
 
+@TestDataPath("\$CONTENT_ROOT/resources/com/pestphp/pest/PestUtil")
 class IsPestTestFileTest : PestLightCodeFixture() {
     override fun getTestDataPath(): String {
         return "src/test/resources/com/pestphp/pest/PestUtil"
