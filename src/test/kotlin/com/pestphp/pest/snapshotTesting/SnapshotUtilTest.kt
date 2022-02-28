@@ -38,7 +38,7 @@ class SnapshotUtilTest: PestLightCodeFixture() {
 
     @Ignore
     @Test
-    fun ttCanFindSnapshotFiles() {
+    fun canFindSnapshotFiles() {
         val file = myFixture.configureByFile("snapshotTest.php")
 
         val pestTest = file.firstChild.children[0].firstChild as FunctionReferenceImpl
