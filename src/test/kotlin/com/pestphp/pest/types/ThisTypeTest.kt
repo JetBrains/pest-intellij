@@ -1,6 +1,6 @@
 package com.pestphp.pest.types
 
-class ThisTypeTest : BaseTypeTest() {
+class ThisTypeTest : BaseTypeTestCase() {
     override fun setUp() {
         super.setUp()
 

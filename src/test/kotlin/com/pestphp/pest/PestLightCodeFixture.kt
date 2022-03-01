@@ -1,5 +1,6 @@
 package com.pestphp.pest
 
+import com.intellij.testFramework.TestDataPath
 import com.intellij.testFramework.fixtures.BasePlatformTestCase
 import com.jetbrains.php.config.interpreters.PhpInterpreter
 import com.jetbrains.php.lang.PhpFileType
@@ -7,6 +8,7 @@ import com.jetbrains.php.testFramework.PhpTestFrameworkConfiguration
 import com.jetbrains.php.testFramework.PhpTestFrameworkSettingsManager
 
 @Suppress("UnnecessaryAbstractClass")
+@TestDataPath("\$CONTENT_ROOT/resources/com/pestphp/pest")
 abstract class PestLightCodeFixture : BasePlatformTestCase() {
     override fun getBasePath() = "src/test/resources/com/pestphp/pest"
 

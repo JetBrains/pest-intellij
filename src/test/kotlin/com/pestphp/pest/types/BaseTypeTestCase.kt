@@ -1,9 +1,10 @@
 package com.pestphp.pest.types
 
+import com.intellij.testFramework.TestDataPath
 import com.pestphp.pest.PestLightCodeFixture
 
-@Suppress("UnnecessaryAbstractClass")
-abstract class BaseTypeTest : PestLightCodeFixture() {
+@TestDataPath("\$CONTENT_ROOT/resources/com/pestphp/pest/types")
+abstract class BaseTypeTestCase : PestLightCodeFixture() {
     override fun setUp() {
         super.setUp()
 

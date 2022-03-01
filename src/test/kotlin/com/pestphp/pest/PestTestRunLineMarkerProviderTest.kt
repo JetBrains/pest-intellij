@@ -1,5 +1,8 @@
 package com.pestphp.pest
 
+import com.intellij.testFramework.TestDataPath
+
+@TestDataPath("\$CONTENT_ROOT/resources/com/pestphp/pest/PestTestRunLineMarkerProviderTest")
 class PestTestRunLineMarkerProviderTest : PestLightCodeFixture() {
     override fun getTestDataPath(): String {
         return "src/test/resources/com/pestphp/pest/PestTestRunLineMarkerProviderTest"
