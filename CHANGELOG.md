@@ -8,6 +8,13 @@
 - Added inspection for duplicate custom expectation name
 - Add surrounder for `expect`
 
+### Changed 
+- Define root path from phpunit.xml instead of composer path
+
+### Fixed
+- Remove `-` from the pest generated regex
+- Escape `/` in regex method name
+
 ## [1.3.0]
 ### Fixed
 - Changed services to light services for auto disposable

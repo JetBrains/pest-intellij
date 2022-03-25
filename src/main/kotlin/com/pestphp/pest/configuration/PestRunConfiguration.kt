@@ -4,11 +4,7 @@ import com.intellij.codeInsight.completion.CompletionResultSet
 import com.intellij.codeInsight.lookup.LookupElementBuilder
 import com.intellij.execution.ExecutionException
 import com.intellij.execution.Executor
-import com.intellij.execution.configurations.ConfigurationFactory
-import com.intellij.execution.configurations.RunConfiguration
-import com.intellij.execution.configurations.RunProfileState
-import com.intellij.execution.configurations.RuntimeConfigurationException
-import com.intellij.execution.configurations.RuntimeConfigurationWarning
+import com.intellij.execution.configurations.*
 import com.intellij.execution.runners.ExecutionEnvironment
 import com.intellij.execution.testframework.actions.AbstractRerunFailedTestsAction
 import com.intellij.execution.testframework.sm.runner.SMTRunnerConsoleProperties
@@ -20,18 +16,17 @@ import com.intellij.util.PathUtil
 import com.intellij.util.TextFieldCompletionProvider
 import com.jetbrains.php.PhpBundle
 import com.jetbrains.php.config.commandLine.PhpCommandSettings
+import com.jetbrains.php.config.interpreters.PhpInterpreter
 import com.jetbrains.php.run.PhpRunUtil
+import com.jetbrains.php.testFramework.PhpTestFrameworkConfiguration
 import com.jetbrains.php.testFramework.PhpTestFrameworkSettingsManager
+import com.jetbrains.php.testFramework.run.PhpTestRunConfigurationSettings
 import com.jetbrains.php.testFramework.run.PhpTestRunnerConfigurationEditor
 import com.jetbrains.php.testFramework.run.PhpTestRunnerSettings
-import com.pestphp.pest.PestBundle
-import com.pestphp.pest.PestFrameworkType
-import com.pestphp.pest.PestIcons
+import com.pestphp.pest.*
 import com.pestphp.pest.configuration.PestRunConfigurationProducer.Companion.VALIDATOR
-import com.pestphp.pest.getPestTestName
-import com.pestphp.pest.getPestTests
 import com.pestphp.pest.runner.PestConsoleProperties
-import java.util.EnumMap
+import java.util.*
 
 class PestRunConfiguration(project: Project, factory: ConfigurationFactory) : PhpTestRunConfiguration(
     project,
@@ -141,6 +136,37 @@ class PestRunConfiguration(project: Project, factory: ConfigurationFactory) : Ph
             config,
             PestRunConfigurationHandler.instance
         )
+    }
+
+    override fun createCommand(
+        interpreter: PhpInterpreter,
+        env: MutableMap<String, String>,
+        arguments: MutableList<String>,
+        withDebugger: Boolean
+    ): PhpCommandSettings {
+        PestRunConfigurationHandler.instance.rootPath = getConfigurationFileRootPath()
+        return super.createCommand(interpreter, env, arguments, withDebugger)
+    }
+
+    override fun getWorkingDirectory(
+        project: Project,
+        settings: PhpTestRunConfigurationSettings,
+        config: PhpTestFrameworkConfiguration?
+    ): String? {
+        val cli = settings.commandLineSettings
+        if (cli.workingDirectory?.isNotEmpty() == true) {
+            return cli.workingDirectory
+        }
+
+        return getConfigurationFileRootPath() ?: super.getWorkingDirectory(project, settings, config)
+    }
+
+    private fun getConfigurationFileRootPath(): String? {
+        return getConfigurationFile(
+            settings.runnerSettings,
+            PhpTestFrameworkSettingsManager.getInstance(project)
+                .getOrCreateByInterpreter(PestFrameworkType.instance, interpreter, true)
+        )?.substringBeforeLast('/')
     }
 
     val pestSettings: PestRunConfigurationSettings

@@ -74,7 +74,9 @@ fun String.toPestTestRegex(rootPath: String, file: String, pathMapper: PhpPathMa
         // 4. Make directory separators to namespace separators.
         .replace("\\", "\\\\")
         .replace("/", "\\\\")
-        // 5. Add P as a namespace before the generated namespace.
+        // 5. Remove unsupported characters
+        .replace("-", "")
+        // 6. Add P as a namespace before the generated namespace.
         .let { "P\\\\$it" }
 
     // Escape characters
@@ -83,6 +85,7 @@ fun String.toPestTestRegex(rootPath: String, file: String, pathMapper: PhpPathMa
         .replace("(", "\\(")
         .replace(")", "\\)")
         .replace("^", "\\^")
+        .replace("/", "\\/")
 
     return """^$fqn::$testName(\swith\s((data\sset\s".*")|(\(.*\)(\s#\d+)?)))?$"""
 }

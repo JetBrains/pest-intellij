@@ -67,8 +67,8 @@ class PestRerunFailedTestsAction(
                         environment,
                         clone.createCommand(
                             interpreter,
-                            mapOf(),
-                            listOf(),
+                            mutableMapOf(),
+                            mutableListOf(),
                             false
                         ),
                         null
@@ -77,8 +77,8 @@ class PestRerunFailedTestsAction(
 
                 val command: PhpCommandSettings = clone.createCommand(
                     interpreter,
-                    mapOf(),
-                    listOf(),
+                    mutableMapOf(),
+                    mutableListOf(),
                     false
                 )
 
