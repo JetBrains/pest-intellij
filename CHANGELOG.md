@@ -3,12 +3,14 @@
 # PEST IntelliJ Changelog
 
 ## [Unreleased]
+
+## [1.4.0-EAP.1]
 ### Added
 - Added support for dynamic paths in `uses->in` statements
 - Added inspection for duplicate custom expectation name
 - Add surrounder for `expect`
 
-### Changed 
+### Changed
 - Define root path from phpunit.xml instead of composer path
 
 ### Fixed
