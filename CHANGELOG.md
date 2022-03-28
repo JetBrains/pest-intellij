@@ -3,6 +3,11 @@
 # PEST IntelliJ Changelog
 
 ## [Unreleased]
+### Changed
+- Reduced custom expectation index size by over 95%
+
+### Fixed
+- Check if file exist in index (can happen if file is deleted outside IDE)
 
 ## [1.4.0]
 ### Added

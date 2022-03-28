@@ -21,19 +21,21 @@ class CustomExpectationStartupActivity: StartupActivity, StartupActivity.Backgro
         runReadAction {
             fileBasedIndex
                 .getAllKeys(CustomExpectationIndex.key, project)
+                .mapNotNull {
+                    fileBasedIndex.getContainingFiles(
+                        CustomExpectationIndex.key,
+                        it,
+                        GlobalSearchScope.allScope(project)
+                    ).firstOrNull()
+                }
                 .associate {
-                    val file = fileBasedIndex.getContainingFiles(
-                        CustomExpectationIndex.key,
-                        it,
-                        GlobalSearchScope.allScope(project)
-                    ).first()
-                    val psiFile = psiManager.findFile(file) as PhpFile
+                    val psiFile = psiManager.findFile(it) as PhpFile
 
-                    val values = fileBasedIndex.getValues(
+                    val values = fileBasedIndex.getFileData(
                         CustomExpectationIndex.key,
                         it,
-                        GlobalSearchScope.allScope(project)
-                    ).flatten()
+                        project
+                    ).values.flatten()
 
                     psiFile to values
                 }

@@ -30,7 +30,7 @@ class CustomExpectationIndex : FileBasedIndexExtension<String, List<Method>>() {
     }
 
     override fun getVersion(): Int {
-        return 2
+        return 3
     }
 
     override fun getIndexer(): DataIndexer<String, List<Method>, FileContent> {
@@ -44,14 +44,18 @@ class CustomExpectationIndex : FileBasedIndexExtension<String, List<Method>>() {
             val customExpectations = file
                 .customExpects
                 .mapNotNull {
-                it.toMethod()
-            }
+                    it.toMethod()
+                }
 
             val publisher = file.project.messageBus.syncPublisher(CustomExpectationNotifier.TOPIC)
             publisher.changedExpectation(
                 file,
                 customExpectations
             )
+
+            if (customExpectations.isEmpty()) {
+                return@DataIndexer mapOf()
+            }
 
             mapOf(
                 file.realPath to customExpectations
