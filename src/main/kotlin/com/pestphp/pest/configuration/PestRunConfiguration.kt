@@ -12,6 +12,7 @@ import com.intellij.execution.ui.ConsoleView
 import com.intellij.openapi.options.SettingsEditor
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.util.text.StringUtil
+import com.intellij.openapi.vfs.VfsUtil
 import com.intellij.util.PathUtil
 import com.intellij.util.TextFieldCompletionProvider
 import com.jetbrains.php.PhpBundle
@@ -27,6 +28,7 @@ import com.pestphp.pest.*
 import com.pestphp.pest.configuration.PestRunConfigurationProducer.Companion.VALIDATOR
 import com.pestphp.pest.runner.PestConsoleProperties
 import java.util.*
+import kotlin.io.path.Path
 
 class PestRunConfiguration(project: Project, factory: ConfigurationFactory) : PhpTestRunConfiguration(
     project,
@@ -158,15 +160,23 @@ class PestRunConfiguration(project: Project, factory: ConfigurationFactory) : Ph
             return cli.workingDirectory
         }
 
-        return getConfigurationFileRootPath() ?: super.getWorkingDirectory(project, settings, config)
+        val configFileRootPath = getConfigurationFileRootPath()
+
+        if (configFileRootPath == null || configFileRootPath.isEmpty()) {
+            return super.getWorkingDirectory(project, settings, config)
+        }
+
+        return configFileRootPath
     }
 
     private fun getConfigurationFileRootPath(): String? {
-        return getConfigurationFile(
+        val configFile = getConfigurationFile(
             settings.runnerSettings,
             PhpTestFrameworkSettingsManager.getInstance(project)
                 .getOrCreateByInterpreter(PestFrameworkType.instance, interpreter, true)
-        )?.substringBeforeLast('/')
+        ) ?: return null
+
+        return VfsUtil.findFile(Path(configFile), false)?.parent?.path
     }
 
     val pestSettings: PestRunConfigurationSettings
