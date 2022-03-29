@@ -8,6 +8,7 @@
 
 ### Fixed
 - Check if file exist in index (can happen if file is deleted outside IDE)
+- Handle path separators per OS
 
 ## [1.4.0]
 ### Added
