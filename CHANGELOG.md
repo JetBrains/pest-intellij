@@ -3,6 +3,8 @@
 # PEST IntelliJ Changelog
 
 ## [Unreleased]
+
+## [1.4.1-EAP.3]
 ### Changed
 - Reduced custom expectation index size by over 95%
 
