@@ -3,6 +3,8 @@
 # PEST IntelliJ Changelog
 
 ## [Unreleased]
+
+## [1.4.2-EAP.2]
 ### Fixed
 - Changed runReadAction to runReadActionInSmartMode in startup activity
 
