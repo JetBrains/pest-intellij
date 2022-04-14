@@ -1,7 +1,7 @@
 package com.pestphp.pest.customExpectations
 
-import com.intellij.openapi.application.runReadAction
 import com.intellij.openapi.components.service
+import com.intellij.openapi.project.DumbService
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.startup.StartupActivity
 import com.intellij.psi.PsiManager
@@ -18,7 +18,7 @@ class CustomExpectationStartupActivity: StartupActivity, StartupActivity.Backgro
         val expectationFileService = project.service<ExpectationFileService>()
         val psiManager = PsiManager.getInstance(project)
 
-        runReadAction {
+        project.service<DumbService>().runReadActionInSmartMode {
             fileBasedIndex
                 .getAllKeys(CustomExpectationIndex.key, project)
                 .mapNotNull {
