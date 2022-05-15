@@ -51,6 +51,15 @@
                 displayName="Duplicate extend name"
                 implementationClass="com.pestphp.pest.inspections.DuplicateCustomExpectationInspection"
         />
+        <localInspection
+                language="PHP"
+                groupPath="PHP"
+                groupName="Pest"
+                shortName="InvalidTestNameCaseInspection"
+                enabledByDefault="true"
+                displayName="Invalid test name case"
+                implementationClass="com.pestphp.pest.inspections.InvalidTestNameCaseInspection"
+        />
 
         <completion.contributor implementationClass="com.pestphp.pest.completion.PestCompletionContributor" language="PHP"/>
         <gotoDeclarationHandler implementation="com.pestphp.pest.completion.ThisFieldsCompletionProvider"/>
