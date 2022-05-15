@@ -3,6 +3,8 @@
 # PEST IntelliJ Changelog
 
 ## [Unreleased]
+
+## [1.5.0]
 ### Added
 - Added automatic case changing to pest test names
 
