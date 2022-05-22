@@ -61,6 +61,16 @@
                 implementationClass="com.pestphp.pest.inspections.InvalidTestNameCaseInspection"
         />
 
+        <localInspection
+                language="PHP"
+                groupPath="PHP"
+                groupName="Pest"
+                shortName="MultipleExpectChainableInspection"
+                enabledByDefault="true"
+                displayName="Multiple expect can be chainable"
+                implementationClass="com.pestphp.pest.inspections.MultipleExpectChainableInspection"
+        />
+
         <completion.contributor implementationClass="com.pestphp.pest.completion.PestCompletionContributor" language="PHP"/>
         <gotoDeclarationHandler implementation="com.pestphp.pest.completion.ThisFieldsCompletionProvider"/>
         <lang.inspectionSuppressor

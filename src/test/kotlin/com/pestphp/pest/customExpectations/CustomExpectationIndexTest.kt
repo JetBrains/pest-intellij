@@ -5,9 +5,7 @@ import com.intellij.psi.PsiManager
 import com.intellij.psi.search.GlobalSearchScope
 import com.intellij.util.indexing.FileBasedIndex
 import com.pestphp.pest.PestLightCodeFixture
-import com.pestphp.pest.customExpects
 import com.pestphp.pest.customExpectations.generators.Method
-import com.pestphp.pest.toMethod
 
 class CustomExpectationIndexTest : PestLightCodeFixture() {
     override fun getTestDataPath(): String {
