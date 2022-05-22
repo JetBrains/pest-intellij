@@ -6,13 +6,11 @@ import com.intellij.codeInspection.ProblemsHolder
 import com.intellij.psi.PsiElementVisitor
 import com.intellij.util.indexing.FileBasedIndex
 import com.jetbrains.php.lang.inspections.PhpInspection
-import com.jetbrains.php.lang.psi.PhpFile
-import com.jetbrains.php.lang.psi.elements.FunctionReference
 import com.jetbrains.php.lang.psi.elements.MethodReference
 import com.jetbrains.php.lang.psi.elements.impl.MethodReferenceImpl
 import com.jetbrains.php.lang.psi.visitors.PhpElementVisitor
 import com.pestphp.pest.customExpectations.CustomExpectationIndex
-import com.pestphp.pest.extendName
+import com.pestphp.pest.customExpectations.extendName
 
 class DuplicateCustomExpectationInspection : PhpInspection() {
     companion object {

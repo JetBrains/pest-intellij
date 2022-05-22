@@ -3,6 +3,8 @@
 # PEST IntelliJ Changelog
 
 ## [Unreleased]
+### Added
+- Added converting multiple `expect` to `and` calls instead
 
 ## [1.5.0]
 ### Added

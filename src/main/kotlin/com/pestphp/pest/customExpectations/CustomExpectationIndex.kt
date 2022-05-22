@@ -15,10 +15,8 @@ import com.jetbrains.php.lang.PhpFileType
 import com.jetbrains.php.lang.psi.PhpFile
 import com.pestphp.pest.customExpectations.externalizers.ListDataExternalizer
 import com.pestphp.pest.customExpectations.externalizers.MethodDataExternalizer
-import com.pestphp.pest.customExpects
 import com.pestphp.pest.customExpectations.generators.Method
 import com.pestphp.pest.realPath
-import com.pestphp.pest.toMethod
 
 class CustomExpectationIndex : FileBasedIndexExtension<String, List<Method>>() {
     companion object {

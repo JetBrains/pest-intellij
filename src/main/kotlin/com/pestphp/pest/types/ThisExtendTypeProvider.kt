@@ -6,8 +6,8 @@ import com.intellij.psi.PsiElement
 import com.jetbrains.php.lang.psi.elements.PhpNamedElement
 import com.jetbrains.php.lang.psi.resolve.types.PhpType
 import com.jetbrains.php.lang.psi.resolve.types.PhpTypeProvider4
-import com.pestphp.pest.expectationType
-import com.pestphp.pest.isThisVariableInExtend
+import com.pestphp.pest.customExpectations.expectationType
+import com.pestphp.pest.customExpectations.isThisVariableInExtend
 
 /**
  * Adds autocompletion for `$this` variable in `expect->extend`.

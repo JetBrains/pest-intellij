@@ -1,4 +1,4 @@
-package com.pestphp.pest
+package com.pestphp.pest.customExpectations
 
 import com.intellij.openapi.project.Project
 import com.intellij.psi.PsiElement
@@ -7,6 +7,7 @@ import com.intellij.psi.util.PsiTreeUtil
 import com.jetbrains.php.PhpIndex
 import com.jetbrains.php.lang.psi.PhpFile
 import com.jetbrains.php.lang.psi.elements.Function
+import com.jetbrains.php.lang.psi.elements.MethodReference
 import com.jetbrains.php.lang.psi.elements.ParameterList
 import com.jetbrains.php.lang.psi.elements.PhpExpression
 import com.jetbrains.php.lang.psi.elements.PhpNamespace
@@ -34,6 +35,14 @@ fun PhpType.isExpectation(project: Project): Boolean {
         filteredType,
         PhpIndex.getInstance(project)
     )
+}
+
+fun Statement.isExpectation(): Boolean {
+    return (this.firstPsiChild as? MethodReference)?.isExpectation() == true
+}
+
+fun MethodReference.isExpectation(): Boolean {
+    return this.type.isExpectation(this.project)
 }
 
 fun PsiElement?.isThisVariableInExtend(): Boolean {
