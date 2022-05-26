@@ -17,8 +17,7 @@ class PestIconProvider : IconProvider() {
         return runReadAction { findIconFromPsiFile(element) }
     }
 
-    private fun findIconFromPsiFile(file: PsiFile): Icon?
-    {
+    private fun findIconFromPsiFile(file: PsiFile): Icon? {
         if (file.isPestTestFile()) {
             return PestIcons.FILE
         }

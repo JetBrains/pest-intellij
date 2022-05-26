@@ -10,7 +10,6 @@ import com.intellij.psi.PsiManager
 import com.intellij.util.SlowOperations
 import com.jetbrains.php.composer.lib.ComposerLibraryManager
 import com.jetbrains.php.lang.psi.PhpFile
-import com.jetbrains.rd.util.first
 import com.pestphp.pest.customExpectations.generators.ExpectationGenerator
 import com.pestphp.pest.customExpectations.generators.Method
 import com.pestphp.pest.realPath

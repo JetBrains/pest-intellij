@@ -8,7 +8,7 @@ import com.jetbrains.php.lang.psi.elements.FieldReference
 import com.pestphp.pest.isAnyPestFunction
 import com.pestphp.pest.isThisVariableInPest
 
-class SuppressUndefinedPropertyInspection: InspectionSuppressor {
+class SuppressUndefinedPropertyInspection : InspectionSuppressor {
     companion object {
         private val SUPPRESSED_PHP_INSPECTIONS = listOf(PhpUndefinedFieldInspection().id)
     }

@@ -9,10 +9,3 @@ dataset('stances', [
     'Han Zenkutsu Dachi',
     'Kokutsu Dachi',
 ]);
-
-
-
-
-
-
-

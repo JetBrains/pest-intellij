@@ -3,7 +3,7 @@
 
         <programRunner implementation="com.pestphp.pest.coverage.PestCoverageProgramRunner"/>
         <coverageEngine implementation="com.pestphp.pest.coverage.PestCoverageEngine"/>
-<!--        <coverageRunner implementation="com.jetbrains.php.phpunit.coverage.PhpUnitCoverageRunner"/>-->
-<!--        <projectService serviceImplementation="com.jetbrains.php.phpunit.coverage.PhpCoverageAnnotator"/>-->
+        <!--        <coverageRunner implementation="com.jetbrains.php.phpunit.coverage.PhpUnitCoverageRunner"/>-->
+        <!--        <projectService serviceImplementation="com.jetbrains.php.phpunit.coverage.PhpCoverageAnnotator"/>-->
     </extensions>
 </idea-plugin>

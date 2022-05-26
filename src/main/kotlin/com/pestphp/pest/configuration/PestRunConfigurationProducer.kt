@@ -14,11 +14,7 @@ import com.intellij.util.Function
 import com.jetbrains.php.lang.PhpFileType
 import com.jetbrains.php.testFramework.run.PhpDefaultTestRunnerSettingsValidator
 import com.jetbrains.php.testFramework.run.PhpTestConfigurationProducer
-import com.pestphp.pest.getPestTestName
-import com.pestphp.pest.isPestConfigurationFile
-import com.pestphp.pest.isPestEnabled
-import com.pestphp.pest.isPestTestFile
-import com.pestphp.pest.isPestTestReference
+import com.pestphp.pest.*
 
 class PestRunConfigurationProducer : PhpTestConfigurationProducer<PestRunConfiguration>(
     VALIDATOR,

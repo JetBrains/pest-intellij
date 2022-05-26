@@ -13,7 +13,7 @@ class MethodDataExternalizer : DataExternalizer<Method> {
 
     override fun save(out: DataOutput, value: Method) {
         EnumeratorStringDescriptor.INSTANCE.save(out, value.name)
-        PhpTypeDataExternalizer.INSTANCE.save(out,value.returnType)
+        PhpTypeDataExternalizer.INSTANCE.save(out, value.returnType)
         ListDataExternalizer(ParameterDataExternalizer.INSTANCE).save(
             out,
             value.parameters

@@ -10,18 +10,18 @@ import com.jetbrains.php.lang.psi.elements.PhpUse
 import com.jetbrains.php.lang.psi.elements.impl.FunctionReferenceImpl
 import com.pestphp.pest.PestIcons
 
-class SnapshotLineMarkerProvider: RelatedItemLineMarkerProvider() {
+class SnapshotLineMarkerProvider : RelatedItemLineMarkerProvider() {
     override fun collectNavigationMarkers(
         element: PsiElement,
         result: MutableCollection<in RelatedItemLineMarkerInfo<*>>,
     ) {
-        if(! PhpPsiUtil.isOfType(element, PhpTokenTypes.IDENTIFIER)) {
+        if (!PhpPsiUtil.isOfType(element, PhpTokenTypes.IDENTIFIER)) {
             return
         }
 
         val functionReference = element.parent as? FunctionReferenceImpl ?: return
 
-        if (! functionReference.isSnapshotAssertionCall) {
+        if (!functionReference.isSnapshotAssertionCall) {
             return
         }
 

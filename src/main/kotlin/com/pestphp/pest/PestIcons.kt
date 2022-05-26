@@ -4,7 +4,6 @@ import com.intellij.icons.AllIcons
 import com.intellij.ide.ui.LafManager
 import com.intellij.ide.ui.laf.darcula.DarculaLookAndFeelInfo
 import com.intellij.openapi.util.IconLoader
-import com.jetbrains.php.PhpIcons
 
 object PestIcons {
     val LOGO = IconLoader.getIcon("/logo@${getThemeString()}.svg", PestIcons.javaClass)

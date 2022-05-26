@@ -34,7 +34,7 @@ class ThisFieldsCompletionProvider : CompletionProvider<CompletionParameters>(),
         if (!variable.isThisVariableInPest { it.isAnyPestFunction() }) return
 
         return (fieldReference.containingFile).getAllBeforeThisAssignments()
-            .filter { it.variable?.name  !== null }
+            .filter { it.variable?.name !== null }
             .forEach {
                 result.addElement(
                     LookupElementBuilder.create(it.variable!!.name!!)

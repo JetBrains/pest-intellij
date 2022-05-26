@@ -9,4 +9,4 @@ dataset('dojos', [
 
 it('can check if in the valley', function (string $dojo) {
 
-})->with('dojos');
+})->with(<error descr="The dataset does not exist.">'dodos'</error>);

@@ -10,21 +10,14 @@ import com.intellij.psi.PsiRecursiveElementWalkingVisitor
 import com.intellij.psi.util.CachedValue
 import com.intellij.psi.util.CachedValueProvider
 import com.intellij.psi.util.CachedValuesManager
-import com.intellij.util.PathUtil
 import com.jetbrains.php.lang.psi.PhpFile
-import com.jetbrains.php.lang.psi.elements.ConcatenationExpression
 import com.jetbrains.php.lang.psi.elements.MethodReference
 import com.jetbrains.php.lang.psi.elements.PhpPsiElement
-import com.jetbrains.php.lang.psi.elements.StringLiteralExpression
 import com.jetbrains.php.lang.psi.elements.impl.FunctionReferenceImpl
 import com.jetbrains.php.lang.psi.elements.impl.PhpFilePathUtils
-import com.jetbrains.php.lang.psi.elements.impl.PhpFileReferenceSet
 import com.jetbrains.php.lang.psi.resolve.types.PhpType
 import com.pestphp.pest.PestSettings
 import com.pestphp.pest.getUsesPhpType
-import kotlin.io.path.Path
-import kotlin.io.path.name
-import kotlin.io.path.pathString
 
 class PestConfigurationFileParser(private val settings: PestSettings) {
     fun parse(project: Project): PestConfigurationFile {
@@ -56,7 +49,8 @@ class PestConfigurationFileParser(private val settings: PestSettings) {
         } ?: defaultConfig
     }
 
-    private class Visitor(private val collect: (PhpType, String?, Boolean) -> Unit) : PsiRecursiveElementWalkingVisitor() {
+    private class Visitor(private val collect: (PhpType, String?, Boolean) -> Unit) :
+        PsiRecursiveElementWalkingVisitor() {
         override fun visitElement(element: PsiElement) {
             if (element is MethodReference) {
                 visitInReference(element)

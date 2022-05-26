@@ -10,7 +10,8 @@ class PestRunConfigurationHandler : PhpTestRunConfigurationHandler {
     var rootPath: String? = null
 
     companion object {
-        @JvmField val instance = PestRunConfigurationHandler()
+        @JvmField
+        val instance = PestRunConfigurationHandler()
     }
 
     override fun getConfigFileOption(): String {

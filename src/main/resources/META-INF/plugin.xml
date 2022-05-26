@@ -71,7 +71,8 @@
                 implementationClass="com.pestphp.pest.inspections.MultipleExpectChainableInspection"
         />
 
-        <completion.contributor implementationClass="com.pestphp.pest.completion.PestCompletionContributor" language="PHP"/>
+        <completion.contributor implementationClass="com.pestphp.pest.completion.PestCompletionContributor"
+                                language="PHP"/>
         <gotoDeclarationHandler implementation="com.pestphp.pest.completion.ThisFieldsCompletionProvider"/>
         <lang.inspectionSuppressor
                 language="PHP"
@@ -96,7 +97,16 @@
                 implementationClass="com.pestphp.pest.datasets.DatasetCompletionContributor"
         />
         <fileBasedIndex implementation="com.pestphp.pest.datasets.DatasetIndex"/>
-        <gotoDeclarationHandler implementation="com.pestphp.pest.datasets.DatasetCompletionContributor$DataSetCompletionProvider"/>
+        <gotoDeclarationHandler implementation="com.pestphp.pest.datasets.DataSetCompletionProvider"/>
+        <localInspection
+                language="PHP"
+                groupPath="PHP"
+                groupName="Pest"
+                shortName="InvalidDatasetReferenceInspection"
+                enabledByDefault="true"
+                displayName="Invalid dataset reference"
+                implementationClass="com.pestphp.pest.datasets.InvalidDatasetReferenceInspection"
+        />
     </extensions>
 
     <projectListeners>

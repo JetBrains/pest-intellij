@@ -8,7 +8,7 @@ import com.jetbrains.php.lang.psi.elements.MethodReference
 import com.jetbrains.php.lang.psi.elements.Statement
 import com.pestphp.pest.customExpectations.isExpectation
 
-class ChangeMultipleExpectCallsToChainableQuickFix: LocalQuickFix {
+class ChangeMultipleExpectCallsToChainableQuickFix : LocalQuickFix {
     companion object {
         const val QUICK_FIX_NAME = "Change multiple expect call into chain"
     }

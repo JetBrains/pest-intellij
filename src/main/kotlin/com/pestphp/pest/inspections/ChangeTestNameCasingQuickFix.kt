@@ -4,12 +4,10 @@ import com.intellij.codeInspection.LocalQuickFix
 import com.intellij.codeInspection.ProblemDescriptor
 import com.intellij.openapi.project.Project
 import com.jetbrains.php.lang.psi.PhpPsiElementFactory
-import com.jetbrains.php.lang.psi.elements.FunctionReference
 import com.jetbrains.php.lang.psi.elements.StringLiteralExpression
-import com.pestphp.pest.getPestTestName
 import net.pearx.kasechange.splitToWords
 
-class ChangeTestNameCasingQuickFix: LocalQuickFix {
+class ChangeTestNameCasingQuickFix : LocalQuickFix {
     companion object {
         const val QUICK_FIX_NAME = "Change test name casing to sentence case"
     }

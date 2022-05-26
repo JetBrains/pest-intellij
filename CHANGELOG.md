@@ -3,6 +3,12 @@
 # PEST IntelliJ Changelog
 
 ## [Unreleased]
+### Added
+- Added inspection for checking if dataset exists
+
+### Fixed
+- Fixed dataset autocompletion triggering on all strings
+- Fixed dataset goto triggering on all strings
 
 ## [1.6.0]
 ### Added

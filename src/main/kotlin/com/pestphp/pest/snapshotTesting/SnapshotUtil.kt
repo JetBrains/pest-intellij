@@ -37,7 +37,7 @@ val FunctionReferenceImpl.snapshotFiles: List<PsiFile>
         // Make sure we are inside a pest test
         val pestTestReference = pestBody.parent?.parent?.parent ?: return emptyList()
 
-        if (! pestTestReference.isPestTestReference()) {
+        if (!pestTestReference.isPestTestReference()) {
             return emptyList()
         }
 
@@ -58,11 +58,12 @@ val FunctionReferenceImpl.snapshotFiles: List<PsiFile>
                 val psiFile = PsiManager.getInstance(this.project)
                     .findFile(it) ?: return@iterateContentUnderDirectory true
 
-                if (! psiFile.isSnapshotFile(
+                if (!psiFile.isSnapshotFile(
                         testName,
                         testFileName,
                         snapshotCalls
-                )) {
+                    )
+                ) {
                     return@iterateContentUnderDirectory true
                 }
 
@@ -73,17 +74,17 @@ val FunctionReferenceImpl.snapshotFiles: List<PsiFile>
         return snapshotFiles
     }
 
-private fun PsiFile.isSnapshotFile(testName: String, testFileName: String,  snapshotCall: Int): Boolean {
+private fun PsiFile.isSnapshotFile(testName: String, testFileName: String, snapshotCall: Int): Boolean {
     val snapshotFileName = this.virtualFile.nameWithoutExtension
     this.virtualFile.extension ?: return false
 
     val testNameUnderscore = testName.replace(' ', '_')
 
-    if (! snapshotFileName.startsWith("${testFileName}__$testNameUnderscore")) {
+    if (!snapshotFileName.startsWith("${testFileName}__$testNameUnderscore")) {
         return false
     }
 
-    if (! snapshotFileName.endsWith("__$snapshotCall")) {
+    if (!snapshotFileName.endsWith("__$snapshotCall")) {
         return false
     }
 

@@ -14,12 +14,11 @@ import com.pestphp.pest.PestIcons
 import com.pestphp.pest.getPestTestName
 import com.pestphp.pest.getPestTests
 import com.pestphp.pest.indexers.PestTestIndex
-import javax.swing.Icon
 
 /**
  * Adds support for navigating to pest tests via the symbol searching
  */
-class PestTestGoToSymbolContributor: ChooseByNameContributor {
+class PestTestGoToSymbolContributor : ChooseByNameContributor {
     override fun getNames(project: Project, includeNonProjectItems: Boolean): Array<String> {
         val index = FileBasedIndex.getInstance()
 
@@ -81,7 +80,7 @@ class PestTestGoToSymbolContributor: ChooseByNameContributor {
             .toTypedArray()
     }
 
-    class PestTestFunctionReference(private val functionReference: FunctionReference): NavigationItem {
+    class PestTestFunctionReference(private val functionReference: FunctionReference) : NavigationItem {
         override fun getPresentation(): ItemPresentation {
             val location = PhpPresentationUtil.getPresentablePathForFile(
                 functionReference.containingFile.virtualFile,

@@ -1,14 +1,16 @@
 <templateSet group="PestPHP">
-  <template name="it" value="it('$NAME$', function() {&#10;    $END$&#10;});" description="Create a pest it test" toReformat="true" toShortenFQNames="true">
-    <variable name="NAME" defaultValue="" alwaysStopAt="true" />
-    <context>
-      <option name="ROOT_PESTPHP" value="true" />
-    </context>
-  </template>
-  <template name="test" value="test('$NAME$', function() {&#10;    $END$&#10;});" description="Create a pest it test" toReformat="true" toShortenFQNames="true">
-    <variable name="NAME" defaultValue="" alwaysStopAt="true" />
-    <context>
-      <option name="ROOT_PESTPHP" value="true" />
-    </context>
-  </template>
+    <template name="it" value="it('$NAME$', function() {&#10;    $END$&#10;});" description="Create a pest it test"
+              toReformat="true" toShortenFQNames="true">
+        <variable name="NAME" defaultValue="" alwaysStopAt="true"/>
+        <context>
+            <option name="ROOT_PESTPHP" value="true"/>
+        </context>
+    </template>
+    <template name="test" value="test('$NAME$', function() {&#10;    $END$&#10;});" description="Create a pest it test"
+              toReformat="true" toShortenFQNames="true">
+        <variable name="NAME" defaultValue="" alwaysStopAt="true"/>
+        <context>
+            <option name="ROOT_PESTPHP" value="true"/>
+        </context>
+    </template>
 </templateSet>

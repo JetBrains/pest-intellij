@@ -7,7 +7,7 @@ import com.intellij.psi.PsiFile
 import com.jetbrains.php.lang.psi.PhpFile
 import com.pestphp.pest.customExpectations.generators.Method
 
-class CustomExpectationListener(private val project: Project): CustomExpectationNotifier {
+class CustomExpectationListener(private val project: Project) : CustomExpectationNotifier {
     override fun changedExpectation(file: PsiFile, customExpectations: List<Method>) {
         val expectationFileService = project.service<ExpectationFileService>()
 

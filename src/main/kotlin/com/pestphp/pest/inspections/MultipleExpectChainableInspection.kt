@@ -1,6 +1,5 @@
 package com.pestphp.pest.inspections
 
-import com.intellij.codeInspection.LocalQuickFix
 import com.intellij.codeInspection.ProblemHighlightType
 import com.intellij.codeInspection.ProblemsHolder
 import com.intellij.psi.PsiElementVisitor
@@ -9,7 +8,6 @@ import com.jetbrains.php.lang.psi.elements.GroupStatement
 import com.jetbrains.php.lang.psi.elements.MethodReference
 import com.jetbrains.php.lang.psi.elements.Statement
 import com.jetbrains.php.lang.psi.visitors.PhpElementVisitor
-import com.jetbrains.rd.util.first
 import com.pestphp.pest.customExpectations.isExpectation
 
 class MultipleExpectChainableInspection : PhpInspection() {

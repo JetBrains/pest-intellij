@@ -8,7 +8,7 @@ import com.intellij.psi.PsiFile
 /**
  * Register postfix templates
  */
-class PestPostfixTemplateProvider: PostfixTemplateProvider {
+class PestPostfixTemplateProvider : PostfixTemplateProvider {
     override fun getTemplates(): MutableSet<PostfixTemplate> {
         return mutableSetOf(PestItPostfixTemplate())
     }

@@ -10,7 +10,7 @@ import com.pestphp.pest.isPestTestFile
 /**
  * Adds a postfix template for `it` tests.
  */
-class PestItPostfixTemplate: PhpStringBasedPostfixTemplate(
+class PestItPostfixTemplate : PhpStringBasedPostfixTemplate(
     "it",
     "it(${EXPR}, function...)",
     PhpPostfixUtils.selectorTopmost()

@@ -12,7 +12,7 @@ import com.jetbrains.php.lang.psi.PhpFile
 /**
  * Adds all methods to the expectation file service which has been indexed already.
  */
-class CustomExpectationStartupActivity: StartupActivity {
+class CustomExpectationStartupActivity : StartupActivity {
     override fun runActivity(project: Project) {
         val fileBasedIndex = FileBasedIndex.getInstance()
         val expectationFileService = project.service<ExpectationFileService>()
@@ -45,7 +45,7 @@ class CustomExpectationStartupActivity: StartupActivity {
                         it.value
                     )
                 }
-            expectationFileService.generateFile {  }
+            expectationFileService.generateFile { }
         }
 
     }

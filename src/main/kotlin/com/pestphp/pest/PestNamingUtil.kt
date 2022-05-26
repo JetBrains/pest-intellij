@@ -9,7 +9,7 @@ import com.jetbrains.php.lang.psi.elements.StringLiteralExpression
 import com.jetbrains.php.lang.psi.elements.impl.FunctionReferenceImpl
 import com.jetbrains.php.run.remote.PhpRemoteInterpreterManager
 import com.jetbrains.php.util.pathmapper.PhpPathMapper
-import java.util.Locale
+import java.util.*
 
 fun FunctionReferenceImpl.getPestTestName(): String? {
     val testName = (getParameter(0) as? StringLiteralExpression)?.contents

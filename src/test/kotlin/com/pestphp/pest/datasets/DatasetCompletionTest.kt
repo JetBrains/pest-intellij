@@ -10,15 +10,22 @@ class DatasetCompletionTest : PestLightCodeFixture() {
     }
 
     fun testCanCompleteDatasetInSameFile() {
-        myFixture.configureByFile("DatasetTest.php")
+        myFixture.configureByFile("AutocompleteDatasetTest.php")
 
         assertCompletion("dojos")
     }
 
     fun testCanCompleteDatasetInOtherFile() {
         myFixture.copyFileToProject("Datasets.php", "tests/Datasets/stances.php")
-        myFixture.configureByFile("DatasetTest.php")
+        myFixture.configureByFile("AutocompleteDatasetTest.php")
 
         assertCompletion("dojos", "stances")
+    }
+
+    fun testCannotCompleteDatasetOnNonPestTest() {
+        myFixture.copyFileToProject("Datasets.php", "tests/Datasets/stances.php")
+        myFixture.configureByFile("DatasetOnNonPestTestCompletion.php")
+
+        assertNoCompletion()
     }
 }

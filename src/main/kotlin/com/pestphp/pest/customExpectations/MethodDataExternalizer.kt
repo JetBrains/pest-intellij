@@ -43,8 +43,8 @@ class MethodDataExternalizer : DataExternalizer<Method> {
                 returnType = PhpType.builder()
                     .add(
                         Regex("returnType='(.*?)'")
-                        .find(it)!!
-                        .groupValues[1]
+                            .find(it)!!
+                            .groupValues[1]
                     ).build(),
                 defaultValue = Regex("defaultValue='(.*)'")
                     .find(it)!!

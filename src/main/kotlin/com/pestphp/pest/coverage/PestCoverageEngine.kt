@@ -7,7 +7,7 @@ import com.intellij.execution.configurations.RunConfigurationBase
 import com.intellij.execution.configurations.coverage.CoverageEnabledConfiguration
 import com.jetbrains.php.phpunit.coverage.PhpUnitCoverageEngine
 import com.pestphp.pest.configuration.PestRunConfiguration
-import java.util.Date
+import java.util.*
 
 class PestCoverageEngine : PhpUnitCoverageEngine() {
     override fun isApplicableTo(conf: RunConfigurationBase<*>): Boolean {

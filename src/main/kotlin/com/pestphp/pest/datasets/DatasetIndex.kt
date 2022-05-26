@@ -39,7 +39,7 @@ class DatasetIndex : FileBasedIndexExtension<String, List<String>>() {
                 .filterIsInstance<FunctionReferenceImpl>()
                 .mapNotNull { it.getPestDatasetName() }
 
-            if(datasets.isEmpty()) {
+            if (datasets.isEmpty()) {
                 return@DataIndexer mapOf()
             }
 

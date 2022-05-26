@@ -39,4 +39,17 @@ class DatasetGoToTest : PestLightCodeFixture() {
         assertTrue(declarationElement.isPestDataset())
         assertEquals("stances", declarationElement!!.getPestDatasetName())
     }
+
+    fun testCannotGoToDatasetInNonPestTest() {
+        myFixture.copyFileToProject("Datasets.php", "tests/Datasets/stances.php")
+        myFixture.configureByFile("DatasetOnNonPestTest.php")
+
+        val declarationElement = GotoDeclarationAction.findTargetElement(
+            project,
+            myFixture.editor,
+            myFixture.caretOffset
+        )
+
+        assertNull(declarationElement)
+    }
 }
