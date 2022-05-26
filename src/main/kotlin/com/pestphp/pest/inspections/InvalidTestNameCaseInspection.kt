@@ -1,6 +1,5 @@
 package com.pestphp.pest.inspections
 
-import com.intellij.codeInspection.LocalQuickFix
 import com.intellij.codeInspection.ProblemHighlightType
 import com.intellij.codeInspection.ProblemsHolder
 import com.intellij.psi.PsiElementVisitor
@@ -11,8 +10,6 @@ import com.jetbrains.php.lang.psi.visitors.PhpElementVisitor
 import com.pestphp.pest.getPestTestName
 import com.pestphp.pest.getPestTests
 import net.pearx.kasechange.splitToWords
-import net.pearx.kasechange.toLowerSpaceCase
-import net.pearx.kasechange.toSnakeCase
 
 class InvalidTestNameCaseInspection : PhpInspection() {
     companion object {
@@ -25,6 +22,7 @@ class InvalidTestNameCaseInspection : PhpInspection() {
                 file.getPestTests()
                     .groupBy { it.getPestTestName() }
                     .filterKeys { it != null }
+                    .filterKeys { !it!!.contains(' ') }
                     .filterKeys { it!!.splitToWords().joinToString(" ") != it }
                     .forEach {
                         declareProblemType(holder, it.value)
@@ -33,7 +31,6 @@ class InvalidTestNameCaseInspection : PhpInspection() {
         }
     }
 
-    @Suppress("SpreadOperator")
     private fun declareProblemType(holder: ProblemsHolder, tests: List<FunctionReference>) {
         tests
             .mapNotNull { it.getParameter(0) }

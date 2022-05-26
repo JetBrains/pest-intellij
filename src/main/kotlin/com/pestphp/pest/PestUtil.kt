@@ -7,6 +7,7 @@ import com.intellij.psi.PsiElement
 import com.intellij.psi.PsiFile
 import com.jetbrains.php.lang.psi.PhpFile
 import com.jetbrains.php.lang.psi.elements.PhpNamespace
+import com.jetbrains.php.lang.psi.elements.PhpPsiElement
 import com.jetbrains.php.lang.psi.elements.Statement
 import com.jetbrains.php.lang.psi.elements.impl.FunctionReferenceImpl
 import com.jetbrains.php.phpunit.PhpUnitUtil
@@ -17,16 +18,7 @@ fun PsiFile.isPestTestFile(): Boolean {
     if (this !is PhpFile) return false
 
     return try {
-        val element = this.firstChild
-
-        element.children.filterIsInstance<PhpNamespace>()
-            .mapNotNull { it.statements }
-            .getOrElse(
-                0
-            ) { element }
-            .children
-            .filterIsInstance<Statement>()
-            .mapNotNull { it.firstChild }
+        this.getRootPhpPsiElements()
             .any(PsiElement::isPestTestReference)
     } catch (e: Exception) {
         false
@@ -44,8 +36,8 @@ fun Project.isPestEnabled(): Boolean {
         .any { StringUtil.isNotEmpty(it.executablePath) }
 }
 
-fun PsiFile.isPestDatasetFile(): Boolean {
-    if (this !is PhpFile) return false
+fun PsiFile.getRootPhpPsiElements(): List<PhpPsiElement> {
+    if (this !is PhpFile) return listOf()
 
     val element = this.firstChild
 
@@ -57,19 +49,7 @@ fun PsiFile.isPestDatasetFile(): Boolean {
         .children
         .filterIsInstance<Statement>()
         .mapNotNull { it.firstChild }
-        .any(PsiElement::isPestDataset)
-}
-
-fun PsiElement?.isPestDataset(): Boolean {
-    return when (this) {
-        null -> false
-        is FunctionReferenceImpl -> this.isPestDatasetFunction()
-        else -> false
-    }
-}
-
-fun FunctionReferenceImpl.isPestDatasetFunction(): Boolean {
-    return this.canonicalText in setOf("dataset")
+        .filterIsInstance<PhpPsiElement>()
 }
 
 /**

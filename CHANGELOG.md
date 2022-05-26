@@ -3,10 +3,13 @@
 # PEST IntelliJ Changelog
 
 ## [Unreleased]
-
-## [1.6.0-EAP.1]
 ### Added
 - Added converting multiple `expect` to `and` calls instead
+- Added dataset completion
+- Added dataset goto
+
+### Fixed
+- Fixed automatic case changing on multicased string
 
 ## [1.5.0]
 ### Added

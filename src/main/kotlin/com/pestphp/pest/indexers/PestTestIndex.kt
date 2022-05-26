@@ -14,6 +14,7 @@ import com.intellij.util.io.EnumeratorStringDescriptor
 import com.intellij.util.io.KeyDescriptor
 import com.jetbrains.php.lang.PhpFileType
 import com.jetbrains.php.lang.psi.stubs.indexes.StringSetDataExternalizer
+import com.pestphp.pest.PhpTestFolderInputFilter
 import com.pestphp.pest.getPestTestName
 import com.pestphp.pest.getPestTests
 import com.pestphp.pest.isPestTestFile
@@ -53,17 +54,7 @@ class PestTestIndex : FileBasedIndexExtension<String, Set<String>>() {
     }
 
     override fun getInputFilter(): FileBasedIndex.InputFilter {
-        return object : DefaultFileTypeSpecificInputFilter(PhpFileType.INSTANCE) {
-            override fun acceptInput(file: VirtualFile): Boolean {
-                if (file.path.contains(""".*?test.*?/.*\..*""".toRegex())) {
-                    return true
-                }
-
-                return ProjectManager.getInstance().openProjects.any {
-                    TestSourcesFilter.isTestSources(file, it)
-                }
-            }
-        }
+        return PhpTestFolderInputFilter()
     }
 
     override fun getKeyDescriptor(): KeyDescriptor<String> {

@@ -91,6 +91,12 @@
         <lang.surroundDescriptor
                 language="PHP"
                 implementationClass="com.pestphp.pest.surrounders.StatementSurroundDescriptor"/>
+        <completion.contributor
+                language="PHP"
+                implementationClass="com.pestphp.pest.datasets.DatasetCompletionContributor"
+        />
+        <fileBasedIndex implementation="com.pestphp.pest.datasets.DatasetIndex"/>
+        <gotoDeclarationHandler implementation="com.pestphp.pest.datasets.DatasetCompletionContributor$DataSetCompletionProvider"/>
     </extensions>
 
     <projectListeners>
