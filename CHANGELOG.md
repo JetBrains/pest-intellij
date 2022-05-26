@@ -3,6 +3,8 @@
 # PEST IntelliJ Changelog
 
 ## [Unreleased]
+
+## [1.6.1]
 ### Added
 - Added inspection for checking if dataset exists
 
