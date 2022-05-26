@@ -3,6 +3,8 @@
 # PEST IntelliJ Changelog
 
 ## [Unreleased]
+
+## [1.6.0]
 ### Added
 - Added converting multiple `expect` to `and` calls instead
 - Added dataset completion
