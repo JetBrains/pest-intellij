@@ -3,6 +3,8 @@
 # PEST IntelliJ Changelog
 
 ## [Unreleased]
+### Fixed
+- Fixed duplicate type provider key with nette plugin
 
 ## [1.6.1]
 ### Added
