@@ -92,12 +92,7 @@
         <lang.surroundDescriptor
                 language="PHP"
                 implementationClass="com.pestphp.pest.surrounders.StatementSurroundDescriptor"/>
-        <completion.contributor
-                language="PHP"
-                implementationClass="com.pestphp.pest.datasets.DatasetCompletionContributor"
-        />
         <fileBasedIndex implementation="com.pestphp.pest.datasets.DatasetIndex"/>
-        <gotoDeclarationHandler implementation="com.pestphp.pest.datasets.DataSetCompletionProvider"/>
         <localInspection
                 language="PHP"
                 groupPath="PHP"
@@ -106,6 +101,9 @@
                 enabledByDefault="true"
                 displayName="Invalid dataset reference"
                 implementationClass="com.pestphp.pest.datasets.InvalidDatasetReferenceInspection"
+        />
+        <psi.referenceContributor
+                implementation="com.pestphp.pest.datasets.DatasetReferenceContributor"
         />
     </extensions>
 

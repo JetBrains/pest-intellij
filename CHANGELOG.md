@@ -3,6 +3,8 @@
 # PEST IntelliJ Changelog
 
 ## [Unreleased]
+### Changed
+- Changed goto and completion contributor to reference provider
 
 ## [1.6.2]
 ### Fixed

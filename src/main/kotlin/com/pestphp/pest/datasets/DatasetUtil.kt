@@ -26,3 +26,9 @@ fun FunctionReferenceImpl.isPestDatasetFunction(): Boolean {
 fun FunctionReferenceImpl.getPestDatasetName(): String? {
     return (getParameter(0) as? StringLiteralExpression)?.contents
 }
+
+fun PsiFile.getDatasets(): List<FunctionReferenceImpl> {
+    return this.getRootPhpPsiElements()
+        .filter { it.isPestDataset() }
+        .filterIsInstance<FunctionReferenceImpl>()
+}
