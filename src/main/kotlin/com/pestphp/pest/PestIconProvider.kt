@@ -5,7 +5,7 @@ import com.intellij.openapi.application.runReadAction
 import com.intellij.openapi.project.DumbService
 import com.intellij.psi.PsiElement
 import com.intellij.psi.PsiFile
-import com.pestphp.pest.datasets.isPestDatasetFile
+import com.pestphp.pest.features.datasets.isPestDatasetFile
 import javax.swing.Icon
 
 class PestIconProvider : IconProvider() {

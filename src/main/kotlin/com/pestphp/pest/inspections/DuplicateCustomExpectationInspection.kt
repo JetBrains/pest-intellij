@@ -9,8 +9,8 @@ import com.jetbrains.php.lang.inspections.PhpInspection
 import com.jetbrains.php.lang.psi.elements.MethodReference
 import com.jetbrains.php.lang.psi.elements.impl.MethodReferenceImpl
 import com.jetbrains.php.lang.psi.visitors.PhpElementVisitor
-import com.pestphp.pest.customExpectations.CustomExpectationIndex
-import com.pestphp.pest.customExpectations.extendName
+import com.pestphp.pest.features.customExpectations.CustomExpectationIndex
+import com.pestphp.pest.features.customExpectations.extendName
 
 class DuplicateCustomExpectationInspection : PhpInspection() {
     companion object {

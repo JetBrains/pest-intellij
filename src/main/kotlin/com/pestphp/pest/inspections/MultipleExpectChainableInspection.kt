@@ -8,7 +8,7 @@ import com.jetbrains.php.lang.psi.elements.GroupStatement
 import com.jetbrains.php.lang.psi.elements.MethodReference
 import com.jetbrains.php.lang.psi.elements.Statement
 import com.jetbrains.php.lang.psi.visitors.PhpElementVisitor
-import com.pestphp.pest.customExpectations.isExpectation
+import com.pestphp.pest.features.customExpectations.isExpectation
 
 class MultipleExpectChainableInspection : PhpInspection() {
     companion object {

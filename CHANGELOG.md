@@ -3,6 +3,9 @@
 # PEST IntelliJ Changelog
 
 ## [Unreleased]
+### Added
+- Added `uses->in` folder reference
+
 ### Changed
 - Changed goto and completion contributor to reference provider
 

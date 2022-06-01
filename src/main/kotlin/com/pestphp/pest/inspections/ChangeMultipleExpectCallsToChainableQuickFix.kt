@@ -6,7 +6,7 @@ import com.intellij.openapi.project.Project
 import com.jetbrains.php.lang.psi.PhpPsiElementFactory
 import com.jetbrains.php.lang.psi.elements.MethodReference
 import com.jetbrains.php.lang.psi.elements.Statement
-import com.pestphp.pest.customExpectations.isExpectation
+import com.pestphp.pest.features.customExpectations.isExpectation
 
 class ChangeMultipleExpectCallsToChainableQuickFix : LocalQuickFix {
     companion object {

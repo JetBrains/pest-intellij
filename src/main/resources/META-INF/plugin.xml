@@ -18,7 +18,7 @@
         />
         <codeInsight.lineMarkerProvider
                 language="PHP"
-                implementationClass="com.pestphp.pest.snapshotTesting.SnapshotLineMarkerProvider"
+                implementationClass="com.pestphp.pest.features.snapshotTesting.SnapshotLineMarkerProvider"
         />
 
 
@@ -29,9 +29,9 @@
 
         <testFinder implementation="com.pestphp.pest.goto.PestTestFinder"/>
         <fileBasedIndex implementation="com.pestphp.pest.indexers.PestTestIndex"/>
-        <fileBasedIndex implementation="com.pestphp.pest.customExpectations.CustomExpectationIndex"/>
+        <fileBasedIndex implementation="com.pestphp.pest.features.customExpectations.CustomExpectationIndex"/>
         <postStartupActivity
-                implementation="com.pestphp.pest.customExpectations.CustomExpectationStartupActivity"/>
+                implementation="com.pestphp.pest.features.customExpectations.CustomExpectationStartupActivity"/>
         <errorHandler implementation="com.pestphp.pest.GithubErrorReporter"/>
         <localInspection
                 language="PHP"
@@ -92,7 +92,7 @@
         <lang.surroundDescriptor
                 language="PHP"
                 implementationClass="com.pestphp.pest.surrounders.StatementSurroundDescriptor"/>
-        <fileBasedIndex implementation="com.pestphp.pest.datasets.DatasetIndex"/>
+        <fileBasedIndex implementation="com.pestphp.pest.features.datasets.DatasetIndex"/>
         <localInspection
                 language="PHP"
                 groupPath="PHP"
@@ -100,16 +100,19 @@
                 shortName="InvalidDatasetReferenceInspection"
                 enabledByDefault="true"
                 displayName="Invalid dataset reference"
-                implementationClass="com.pestphp.pest.datasets.InvalidDatasetReferenceInspection"
+                implementationClass="com.pestphp.pest.features.datasets.InvalidDatasetReferenceInspection"
         />
         <psi.referenceContributor
-                implementation="com.pestphp.pest.datasets.DatasetReferenceContributor"
+                implementation="com.pestphp.pest.features.datasets.DatasetReferenceContributor"
+        />
+        <psi.referenceContributor
+                implementation="com.pestphp.pest.features.uses.UsesReferenceContributor"
         />
     </extensions>
 
     <projectListeners>
-        <listener class="com.pestphp.pest.customExpectations.CustomExpectationListener"
-                  topic="com.pestphp.pest.customExpectations.CustomExpectationNotifier"/>
+        <listener class="com.pestphp.pest.features.customExpectations.CustomExpectationListener"
+                  topic="com.pestphp.pest.features.customExpectations.CustomExpectationNotifier"/>
     </projectListeners>
 
     <extensions defaultExtensionNs="com.jetbrains.php">

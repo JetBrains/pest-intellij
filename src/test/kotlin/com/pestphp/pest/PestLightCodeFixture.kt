@@ -6,6 +6,7 @@ import com.jetbrains.php.config.interpreters.PhpInterpreter
 import com.jetbrains.php.lang.PhpFileType
 import com.jetbrains.php.testFramework.PhpTestFrameworkConfiguration
 import com.jetbrains.php.testFramework.PhpTestFrameworkSettingsManager
+import junit.framework.TestCase
 
 @Suppress("UnnecessaryAbstractClass")
 @TestDataPath("\$CONTENT_ROOT/resources/com/pestphp/pest")
@@ -18,6 +19,14 @@ abstract class PestLightCodeFixture : BasePlatformTestCase() {
         val strings = myFixture.lookupElementStrings ?: return fail("empty completion result")
 
         assertContainsElements(strings, shouldContain.asList())
+    }
+
+    protected fun assertAllCompletion(vararg shouldContain: String) {
+        myFixture.completeBasic()
+
+        val strings = myFixture.lookupElementStrings ?: return fail("empty completion result")
+
+        assertEquals(shouldContain.toList(), strings)
     }
 
     protected fun assertNoCompletion() {

@@ -2,6 +2,8 @@ package com.pestphp.pest.customExpectations.generators
 
 import com.jetbrains.php.lang.psi.resolve.types.PhpType
 import com.pestphp.pest.PestLightCodeFixture
+import com.pestphp.pest.features.customExpectations.generators.ExpectationGenerator
+import com.pestphp.pest.features.customExpectations.generators.Method
 
 class ExpectationGeneratorTest : PestLightCodeFixture() {
     fun testCanGenerateFileWithMethod() {

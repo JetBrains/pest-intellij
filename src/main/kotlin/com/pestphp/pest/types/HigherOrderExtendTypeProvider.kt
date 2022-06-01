@@ -7,7 +7,7 @@ import com.jetbrains.php.lang.psi.elements.*
 import com.jetbrains.php.lang.psi.elements.impl.FunctionReferenceImpl
 import com.jetbrains.php.lang.psi.resolve.types.PhpType
 import com.jetbrains.php.lang.psi.resolve.types.PhpTypeProvider4
-import com.pestphp.pest.customExpectations.expectationType
+import com.pestphp.pest.features.customExpectations.expectationType
 
 
 class HigherOrderExtendTypeProvider : PhpTypeProvider4 {
