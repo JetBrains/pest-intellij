@@ -3,6 +3,8 @@
 # PEST IntelliJ Changelog
 
 ## [Unreleased]
+
+## [1.7.0-EAP.1]
 ### Added
 - Added `uses->in` folder reference
 
@@ -17,7 +19,6 @@
 ### Added
 - Added inspection for checking if dataset exists
 
-
 ### Fixed
 - Fixed dataset autocompletion triggering on all strings
 - Fixed dataset goto triggering on all strings
@@ -27,7 +28,6 @@
 - Added converting multiple `expect` to `and` calls instead
 - Added dataset completion
 - Added dataset goto
-
 
 ### Fixed
 - Fixed automatic case changing on multicased string
@@ -44,7 +44,6 @@
 ### Changed
 - Reduced custom expectation index size by over 95%
 
-
 ### Fixed
 - Check if file exist in index (can happen if file is deleted outside IDE)
 - Handle path separators per OS
@@ -55,10 +54,8 @@
 - Added inspection for duplicate custom expectation name
 - Add surrounder for `expect`
 
-
 ### Changed
 - Define root path from phpunit.xml instead of composer path
-
 
 ### Fixed
 - Remove `-` from the pest generated regex
@@ -69,10 +66,8 @@
 - Changed services to light services for auto disposable
 - Fixed null pointer error when no virtual file
 
-
 ### Changed
 - Change reporting on GitHub to contain full stacktracepa
-
 
 ### Added
 - Added higher order expectation type provider
@@ -84,15 +79,12 @@
 - Fix ArrayIndex error from ExpectationFileService
 - Fixed wrong file expectation matching in ExpectationFileService
 
-
 ### Added
 - Add support for  in  calls
 - Added support for running key value datasets
 
-
 ### Changed
 - Changed root path for regex to be based of vendor dir location instead of working directory
-
 
 ### Removed
 - Remove service message newline requirement as method is deprecated
@@ -106,11 +98,9 @@
 - Added gutter icon for snapshots
 - Added goto snapshot file
 
-
 ### Fixed
 - Rewrote the custom expectation system to use a more robust system
 - Updated custom expectation indexer to v2
-
 
 ### Changed
 - Removed decorator in favor of implementing interface
@@ -122,7 +112,6 @@
 - Fixed `$this->field` not working when namespace exist
 - Fixed Concurrent modification errors on expectation file service
 - Fixed file generation triggering on projects without pest
-
 
 ### Added
 - Added new context type for the root of a pest file
@@ -159,7 +148,6 @@
 - Added pest icon for the Pest.php config file
 - Added symbol contributor for pest tests
 
-
 ### Fixed
 - Fixed a read only permission bug when used with Code with me
 - Fixed wrong namespace in custom expectations file generation
@@ -171,11 +159,9 @@
 - Added test state icons
 - Added run all test in file icon
 
-
 ### Fixed
 - Fix support for 2021.1
 - Fix running tests with circumflex (^)
-
 
 ### Changed
 - Bumped min IntelliJ version to 2020.3
@@ -184,15 +170,12 @@
 ### Added
 - Added path mapping support ([#77](https://github.com/pestphp/pest-intellij/pull/77))
 
-
 ### Changed
 - Bumped min plugin version to 2020.2
 - Bumped Java version to 11
 
-
 ### Removed
 - Disabled version checking (did not work with path mapping) ([#77](https://github.com/pestphp/pest-intellij/pull/77))
-
 
 ### Fixed
 - Escape parenthesis in regex for single test ([#80](https://github.com/pestphp/pest-intellij/pull/80))
@@ -201,7 +184,6 @@
 ## [0.4.1]
 ### Added
 - Added support for auto-generated `it` test names. ([#72](https://github.com/pestphp/pest-intellij/pull/72))
-
 
 ### Changed
 - Made the regex tightly bound and reused the same regex in rerun action. ([#72](https://github.com/pestphp/pest-intellij/pull/72))
@@ -216,7 +198,6 @@
 - Added completions for static and protected $this methods. ([#66](https://github.com/pestphp/pest-intellij/pull/66))
 - Added completions $this fields declared in beforeEach functions. ([#66](https://github.com/pestphp/pest-intellij/pull/66))
 - Added pcov coverage engine support ([#64](https://github.com/pestphp/pest-intellij/pull/64))
-
 
 ### Fixed
 - Fixed duplicate test name error when no test name is given yet. ([#61](https://github.com/pestphp/pest-intellij/pull/61))
@@ -246,10 +227,8 @@
 - Added support for rerun tests when using new pest version ([#39](https://github.com/pestphp/pest-intellij/pull/39))
 - Added coverage support with clover output ([#39](https://github.com/pestphp/pest-intellij/pull/39))
 
-
 ### Changed
 - Migrated all Java classes to Kotlin
-
 
 ### Fixed
 - Plugin require restart as PhpTestFrameworkType does not support dynamic plugins
