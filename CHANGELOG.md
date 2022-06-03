@@ -8,6 +8,7 @@
 
 ### Changed
 - Changed goto and completion contributor to reference provider
+- Changed icons to use build-in dark mode switching
 
 ## [1.6.2]
 ### Fixed
