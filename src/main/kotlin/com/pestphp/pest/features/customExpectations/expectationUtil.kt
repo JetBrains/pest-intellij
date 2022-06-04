@@ -118,7 +118,7 @@ fun MethodReferenceImpl.toMethod(): Method? {
             Parameter(
                 parameter.name,
                 parameter.type,
-                parameter.defaultValuePresentation
+                parameter.defaultValuePresentation,
             )
         }
     )

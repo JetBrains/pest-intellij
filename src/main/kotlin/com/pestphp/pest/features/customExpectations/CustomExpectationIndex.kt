@@ -40,11 +40,13 @@ class CustomExpectationIndex : FileBasedIndexExtension<String, List<Method>>() {
                     it.toMethod()
                 }
 
+            /*
             val publisher = file.project.messageBus.syncPublisher(CustomExpectationNotifier.TOPIC)
             publisher.changedExpectation(
                 file,
                 customExpectations
             )
+             */
 
             if (customExpectations.isEmpty()) {
                 return@DataIndexer mapOf()
