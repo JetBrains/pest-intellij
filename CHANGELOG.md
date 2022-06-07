@@ -11,6 +11,9 @@
 - Changed goto and completion contributor to reference provider
 - Changed icons to use build-in dark mode switching
 
+### Fixed
+- Fixed dataset reference error when no dataset provided yet.
+
 ## [1.6.2]
 ### Fixed
 - Fixed duplicate type provider key with nette plugin

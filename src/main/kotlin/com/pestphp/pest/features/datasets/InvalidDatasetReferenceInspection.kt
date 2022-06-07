@@ -42,11 +42,13 @@ class InvalidDatasetReferenceInspection : PhpInspection() {
 
                 file.getPestTests()
                     // Has to be a method reference, as else there is no dataset
+                    .asSequence()
                     .filterIsInstance<MethodReferenceImpl>()
                     .filter { it.name == "with" }
-                    .mapNotNull { it.parameters[0] }
+                    .mapNotNull { it.parameters.getOrNull(0) }
                     .filterIsInstance<StringLiteralExpression>()
                     .filter { it.contents !in localDatasets && it.contents !in sharedDatasets }
+                    .toList()
                     .forEach {
                         declareProblemType(
                             holder,

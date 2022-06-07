@@ -26,4 +26,10 @@ class InvalidDatasetReferenceInspectionTest : PestLightCodeFixture() {
 
         myFixture.checkHighlighting()
     }
+
+    fun testHasWithStatementWithNoArgs() {
+        myFixture.configureByFile("DatasetNoArgsTest.php")
+
+        myFixture.checkHighlighting()
+    }
 }
