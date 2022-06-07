@@ -6,6 +6,7 @@ import com.intellij.openapi.application.runWriteAction
 import com.intellij.openapi.components.Service
 import com.intellij.openapi.project.DumbService
 import com.intellij.openapi.project.Project
+import com.intellij.openapi.util.registry.Registry
 import com.intellij.psi.PsiManager
 import com.intellij.util.SlowOperations
 import com.jetbrains.php.composer.lib.ComposerLibraryManager
@@ -47,6 +48,10 @@ class ExpectationFileService(val project: Project) {
     }
 
     fun generateFile(afterGenerationRunnable: () -> Unit) {
+        if (! Registry.`is`("pestphp.custom-expectations", true)) {
+            return
+        }
+
         val generator = ExpectationGenerator()
 
         // Add all methods to the generator

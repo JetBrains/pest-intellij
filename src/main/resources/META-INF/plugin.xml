@@ -108,6 +108,10 @@
         <psi.referenceContributor
                 implementation="com.pestphp.pest.features.uses.UsesReferenceContributor"
         />
+        <registryKey defaultValue="true"
+                     description="Whether custom expectation file generation should happen."
+                     key="pestphp.custom-expectations"
+        />
     </extensions>
 
     <projectListeners>

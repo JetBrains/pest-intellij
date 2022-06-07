@@ -5,6 +5,7 @@
 ## [Unreleased]
 ### Added
 - Added `uses->in` folder reference
+- Added registry entry for disabling expectation file generation
 
 ### Changed
 - Changed goto and completion contributor to reference provider
