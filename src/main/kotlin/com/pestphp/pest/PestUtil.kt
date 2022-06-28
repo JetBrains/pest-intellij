@@ -12,16 +12,11 @@ import com.jetbrains.php.lang.psi.elements.Statement
 import com.jetbrains.php.phpunit.PhpUnitUtil
 import com.jetbrains.php.testFramework.PhpTestFrameworkSettingsManager
 
-@Suppress("TooGenericExceptionCaught", "SwallowedException")
 fun PsiFile.isPestTestFile(): Boolean {
     if (this !is PhpFile) return false
 
-    return try {
-        this.getRootPhpPsiElements()
-            .any(PsiElement::isPestTestReference)
-    } catch (e: Exception) {
-        false
-    }
+    return this.getRootPhpPsiElements()
+        .any(PsiElement::isPestTestReference)
 }
 
 fun PsiFile.isPestConfigurationFile(): Boolean {

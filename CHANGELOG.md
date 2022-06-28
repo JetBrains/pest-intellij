@@ -3,6 +3,8 @@
 # PEST IntelliJ Changelog
 
 ## [Unreleased]
+### Fixed
+- Fixed nested `readAction` calls in Icon Provider
 
 ## [1.7.0]
 ### Added

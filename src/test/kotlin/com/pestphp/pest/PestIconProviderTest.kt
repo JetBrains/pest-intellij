@@ -8,7 +8,7 @@ class PestIconProviderTest : PestLightCodeFixture() {
     override fun setUp() {
         super.setUp()
 
-        myFixture.copyFileToProject("SimpleTest.php")
+        myFixture.copyFileToProject("SimpleTest.php", "tests/SimpleTest.php")
     }
 
     override fun getTestDataPath(): String {
@@ -16,7 +16,7 @@ class PestIconProviderTest : PestLightCodeFixture() {
     }
 
     fun testCanGetPestIconForPestFile() {
-        val file = myFixture.configureByFile("SimpleTest.php")
+        val file = myFixture.configureByFile("tests/SimpleTest.php")
 
         TestCase.assertEquals(
             PestIcons.FILE,

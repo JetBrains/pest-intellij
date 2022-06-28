@@ -1,7 +1,6 @@
 package com.pestphp.pest
 
 import com.intellij.ide.IconProvider
-import com.intellij.openapi.application.runReadAction
 import com.intellij.openapi.project.DumbService
 import com.intellij.psi.PsiElement
 import com.intellij.psi.PsiFile
@@ -14,7 +13,7 @@ class PestIconProvider : IconProvider() {
 
         if (element !is PsiFile) return null
 
-        return runReadAction { findIconFromPsiFile(element) }
+        return findIconFromPsiFile(element)
     }
 
     private fun findIconFromPsiFile(file: PsiFile): Icon? {
