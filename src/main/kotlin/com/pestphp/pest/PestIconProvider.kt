@@ -4,7 +4,7 @@ import com.intellij.ide.IconProvider
 import com.intellij.openapi.project.DumbService
 import com.intellij.psi.PsiElement
 import com.intellij.psi.PsiFile
-import com.pestphp.pest.features.datasets.isPestDatasetFile
+import com.pestphp.pest.features.datasets.isIndexedPestDatasetFile
 import javax.swing.Icon
 
 class PestIconProvider : IconProvider() {
@@ -17,11 +17,11 @@ class PestIconProvider : IconProvider() {
     }
 
     private fun findIconFromPsiFile(file: PsiFile): Icon? {
-        if (file.isPestTestFile()) {
+        if (file.isIndexedPestTestFile()) {
             return PestIcons.FILE
         }
 
-        if (file.isPestDatasetFile()) {
+        if (file.isIndexedPestDatasetFile()) {
             return PestIcons.DATASET_FILE
         }
 

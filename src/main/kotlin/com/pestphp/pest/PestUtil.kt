@@ -5,18 +5,29 @@ import com.intellij.openapi.project.guessProjectDir
 import com.intellij.openapi.util.text.StringUtil
 import com.intellij.psi.PsiElement
 import com.intellij.psi.PsiFile
+import com.intellij.psi.search.ProjectScope
+import com.intellij.util.indexing.FileBasedIndex
 import com.jetbrains.php.lang.psi.PhpFile
 import com.jetbrains.php.lang.psi.elements.PhpNamespace
 import com.jetbrains.php.lang.psi.elements.PhpPsiElement
 import com.jetbrains.php.lang.psi.elements.Statement
 import com.jetbrains.php.phpunit.PhpUnitUtil
 import com.jetbrains.php.testFramework.PhpTestFrameworkSettingsManager
+import com.pestphp.pest.indexers.PestTestIndex
 
 fun PsiFile.isPestTestFile(): Boolean {
     if (this !is PhpFile) return false
 
     return this.getRootPhpPsiElements()
         .any(PsiElement::isPestTestReference)
+}
+
+fun PsiFile.isIndexedPestTestFile(): Boolean {
+    return FileBasedIndex.getInstance().getValues(
+        PestTestIndex.key,
+        this.realPath,
+        ProjectScope.getProjectScope(this.project)
+    ).isNotEmpty()
 }
 
 fun PsiFile.isPestConfigurationFile(): Boolean {

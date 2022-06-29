@@ -33,7 +33,8 @@ class PestIconProviderTest : PestLightCodeFixture() {
     }
 
     fun testCanGetPestIconForDatasetFile() {
-        val file = myFixture.configureByFile("Dataset.php")
+        myFixture.copyFileToProject("Dataset.php", "/tests/Datasets/Dataset.php")
+        val file = myFixture.configureByFile("tests/Datasets/Dataset.php")
 
         assertEquals(
             PestIcons.DATASET_FILE,
@@ -42,7 +43,8 @@ class PestIconProviderTest : PestLightCodeFixture() {
     }
 
     fun testCanGetPestIconForDatasetFileWithTests() {
-        val file = myFixture.configureByFile("TestWithDataset.php")
+        myFixture.copyFileToProject("TestWithDataset.php", "/tests/Datasets/TestWithDataset.php")
+        val file = myFixture.configureByFile("tests/Datasets/TestWithDataset.php")
 
         assertEquals(
             PestIcons.FILE,

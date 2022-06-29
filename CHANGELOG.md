@@ -6,6 +6,9 @@
 ### Fixed
 - Fixed nested `readAction` calls in Icon Provider
 
+### Changed
+- Changed Icon Provider to use indexes for better performance
+
 ## [1.7.0]
 ### Added
 - Added `uses->in` folder reference
