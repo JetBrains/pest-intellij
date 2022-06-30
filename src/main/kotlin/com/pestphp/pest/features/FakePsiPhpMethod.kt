@@ -1,9 +1,12 @@
 package com.pestphp.pest.features
 
+import com.intellij.ide.projectView.PresentationData
 import com.intellij.lang.ASTNode
+import com.intellij.navigation.ItemPresentation
 import com.intellij.psi.PsiElement
 import com.intellij.psi.impl.FakePsiElement
 import com.intellij.util.Processor
+import com.jetbrains.php.PhpPresentationUtil
 import com.jetbrains.php.codeInsight.PhpScope
 import com.jetbrains.php.codeInsight.controlFlow.PhpControlFlow
 import com.jetbrains.php.lang.documentation.phpdoc.psi.PhpDocComment
@@ -11,11 +14,16 @@ import com.jetbrains.php.lang.psi.PhpExpressionCodeFragmentImpl.CodeFragmentEmpt
 import com.jetbrains.php.lang.psi.elements.*
 import com.jetbrains.php.lang.psi.elements.impl.MethodImpl
 import com.jetbrains.php.lang.psi.resolve.types.PhpType
+import com.pestphp.pest.features.customExpectations.expectationType
 import javax.swing.Icon
 import com.pestphp.pest.features.customExpectations.generators.Method as ExpectationMethod
 
 class FakePsiPhpMethod(val method: ExpectationMethod, val phpClass: PhpClass): FakePsiElement(), Method {
     private val scope: CodeFragmentEmptyScope = CodeFragmentEmptyScope("PestCustomException")
+
+    override fun getPresentation(): ItemPresentation? {
+        return PhpPresentationUtil.getMethodPresentation(this)
+    }
 
     override fun getIcon(): Icon {
         return MethodImpl.getIcon(this)
@@ -46,7 +54,8 @@ class FakePsiPhpMethod(val method: ExpectationMethod, val phpClass: PhpClass): F
     }
 
     override fun getType(): PhpType {
-        return method.returnType
+        return expectationType
+        return method.returnType // TODO: use return type
     }
 
     override fun getNameNode(): ASTNode? {

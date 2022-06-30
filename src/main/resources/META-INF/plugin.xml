@@ -30,8 +30,10 @@
         <testFinder implementation="com.pestphp.pest.goto.PestTestFinder"/>
         <fileBasedIndex implementation="com.pestphp.pest.indexers.PestTestIndex"/>
         <fileBasedIndex implementation="com.pestphp.pest.features.customExpectations.CustomExpectationIndex"/>
+        <!--
         <postStartupActivity
                 implementation="com.pestphp.pest.features.customExpectations.CustomExpectationStartupActivity"/>
+        !-->
         <errorHandler implementation="com.pestphp.pest.GithubErrorReporter"/>
         <localInspection
                 language="PHP"
@@ -115,18 +117,20 @@
     </extensions>
 
     <projectListeners>
-        <listener class="com.pestphp.pest.features.customExpectations.CustomExpectationListener"
-                  topic="com.pestphp.pest.features.customExpectations.CustomExpectationNotifier"/>
+
+        <!--<listener class="com.pestphp.pest.features.customExpectations.CustomExpectationListener"
+                  topic="com.pestphp.pest.features.customExpectations.CustomExpectationNotifier"/>-->
     </projectListeners>
 
     <extensions defaultExtensionNs="com.jetbrains.php">
         <testFrameworkType implementation="com.pestphp.pest.PestFrameworkType"/>
         <composerConfigClient implementation="com.pestphp.pest.PestComposerConfig"/>
 
-        <typeProvider4 implementation="com.pestphp.pest.types.ThisTypeProvider"/>
+      <!--  <typeProvider4 implementation="com.pestphp.pest.types.ThisTypeProvider"/>
         <typeProvider4 implementation="com.pestphp.pest.types.ThisFieldTypeProvider"/>
         <typeProvider4 implementation="com.pestphp.pest.types.ThisExtendTypeProvider"/>
-        <typeProvider4 implementation="com.pestphp.pest.types.HigherOrderExtendTypeProvider"/>
+        <typeProvider4 implementation="com.pestphp.pest.types.HigherOrderExtendTypeProvider"/>-->
+        <typeProvider4 implementation="com.pestphp.pest.features.customExpectations.CustomExpectationTypeProvider"/>
         <libraryRoot id="pestphp" path="/library/Pest" runtime="false"/>
     </extensions>
 

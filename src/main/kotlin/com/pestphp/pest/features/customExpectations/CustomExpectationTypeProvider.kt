@@ -1,6 +1,5 @@
 package com.pestphp.pest.features.customExpectations
 
-import com.intellij.openapi.project.DumbService
 import com.intellij.openapi.project.Project
 import com.intellij.psi.PsiElement
 import com.intellij.psi.search.GlobalSearchScope
@@ -14,8 +13,6 @@ import com.jetbrains.php.lang.psi.elements.impl.FunctionReferenceImpl
 import com.jetbrains.php.lang.psi.resolve.types.PhpType
 import com.jetbrains.php.lang.psi.resolve.types.PhpTypeProvider4
 import com.pestphp.pest.features.FakePsiPhpMethod
-import com.pestphp.pest.features.customExpectations.generators.Method
-import kotlin.math.exp
 
 class CustomExpectationTypeProvider: PhpTypeProvider4 {
     override fun getKey(): Char {
@@ -70,7 +67,7 @@ class CustomExpectationTypeProvider: PhpTypeProvider4 {
         visited: MutableSet<String>,
         depth: Int,
         project: Project
-    ): MutableCollection<out PhpNamedElement>? {
+    ): MutableCollection<out PhpNamedElement> {
         val phpClass = PhpIndex.getInstance(project)
             .getClassesByFQN(expectationType.toString())
             .first()
@@ -87,6 +84,7 @@ class CustomExpectationTypeProvider: PhpTypeProvider4 {
                 )
             }.flatten()
             .flatten()
+            .filter { it.name == expression }
             .map {
                 FakePsiPhpMethod(
                     it,
