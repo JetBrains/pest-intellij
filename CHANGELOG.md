@@ -3,6 +3,8 @@
 # PEST IntelliJ Changelog
 
 ## [Unreleased]
+
+## [1.8.0-EAP.1]
 ### Added
 - Added support for using goto location when using remote interpreters
 
