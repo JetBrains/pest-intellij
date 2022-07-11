@@ -10,10 +10,12 @@ import com.pestphp.pest.PestBundle
 import com.pestphp.pest.configuration.PestLocationProvider
 import com.pestphp.pest.configuration.PestRerunFailedTestsAction
 
-class PestConsoleProperties(config: RunConfiguration, executor: Executor) :
+class PestConsoleProperties(
+    config: RunConfiguration,
+    executor: Executor,
+    private val testLocator: PestLocationProvider
+) :
     SMTRunnerConsoleProperties(config, PestBundle.message("FRAMEWORK_NAME"), executor) {
-
-    private val testLocator = PestLocationProvider(this.project)
 
     override fun getTestLocator(): SMTestLocator {
         return testLocator

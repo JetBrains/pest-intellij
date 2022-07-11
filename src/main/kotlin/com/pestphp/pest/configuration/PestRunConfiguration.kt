@@ -16,9 +16,12 @@ import com.intellij.openapi.vfs.VfsUtil
 import com.intellij.util.PathUtil
 import com.intellij.util.TextFieldCompletionProvider
 import com.jetbrains.php.PhpBundle
+import com.jetbrains.php.config.commandLine.PhpCommandLinePathProcessor
 import com.jetbrains.php.config.commandLine.PhpCommandSettings
 import com.jetbrains.php.config.interpreters.PhpInterpreter
+import com.jetbrains.php.phpunit.PhpUnitQualifiedNameLocationProvider
 import com.jetbrains.php.run.PhpRunUtil
+import com.jetbrains.php.run.remote.PhpRemoteInterpreterManager
 import com.jetbrains.php.testFramework.PhpTestFrameworkConfiguration
 import com.jetbrains.php.testFramework.PhpTestFrameworkSettingsManager
 import com.jetbrains.php.testFramework.run.PhpTestRunConfigurationSettings
@@ -85,7 +88,31 @@ class PestRunConfiguration(project: Project, factory: ConfigurationFactory) : Ph
     }
 
     override fun createTestConsoleProperties(executor: Executor): SMTRunnerConsoleProperties {
-        return PestConsoleProperties(this, executor)
+        val manager = PhpRemoteInterpreterManager.getInstance()
+
+
+        val pathProcessor = when {
+                this.interpreter.isRemote -> manager?.createPathMapper(this.project, interpreter.phpSdkAdditionalData)
+                else -> null
+            }
+
+        return this.createTestConsoleProperties(
+            executor,
+            pathProcessor ?: PhpCommandLinePathProcessor.LOCAL
+        )
+    }
+
+    private fun createTestConsoleProperties(
+        executor: Executor,
+        processor: PhpCommandLinePathProcessor
+    ): PestConsoleProperties {
+        val pathMapper = processor.createPathMapper(this.project)
+        PhpUnitQualifiedNameLocationProvider.create(pathMapper)
+        return PestConsoleProperties(
+            this,
+            executor,
+            PestLocationProvider(pathMapper)
+        )
     }
 
     override fun suggestedName(): String? {

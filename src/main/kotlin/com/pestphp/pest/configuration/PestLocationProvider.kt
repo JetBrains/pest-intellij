@@ -7,11 +7,10 @@ import com.intellij.openapi.vfs.VirtualFile
 import com.intellij.psi.PsiElement
 import com.intellij.psi.PsiManager
 import com.intellij.psi.search.GlobalSearchScope
-import com.jetbrains.php.config.commandLine.PhpCommandLinePathProcessor
 import com.jetbrains.php.lang.psi.PhpFile
 import com.jetbrains.php.phpunit.PhpPsiLocationWithDataSet
 import com.jetbrains.php.phpunit.PhpUnitQualifiedNameLocationProvider
-import com.jetbrains.php.util.pathmapper.PhpLocalPathMapper
+import com.jetbrains.php.util.pathmapper.PhpPathMapper
 import com.pestphp.pest.getPestTestName
 import com.pestphp.pest.getPestTests
 import com.pestphp.pest.runner.LocationInfo
@@ -19,11 +18,9 @@ import com.pestphp.pest.runner.LocationInfo
 /**
  * Adds support for goto test from test results.
  */
-class PestLocationProvider(project: Project) : SMTestLocator {
+class PestLocationProvider(private val pathMapper: PhpPathMapper) : SMTestLocator {
     private val protocolId = "pest_qn"
-    private val phpUnitLocationProvider = PhpUnitQualifiedNameLocationProvider.create(
-        PhpCommandLinePathProcessor.LOCAL.createPathMapper(project)
-    )
+    private val phpUnitLocationProvider = PhpUnitQualifiedNameLocationProvider.create(pathMapper)
 
     override fun getLocation(
         protocol: String,
@@ -35,7 +32,7 @@ class PestLocationProvider(project: Project) : SMTestLocator {
             return phpUnitLocationProvider.getLocation(protocol, path, project, scope)
         }
 
-        val locationInfo = getLocationInfo(path, project)
+        val locationInfo = getLocationInfo(path)
         val element = locationInfo?.let { findElement(it, project) } ?: return mutableListOf()
 
         return mutableListOf(
@@ -51,10 +48,10 @@ class PestLocationProvider(project: Project) : SMTestLocator {
         return locationInfo.testName
     }
 
-    private fun getLocationInfo(link: String, project: Project): LocationInfo? {
+    private fun getLocationInfo(link: String): LocationInfo? {
         val location = link.split("::")
 
-        val file = PhpLocalPathMapper(project).getLocalFile(location[0])
+        val file = this.pathMapper.getLocalFile(location[0])
 
         if (location.size == 1) {
             return file?.let { LocationInfo(it, null) }

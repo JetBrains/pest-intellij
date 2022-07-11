@@ -3,6 +3,9 @@
 # PEST IntelliJ Changelog
 
 ## [Unreleased]
+### Added
+- Added support for using goto location when using remote interpreters
+
 ### Fixed
 - Fixed nested `readAction` calls in Icon Provider
 
