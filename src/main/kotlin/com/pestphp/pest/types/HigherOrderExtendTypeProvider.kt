@@ -31,7 +31,7 @@ class HigherOrderExtendTypeProvider : PhpTypeProvider4 {
         return PhpType().add(firstParameterType).add(expectationType)
     }
 
-    private fun getExpectCall(reference: MemberReference, depth: Int = 50): FunctionReferenceImpl? {
+    private fun getExpectCall(reference: MemberReference, depth: Int = 100): FunctionReferenceImpl? {
         if (depth <= 0) return null
 
         return when (val classReference = reference.classReference) {

@@ -1,7 +1,9 @@
 package com.pestphp.pest.higherOrderExpectations
 
+import com.intellij.testFramework.TestDataPath
 import com.pestphp.pest.PestLightCodeFixture
 
+@TestDataPath("\$CONTENT_ROOT/resources/com/pestphp/pest/higherOrderExpectations")
 class HigherOrderExpectationCompletionTest: PestLightCodeFixture() {
     override fun getTestDataPath(): String {
         return "src/test/resources/com/pestphp/pest/higherOrderExpectations"
@@ -53,5 +55,13 @@ class HigherOrderExpectationCompletionTest: PestLightCodeFixture() {
         )
 
         assertCompletion("getOtherExample", "getTest")
+    }
+
+    fun testMethodCompletionDeeplyChained() {
+        myFixture.configureByFile(
+            "ExpectMethodCompletionDeeplyChained.php"
+        )
+
+        assertCompletion("getTimestamp");
     }
 }
