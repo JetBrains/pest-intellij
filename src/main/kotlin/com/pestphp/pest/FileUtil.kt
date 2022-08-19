@@ -9,7 +9,7 @@ import com.intellij.testFramework.LightVirtualFile
 val PsiFile.realPath: String
     get() {
         var virtualFile = this.viewProvider.virtualFile
-        if (virtualFile is LightVirtualFile) {
+        if (virtualFile is LightVirtualFile && virtualFile.originalFile != null) {
             virtualFile = virtualFile.originalFile
         }
         return virtualFile.path

@@ -3,6 +3,8 @@
 # PEST IntelliJ Changelog
 
 ## [Unreleased]
+### Fixed
+- Fixed originalFile in iconProvider sometimes being null
 
 ## [1.8.0]
 ### Added
