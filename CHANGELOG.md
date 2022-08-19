@@ -3,6 +3,8 @@
 # PEST IntelliJ Changelog
 
 ## [Unreleased]
+
+## [1.8.1]
 ### Fixed
 - Fixed originalFile in iconProvider sometimes being null
 - Fixed DuplicateCustomExpectation testing crashing on unfinished inspections
