@@ -3,6 +3,7 @@ package com.pestphp.pest.customExpectations
 import com.intellij.psi.PsiFile
 import com.intellij.psi.PsiManager
 import com.intellij.psi.search.GlobalSearchScope
+import com.intellij.testFramework.TestDataPath
 import com.intellij.util.indexing.FileBasedIndex
 import com.pestphp.pest.PestLightCodeFixture
 import com.pestphp.pest.features.customExpectations.generators.Method
@@ -11,6 +12,7 @@ import com.pestphp.pest.features.customExpectations.CustomExpectationNotifier
 import com.pestphp.pest.features.customExpectations.customExpects
 import com.pestphp.pest.features.customExpectations.toMethod
 
+@TestDataPath("\$CONTENT_ROOT/resources/com/pestphp/pest/customExpectations")
 class CustomExpectationIndexTest : PestLightCodeFixture() {
     override fun getTestDataPath(): String {
         return "src/test/resources/com/pestphp/pest/customExpectations"
@@ -132,5 +134,19 @@ class CustomExpectationIndexTest : PestLightCodeFixture() {
             keys,
             "/src/subFolder/CustomExpectation.php"
         )
+    }
+
+    fun testUnfinishedCustomExpectationIsNotIndexed() {
+        val virtualFile = myFixture.copyFileToProject("UnfinishedCustomExpectation.php")
+
+        val fileBasedIndex = FileBasedIndex.getInstance()
+
+        val values = fileBasedIndex.getValues(
+            CustomExpectationIndex.key,
+            "UnfinishedCustomExpectation.php",
+            GlobalSearchScope.projectScope(project)
+        ).flatten()
+
+        assertSize(0, values)
     }
 }

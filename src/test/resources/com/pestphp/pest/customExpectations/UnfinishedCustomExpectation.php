@@ -1,0 +1,3 @@
+<?php
+
+expect()->extend('toBeOne');

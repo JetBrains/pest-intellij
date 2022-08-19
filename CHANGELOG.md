@@ -5,6 +5,7 @@
 ## [Unreleased]
 ### Fixed
 - Fixed originalFile in iconProvider sometimes being null
+- Fixed DuplicateCustomExpectation testing crashing on unfinished inspections
 
 ## [1.8.0]
 ### Added

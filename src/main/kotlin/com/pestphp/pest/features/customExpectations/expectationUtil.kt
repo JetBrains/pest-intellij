@@ -105,6 +105,11 @@ val PsiFile.customExpects: List<MethodReferenceImpl>
 fun MethodReferenceImpl.toMethod(): Method? {
     val extendName = this.extendName ?: return null
 
+    // Custom expectations should always have two parameters.
+    if(this.parameters.count() != 2) {
+        return null
+    }
+
     val closure = (this.parameters[1] as? PhpExpression)?.firstChild as? Function
 
     if (closure === null) {
