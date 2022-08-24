@@ -3,6 +3,8 @@
 # PEST IntelliJ Changelog
 
 ## [Unreleased]
+### Changed
+- Removed the "test started at" text on the test console output
 
 ## [1.8.1]
 ### Fixed
