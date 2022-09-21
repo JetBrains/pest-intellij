@@ -3,6 +3,7 @@ package com.pestphp.pest
 import com.intellij.psi.PsiElement
 import com.intellij.remote.RemoteSdkProperties
 import com.jetbrains.php.config.interpreters.PhpInterpretersManagerImpl
+import com.jetbrains.php.lang.psi.elements.ConcatenationExpression
 import com.jetbrains.php.lang.psi.elements.FunctionReference
 import com.jetbrains.php.lang.psi.elements.MethodReference
 import com.jetbrains.php.lang.psi.elements.StringLiteralExpression
@@ -12,13 +13,32 @@ import com.jetbrains.php.util.pathmapper.PhpPathMapper
 import java.util.*
 
 fun FunctionReferenceImpl.getPestTestName(): String? {
-    val testName = (getParameter(0) as? StringLiteralExpression)?.contents
+    val testName = getParameter(0)?.stringValue
 
     if (this.canonicalText == "it") {
         return "it $testName"
     }
     return testName
 }
+
+val PsiElement.stringValue: String?
+    get() = when (this) {
+        is StringLiteralExpression -> this.contents
+        is ConcatenationExpression -> this.contents
+        else -> null
+    }
+
+val ConcatenationExpression.contents: String?
+    get() {
+        val left = this.leftOperand?.stringValue
+        val right = this.rightOperand?.stringValue
+
+        if (left === null || right === null) {
+            return null
+        }
+
+        return left + right
+    }
 
 fun PsiElement?.getPestTestName(): String? {
     return when (this) {

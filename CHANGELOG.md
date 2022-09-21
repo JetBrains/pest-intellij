@@ -3,6 +3,10 @@
 # PEST IntelliJ Changelog
 
 ## [Unreleased]
+### Added
+- Added support for test names with string concat statements
+- Added stacktrace folding for Pest 2.0 output
+
 ### Changed
 - Removed the "test started at" text on the test console output
 

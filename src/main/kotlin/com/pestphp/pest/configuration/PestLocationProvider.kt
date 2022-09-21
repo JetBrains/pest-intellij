@@ -78,4 +78,12 @@ class PestLocationProvider(private val pathMapper: PhpPathMapper) : SMTestLocato
 
         return (file as PhpFile).getPestTests().firstOrNull { it.getPestTestName() == testName }
     }
+
+    override fun getLocation(
+        stacktraceLine: String,
+        project: Project,
+        scope: GlobalSearchScope
+    ): MutableList<Location<PsiElement>> {
+        return mutableListOf()
+    }
 }

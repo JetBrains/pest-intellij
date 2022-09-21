@@ -10,6 +10,8 @@
     <depends optional="true" config-file="pest-coverage.xml">com.intellij.modules.coverage</depends>
 
     <extensions defaultExtensionNs="com.intellij">
+        <stacktrace.fold substring="at vendor/"/>
+
         <projectService serviceImplementation="com.pestphp.pest.PestSettings"/>
 
         <runLineMarkerContributor

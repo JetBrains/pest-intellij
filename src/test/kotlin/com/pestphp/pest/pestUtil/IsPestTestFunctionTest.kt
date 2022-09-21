@@ -1,8 +1,10 @@
 package com.pestphp.pest.pestUtil
 
+import com.intellij.testFramework.TestDataPath
 import com.pestphp.pest.PestLightCodeFixture
 import com.pestphp.pest.isPestTestReference
 
+@TestDataPath("\$CONTENT_ROOT/resources/com/pestphp/pest/PestUtil")
 class IsPestTestFunctionTest : PestLightCodeFixture() {
     override fun getTestDataPath(): String {
         return "src/test/resources/com/pestphp/pest/PestUtil"
@@ -54,5 +56,21 @@ class IsPestTestFunctionTest : PestLightCodeFixture() {
         val testElement = file.firstChild.lastChild.firstChild
 
         assertFalse(testElement.isPestTestReference())
+    }
+
+    fun testFunctionCallNamedItWithConcatStringTest() {
+        val file = myFixture.configureByFile("PestItFunctionCallWithConcatString.php")
+
+        val testElement = file.firstChild.lastChild.firstChild
+
+        assertTrue(testElement.isPestTestReference())
+    }
+
+    fun testFunctionCallNamedTestWithConcatStringTest() {
+        val file = myFixture.configureByFile("PestTestFunctionCallWithConcatString.php")
+
+        val testElement = file.firstChild.lastChild.firstChild
+
+        assertTrue(testElement.isPestTestReference())
     }
 }
