@@ -3,6 +3,8 @@
 # PEST IntelliJ Changelog
 
 ## [Unreleased]
+
+## [1.8.3-EAP.3]
 ### Added
 - Added support for test names with string concat statements
 - Added stacktrace folding for Pest 2.0 output
