@@ -10,6 +10,9 @@
 ### Changed
 - Removed the "test started at" text on the test console output
 
+### Fixed
+- Fixed regex to match tests that have both named and unnamed datasets
+
 ## [1.8.1]
 ### Fixed
 - Fixed originalFile in iconProvider sometimes being null
