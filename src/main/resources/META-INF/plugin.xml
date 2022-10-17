@@ -76,6 +76,7 @@
         <completion.contributor implementationClass="com.pestphp.pest.completion.PestCompletionContributor"
                                 language="PHP"/>
         <gotoDeclarationHandler implementation="com.pestphp.pest.completion.ThisFieldsCompletionProvider"/>
+        <gotoDeclarationHandler implementation="com.pestphp.pest.goto.PestDatasetUsagesGotoHandler"/>
         <lang.inspectionSuppressor
                 language="PHP"
                 implementationClass="com.pestphp.pest.inspections.SuppressExpressionResultUnusedInspection"/>

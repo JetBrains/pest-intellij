@@ -13,34 +13,46 @@ class DatasetReferenceTest : PestLightCodeFixture() {
     fun testReferenceToDatasetInSameFile() {
         val file = myFixture.configureByFile("DatasetReference.php")
 
-        val caretElement = file.findElementAt(myFixture.caretOffset)!!
-        val datasetReference = caretElement.parent.references[0] as DatasetReference
-        val resolved = datasetReference.resolve() as? FunctionReferenceImpl
+        val caretElement = file.findElementAt(myFixture.caretOffset) ?: return fail("No element")
+        val datasetReference = caretElement.parent.references.filterIsInstance<DatasetReference>().firstOrNull() ?: return fail("No reference")
+        val resolved = datasetReference.resolve() as? FunctionReferenceImpl ?: return fail("No function")
 
-        assertNotNull(datasetReference)
         assertTrue(resolved.isPestDataset())
-        assertEquals("dojos", resolved!!.getPestDatasetName())
+        assertEquals("dojos", resolved.getPestDatasetName())
     }
 
     fun testReferenceDatasetInOtherFile() {
         myFixture.copyFileToProject("Datasets.php", "tests/Datasets/stances.php")
         val file = myFixture.configureByFile("SharedDatasetReference.php")
 
-        val caretElement = file.findElementAt(myFixture.caretOffset)!!
-        val datasetReference = caretElement.parent.references[0] as DatasetReference
-        val resolved = datasetReference.resolve() as? FunctionReferenceImpl
+        val caretElement = file.findElementAt(myFixture.caretOffset) ?: return fail("No element")
+        val datasetReference = caretElement.parent.references.filterIsInstance<DatasetReference>().firstOrNull() ?: return fail("No reference")
+        val resolved = datasetReference.resolve() as? FunctionReferenceImpl ?: return fail("No function")
 
-        assertNotNull(datasetReference)
         assertTrue(resolved.isPestDataset())
-        assertEquals("stances", resolved!!.getPestDatasetName())
+        assertEquals("stances", resolved.getPestDatasetName())
+    }
+
+    fun testDoubleWith() {
+        myFixture.copyFileToProject("Datasets.php", "tests/Datasets/stances.php")
+        myFixture.configureByFile("DoubleWithDatasetReference.php")
+
+        assertCompletion("stances")
+    }
+
+    fun testNotDataset() {
+        myFixture.copyFileToProject("Datasets.php", "tests/Datasets/stances.php")
+        myFixture.configureByFile("NotDatasetReference.php")
+
+        assertNoCompletion()
     }
 
     fun testCannotGoToDatasetInNonPestTest() {
         myFixture.copyFileToProject("Datasets.php", "tests/Datasets/stances.php")
         val file = myFixture.configureByFile("DatasetOnNonPestTest.php")
 
-        val caretElement = file.findElementAt(myFixture.caretOffset)!!
-        val datasetReference = caretElement.parent.references
+        val caretElement = file.findElementAt(myFixture.caretOffset) ?: return fail("No element")
+        val datasetReference = caretElement.parent.references.filterIsInstance<DatasetReference>()
 
         assertSize(0, datasetReference)
     }
