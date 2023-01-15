@@ -5,6 +5,7 @@
 ## [Unreleased]
 ### Added
 - Added support for running specific tests on Pest 2.0
+- Added support for running todo's as tests
 
 ## [1.8.3]
 ### Added
