@@ -6,8 +6,7 @@
 ### Added
 - Added support for running specific tests on Pest 2.0
 - Added support for running todo's as tests
-- Added vcs author code vision to pest test (pending [intellij-community#2290](https://github.com/JetBrains/intellij-community/pull/2290) before it will work)
-
+- 
 ### Fixed
 - Fixed running tests with `?` in the name
 
