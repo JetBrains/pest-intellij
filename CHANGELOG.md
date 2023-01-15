@@ -3,6 +3,8 @@
 # PEST IntelliJ Changelog
 
 ## [Unreleased]
+### Added
+- Added support for running specific tests on Pest 2.0
 
 ## [1.8.3]
 ### Added

@@ -97,7 +97,7 @@ fun String.toPestTestRegex(rootPath: String, file: String, pathMapper: PhpPathMa
         // 5. Remove unsupported characters
         .replace("-", "")
         // 6. Add P as a namespace before the generated namespace.
-        .let { "P\\\\$it" }
+        .let { "(P\\\\)?$it" }
 
     // Escape characters
     val testName = this

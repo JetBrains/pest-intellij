@@ -189,7 +189,7 @@ class PestRunConfiguration(project: Project, factory: ConfigurationFactory) : Ph
 
         val configFileRootPath = getConfigurationFileRootPath()
 
-        if (configFileRootPath == null || configFileRootPath.isEmpty()) {
+        if (configFileRootPath.isNullOrEmpty()) {
             return super.getWorkingDirectory(project, settings, config)
         }
 
