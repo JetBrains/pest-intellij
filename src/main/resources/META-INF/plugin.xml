@@ -117,10 +117,6 @@
                      description="Whether custom expectation file generation should happen."
                      key="pestphp.custom-expectations"
         />
-        <vcs.codeVisionLanguageContext
-                language="PHP"
-                implementationClass="com.pestphp.pest.PestVcsCodeVision"
-        />
     </extensions>
 
     <projectListeners>
