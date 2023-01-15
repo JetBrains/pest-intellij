@@ -7,6 +7,9 @@
 - Added support for running specific tests on Pest 2.0
 - Added support for running todo's as tests
 
+### Fixed
+- Fixed running tests with `?` in the name
+
 ## [1.8.3]
 ### Added
 - Added support for test names with string concat statements
