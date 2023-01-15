@@ -91,10 +91,10 @@ class PestRunConfiguration(project: Project, factory: ConfigurationFactory) : Ph
         val manager = PhpRemoteInterpreterManager.getInstance()
 
 
-        val pathProcessor = when {
-                this.interpreter.isRemote -> manager?.createPathMapper(this.project, interpreter.phpSdkAdditionalData)
-                else -> null
-            }
+        val pathProcessor = when (this.interpreter?.isRemote) {
+            true -> manager?.createPathMapper(this.project, interpreter!!.phpSdkAdditionalData)
+            else -> null
+        }
 
         return this.createTestConsoleProperties(
             executor,

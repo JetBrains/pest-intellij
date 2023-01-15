@@ -35,14 +35,7 @@ class PestRerunFailedTestsAction(
             override fun getState(executor: Executor, environment: ExecutionEnvironment): RunProfileState? {
                 val peerRunConfiguration = this.peer as PestRunConfiguration
                 val project = peerRunConfiguration.project
-                val interpreter = peerRunConfiguration.interpreter
-                val config = PhpTestFrameworkSettingsManager.getInstance(project).getConfigByInterpreter(
-                    PestFrameworkType.instance,
-                    interpreter
-                )
-                if (config == null) {
-                    return null
-                }
+                val interpreter = peerRunConfiguration.interpreter ?: return null
 
                 val failed = getFailedTests(project)
                     .asSequence()

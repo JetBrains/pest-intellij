@@ -87,7 +87,9 @@
         <notificationGroup displayType="BALLOON" id="Outdated Pest" isLogByDefault="true"/>
         <lang.structureViewExtension implementation="com.pestphp.pest.structureView.PestStructureViewExtension"/>
         <gotoSymbolContributor implementation="com.pestphp.pest.goto.PestTestGoToSymbolContributor"/>
-        <liveTemplateContext implementation="com.pestphp.pest.templates.PestRootTemplateContextType"/>
+        <liveTemplateContext
+                implementation="com.pestphp.pest.templates.PestRootTemplateContextType"
+                contextId="ROOT_PESTPHP"/>
         <defaultLiveTemplates file="/liveTemplates/PestPHP.xml"/>
         <codeInsight.template.postfixTemplateProvider
                 language="PHP"
@@ -107,13 +109,17 @@
         />
         <psi.referenceContributor
                 implementation="com.pestphp.pest.features.datasets.DatasetReferenceContributor"
-        />
+                language="PHP"/>
         <psi.referenceContributor
                 implementation="com.pestphp.pest.features.uses.UsesReferenceContributor"
-        />
+                language="PHP"/>
         <registryKey defaultValue="true"
                      description="Whether custom expectation file generation should happen."
                      key="pestphp.custom-expectations"
+        />
+        <vcs.codeVisionLanguageContext
+                language="PHP"
+                implementationClass="com.pestphp.pest.PestVcsCodeVision"
         />
     </extensions>
 

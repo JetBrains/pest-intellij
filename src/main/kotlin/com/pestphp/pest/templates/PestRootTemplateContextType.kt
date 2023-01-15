@@ -13,7 +13,7 @@ import com.pestphp.pest.isPestTestFile
  * This Pest root template checks if the context is the root of a
  * pest test file.
  */
-class PestRootTemplateContextType : TemplateContextType("ROOT_PESTPHP", "Pest root") {
+class PestRootTemplateContextType : TemplateContextType("Pest root") {
     override fun isInContext(templateActionContext: TemplateActionContext): Boolean {
         if (!templateActionContext.file.isPestTestFile()) {
             return false

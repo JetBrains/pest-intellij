@@ -6,7 +6,6 @@ import com.intellij.util.io.EnumeratorStringDescriptor
 import com.intellij.util.io.KeyDescriptor
 import com.jetbrains.php.lang.psi.stubs.indexes.StringSetDataExternalizer
 import com.pestphp.pest.*
-import gnu.trove.THashMap
 
 /**
  * Indexes all pest test files with the following key-value store
@@ -33,7 +32,7 @@ class PestTestIndex : FileBasedIndexExtension<String, Set<String>>() {
                 return@DataIndexer mapOf()
             }
 
-            val map = THashMap<String, Set<String>>()
+            val map = HashMap<String, Set<String>>()
             map[file.realPath] = file.getPestTests()
                 .mapNotNull { it.getPestTestName() }
                 .toSet()

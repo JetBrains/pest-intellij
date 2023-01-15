@@ -31,7 +31,7 @@ fun FunctionReferenceImpl.isPestAfterFunction(): Boolean {
     return this.canonicalText == "afterEach"
 }
 
-private val allPestNames = setOf("it", "test", "todo", "beforeEach", "afterEach")
+private val allPestNames = setOf("it", "test", "todo", "beforeEach", "afterEach", "dataset")
 fun FunctionReferenceImpl.isAnyPestFunction(): Boolean {
     return this.canonicalText in allPestNames
 }
