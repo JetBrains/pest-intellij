@@ -3,6 +3,8 @@
 # PEST IntelliJ Changelog
 
 ## Unreleased
+### Fixed
+- Fixed running tests with filenames containing `_`.
 
 ## 1.9.0 - 2023-01-15
 

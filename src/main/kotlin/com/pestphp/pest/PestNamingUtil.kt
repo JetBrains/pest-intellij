@@ -82,7 +82,7 @@ fun String.toPestTestRegex(rootPath: String, file: String, pathMapper: PhpPathMa
     val mappedWorkingDirectory = pathMapper.getRemoteFilePath(rootPath) ?: rootPath
     val mappedFile = pathMapper.getRemoteFilePath(file) ?: file
 
-    // Follow the steps for class name generation TODO: add link
+    // Follow the steps for class name generation
     // 1. Take the path of the PEST file from the cwd.
     val fqn = mappedFile.withoutFirstFileSeparator
         .removePrefix(mappedWorkingDirectory.withoutFirstFileSeparator)
@@ -96,6 +96,7 @@ fun String.toPestTestRegex(rootPath: String, file: String, pathMapper: PhpPathMa
         .replace("/", "\\\\")
         // 5. Remove unsupported characters
         .replace("-", "")
+        .replace("_", "")
         // 6. Add P as a namespace before the generated namespace.
         .let { "(P\\\\)?$it" }
 

@@ -37,12 +37,12 @@ class PestTestRunConfigurationEditor(
     private fun validateEngine(project: Project) {
         val item = coverageEngineComboBox.selectedItem as CoverageEngine
 
-        val interpreter = PhpInterpretersManagerImpl.getInstance(project).findInterpreter(item.name)
+        val interpreter = PhpInterpretersManagerImpl
+            .getInstance(project)
+            .findInterpreter(item.name) ?: return
 
-        if (interpreter != null) {
-            CoverageEngine.validateCoverageEngine(interpreter, project, item)
-            TODO("Show error message when validation fails.")
-        }
+        CoverageEngine.validateCoverageEngine(interpreter, project, item)
+        TODO("Show error message when validation fails.")
     }
 
     override fun createEditor(): JComponent {
