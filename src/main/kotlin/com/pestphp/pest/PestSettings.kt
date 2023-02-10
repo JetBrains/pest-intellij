@@ -6,7 +6,7 @@ import com.intellij.util.xmlb.XmlSerializerUtil
 import com.pestphp.pest.parser.PestConfigurationFile
 import com.pestphp.pest.parser.PestConfigurationFileParser
 
-@Service
+@Service(Service.Level.PROJECT)
 @State(name = "PestSettings", storages = [Storage("pest.xml")])
 class PestSettings : PersistentStateComponent<PestSettings> {
     var pestFilePath = "tests/Pest.php"

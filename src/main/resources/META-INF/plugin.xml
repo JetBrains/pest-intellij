@@ -12,8 +12,6 @@
     <extensions defaultExtensionNs="com.intellij">
         <stacktrace.fold substring="at vendor/"/>
 
-        <projectService serviceImplementation="com.pestphp.pest.PestSettings"/>
-
         <runLineMarkerContributor
                 language="PHP"
                 implementationClass="com.pestphp.pest.PestTestRunLineMarkerProvider"
