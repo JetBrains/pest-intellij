@@ -9,6 +9,9 @@
 ### Fixed
 - Fixed running tests with filenames containing `_`.
 
+### Changed
+- Changed logic for base path to be from composer.json file.
+
 ## 1.9.0 - 2023-01-15
 
 ### Added

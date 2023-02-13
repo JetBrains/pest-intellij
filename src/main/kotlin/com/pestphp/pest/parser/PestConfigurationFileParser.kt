@@ -10,6 +10,7 @@ import com.intellij.psi.PsiRecursiveElementWalkingVisitor
 import com.intellij.psi.util.CachedValue
 import com.intellij.psi.util.CachedValueProvider
 import com.intellij.psi.util.CachedValuesManager
+import com.jetbrains.php.composer.lib.ComposerLibraryManager
 import com.jetbrains.php.lang.psi.PhpFile
 import com.jetbrains.php.lang.psi.elements.MethodReference
 import com.jetbrains.php.lang.psi.elements.PhpPsiElement
@@ -21,7 +22,13 @@ import com.pestphp.pest.getUsesPhpType
 
 class PestConfigurationFileParser(private val settings: PestSettings) {
     fun parse(project: Project): PestConfigurationFile {
-        val baseDir = project.guessProjectDir() ?: return defaultConfig
+        // Use the location of the composer.json file or the project dir
+        val baseDir = ComposerLibraryManager.getInstance(project)
+            .findVendorDirForUpsource()
+            ?.parent
+            ?: project.guessProjectDir()
+            ?: return defaultConfig
+
 
         val pestFile = VirtualFileManager.getInstance().findFileByUrl(baseDir.url + "/" + settings.pestFilePath)
             ?: return defaultConfig
