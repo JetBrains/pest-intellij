@@ -22,9 +22,7 @@ import java.net.URLEncoder
  */
 class GithubErrorReporter : ErrorReportSubmitter() {
     companion object {
-        private const val URL = "https://github.com/pestphp/pest-intellij/issues/new?"
-        private const val ENCODING = "UTF-8"
-        private const val TOO_LONG_STACKTRACE_MESSAGE = "Please paste the full stacktrace from the IDEA error popup."
+        private const val URL = "https://github.com/pestphp/pest-intellij/issues"
     }
 
     override fun getReportActionText(): String {
@@ -38,72 +36,14 @@ class GithubErrorReporter : ErrorReportSubmitter() {
         parentComponent: Component,
         consumer: Consumer<in SubmittedReportInfo>
     ): Boolean {
-        val event = events.firstOrNull()
-        val title = event?.throwableText?.lineSequence()?.first()
-            ?: event?.message
-            ?: "Crash Report: <Fill in title>"
-
-        val body = event?.throwableText ?: TOO_LONG_STACKTRACE_MESSAGE
-
-        val version = PluginManagerCore.getPlugin(PluginId.getId("com.pestphp.pest-intellij"))?.version
-
-        val project: Project = ProjectManager.getInstance().openProjects.first()
-        val pestVersion = getPestVersion(project)
-        val intelliJVersion = ApplicationInfo.getInstance().build.asString()
-
-        val builder = StringBuilder(URL)
-        try {
-            builder.append("body=")
-            builder.append(
-                URLEncoder.encode(
-                    """
-                    || Q                | A
-                    || ---------------- | -----
-                    || Bug report?      | yes
-                    || Plugin version   | $version
-                    || Pest version     | $pestVersion
-                    || IntelliJ version | $intelliJVersion
-                    || OS               | ${System.getProperty("os.name")}
-                    |
-                    |### Description
-                    |${additionalInfo ?: "<FILL OUT THE DESCRIPTION>"}
-                    |
-                    |### Stacktrace
-                    |`${title}`
-                    |
-                    |```
-                    |${body}
-                    |```
-                    """.trimMargin(),
-                    ENCODING
-                )
-            )
-        } catch (e: UnsupportedEncodingException) {
-            consumer.consume(
-                SubmittedReportInfo(
-                    null,
-                    null,
-                    SubmittedReportInfo.SubmissionStatus.FAILED
-                )
-            )
-            return false
-        }
-
-        BrowserUtil.browse(builder.toString())
+        BrowserUtil.browse(URL)
         consumer.consume(
             SubmittedReportInfo(
-                null,
+                URL,
                 "GitHub issue",
                 SubmittedReportInfo.SubmissionStatus.NEW_ISSUE
             )
         )
         return true
-    }
-
-    private fun getPestVersion(project: Project?): String {
-        return PhpTestFrameworkSettingsManager.getInstance(project)
-            .getLocalConfig(PestFrameworkType.instance)?.let {
-                PhpTestFrameworkVersionCache.getCache(project, it)
-            } ?: "x.y.z"
     }
 }
