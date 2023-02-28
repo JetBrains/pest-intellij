@@ -76,7 +76,7 @@ class PestRerunFailedTestsAction(
                 )
 
                 val rootPath =
-                    ComposerLibraryManager.getInstance(project).findVendorDirForUpsource()?.parent?.path
+                    ComposerLibraryManager.getInstance(project)?.findVendorDirForUpsource()?.parent?.path
                         ?: command.workingDirectory
 
                 val testcases = failed.mapNotNull { it.toPestTestRegex(rootPath) }

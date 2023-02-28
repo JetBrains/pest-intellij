@@ -24,7 +24,7 @@ class PestConfigurationFileParser(private val settings: PestSettings) {
     fun parse(project: Project): PestConfigurationFile {
         // Use the location of the composer.json file or the project dir
         val baseDir = ComposerLibraryManager.getInstance(project)
-            .findVendorDirForUpsource()
+            ?.findVendorDirForUpsource()
             ?.parent
             ?: project.guessProjectDir()
             ?: return defaultConfig

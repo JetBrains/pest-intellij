@@ -73,7 +73,7 @@ class ExpectationFileService(val project: Project) {
 
                     // Get the composer directory
                     val composer =
-                        ComposerLibraryManager.getInstance(project).findVendorDirForUpsource()
+                        ComposerLibraryManager.getInstance(project)?.findVendorDirForUpsource()
                             ?: return@suspendIndexingAndRun
                     val directory =
                         PsiManager.getInstance(project).findDirectory(composer) ?: return@suspendIndexingAndRun
