@@ -3,6 +3,9 @@
 # PEST IntelliJ Changelog
 
 ## Unreleased
+
+## 1.9.1-EAP.3 - 2023-02-28
+
 ### Fixed
 - Fixed ComposerLibraryManager being nullable now.
 - Fixed running tests with filenames containing `_`.
