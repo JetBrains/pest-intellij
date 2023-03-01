@@ -3,6 +3,8 @@
 # PEST IntelliJ Changelog
 
 ## Unreleased
+### Fixed
+- Fixed file icon missing if all tests has property calls
 
 ## 1.9.2 - 2023-03-01
 

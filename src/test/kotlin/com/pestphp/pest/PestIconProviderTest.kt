@@ -62,4 +62,15 @@ class PestIconProviderTest : PestLightCodeFixture() {
             PestIconProvider().getIcon(file, ICON_FLAG_VISIBILITY)
         )
     }
+
+    fun testCanGetPestIconForPestFileWithPropertyCall() {
+        val virtualFile = myFixture.copyFileToProject("SimpleHigherOrderNotTest.php", "tests/SimpleHigherOrderNotTest.php")
+
+        val file = PsiManager.getInstance(project).findFile(virtualFile)!!
+
+        assertEquals(
+            PestIcons.FILE,
+            PestIconProvider().getIcon(file, ICON_FLAG_VISIBILITY),
+        )
+    }
 }

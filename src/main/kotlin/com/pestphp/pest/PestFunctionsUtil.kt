@@ -3,6 +3,7 @@ package com.pestphp.pest
 import com.intellij.psi.PsiElement
 import com.intellij.psi.PsiFile
 import com.jetbrains.php.lang.psi.PhpFile
+import com.jetbrains.php.lang.psi.elements.FieldReference
 import com.jetbrains.php.lang.psi.elements.FunctionReference
 import com.jetbrains.php.lang.psi.elements.MethodReference
 import com.jetbrains.php.lang.psi.elements.PhpNamespace
@@ -40,6 +41,16 @@ fun MethodReference.isPestTestMethodReference(): Boolean {
     return when (val reference = classReference) {
         is FunctionReferenceImpl -> reference.isPestTestFunction()
         is MethodReference -> reference.isPestTestMethodReference()
+        is FieldReference -> reference.isPestTestMethodReference();
+        else -> false
+    }
+}
+
+fun FieldReference.isPestTestMethodReference(): Boolean {
+    return when(val reference = classReference) {
+        is FunctionReferenceImpl -> reference.isPestTestFunction()
+        is MethodReference -> reference.isPestTestMethodReference()
+        is FieldReference -> reference.isPestTestMethodReference()
         else -> false
     }
 }
