@@ -5,7 +5,6 @@ import com.intellij.openapi.options.SettingsEditor
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.ui.ComboBox
 import com.intellij.util.ui.UI
-import com.jetbrains.php.config.interpreters.PhpInterpretersManagerImpl
 import com.jetbrains.php.phpunit.coverage.PhpUnitCoverageEngine.CoverageEngine
 import com.jetbrains.php.testFramework.run.PhpTestRunConfigurationEditor
 import java.awt.BorderLayout
@@ -15,7 +14,6 @@ import javax.swing.JPanel
 
 class PestTestRunConfigurationEditor(
     private val parentEditor: PhpTestRunConfigurationEditor,
-    project: Project,
     settings: PestRunConfiguration
 ) : SettingsEditor<PestRunConfiguration>() {
     private val myMainPanel = JPanel()
@@ -30,19 +28,7 @@ class PestTestRunConfigurationEditor(
         myMainPanel.layout = BorderLayout()
         myMainPanel.add(parentEditor.component, BorderLayout.CENTER)
         myMainPanel.add(coveragePanel, BorderLayout.SOUTH)
-        coverageEngineComboBox.addItemListener { this.validateEngine(project) }
         resetEditorFrom(settings)
-    }
-
-    private fun validateEngine(project: Project) {
-        val item = coverageEngineComboBox.selectedItem as CoverageEngine
-
-        val interpreter = PhpInterpretersManagerImpl
-            .getInstance(project)
-            .findInterpreter(item.name) ?: return
-
-        CoverageEngine.validateCoverageEngine(interpreter, project, item)
-        TODO("Show error message when validation fails.")
     }
 
     override fun createEditor(): JComponent {
