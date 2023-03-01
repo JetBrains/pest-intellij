@@ -51,7 +51,7 @@ class PestRunConfiguration(project: Project, factory: ConfigurationFactory) : Ph
         val editor = this.getConfigurationEditor(names)
 
         editor.setRunnerOptionsDocumentation("https://pestphp.com/docs/installation")
-        return PestTestRunConfigurationEditor(editor, project, this)
+        return PestTestRunConfigurationEditor(editor, this)
     }
 
     @Throws(ExecutionException::class)

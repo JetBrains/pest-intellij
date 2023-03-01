@@ -3,6 +3,8 @@
 # PEST IntelliJ Changelog
 
 ## Unreleased
+### Fixed
+- Fixed "Preferred Coverage Engine" not being saved
 
 ## 1.9.1 - 2023-02-28
 
