@@ -105,6 +105,8 @@ fun String.toPestTestRegex(rootPath: String, file: String, pathMapper: PhpPathMa
         .replace(" ", "\\s")
         .replace("(", "\\(")
         .replace(")", "\\)")
+        .replace("[", "\\[")
+        .replace("]", "\\]")
         .replace("^", "\\^")
         .replace("/", "\\/")
         .replace("?", "\\?")
