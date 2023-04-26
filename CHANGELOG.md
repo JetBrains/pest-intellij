@@ -3,6 +3,9 @@
 # PEST IntelliJ Changelog
 
 ## Unreleased
+
+## 1.9.3-EAP.2 - 2023-04-26
+
 ### Fixed
 - Fixed file icon missing if all tests has property calls
 - Fixed gutter icon not updating state correctly
