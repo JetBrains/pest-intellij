@@ -3,6 +3,7 @@ package com.pestphp.pest.features.customExpectations
 import com.intellij.openapi.components.service
 import com.intellij.openapi.project.DumbService
 import com.intellij.openapi.project.Project
+import com.intellij.openapi.startup.ProjectActivity
 import com.intellij.openapi.startup.StartupActivity
 import com.intellij.psi.PsiManager
 import com.intellij.psi.search.GlobalSearchScope
@@ -12,8 +13,8 @@ import com.jetbrains.php.lang.psi.PhpFile
 /**
  * Adds all methods to the expectation file service which has been indexed already.
  */
-class CustomExpectationStartupActivity : StartupActivity {
-    override fun runActivity(project: Project) {
+class CustomExpectationStartupActivity : ProjectActivity {
+    override suspend fun execute(project: Project) {
         val fileBasedIndex = FileBasedIndex.getInstance()
         val expectationFileService = project.service<ExpectationFileService>()
         val psiManager = PsiManager.getInstance(project)
@@ -47,6 +48,5 @@ class CustomExpectationStartupActivity : StartupActivity {
                 }
             expectationFileService.generateFile { }
         }
-
     }
 }

@@ -74,7 +74,7 @@ fun PsiElement.toPestFqn(): List<String> {
         }
         .map { it.convertToRemote(file) }
         .map { "pest_qn://$it::$testName" }
-        .plus("pest_qn://$file::$testName")
+        .plus("pest_qn://${file.removePrefix("${this.project.basePath.toString()}/")}::$testName")
         .toList()
 }
 

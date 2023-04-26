@@ -5,6 +5,7 @@
 ## Unreleased
 ### Fixed
 - Fixed file icon missing if all tests has property calls
+- Fixed gutter icon not updating state correctly
 
 ## 1.9.2 - 2023-03-01
 

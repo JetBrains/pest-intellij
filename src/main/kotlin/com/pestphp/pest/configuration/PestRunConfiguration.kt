@@ -107,7 +107,6 @@ class PestRunConfiguration(project: Project, factory: ConfigurationFactory) : Ph
         processor: PhpCommandLinePathProcessor
     ): PestConsoleProperties {
         val pathMapper = processor.createPathMapper(this.project)
-        PhpUnitQualifiedNameLocationProvider.create(pathMapper)
         return PestConsoleProperties(
             this,
             executor,

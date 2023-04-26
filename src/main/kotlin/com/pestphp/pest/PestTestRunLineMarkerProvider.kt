@@ -9,7 +9,7 @@ import com.jetbrains.php.lang.psi.PhpPsiUtil
 import com.jetbrains.php.lang.psi.elements.impl.FunctionReferenceImpl
 
 /**
- * Adds markers on the line at the left side for running a pest specific pest test.
+ * Adds markers on the line on the left side for running a pest specific pest test.
  */
 class PestTestRunLineMarkerProvider : RunLineMarkerContributor() {
     override fun getInfo(leaf: PsiElement): Info? {
