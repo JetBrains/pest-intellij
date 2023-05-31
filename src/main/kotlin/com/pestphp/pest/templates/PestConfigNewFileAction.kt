@@ -7,11 +7,22 @@ import com.intellij.openapi.actionSystem.*
 import com.intellij.openapi.project.Project
 import com.intellij.psi.PsiDirectory
 import com.intellij.psi.PsiFile
+import com.pestphp.pest.PestBundle
 import com.pestphp.pest.PestIcons
+import com.pestphp.pest.PestSettings
+import com.pestphp.pest.PestSettings.TestFlavor
 
 
-class PestConfigNewFileAction :
-    CreateFileFromTemplateAction() {
+/**
+ * Shows the "Create Pest Test File" action in the context menu when creating a new file.
+ *
+ * This will only show if the file is being created in a directory named "tests".
+ */
+open class PestConfigNewFileAction : CreateFileFromTemplateAction() {
+    companion object {
+        const val PEST_IT_TEMPLATE = "Pest It"
+        const val PEST_TEST_TEMPLATE = "Pest Test"
+    }
 
     override fun isAvailable(dataContext: DataContext): Boolean {
         val view = LangDataKeys.IDE_VIEW.getData(dataContext)
@@ -37,11 +48,9 @@ class PestConfigNewFileAction :
 
     override fun buildDialog(project: Project, directory: PsiDirectory, builder: CreateFileFromTemplateDialog.Builder) {
         builder
-            .setTitle("Create Pest Test File")
-            .addKind("It", PestIcons.FILE, "Pest It")
-            .addKind("Test", PestIcons.FILE, "Pest Test")
-            .addKind("Shared dataset", PestIcons.DATASET_FILE, "Pest Shared Dataset")
-            .addKind("Scoped dataset", PestIcons.DATASET_FILE, "Pest Scoped Dataset")
+            .setTitle(PestBundle.message("CREATE_NEW_PEST_TEST_DIALOG_TITLE"))
+            .addKind(PestBundle.message("CREATE_NEW_PEST_IT_FLAVOR"), PestIcons.FILE, PEST_IT_TEMPLATE)
+            .addKind(PestBundle.message("CREATE_NEW_PEST_TEST_FLAVOR"), PestIcons.FILE, PEST_TEST_TEMPLATE)
     }
 
     override fun getActionName(directory: PsiDirectory?, newName: String, templateName: String?): String {
@@ -49,42 +58,8 @@ class PestConfigNewFileAction :
     }
 
     override fun createFileFromTemplate(name: String?, template: FileTemplate, dir: PsiDirectory): PsiFile {
-        if (template.name == "Pest Shared Dataset") {
-            // find parent directory named "tests"
-            var parentDir = dir
-            while (parentDir.name != "tests") {
-                parentDir = parentDir.parentDirectory ?: break
-            }
-
-            val datasetDir = parentDir.findSubdirectory("Datasets")
-                ?: parentDir.createSubdirectory("Datasets")
-
-            // Check if first character is lowercase in name
-            var newName = name
-            if (name!![0].isLowerCase()) {
-                newName = name.replaceFirstChar { it.uppercase() }
-            }
-
-            return createFileFromTemplate(
-                newName,
-                template,
-                datasetDir,
-                defaultTemplateProperty,
-                true,
-                mapOf("DATASET_NAME" to name.replaceFirstChar { it.lowercase() })
-            )!!
-        }
-
-        if (template.name == "Pest Scoped Dataset") {
-            return createFileFromTemplate(
-                "Datasets",
-                template,
-                dir,
-                defaultTemplateProperty,
-                true,
-                mapOf("DATASET_NAME" to name!!.replaceFirstChar { it.lowercase() })
-            )!!
-        }
+        PestSettings.getInstance(dir.project).preferredTestFlavor = if (template.name == PEST_IT_TEMPLATE) TestFlavor.IT
+            else TestFlavor.TEST
 
         var testName = name
         if (!name!!.endsWith("test", true)) {
@@ -92,5 +67,13 @@ class PestConfigNewFileAction :
         }
 
         return super.createFileFromTemplate(testName, template, dir)
+    }
+
+    override fun getDefaultTemplateName(dir: PsiDirectory): String {
+        return if (PestSettings.getInstance(dir.project).preferredTestFlavor == TestFlavor.IT) {
+            PEST_IT_TEMPLATE
+        } else {
+            PEST_TEST_TEMPLATE
+        }
     }
 }

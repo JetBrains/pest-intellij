@@ -3,6 +3,11 @@
 # PEST IntelliJ Changelog
 
 ## Unreleased
+### Changed
+- Changed pest file creation to two actions (tests and dataset)
+
+### Added
+- Save test flavour preferences when creating a new test
 
 ## 1.10.0 - 2023-05-31
 

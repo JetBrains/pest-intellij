@@ -144,5 +144,11 @@
                 text="Pest Test">
             <add-to-group group-id="NewGroup" anchor="before" relative-to-action="NewFromTemplate"/>
         </action>
+        <action id="Pest.New.Dataset"
+                class="com.pestphp.pest.templates.PestConfigNewDatasetFileAction"
+                icon="/dataset.svg"
+                text="Pest Dataset">
+            <add-to-group group-id="NewGroup" anchor="after" relative-to-action="Pest.New.File"/>
+        </action>
     </actions>
 </idea-plugin>
