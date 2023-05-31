@@ -3,6 +3,9 @@
 # PEST IntelliJ Changelog
 
 ## Unreleased
+
+## 1.10.1 - 2023-05-31
+
 ### Changed
 - Changed pest file creation to two actions (tests and dataset)
 
