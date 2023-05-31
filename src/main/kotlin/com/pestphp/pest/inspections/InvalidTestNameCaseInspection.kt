@@ -22,7 +22,12 @@ class InvalidTestNameCaseInspection : PhpInspection() {
                 file.getPestTests()
                     .groupBy { it.getPestTestName() }
                     .filterKeys { it != null }
-                    .filterKeys { !it!!.contains(' ') }
+                    .filterKeys {
+                        // Remove `it ` prefix from test names
+                        val testName = if (it!!.startsWith("it ")) it.substring(3) else it
+
+                        !testName.contains(' ')
+                    }
                     .filterKeys { it!!.splitToWords().joinToString(" ") != it }
                     .forEach {
                         declareProblemType(holder, it.value)
