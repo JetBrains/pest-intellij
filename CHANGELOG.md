@@ -4,6 +4,9 @@
 
 ## Unreleased
 
+### Added
+- Added pest file creation support
+
 ## 1.9.3 - 2023-05-31
 
 ### Fixed

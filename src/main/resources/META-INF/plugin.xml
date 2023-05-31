@@ -115,6 +115,10 @@
                      description="Whether custom expectation file generation should happen."
                      key="pestphp.custom-expectations"
         />
+        <internalFileTemplate name="Pest It"/>
+        <internalFileTemplate name="Pest Test"/>
+        <internalFileTemplate name="Pest Scoped Dataset"/>
+        <internalFileTemplate name="Pest Shared Dataset"/>
     </extensions>
 
     <projectListeners>
@@ -134,6 +138,11 @@
     </extensions>
 
     <actions>
-        <!-- Add your actions here -->
+        <action id="Pest.New.File"
+                class="com.pestphp.pest.templates.PestConfigNewFileAction"
+                icon="/file.svg"
+                text="Pest Test">
+            <add-to-group group-id="NewGroup" anchor="before" relative-to-action="NewFromTemplate"/>
+        </action>
     </actions>
 </idea-plugin>

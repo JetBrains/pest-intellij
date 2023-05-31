@@ -1,0 +1,6 @@
+<?php
+#parse("PHP File Header.php")
+
+test('#[[$END$]]#', function () {
+
+});
