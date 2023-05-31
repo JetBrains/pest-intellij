@@ -4,6 +4,8 @@
 
 ## Unreleased
 
+## 1.10.0-EAP.1 - 2023-05-31
+
 ### Added
 - Added pest file creation support
 
