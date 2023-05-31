@@ -7,6 +7,9 @@
 ### Added
 - Added pest file creation support
 
+### Fixed
+- Remove test sources filter lookup, as it breaks others plugins
+
 ## 1.9.3 - 2023-05-31
 
 ### Fixed
