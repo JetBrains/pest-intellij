@@ -4,6 +4,8 @@
 
 ## Unreleased
 
+## 1.10.0 - 2023-05-31
+
 ### Added
 - Added pest file creation support
 
