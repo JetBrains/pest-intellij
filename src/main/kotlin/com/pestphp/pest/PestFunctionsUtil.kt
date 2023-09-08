@@ -19,7 +19,7 @@ fun PsiElement?.isPestTestReference(): Boolean {
     }
 }
 
-private val testNames = setOf("it", "test", "todo")
+private val testNames = setOf("it", "test", "todo", "describe")
 fun FunctionReferenceImpl.isPestTestFunction(): Boolean {
     return this.canonicalText in testNames
 }
@@ -32,7 +32,7 @@ fun FunctionReferenceImpl.isPestAfterFunction(): Boolean {
     return this.canonicalText == "afterEach"
 }
 
-private val allPestNames = setOf("it", "test", "todo", "beforeEach", "afterEach", "dataset")
+private val allPestNames = setOf("it", "test", "todo", "beforeEach", "afterEach", "dataset", "describe")
 fun FunctionReferenceImpl.isAnyPestFunction(): Boolean {
     return this.canonicalText in allPestNames
 }
