@@ -1,6 +1,7 @@
 package com.pestphp.pest
 
 import com.intellij.psi.PsiElement
+import com.intellij.psi.util.findParentOfType
 import com.intellij.remote.RemoteSdkProperties
 import com.jetbrains.php.config.interpreters.PhpInterpretersManagerImpl
 import com.jetbrains.php.lang.psi.elements.ConcatenationExpression
@@ -15,10 +16,18 @@ import java.util.*
 fun FunctionReferenceImpl.getPestTestName(): String? {
     val testName = getParameter(0)?.stringValue
 
-    if (this.canonicalText == "it") {
-        return "it $testName"
+    val parent = this.findParentOfType<FunctionReferenceImpl>()
+    val prepend = if (parent is FunctionReferenceImpl && parent.isDescribeFunction()) {
+        parent.getPestTestName()
+    } else {
+        null
     }
-    return testName
+
+    return when (this.canonicalText) {
+        "it" -> "${prepend}it $testName"
+        "describe" -> "`$testName` → "
+        else -> "${prepend}$testName"
+    }
 }
 
 val PsiElement.stringValue: String?
@@ -114,7 +123,7 @@ fun String.toPestTestRegex(rootPath: String, file: String, pathMapper: PhpPathMa
     // Match the description of a single data set
     val dataSet = """(data\sset\s".*"|\(.*\))"""
 
-    return """^$fqn::$testName(\swith\s$dataSet(\s\/\s$dataSet)*(\s#\d+)?)?$"""
+    return """^$fqn::$testName(\swith\s$dataSet(\s\/\s$dataSet)*(\s#\d+)?)?"""
 }
 
 val String.withoutFirstFileSeparator: String

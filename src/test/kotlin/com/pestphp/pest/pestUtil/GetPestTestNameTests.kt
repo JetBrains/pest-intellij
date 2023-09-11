@@ -41,4 +41,12 @@ class GetPestTestNameTests : PestLightCodeFixture() {
 
         assertEquals("basic super", testElement.getPestTestName())
     }
+
+    fun testFunctionCallNamedDescribeWithDescriptionAndClosure() {
+        val file = myFixture.configureByFile("PestDescribeBlock.php")
+
+        val testElement = file.firstChild.lastChild.firstChild
+
+        assertEquals("`sum` →", testElement.getPestTestName())
+    }
 }

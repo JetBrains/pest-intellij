@@ -37,6 +37,11 @@ fun FunctionReferenceImpl.isAnyPestFunction(): Boolean {
     return this.canonicalText in allPestNames
 }
 
+fun FunctionReferenceImpl.isDescribeFunction(): Boolean {
+    return this.canonicalText == "describe"
+}
+
+
 fun MethodReference.isPestTestMethodReference(): Boolean {
     return when (val reference = classReference) {
         is FunctionReferenceImpl -> reference.isPestTestFunction()
