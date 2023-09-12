@@ -4,6 +4,12 @@
 
 ## Unreleased
 
+### Added
+- Added support for running tests in describe block ([#498](https://github.com/pestphp/pest-intellij/pull/498))
+
+### Fixed
+- Fixed property declared dynamically showing warning in pest test cases
+
 ## 1.10.1 - 2023-05-31
 
 ### Changed
