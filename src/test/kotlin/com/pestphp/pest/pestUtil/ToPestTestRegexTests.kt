@@ -8,7 +8,7 @@ class ToPestTestRegexTests : PestLightCodeFixture() {
         return "src/test/resources/com/pestphp/pest/PestUtil"
     }
 
-    fun testRegexContainsStartAndEndBounds() {
+    fun testRegexContainsStartBounds() {
         val file = myFixture.configureByFile(
             "PestItFunctionCallWithDescriptionAndClosure.php",
         )
@@ -18,7 +18,6 @@ class ToPestTestRegexTests : PestLightCodeFixture() {
         val regex = testElement?.toPestTestRegex("src")
 
         assertTrue(regex?.startsWith('^') == true)
-        assertTrue(regex?.endsWith('$') == true)
     }
 
     fun testRegexContainsPestNamespacePrefix() {

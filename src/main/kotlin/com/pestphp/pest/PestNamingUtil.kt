@@ -13,14 +13,14 @@ import com.jetbrains.php.run.remote.PhpRemoteInterpreterManager
 import com.jetbrains.php.util.pathmapper.PhpPathMapper
 import java.util.*
 
-fun FunctionReferenceImpl.getPestTestName(): String? {
+fun FunctionReferenceImpl.getPestTestName(): String {
     val testName = getParameter(0)?.stringValue
 
     val parent = this.findParentOfType<FunctionReferenceImpl>()
     val prepend = if (parent is FunctionReferenceImpl && parent.isDescribeFunction()) {
         parent.getPestTestName()
     } else {
-        null
+        ""
     }
 
     return when (this.canonicalText) {

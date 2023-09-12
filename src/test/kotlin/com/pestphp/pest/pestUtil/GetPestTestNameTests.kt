@@ -47,6 +47,6 @@ class GetPestTestNameTests : PestLightCodeFixture() {
 
         val testElement = file.firstChild.lastChild.firstChild
 
-        assertEquals("`sum` →", testElement.getPestTestName())
+        assertEquals("`sum` → ", testElement.getPestTestName())
     }
 }
