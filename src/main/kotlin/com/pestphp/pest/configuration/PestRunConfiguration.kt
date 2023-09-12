@@ -19,7 +19,6 @@ import com.jetbrains.php.PhpBundle
 import com.jetbrains.php.config.commandLine.PhpCommandLinePathProcessor
 import com.jetbrains.php.config.commandLine.PhpCommandSettings
 import com.jetbrains.php.config.interpreters.PhpInterpreter
-import com.jetbrains.php.phpunit.PhpUnitQualifiedNameLocationProvider
 import com.jetbrains.php.run.PhpRunUtil
 import com.jetbrains.php.run.remote.PhpRemoteInterpreterManager
 import com.jetbrains.php.testFramework.PhpTestFrameworkConfiguration
@@ -110,7 +109,7 @@ class PestRunConfiguration(project: Project, factory: ConfigurationFactory) : Ph
         return PestConsoleProperties(
             this,
             executor,
-            PestLocationProvider(pathMapper)
+            PestLocationProvider(pathMapper, this.project)
         )
     }
 

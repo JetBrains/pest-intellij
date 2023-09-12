@@ -18,7 +18,7 @@ import com.pestphp.pest.runner.LocationInfo
 /**
  * Adds support for goto test from test results.
  */
-class PestLocationProvider(private val pathMapper: PhpPathMapper) : SMTestLocator {
+class PestLocationProvider(private val pathMapper: PhpPathMapper, private val project: Project) : SMTestLocator {
     private val protocolId = "pest_qn"
     private val phpUnitLocationProvider = PhpUnitQualifiedNameLocationProvider.create(pathMapper)
 
@@ -52,7 +52,7 @@ class PestLocationProvider(private val pathMapper: PhpPathMapper) : SMTestLocato
         val location = link.split("::")
 
 
-        val file = this.pathMapper.getLocalFile(location[0])
+        val file = this.pathMapper.getLocalFile("${this.project.basePath}/${location[0]}")
 
         if (location.size == 1) {
             return file?.let { LocationInfo(it, null) }
