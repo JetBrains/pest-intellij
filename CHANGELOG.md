@@ -9,6 +9,7 @@
 
 ### Fixed
 - Fixed property declared dynamically showing warning in pest test cases
+- Fixed goto and rerun tests not working on new pest versions
 
 ## 1.10.1 - 2023-05-31
 
