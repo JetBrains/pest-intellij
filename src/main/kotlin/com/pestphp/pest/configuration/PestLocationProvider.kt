@@ -51,6 +51,7 @@ class PestLocationProvider(private val pathMapper: PhpPathMapper) : SMTestLocato
     private fun getLocationInfo(link: String): LocationInfo? {
         val location = link.split("::")
 
+
         val file = this.pathMapper.getLocalFile(location[0])
 
         if (location.size == 1) {

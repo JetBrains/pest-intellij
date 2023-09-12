@@ -1,0 +1,4 @@
+<?php
+
+describe('sum', function () {
+});
