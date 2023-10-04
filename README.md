@@ -44,7 +44,7 @@ To configure pest to run properly, you need to setup the the proper local test f
   And add the following two configuration fields:
 
   Set "Path to Pest Executable" to
-	<code>/path/to/your/project/vendor/pestphp/pest/bin/pest/</code>
+	<code>/path/to/your/project/vendor/bin/pest</code>
 
   Set the "Test Runner" to
 	<code>/path/to/your/project/phpunit.xml</code>
