@@ -4,12 +4,13 @@ import com.intellij.codeInspection.LocalQuickFix
 import com.intellij.codeInspection.ProblemHighlightType
 import com.intellij.codeInspection.ProblemsHolder
 import com.intellij.psi.PsiElementVisitor
+import com.intellij.psi.search.GlobalSearchScope
 import com.intellij.util.indexing.FileBasedIndex
 import com.jetbrains.php.lang.inspections.PhpInspection
 import com.jetbrains.php.lang.psi.elements.MethodReference
 import com.jetbrains.php.lang.psi.elements.impl.MethodReferenceImpl
 import com.jetbrains.php.lang.psi.visitors.PhpElementVisitor
-import com.pestphp.pest.features.customExpectations.CustomExpectationIndex
+import com.pestphp.pest.features.customExpectations.KEY
 import com.pestphp.pest.features.customExpectations.extendName
 
 class DuplicateCustomExpectationInspection : PhpInspection() {
@@ -23,27 +24,21 @@ class DuplicateCustomExpectationInspection : PhpInspection() {
                 if (reference !is MethodReferenceImpl) {
                     return
                 }
-
-                FileBasedIndex.getInstance()
-                    .getFileData(
-                        CustomExpectationIndex.key,
-                        reference.containingFile.virtualFile,
-                        reference.project
+                if (reference.extendName == null) {
+                    return
+                }
+                val hasDuplicates = FileBasedIndex.getInstance()
+                    .getValues(KEY, reference.extendName!!, GlobalSearchScope.allScope(holder.project))
+                    .flatten()
+                    .count() > 1
+                if (hasDuplicates) {
+                    holder.registerProblem(
+                        reference,
+                        DESCRIPTION,
+                        ProblemHighlightType.GENERIC_ERROR,
+                        *LocalQuickFix.EMPTY_ARRAY
                     )
-                    .flatMap { it.value }
-                    .filter { reference.extendName == it.name }
-                    .let {
-                        if (it.count() < 2) {
-                            return
-                        }
-
-                        holder.registerProblem(
-                            reference,
-                            DESCRIPTION,
-                            ProblemHighlightType.GENERIC_ERROR,
-                            *LocalQuickFix.EMPTY_ARRAY
-                        )
-                    }
+                }
             }
         }
     }

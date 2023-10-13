@@ -10,6 +10,16 @@
     <depends optional="true" config-file="pest-coverage.xml">com.intellij.modules.coverage</depends>
 
     <extensions defaultExtensionNs="com.intellij">
+        <psi.declarationProvider implementation="com.pestphp.pest.features.customExpectations.symbols.PestCustomExpectationSymbolDeclarationProvider"/>
+        <psi.symbolReferenceProvider hostElementClass="com.jetbrains.php.lang.psi.elements.impl.MethodReferenceImpl"
+                                     hostLanguage="PHP"
+                                     implementationClass="com.pestphp.pest.features.customExpectations.symbols.PestCustomExpectationReferenceProvider"
+                                     targetClass="com.pestphp.pest.features.customExpectations.symbols.PestCustomExpectationSymbol"/>
+        <searcher forClass="com.intellij.find.usages.api.UsageSearchParameters"
+                  implementationClass="com.pestphp.pest.features.customExpectations.symbols.PestCustomExpectationUsageSearcher"/>
+        <searcher forClass="com.intellij.refactoring.rename.api.RenameUsageSearchParameters"
+                  implementationClass="com.pestphp.pest.features.customExpectations.symbols.PestCustomExpectationRenameUsageSearcher"/>
+
         <stacktrace.fold substring="at vendor/"/>
 
         <runLineMarkerContributor
@@ -30,8 +40,6 @@
         <testFinder implementation="com.pestphp.pest.goto.PestTestFinder"/>
         <fileBasedIndex implementation="com.pestphp.pest.indexers.PestTestIndex"/>
         <fileBasedIndex implementation="com.pestphp.pest.features.customExpectations.CustomExpectationIndex"/>
-        <postStartupActivity
-                implementation="com.pestphp.pest.features.customExpectations.CustomExpectationStartupActivity"/>
         <errorHandler implementation="com.pestphp.pest.GithubErrorReporter"/>
         <localInspection
                 language="PHP"
@@ -120,11 +128,6 @@
         <internalFileTemplate name="Pest Scoped Dataset"/>
         <internalFileTemplate name="Pest Shared Dataset"/>
     </extensions>
-
-    <projectListeners>
-        <listener class="com.pestphp.pest.features.customExpectations.CustomExpectationListener"
-                  topic="com.pestphp.pest.features.customExpectations.CustomExpectationNotifier"/>
-    </projectListeners>
 
     <extensions defaultExtensionNs="com.jetbrains.php">
         <testFrameworkType implementation="com.pestphp.pest.PestFrameworkType"/>

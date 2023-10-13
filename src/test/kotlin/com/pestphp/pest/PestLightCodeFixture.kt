@@ -40,7 +40,7 @@ abstract class PestLightCodeFixture : BasePlatformTestCase() {
     protected fun createPestFrameworkConfiguration(): PhpTestFrameworkConfiguration? {
         val configuration = PhpTestFrameworkSettingsManager
             .getInstance(myFixture.project)
-            .getOrCreateByInterpreter(PestFrameworkType.instance, PhpInterpreter())
+            .getOrCreateByInterpreter(PestFrameworkType.instance, PhpInterpreter(), null, false)
         configuration?.executablePath = "randomPath"
 
         return configuration
