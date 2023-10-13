@@ -5,6 +5,7 @@ import com.intellij.codeInsight.completion.CompletionType
 import com.intellij.patterns.PlatformPatterns
 import com.jetbrains.php.lang.lexer.PhpTokenTypes
 import com.jetbrains.php.lang.psi.elements.FieldReference
+import com.jetbrains.php.lang.psi.elements.MemberReference
 
 /**
  * Registers the completion providers
@@ -25,6 +26,13 @@ class PestCompletionContributor : CompletionContributor() {
                 .withElementType(PhpTokenTypes.IDENTIFIER)
                 .withParent(FieldReference::class.java),
             ThisFieldsCompletionProvider()
+        )
+
+        extend(
+            CompletionType.BASIC,
+            PlatformPatterns.psiElement()
+                .withParent(MemberReference::class.java),
+            PestCustomExtensionCompletionProvider()
         )
     }
 }

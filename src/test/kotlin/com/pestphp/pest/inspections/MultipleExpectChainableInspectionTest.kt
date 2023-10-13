@@ -31,7 +31,7 @@ class MultipleExpectChainableInspectionTest : PestLightCodeFixture() {
         myFixture.configureByFile("MultipleExpectCall.php")
 
         myFixture.checkHighlighting()
-        myFixture.getAllQuickFixes().forEach { myFixture.launchAction(it) }
+        myFixture.getAllQuickFixes().first().run { myFixture.launchAction(this) }
 
         myFixture.checkResultByFile("MultipleExpectCall.after.php")
     }
@@ -52,7 +52,8 @@ class MultipleExpectChainableInspectionTest : PestLightCodeFixture() {
         myFixture.configureByFile("MultipleExpectCallsWithOtherStatementsBetween.php")
 
         myFixture.checkHighlighting()
-        myFixture.getAllQuickFixes().forEach { myFixture.launchAction(it) }
+        myFixture.getAllQuickFixes().first().run { myFixture.launchAction(this) }
+        myFixture.getAllQuickFixes().last().run { myFixture.launchAction(this) }
 
         myFixture.checkResultByFile("MultipleExpectCallsWithOtherStatementsBetween.after.php")
     }

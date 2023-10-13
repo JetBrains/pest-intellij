@@ -1,6 +1,5 @@
 package com.pestphp.pest.features.customExpectations
 
-
 import com.intellij.openapi.vfs.VirtualFile
 import com.intellij.util.indexing.*
 import com.intellij.util.io.DataExternalizer
@@ -8,51 +7,44 @@ import com.intellij.util.io.EnumeratorStringDescriptor
 import com.intellij.util.io.KeyDescriptor
 import com.jetbrains.php.lang.PhpFileType
 import com.jetbrains.php.lang.psi.PhpFile
-import com.pestphp.pest.features.customExpectations.externalizers.ListDataExternalizer
-import com.pestphp.pest.features.customExpectations.externalizers.MethodDataExternalizer
-import com.pestphp.pest.features.customExpectations.generators.Method
-import com.pestphp.pest.realPath
+import com.jetbrains.php.lang.psi.elements.MethodReference
+import com.jetbrains.php.lang.psi.elements.impl.MethodReferenceImpl
+import com.jetbrains.php.lang.psi.stubs.indexes.PhpDepthLimitedRecursiveElementVisitor
+import com.jetbrains.php.lang.psi.stubs.indexes.PhpInvokeCallsOffsetsIndex.IntArrayExternalizer
+import it.unimi.dsi.fastutil.ints.IntArrayList
+import it.unimi.dsi.fastutil.ints.IntList
 
-class CustomExpectationIndex : FileBasedIndexExtension<String, List<Method>>() {
-    companion object {
-        val key = ID.create<String, List<Method>>("php.pest.custom_expectations")
-    }
+val KEY = ID.create<String, IntList>("php.pest.custom_expectations")
 
-    override fun getName(): ID<String, List<Method>> {
-        return key
+class CustomExpectationIndex : FileBasedIndexExtension<String, IntList>() {
+
+    override fun getName(): ID<String, IntList> {
+        return KEY
     }
 
     override fun getVersion(): Int {
-        return 3
+        return 6
     }
 
-    override fun getIndexer(): DataIndexer<String, List<Method>, FileContent> {
+    override fun getIndexer(): DataIndexer<String, IntList, FileContent> {
         return DataIndexer { inputData ->
             val file = inputData.psiFile
-
-            if (file !is PhpFile) {
-                return@DataIndexer mapOf()
+            val map: MutableMap<String, IntList> = mutableMapOf()
+            if (file is PhpFile) {
+                file.accept(object : PhpDepthLimitedRecursiveElementVisitor() {
+                    override fun visitPhpMethodReference(reference: MethodReference) {
+                        if (reference is MethodReferenceImpl && reference.isPestExtendReference()) {
+                            reference.extendName?.let {
+                                if (it !in map) {
+                                    map[it] = IntArrayList()
+                                }
+                                map[it]!!.add(reference.parameters[0].textOffset + 1)
+                            }
+                        }
+                    }
+                })
             }
-
-            val customExpectations = file
-                .customExpects
-                .mapNotNull {
-                    it.toMethod()
-                }
-
-            val publisher = file.project.messageBus.syncPublisher(CustomExpectationNotifier.TOPIC)
-            publisher.changedExpectation(
-                file,
-                customExpectations
-            )
-
-            if (customExpectations.isEmpty()) {
-                return@DataIndexer mapOf()
-            }
-
-            mapOf(
-                file.realPath to customExpectations
-            )
+            return@DataIndexer map
         }
     }
 
@@ -60,8 +52,8 @@ class CustomExpectationIndex : FileBasedIndexExtension<String, List<Method>>() {
         return EnumeratorStringDescriptor.INSTANCE
     }
 
-    override fun getValueExternalizer(): DataExternalizer<List<Method>> {
-        return ListDataExternalizer(MethodDataExternalizer.INSTANCE)
+    override fun getValueExternalizer(): DataExternalizer<IntList> {
+        return IntArrayExternalizer.INSTANCE
     }
 
     override fun getInputFilter(): FileBasedIndex.InputFilter {
