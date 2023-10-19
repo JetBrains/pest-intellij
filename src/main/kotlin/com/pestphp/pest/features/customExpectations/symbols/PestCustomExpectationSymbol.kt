@@ -14,11 +14,13 @@ import com.intellij.psi.PsiFile
 import com.intellij.psi.search.GlobalSearchScope
 import com.intellij.psi.search.SearchScope
 import com.intellij.refactoring.rename.api.RenameTarget
+import com.pestphp.pest.features.customExpectations.generators.Method
 
 class PestCustomExpectationSymbol(
     val expectationName: String,
     val file: PsiFile,
-    val rangeInFile: TextRange
+    val rangeInFile: TextRange,
+    val methodDescriptor: Method
 ) : Symbol, NavigationTarget, SearchTarget, RenameTarget {
 
     override fun createPointer() = Pointer.fileRangePointer(
@@ -29,7 +31,8 @@ class PestCustomExpectationSymbol(
         PestCustomExpectationSymbol(
             expectationName,
             restoredFile,
-            TextRange(restoredRange.startOffset + 1, restoredRange.endOffset - 1)
+            TextRange(restoredRange.startOffset + 1, restoredRange.endOffset - 1),
+            methodDescriptor
         )
     }
 

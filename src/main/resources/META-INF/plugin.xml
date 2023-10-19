@@ -21,7 +21,8 @@
                   implementationClass="com.pestphp.pest.features.customExpectations.symbols.PestCustomExpectationRenameUsageSearcher"/>
 
         <stacktrace.fold substring="at vendor/"/>
-
+        <codeInsight.parameterInfo language="PHP" order="before phpParameterInfo"
+                                   implementationClass="com.pestphp.pest.features.customExpectations.CustomExpectationParameterInfoHandler"/>
         <runLineMarkerContributor
                 language="PHP"
                 implementationClass="com.pestphp.pest.PestTestRunLineMarkerProvider"

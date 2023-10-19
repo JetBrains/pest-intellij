@@ -73,7 +73,7 @@ fun PsiElement.isPestExtendReference(): Boolean {
     return true
 }
 
-val MethodReferenceImpl.extendName: String?
+val MethodReference.extendName: String?
     get() {
         val name = this.getParameter(0) ?: return null
 
@@ -102,7 +102,7 @@ val PsiFile.customExpects: List<MethodReferenceImpl>
             .filter { it.isPestExtendReference() }
     }
 
-fun MethodReferenceImpl.toMethod(): Method? {
+fun MethodReference.toMethod(): Method? {
     val extendName = this.extendName ?: return null
 
     // Custom expectations should always have two parameters.
