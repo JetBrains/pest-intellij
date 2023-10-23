@@ -4,6 +4,21 @@
 
 ## Unreleased
 
+### Added
+
+- Added proper resolve for custom expectations
+- Added proper rename for custom expectations
+- Added migration startup activity to delete redundant generated `Expectation.php` file
+
+### Fixed
+
+- Fixed infinite "Closing project..." dialog issue on project close
+
+### Changed
+
+- Reworked custom expectations engine using Symbol API 
+- Removed `Expectation.php` generation
+
 ## 1.11.0 - 2023-09-12
 
 ### Added
