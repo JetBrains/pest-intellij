@@ -1,7 +1,7 @@
 <idea-plugin require-restart="true">
     <id>com.pestphp.pest-intellij</id>
     <name>Pest</name>
-    <vendor email="olivernybroe@gmail.com" url="https://pestphp.com/">Pest</vendor>
+    <vendor>JetBrains</vendor>
 
     <!-- please see https://www.jetbrains.org/intellij/sdk/docs/basics/getting_started/plugin_compatibility.html
          on how to target different products -->
