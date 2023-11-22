@@ -25,7 +25,6 @@ repositories {
 
 dependencies {
     testImplementation("org.mockito.kotlin:mockito-kotlin:5.1.0")
-    implementation("net.pearx.kasechange:kasechange:1.4.1")
 }
 
 // Set the JVM language level used to compile sources and generate files - Java 11 is required since 2020.3
