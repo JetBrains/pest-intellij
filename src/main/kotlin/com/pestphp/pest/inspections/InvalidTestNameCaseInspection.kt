@@ -3,13 +3,13 @@ package com.pestphp.pest.inspections
 import com.intellij.codeInspection.ProblemHighlightType
 import com.intellij.codeInspection.ProblemsHolder
 import com.intellij.psi.PsiElementVisitor
+import com.intellij.util.text.NameUtilCore
 import com.jetbrains.php.lang.inspections.PhpInspection
 import com.jetbrains.php.lang.psi.PhpFile
 import com.jetbrains.php.lang.psi.elements.FunctionReference
 import com.jetbrains.php.lang.psi.visitors.PhpElementVisitor
 import com.pestphp.pest.getPestTestName
 import com.pestphp.pest.getPestTests
-import net.pearx.kasechange.splitToWords
 
 class InvalidTestNameCaseInspection : PhpInspection() {
     companion object {
@@ -28,7 +28,7 @@ class InvalidTestNameCaseInspection : PhpInspection() {
 
                         !testName.contains(' ')
                     }
-                    .filterKeys { it!!.splitToWords().joinToString(" ") != it }
+                    .filterKeys { NameUtilCore.splitNameIntoWords(it!!).joinToString(" ") != it }
                     .forEach {
                         declareProblemType(holder, it.value)
                     }

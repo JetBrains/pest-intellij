@@ -3,9 +3,9 @@ package com.pestphp.pest.inspections
 import com.intellij.codeInspection.LocalQuickFix
 import com.intellij.codeInspection.ProblemDescriptor
 import com.intellij.openapi.project.Project
+import com.intellij.util.text.NameUtilCore
 import com.jetbrains.php.lang.psi.PhpPsiElementFactory
 import com.jetbrains.php.lang.psi.elements.StringLiteralExpression
-import net.pearx.kasechange.splitToWords
 
 class ChangeTestNameCasingQuickFix : LocalQuickFix {
     companion object {
@@ -21,9 +21,9 @@ class ChangeTestNameCasingQuickFix : LocalQuickFix {
         val pestTestName = nameParameter.contents
 
         val newNameParameter = PhpPsiElementFactory.createStringLiteralExpression(
-            project,
-            pestTestName.splitToWords().joinToString(" "),
-            true
+          project,
+          NameUtilCore.splitNameIntoWords(pestTestName).joinToString(" "),
+          true
         )
 
         nameParameter.replace(newNameParameter)
