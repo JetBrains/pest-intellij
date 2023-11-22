@@ -1,4 +1,4 @@
-package com.pestphp.pest.pestUtil
+package com.pestphp.pest.utilTests
 
 import com.intellij.testFramework.TestDataPath
 import com.pestphp.pest.PestLightCodeFixture

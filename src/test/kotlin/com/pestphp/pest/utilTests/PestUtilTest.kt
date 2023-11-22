@@ -1,4 +1,4 @@
-package com.pestphp.pest.pestUtil
+package com.pestphp.pest.utilTests
 
 import com.intellij.psi.util.PsiTreeUtil
 import com.jetbrains.php.lang.psi.elements.impl.FunctionReferenceImpl

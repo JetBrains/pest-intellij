@@ -1,11 +1,9 @@
-package com.pestphp.pest.pestUtil
+package com.pestphp.pest.utilTests
 
-import com.intellij.testFramework.TestDataPath
 import com.pestphp.pest.PestLightCodeFixture
-import com.pestphp.pest.isPestTestFile
+import com.pestphp.pest.getPestTests
 
-@TestDataPath("\$CONTENT_ROOT/resources/com/pestphp/pest/PestUtil")
-class IsPestTestFileTest : PestLightCodeFixture() {
+class GetPestTestsTest : PestLightCodeFixture() {
     override fun getTestDataPath(): String {
         return "src/test/resources/com/pestphp/pest/PestUtil"
     }
@@ -13,42 +11,42 @@ class IsPestTestFileTest : PestLightCodeFixture() {
     fun testMethodCallNamedTestIsNotPestTest() {
         val file = myFixture.configureByFile("MethodCallNamedTest.php")
 
-        assertFalse(file.isPestTestFile())
+        assertEmpty(file.getPestTests())
     }
 
     fun testMethodCallNamedItIsNotPestTest() {
         val file = myFixture.configureByFile("MethodCallNamedIt.php")
 
-        assertFalse(file.isPestTestFile())
+        assertEmpty(file.getPestTests())
     }
 
     fun testFunctionCallNamedItWithDescriptionAndClosure() {
         val file = myFixture.configureByFile("PestItFunctionCallWithDescriptionAndClosure.php")
 
-        assertTrue(file.isPestTestFile())
+        assertNotEmpty(file.getPestTests())
     }
 
     fun testFunctionCallNamedItWithDescriptionAndHigherOrder() {
         val file = myFixture.configureByFile("PestItFunctionCallWithDescriptionAndHigherOrder.php")
 
-        assertTrue(file.isPestTestFile())
+        assertNotEmpty(file.getPestTests())
     }
 
     fun testFunctionCallNamedTestWithDescriptionAndHigherOrder() {
         val file = myFixture.configureByFile("PestTestFunctionCallWithDescriptionAndHigherOrder.php")
 
-        assertTrue(file.isPestTestFile())
+        assertNotEmpty(file.getPestTests())
     }
 
     fun testMethodCallNamedItAndVariableTestIsNotPestTest() {
         val file = myFixture.configureByFile("MethodCallNamedItAndVariableTest.php")
 
-        assertFalse(file.isPestTestFile())
+        assertEmpty(file.getPestTests())
     }
 
     fun testPestTestWithNamespaceIsPestTest() {
         val file = myFixture.configureByFile("PestTestFunctionCallWithNamesapce.php")
 
-        assertTrue(file.isPestTestFile())
+        assertNotEmpty(file.getPestTests())
     }
 }
