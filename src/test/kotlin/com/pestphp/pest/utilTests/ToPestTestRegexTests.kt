@@ -1,4 +1,4 @@
-package com.pestphp.pest.pestUtil
+package com.pestphp.pest.utilTests
 
 import com.pestphp.pest.PestLightCodeFixture
 import com.pestphp.pest.toPestTestRegex
