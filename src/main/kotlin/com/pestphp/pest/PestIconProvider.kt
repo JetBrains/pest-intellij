@@ -18,15 +18,15 @@ class PestIconProvider : IconProvider() {
 
     private fun findIconFromPsiFile(file: PsiFile): Icon? {
         if (file.isIndexedPestTestFile()) {
-            return PestIcons.FILE
+            return PestIcons.File
         }
 
         if (file.isIndexedPestDatasetFile()) {
-            return PestIcons.DATASET_FILE
+            return PestIcons.Dataset
         }
 
         if (file.isPestFile()) {
-            return PestIcons.LOGO
+            return PestIcons.Logo
         }
 
         return null

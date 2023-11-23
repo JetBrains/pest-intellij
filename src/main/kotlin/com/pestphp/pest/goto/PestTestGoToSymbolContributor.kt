@@ -90,7 +90,7 @@ class PestTestGoToSymbolContributor : ChooseByNameContributor {
             return PresentationData(
                 functionReference.getPestTestName(),
                 location,
-                PestIcons.LOGO,
+                PestIcons.Logo,
                 null,
             )
         }

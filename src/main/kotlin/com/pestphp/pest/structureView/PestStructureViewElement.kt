@@ -22,7 +22,7 @@ class PestStructureViewElement(val element: NavigatablePsiElement) : StructureVi
         return PresentationData(
             element.getPestTestName(),
             null,
-            PestIcons.LOGO,
+            PestIcons.Logo,
             null,
         )
     }

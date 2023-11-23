@@ -28,7 +28,7 @@ class PestFrameworkType : PhpTestFrameworkType() {
     }
 
     override fun getIcon(): Icon {
-        return PestIcons.LOGO
+        return PestIcons.Logo
     }
 
     override fun getDecorator(): PhpTestFrameworkFormDecorator {
