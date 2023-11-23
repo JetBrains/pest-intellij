@@ -19,7 +19,7 @@ class PestIconProviderTest : PestLightCodeFixture() {
         val file = myFixture.configureByFile("tests/SimpleTest.php")
 
         TestCase.assertEquals(
-            PestIcons.FILE,
+            PestIcons.File,
             PestIconProvider().getIcon(file, ICON_FLAG_VISIBILITY),
         )
     }
@@ -37,7 +37,7 @@ class PestIconProviderTest : PestLightCodeFixture() {
         val file = myFixture.configureByFile("tests/Datasets/Dataset.php")
 
         assertEquals(
-            PestIcons.DATASET_FILE,
+            PestIcons.Dataset,
             PestIconProvider().getIcon(file, ICON_FLAG_VISIBILITY),
         )
     }
@@ -47,7 +47,7 @@ class PestIconProviderTest : PestLightCodeFixture() {
         val file = myFixture.configureByFile("tests/Datasets/TestWithDataset.php")
 
         assertEquals(
-            PestIcons.FILE,
+            PestIcons.File,
             PestIconProvider().getIcon(file, ICON_FLAG_VISIBILITY),
         )
     }
@@ -58,7 +58,7 @@ class PestIconProviderTest : PestLightCodeFixture() {
         val file = PsiManager.getInstance(project).findFile(virtualFile)!!
 
         assertEquals(
-            PestIcons.LOGO,
+            PestIcons.Logo,
             PestIconProvider().getIcon(file, ICON_FLAG_VISIBILITY)
         )
     }
@@ -69,7 +69,7 @@ class PestIconProviderTest : PestLightCodeFixture() {
         val file = PsiManager.getInstance(project).findFile(virtualFile)!!
 
         assertEquals(
-            PestIcons.FILE,
+            PestIcons.File,
             PestIconProvider().getIcon(file, ICON_FLAG_VISIBILITY),
         )
     }
