@@ -23,7 +23,7 @@ class PestTestRunLineMarkerProvider : RunLineMarkerContributor() {
 
         // Handle icon for running all tests in the file.
         if (PhpPsiUtil.isOfType(leaf, PhpTokenTypes.PHP_OPENING_TAG) && leaf.containingFile.isPestTestFile()) {
-            return withExecutorActions(PestIcons.RUN_FILE_TEST)
+            return withExecutorActions(PestIcons.Run)
         }
 
         return null

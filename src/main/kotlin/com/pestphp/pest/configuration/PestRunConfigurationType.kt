@@ -14,7 +14,7 @@ class PestRunConfigurationType private constructor() :
         "PestRunConfigurationType",
         PestBundle.message("FRAMEWORK_NAME"),
         PestBundle.message("FRAMEWORK_NAME"),
-        NotNullLazyValue.createValue { PestIcons.CONFIG }
+        NotNullLazyValue.createValue { PestIcons.Config }
     ),
     DumbAware {
     override fun createTemplateConfiguration(project: Project): RunConfiguration {

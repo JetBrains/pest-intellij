@@ -73,7 +73,7 @@ class PestRunConfiguration(project: Project, factory: ConfigurationFactory) : Ph
                 val file = PhpRunUtil.findPsiFile(project, settings.runnerSettings.filePath)
                 file?.getPestTests()
                     ?.mapNotNull { it.getPestTestName() }
-                    ?.map { LookupElementBuilder.create(it).withIcon(PestIcons.FILE) }
+                    ?.map { LookupElementBuilder.create(it).withIcon(PestIcons.File) }
                     ?.forEach { result.addElement(it) }
             }
         }

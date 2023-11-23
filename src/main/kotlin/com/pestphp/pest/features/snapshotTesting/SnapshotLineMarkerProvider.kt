@@ -3,12 +3,12 @@ package com.pestphp.pest.features.snapshotTesting
 import com.intellij.codeInsight.daemon.RelatedItemLineMarkerInfo
 import com.intellij.codeInsight.daemon.RelatedItemLineMarkerProvider
 import com.intellij.codeInsight.navigation.NavigationGutterIconBuilder
+import com.intellij.icons.AllIcons
 import com.intellij.psi.PsiElement
 import com.jetbrains.php.lang.lexer.PhpTokenTypes
 import com.jetbrains.php.lang.psi.PhpPsiUtil
 import com.jetbrains.php.lang.psi.elements.PhpUse
 import com.jetbrains.php.lang.psi.elements.impl.FunctionReferenceImpl
-import com.pestphp.pest.PestIcons
 
 class SnapshotLineMarkerProvider : RelatedItemLineMarkerProvider() {
     override fun collectNavigationMarkers(
@@ -31,7 +31,7 @@ class SnapshotLineMarkerProvider : RelatedItemLineMarkerProvider() {
 
         val snapshotFiles = functionReference.snapshotFiles
 
-        val builder = NavigationGutterIconBuilder.create(PestIcons.SNAPSHOT_ICON)
+        val builder = NavigationGutterIconBuilder.create(AllIcons.Nodes.DataSchema)
             .setTargets(snapshotFiles)
             .setTooltipText("Navigate to snapshot files")
         result.add(builder.createLineMarkerInfo(element))

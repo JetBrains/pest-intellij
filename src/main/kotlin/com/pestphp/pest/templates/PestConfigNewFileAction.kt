@@ -49,8 +49,8 @@ open class PestConfigNewFileAction : CreateFileFromTemplateAction() {
     override fun buildDialog(project: Project, directory: PsiDirectory, builder: CreateFileFromTemplateDialog.Builder) {
         builder
             .setTitle(PestBundle.message("CREATE_NEW_PEST_TEST_DIALOG_TITLE"))
-            .addKind(PestBundle.message("CREATE_NEW_PEST_IT_FLAVOR"), PestIcons.FILE, PEST_IT_TEMPLATE)
-            .addKind(PestBundle.message("CREATE_NEW_PEST_TEST_FLAVOR"), PestIcons.FILE, PEST_TEST_TEMPLATE)
+            .addKind(PestBundle.message("CREATE_NEW_PEST_IT_FLAVOR"), PestIcons.File, PEST_IT_TEMPLATE)
+            .addKind(PestBundle.message("CREATE_NEW_PEST_TEST_FLAVOR"), PestIcons.File, PEST_TEST_TEMPLATE)
     }
 
     override fun getActionName(directory: PsiDirectory?, newName: String, templateName: String?): String {
