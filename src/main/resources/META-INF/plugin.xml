@@ -2,6 +2,7 @@
     <id>com.pestphp.pest-intellij</id>
     <name>Pest</name>
     <vendor>JetBrains</vendor>
+    <description>Plugin provides Pest PHP test framework support</description>
 
     <!-- please see https://www.jetbrains.org/intellij/sdk/docs/basics/getting_started/plugin_compatibility.html
          on how to target different products -->
