@@ -28,7 +28,7 @@ class PestCustomExpectationReferenceProvider : PsiSymbolReferenceProvider {
             val classReference = element.classReference
             val methodName = element.name
             if (methodName != null && classReference != null && "extend" != methodName &&
-                PhpType.intersectsGlobal(element.project, PEST_EXPECTATION_TYPE, classReference.globalType)
+                PhpType.intersectsGlobal(element.project, PEST_EXPECTATION_TYPE, classReference.type)
             ) {
                 // workaround till `com.intellij.lang.javascript.navigation.JSGotoDeclarationHandler#getGotoDeclarationTargets` is not fixed
                 if (element.multiResolve(false).isEmpty()) {
