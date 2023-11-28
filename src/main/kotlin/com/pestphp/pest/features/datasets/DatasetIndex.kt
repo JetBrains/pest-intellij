@@ -5,9 +5,9 @@ import com.intellij.util.indexing.*
 import com.intellij.util.io.DataExternalizer
 import com.intellij.util.io.EnumeratorStringDescriptor
 import com.intellij.util.io.KeyDescriptor
+import com.jetbrains.php.lang.PhpFileType
 import com.jetbrains.php.lang.psi.PhpFile
 import com.jetbrains.php.lang.psi.elements.impl.FunctionReferenceImpl
-import com.pestphp.pest.PhpTestFolderInputFilter
 import com.pestphp.pest.features.customExpectations.externalizers.ListDataExternalizer
 import com.pestphp.pest.getRootPhpPsiElements
 import com.pestphp.pest.realPath
@@ -62,11 +62,11 @@ class DatasetIndex : FileBasedIndexExtension<String, List<String>>() {
     }
 
     override fun getInputFilter(): FileBasedIndex.InputFilter {
-        return object : PhpTestFolderInputFilter() {
-            override fun acceptInput(file: VirtualFile): Boolean {
-                return super.acceptInput(file) && file.parent.path.endsWith("/Datasets")
-            }
+      return object : DefaultFileTypeSpecificInputFilter(PhpFileType.INSTANCE) {
+        override fun acceptInput(file: VirtualFile): Boolean {
+          return super.acceptInput(file) && file.parent.path.endsWith("/Datasets")
         }
+      }
     }
 
     override fun dependsOnFileContent(): Boolean {
