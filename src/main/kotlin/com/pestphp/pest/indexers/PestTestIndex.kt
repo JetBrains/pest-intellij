@@ -1,9 +1,11 @@
 package com.pestphp.pest.indexers
 
+import com.intellij.openapi.vfs.VirtualFile
 import com.intellij.util.indexing.*
 import com.intellij.util.io.DataExternalizer
 import com.intellij.util.io.EnumeratorStringDescriptor
 import com.intellij.util.io.KeyDescriptor
+import com.jetbrains.php.lang.PhpFileType
 import com.jetbrains.php.lang.psi.stubs.indexes.StringSetDataExternalizer
 import com.pestphp.pest.*
 
@@ -41,7 +43,11 @@ class PestTestIndex : FileBasedIndexExtension<String, Set<String>>() {
     }
 
     override fun getInputFilter(): FileBasedIndex.InputFilter {
-        return PhpTestFolderInputFilter()
+      return object : DefaultFileTypeSpecificInputFilter(PhpFileType.INSTANCE) {
+        override fun acceptInput(file: VirtualFile): Boolean {
+          return super.acceptInput(file) && file.path.contains("test")
+        }
+      }
     }
 
     override fun getKeyDescriptor(): KeyDescriptor<String> {
