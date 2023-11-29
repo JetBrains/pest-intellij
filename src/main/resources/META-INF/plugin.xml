@@ -129,6 +129,15 @@
         <internalFileTemplate name="Pest Test"/>
         <internalFileTemplate name="Pest Scoped Dataset"/>
         <internalFileTemplate name="Pest Shared Dataset"/>
+        <localInspection
+          language="PHP"
+          groupPath="PHP"
+          groupName="Pest"
+          shortName="PestAssertionCanBeSimplifiedInspection"
+          enabledByDefault="true"
+          displayName="Assertion can be simplified"
+          implementationClass="com.pestphp.pest.inspections.PestAssertionCanBeSimplifiedInspection"
+        />
     </extensions>
 
     <extensions defaultExtensionNs="com.jetbrains.php">
