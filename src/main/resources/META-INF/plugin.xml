@@ -38,7 +38,7 @@
         <programRunner implementation="com.pestphp.pest.configuration.PestDebugRunner"/>
         <configurationType implementation="com.pestphp.pest.configuration.PestRunConfigurationType"/>
         <runConfigurationProducer implementation="com.pestphp.pest.configuration.PestRunConfigurationProducer"/>
-        <iconProvider implementation="com.pestphp.pest.PestIconProvider"/>
+        <fileIconProvider implementation="com.pestphp.pest.PestIconProvider" order="before PhpFileIconProvider"/>
         <postStartupActivity implementation="com.pestphp.pest.features.customExpectations.CustomExpectationRemoveGeneratedFileStartupActivity"/>
         <testFinder implementation="com.pestphp.pest.goto.PestTestFinder"/>
         <fileBasedIndex implementation="com.pestphp.pest.indexers.PestTestIndex"/>
