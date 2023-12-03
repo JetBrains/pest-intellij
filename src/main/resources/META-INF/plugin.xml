@@ -147,6 +147,7 @@
         <typeProvider4 implementation="com.pestphp.pest.types.ThisFieldTypeProvider"/>
         <typeProvider4 implementation="com.pestphp.pest.types.ThisExtendTypeProvider"/>
         <typeProvider4 implementation="com.pestphp.pest.types.HigherOrderExtendTypeProvider"/>
+        <typeProvider4 implementation="com.pestphp.pest.types.InnerTestTypeProvider"/>
         <libraryRoot id="pestphp" path="/library/Pest" runtime="false"/>
     </extensions>
 

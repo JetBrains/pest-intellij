@@ -22,7 +22,7 @@ import kotlin.io.path.pathString
  * Both `uses` from the same file, the pest config file
  * and `uses` with paths from pest config file.
  */
-class ThisTypeProvider : PhpTypeProvider4 {
+open class ThisTypeProvider : PhpTypeProvider4 {
     override fun getKey(): Char {
         return '\u0221'
     }
@@ -35,6 +35,10 @@ class ThisTypeProvider : PhpTypeProvider4 {
             !psiElement.isThisVariableInPest { it.isAnyPestFunction() }
         ) return null
 
+        return getPestType(psiElement)
+    }
+
+    protected fun getPestType(psiElement: PsiElement): PhpType? {
         val virtualFile = psiElement.containingFile?.originalFile?.virtualFile ?: return null
 
         val config = PestSettings.getInstance(psiElement.project).getPestConfiguration(psiElement.project)

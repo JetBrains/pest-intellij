@@ -15,6 +15,18 @@ import com.jetbrains.php.lang.psi.resolve.types.PhpType
 inline fun PsiElement?.isThisVariableInPest(condition: (FunctionReferenceImpl) -> Boolean): Boolean {
     if ((this as? Variable)?.name != "this") return false
 
+    return this.isElementInPestTest(condition)
+}
+
+inline fun PsiElement?.isTestAsThisVariableInPest(condition: (FunctionReferenceImpl) -> Boolean): Boolean {
+    val functionReference = this as? FunctionReference ?: return false
+
+    if (functionReference.name != "test" || !functionReference.parameters.isEmpty()) return false
+
+    return this.isElementInPestTest(condition)
+}
+
+inline fun PsiElement?.isElementInPestTest(condition: (FunctionReferenceImpl) -> Boolean): Boolean {
     val closure = PsiTreeUtil.getParentOfType(this, Function::class.java)
 
     if (closure == null || !closure.isClosure) return false
