@@ -12,14 +12,11 @@ import com.jetbrains.php.lang.psi.elements.StringLiteralExpression
 import com.jetbrains.php.lang.psi.elements.impl.FunctionReferenceImpl
 import com.jetbrains.php.lang.psi.elements.impl.MethodReferenceImpl
 import com.jetbrains.php.lang.psi.visitors.PhpElementVisitor
+import com.pestphp.pest.PestBundle
 import com.pestphp.pest.getPestTests
 import com.pestphp.pest.getRootPhpPsiElements
 
 class InvalidDatasetReferenceInspection : PhpInspection() {
-    companion object {
-        private const val DESCRIPTION = "The dataset does not exist."
-    }
-
     override fun buildVisitor(holder: ProblemsHolder, isOnTheFly: Boolean): PsiElementVisitor {
         return object : PhpElementVisitor() {
             override fun visitPhpFile(file: PhpFile) {
@@ -63,7 +60,7 @@ class InvalidDatasetReferenceInspection : PhpInspection() {
     private fun declareProblemType(holder: ProblemsHolder, datasetName: StringLiteralExpression) {
         holder.registerProblem(
             datasetName,
-            DESCRIPTION,
+            PestBundle.message("INSPECTION_INVALID_DATASET_REFERENCE"),
             ProblemHighlightType.ERROR,
             *LocalQuickFix.EMPTY_ARRAY
         )

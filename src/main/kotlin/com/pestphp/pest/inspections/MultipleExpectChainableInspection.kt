@@ -8,13 +8,10 @@ import com.jetbrains.php.lang.psi.elements.GroupStatement
 import com.jetbrains.php.lang.psi.elements.MethodReference
 import com.jetbrains.php.lang.psi.elements.Statement
 import com.jetbrains.php.lang.psi.visitors.PhpElementVisitor
+import com.pestphp.pest.PestBundle
 import com.pestphp.pest.features.customExpectations.isExpectation
 
 class MultipleExpectChainableInspection : PhpInspection() {
-    companion object {
-        private const val DESCRIPTION = "Multiple expect can be converted to chainable calls."
-    }
-
     override fun buildVisitor(holder: ProblemsHolder, isOnTheFly: Boolean): PsiElementVisitor {
         return object : PhpElementVisitor() {
             override fun visitPhpGroupStatement(groupStatement: GroupStatement) {
@@ -47,7 +44,7 @@ class MultipleExpectChainableInspection : PhpInspection() {
             .forEach {
                 holder.registerProblem(
                     it,
-                    DESCRIPTION,
+                    PestBundle.message("INSPECTION_MULTIPLE_CHAINABLE_EXPECT_CALLS"),
                     ProblemHighlightType.WEAK_WARNING,
                     ChangeMultipleExpectCallsToChainableQuickFix()
                 )

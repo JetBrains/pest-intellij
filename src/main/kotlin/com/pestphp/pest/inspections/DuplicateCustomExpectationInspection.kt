@@ -10,14 +10,11 @@ import com.jetbrains.php.lang.inspections.PhpInspection
 import com.jetbrains.php.lang.psi.elements.MethodReference
 import com.jetbrains.php.lang.psi.elements.impl.MethodReferenceImpl
 import com.jetbrains.php.lang.psi.visitors.PhpElementVisitor
+import com.pestphp.pest.PestBundle
 import com.pestphp.pest.features.customExpectations.KEY
 import com.pestphp.pest.features.customExpectations.extendName
 
 class DuplicateCustomExpectationInspection : PhpInspection() {
-    companion object {
-        private const val DESCRIPTION = "Pest custom expectation names must be unique."
-    }
-
     override fun buildVisitor(holder: ProblemsHolder, isOnTheFly: Boolean): PsiElementVisitor {
         return object : PhpElementVisitor() {
             override fun visitPhpMethodReference(reference: MethodReference) {
@@ -34,7 +31,7 @@ class DuplicateCustomExpectationInspection : PhpInspection() {
                 if (hasDuplicates) {
                     holder.registerProblem(
                         reference,
-                        DESCRIPTION,
+                        PestBundle.message("INSPECTION_DUPLICATE_CUSTOM_EXPECTATION"),
                         ProblemHighlightType.GENERIC_ERROR,
                         *LocalQuickFix.EMPTY_ARRAY
                     )

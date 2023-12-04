@@ -6,14 +6,11 @@ import com.intellij.openapi.project.Project
 import com.intellij.util.text.NameUtilCore
 import com.jetbrains.php.lang.psi.PhpPsiElementFactory
 import com.jetbrains.php.lang.psi.elements.StringLiteralExpression
+import com.pestphp.pest.PestBundle
 
 class ChangeTestNameCasingQuickFix : LocalQuickFix {
-    companion object {
-        const val QUICK_FIX_NAME = "Change test name casing to sentence case"
-    }
-
     override fun getFamilyName(): String {
-        return QUICK_FIX_NAME
+        return PestBundle.message("QUICK_FIX_CHANGE_TEST_NAME_CASING")
     }
 
     override fun applyFix(project: Project, descriptor: ProblemDescriptor) {

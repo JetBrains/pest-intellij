@@ -6,15 +6,12 @@ import com.intellij.openapi.project.Project
 import com.jetbrains.php.lang.psi.PhpPsiElementFactory
 import com.jetbrains.php.lang.psi.elements.MethodReference
 import com.jetbrains.php.lang.psi.elements.Statement
+import com.pestphp.pest.PestBundle
 import com.pestphp.pest.features.customExpectations.isExpectation
 
 class ChangeMultipleExpectCallsToChainableQuickFix : LocalQuickFix {
-    companion object {
-        const val QUICK_FIX_NAME = "Change multiple expect call into chain"
-    }
-
     override fun getFamilyName(): String {
-        return QUICK_FIX_NAME
+        return PestBundle.message("QUICK_FIX_CHANGE_MULTIPLE_EXPECT_INTO_CHAIN")
     }
 
     override fun applyFix(project: Project, descriptor: ProblemDescriptor) {

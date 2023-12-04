@@ -8,14 +8,11 @@ import com.jetbrains.php.lang.inspections.PhpInspection
 import com.jetbrains.php.lang.psi.PhpFile
 import com.jetbrains.php.lang.psi.elements.FunctionReference
 import com.jetbrains.php.lang.psi.visitors.PhpElementVisitor
+import com.pestphp.pest.PestBundle
 import com.pestphp.pest.getPestTestName
 import com.pestphp.pest.getPestTests
 
 class InvalidTestNameCaseInspection : PhpInspection() {
-    companion object {
-        private const val DESCRIPTION = "Pest test names words must be space separated."
-    }
-
     override fun buildVisitor(holder: ProblemsHolder, isOnTheFly: Boolean): PsiElementVisitor {
         return object : PhpElementVisitor() {
             override fun visitPhpFile(file: PhpFile) {
@@ -42,7 +39,7 @@ class InvalidTestNameCaseInspection : PhpInspection() {
             .forEach {
                 holder.registerProblem(
                     it,
-                    DESCRIPTION,
+                    PestBundle.message("INSPECTION_INVALID_TEST_NAME_CASE"),
                     ProblemHighlightType.WEAK_WARNING,
                     ChangeTestNameCasingQuickFix()
                 )
