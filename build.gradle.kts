@@ -24,7 +24,7 @@ repositories {
 }
 
 dependencies {
-    testImplementation("org.mockito.kotlin:mockito-kotlin:5.1.0")
+    testImplementation("org.mockito.kotlin:mockito-kotlin:5.2.1")
     implementation("net.pearx.kasechange:kasechange:1.4.1")
 }
 
