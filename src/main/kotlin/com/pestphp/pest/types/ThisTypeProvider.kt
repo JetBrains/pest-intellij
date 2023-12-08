@@ -41,7 +41,7 @@ open class ThisTypeProvider : PhpTypeProvider4 {
     protected fun getPestType(psiElement: PsiElement): PhpType? {
         val virtualFile = psiElement.containingFile?.originalFile?.virtualFile ?: return null
 
-        val config = PestSettings.getInstance(psiElement.project).getPestConfiguration(psiElement.project)
+        val config = PestSettings.getInstance(psiElement.project).getPestConfiguration(psiElement.project, virtualFile)
 
         val baseDir = (psiElement.project.guessProjectDir() ?: return config.baseTestType)
         val relativePath = VfsUtil.getRelativePath(virtualFile, baseDir) ?: return config.baseTestType

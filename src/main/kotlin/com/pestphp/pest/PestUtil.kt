@@ -4,12 +4,14 @@ import com.intellij.openapi.project.Project
 import com.intellij.openapi.project.guessProjectDir
 import com.intellij.openapi.util.Key
 import com.intellij.openapi.util.text.StringUtil
+import com.intellij.openapi.vfs.VirtualFile
 import com.intellij.psi.PsiFile
 import com.intellij.psi.search.ProjectScope
 import com.intellij.psi.util.CachedValue
 import com.intellij.psi.util.CachedValueProvider
 import com.intellij.psi.util.CachedValuesManager
 import com.intellij.util.indexing.FileBasedIndex
+import com.jetbrains.php.composer.configData.ComposerConfigManager
 import com.jetbrains.php.lang.psi.PhpFile
 import com.jetbrains.php.lang.psi.elements.PhpNamespace
 import com.jetbrains.php.lang.psi.elements.PhpPsiElement
@@ -68,9 +70,14 @@ fun PsiFile.getRootPhpPsiElements(): List<PhpPsiElement> {
  * Checks if the file is the `tests/Pest.php` file.
  */
 fun PsiFile.isPestFile(): Boolean {
-    val projectDir = this.project.guessProjectDir() ?: return false
+    val baseDir = getBaseDir(this.project, this.virtualFile) ?: return false
 
     val pestFilePath = PestSettings.getInstance(this.project).pestFilePath
 
-    return this.virtualFile?.path == projectDir.path + "/" + pestFilePath
+    return this.virtualFile?.path == baseDir.path + "/" + pestFilePath
+}
+
+fun getBaseDir(project: Project, virtualFile: VirtualFile? = null): VirtualFile? {
+    return ComposerConfigManager.getInstance(project).getConfig(virtualFile)?.parent
+        ?: project.guessProjectDir()
 }
