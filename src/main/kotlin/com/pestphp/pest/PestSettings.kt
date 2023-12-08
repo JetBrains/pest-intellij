@@ -2,6 +2,7 @@ package com.pestphp.pest
 
 import com.intellij.openapi.components.*
 import com.intellij.openapi.project.Project
+import com.intellij.openapi.vfs.VirtualFile
 import com.intellij.util.xmlb.XmlSerializerUtil
 import com.pestphp.pest.parser.PestConfigurationFile
 import com.pestphp.pest.parser.PestConfigurationFileParser
@@ -27,8 +28,8 @@ class PestSettings : PersistentStateComponent<PestSettings> {
 
     private val parser = PestConfigurationFileParser(this)
 
-    fun getPestConfiguration(project: Project): PestConfigurationFile {
-        return parser.parse(project)
+    fun getPestConfiguration(project: Project, virtualFile: VirtualFile? = null): PestConfigurationFile {
+        return parser.parse(project, virtualFile)
     }
 
     companion object {

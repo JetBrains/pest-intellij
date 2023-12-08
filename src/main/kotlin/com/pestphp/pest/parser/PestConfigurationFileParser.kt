@@ -3,6 +3,7 @@ package com.pestphp.pest.parser
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.project.guessProjectDir
 import com.intellij.openapi.util.Key
+import com.intellij.openapi.vfs.VirtualFile
 import com.intellij.openapi.vfs.VirtualFileManager
 import com.intellij.psi.PsiElement
 import com.intellij.psi.PsiManager
@@ -10,7 +11,6 @@ import com.intellij.psi.PsiRecursiveElementWalkingVisitor
 import com.intellij.psi.util.CachedValue
 import com.intellij.psi.util.CachedValueProvider
 import com.intellij.psi.util.CachedValuesManager
-import com.jetbrains.php.composer.lib.ComposerLibraryManager
 import com.jetbrains.php.lang.psi.PhpFile
 import com.jetbrains.php.lang.psi.elements.MethodReference
 import com.jetbrains.php.lang.psi.elements.PhpPsiElement
@@ -18,17 +18,15 @@ import com.jetbrains.php.lang.psi.elements.impl.FunctionReferenceImpl
 import com.jetbrains.php.lang.psi.elements.impl.PhpFilePathUtils
 import com.jetbrains.php.lang.psi.resolve.types.PhpType
 import com.pestphp.pest.PestSettings
+import com.pestphp.pest.getBaseDir
 import com.pestphp.pest.getUsesPhpType
+import kotlin.io.path.Path
 
 class PestConfigurationFileParser(private val settings: PestSettings) {
-    fun parse(project: Project): PestConfigurationFile {
+    fun parse(project: Project, virtualFile: VirtualFile? = null): PestConfigurationFile {
+        val projectDir = project.guessProjectDir() ?: return defaultConfig
         // Use the location of the composer.json file or the project dir
-        val baseDir = ComposerLibraryManager.getInstance(project)
-            ?.findVendorDirForUpsource()
-            ?.parent
-            ?: project.guessProjectDir()
-            ?: return defaultConfig
-
+        val baseDir = getBaseDir(project, virtualFile) ?: return defaultConfig
 
         val pestFile = VirtualFileManager.getInstance().findFileByUrl(baseDir.url + "/" + settings.pestFilePath)
             ?: return defaultConfig
@@ -38,7 +36,10 @@ class PestConfigurationFileParser(private val settings: PestSettings) {
         return CachedValuesManager.getCachedValue(psiFile, cacheKey) {
             var baseType = PhpType().add("\\PHPUnit\\Framework\\TestCase")
             val inPaths = mutableListOf<Pair<String, PhpType>>()
-            val testsPath = settings.pestFilePath.replaceAfterLast("/", "", "")
+            val relativePath = Path(projectDir.path).relativize(Path(baseDir.path)).toString().run {
+                if (this.isBlank()) this else "$this/"
+            }
+            val testsPath = relativePath + settings.pestFilePath.replaceAfterLast("/", "", "")
 
             psiFile.acceptChildren(
                 Visitor { type, inPath, fullPath ->
