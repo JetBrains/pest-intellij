@@ -22,7 +22,8 @@ class MultipleExpectChainableInspection : PhpInspection() {
                 groupStatement.statements
                     .filterIsInstance(Statement::class.java)
                     .groupBy {
-                        if ((it.firstPsiChild as? MethodReference)?.type?.isExpectation(holder.project) != true) {
+                        val methodReference = it.firstPsiChild as? MethodReference
+                        if (methodReference?.text?.startsWith("expect") != true || !methodReference.type.isExpectation(holder.project)) {
                             counter++
                             return@groupBy 0
                         }
