@@ -6,6 +6,8 @@ import com.intellij.openapi.util.text.StringUtil
 import com.intellij.psi.PsiElement
 import com.intellij.psi.PsiFile
 import com.intellij.psi.search.ProjectScope
+import com.intellij.psi.util.CachedValueProvider
+import com.intellij.psi.util.CachedValuesManager
 import com.intellij.util.indexing.FileBasedIndex
 import com.jetbrains.php.lang.psi.PhpFile
 import com.jetbrains.php.lang.psi.elements.PhpNamespace
@@ -17,9 +19,10 @@ import com.pestphp.pest.indexers.PestTestIndex
 
 fun PsiFile.isPestTestFile(): Boolean {
     if (this !is PhpFile) return false
-
-    return this.getRootPhpPsiElements()
-        .any(PsiElement::isPestTestReference)
+    return CachedValuesManager.getCachedValue(this) {
+        val isPestTestFile = this.getRootPhpPsiElements().any(PsiElement::isPestTestReference)
+        CachedValueProvider.Result.create(isPestTestFile, this)
+    }
 }
 
 fun PsiFile.isIndexedPestTestFile(): Boolean {
