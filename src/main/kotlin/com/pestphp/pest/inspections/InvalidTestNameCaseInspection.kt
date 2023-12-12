@@ -24,9 +24,8 @@ class InvalidTestNameCaseInspection : PhpInspection() {
                         // Remove `it ` prefix from test names
                         val testName = if (it!!.startsWith("it ")) it.substring(3) else it
 
-                        !testName.contains(' ')
+                        !testName.contains(' ') && NameUtilCore.splitNameIntoWords(testName).joinToString(" ") != testName
                     }
-                    .filterKeys { NameUtilCore.splitNameIntoWords(it!!).joinToString(" ") != it }
                     .forEach {
                         declareProblemType(holder, it.value)
                     }

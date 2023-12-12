@@ -48,6 +48,12 @@ class InvalidTestNameCaseInspectionTest : PestLightCodeFixture() {
         myFixture.checkHighlighting()
     }
 
+    fun testValidItTestNameWithoutSpaces() {
+        myFixture.configureByFile("ValidItTestNameWithoutSpaces.php")
+
+        myFixture.checkHighlighting()
+    }
+
     fun testInvalidTestNameAndDatasetName() {
         myFixture.configureByFile("InvalidTestNameAndDatasetName.php")
 
