@@ -5,7 +5,9 @@ import com.jetbrains.php.testFramework.PhpTestFrameworkFormDecorator
 import com.jetbrains.php.testFramework.PhpTestFrameworkFormDecorator.PhpDownloadableTestFormDecorator
 import com.jetbrains.php.testFramework.PhpTestFrameworkType
 import com.jetbrains.php.testFramework.ui.PhpTestFrameworkBaseConfigurableForm
+import com.jetbrains.php.testFramework.ui.PhpTestFrameworkBySdkConfigurableForm
 import com.jetbrains.php.testFramework.ui.PhpTestFrameworkConfigurableForm
+import com.pestphp.pest.configuration.PestVersionDetector
 import org.jetbrains.annotations.Nls
 import org.jetbrains.annotations.NonNls
 import javax.swing.Icon
@@ -37,7 +39,9 @@ class PestFrameworkType : PhpTestFrameworkType() {
                 project: Project,
                 form: PhpTestFrameworkBaseConfigurableForm<*>
             ): PhpTestFrameworkConfigurableForm<*> {
-                // form.setVersionDetector(PestVersionDetector.instance)
+                if (form !is PhpTestFrameworkBySdkConfigurableForm) {
+                    form.setVersionDetector(PestVersionDetector.instance)
+                }
                 return super.decorate(project, form)
             }
         }
