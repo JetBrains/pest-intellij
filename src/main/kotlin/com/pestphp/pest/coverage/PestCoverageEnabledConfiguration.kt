@@ -7,12 +7,6 @@ import com.pestphp.pest.configuration.PestRunConfiguration
 
 class PestCoverageEnabledConfiguration(
     configuration: PestRunConfiguration
-) : CoverageEnabledConfiguration(configuration) {
-    override fun coverageFileNameSeparator(): String {
-        return "@"
-    }
-
-    init {
-        this.coverageRunner = CoverageRunner.getInstance(PhpUnitCoverageRunner::class.java)
-    }
+) : CoverageEnabledConfiguration(configuration, CoverageRunner.getInstance(PhpUnitCoverageRunner::class.java)) {
+    override fun coverageFileNameSeparator(): String = "@"
 }
