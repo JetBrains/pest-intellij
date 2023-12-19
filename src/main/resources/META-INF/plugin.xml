@@ -161,12 +161,12 @@
         <action id="Pest.New.File"
                 class="com.pestphp.pest.templates.PestConfigNewFileAction"
                 icon="/file.svg">
-            <add-to-group group-id="NewGroup" anchor="before" relative-to-action="NewFromTemplate"/>
+            <add-to-group group-id="PhpNewTestGroup" anchor="before" relative-to-action="Pest.New.Dataset"/>
         </action>
         <action id="Pest.New.Dataset"
                 class="com.pestphp.pest.templates.PestConfigNewDatasetFileAction"
                 icon="/dataset.svg">
-            <add-to-group group-id="NewGroup" anchor="after" relative-to-action="Pest.New.File"/>
+            <add-to-group group-id="PhpNewTestGroup" anchor="last"/>
         </action>
     </actions>
 </idea-plugin>
