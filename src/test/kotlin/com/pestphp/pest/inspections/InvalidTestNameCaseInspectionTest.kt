@@ -47,4 +47,13 @@ class InvalidTestNameCaseInspectionTest : PestLightCodeFixture() {
 
         myFixture.checkHighlighting()
     }
+
+    fun testInvalidTestNameAndDatasetName() {
+        myFixture.configureByFile("InvalidTestNameAndDatasetName.php")
+
+        myFixture.checkHighlighting()
+        myFixture.getAllQuickFixes().forEach { myFixture.launchAction(it) }
+
+        myFixture.checkResultByFile("InvalidTestNameAndDatasetName.after.php")
+    }
 }

@@ -9,6 +9,7 @@ import com.jetbrains.php.lang.psi.PhpFile
 import com.jetbrains.php.lang.psi.elements.FunctionReference
 import com.jetbrains.php.lang.psi.visitors.PhpElementVisitor
 import com.pestphp.pest.PestBundle
+import com.pestphp.pest.getInitialFunctionReference
 import com.pestphp.pest.getPestTestName
 import com.pestphp.pest.getPestTests
 
@@ -35,7 +36,7 @@ class InvalidTestNameCaseInspection : PhpInspection() {
 
     private fun declareProblemType(holder: ProblemsHolder, tests: List<FunctionReference>) {
         tests
-            .mapNotNull { it.getParameter(0) }
+            .mapNotNull { it.getInitialFunctionReference()?.getParameter(0) }
             .forEach {
                 holder.registerProblem(
                     it,

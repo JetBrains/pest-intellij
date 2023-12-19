@@ -57,6 +57,14 @@ fun PsiElement?.getPestTestName(): String? {
     }
 }
 
+fun PsiElement?.getInitialFunctionReference(): FunctionReference? {
+    return when (this) {
+        is MethodReference -> (this.classReference as? FunctionReference).getInitialFunctionReference()
+        is FunctionReferenceImpl -> this
+        else -> null
+    }
+}
+
 fun PsiElement.toPestTestRegex(workingDirectory: String): String? {
     return this.getPestTestName()?.toPestTestRegex(
         workingDirectory,
