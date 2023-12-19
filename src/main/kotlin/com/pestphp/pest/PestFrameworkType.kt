@@ -1,6 +1,7 @@
 package com.pestphp.pest
 
 import com.intellij.openapi.project.Project
+import com.jetbrains.php.testFramework.PhpTestDescriptor
 import com.jetbrains.php.testFramework.PhpTestFrameworkFormDecorator
 import com.jetbrains.php.testFramework.PhpTestFrameworkFormDecorator.PhpDownloadableTestFormDecorator
 import com.jetbrains.php.testFramework.PhpTestFrameworkType
@@ -45,6 +46,10 @@ class PestFrameworkType : PhpTestFrameworkType() {
                 return super.decorate(project, form)
             }
         }
+    }
+
+    override fun getDescriptor(): PhpTestDescriptor {
+        return PestTestDescriptor
     }
 
     companion object {
