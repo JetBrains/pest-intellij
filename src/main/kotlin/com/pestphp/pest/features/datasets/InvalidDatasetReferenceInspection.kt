@@ -1,7 +1,6 @@
 package com.pestphp.pest.features.datasets
 
 import com.intellij.codeInspection.LocalQuickFix
-import com.intellij.codeInspection.ProblemHighlightType
 import com.intellij.codeInspection.ProblemsHolder
 import com.intellij.psi.PsiElementVisitor
 import com.intellij.psi.search.GlobalSearchScope
@@ -61,7 +60,6 @@ class InvalidDatasetReferenceInspection : PhpInspection() {
         holder.registerProblem(
             datasetName,
             PestBundle.message("INSPECTION_INVALID_DATASET_REFERENCE"),
-            ProblemHighlightType.ERROR,
             *LocalQuickFix.EMPTY_ARRAY
         )
     }

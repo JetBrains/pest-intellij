@@ -22,12 +22,12 @@ class PestConfigNewDatasetFileAction : PestConfigNewFileAction() {
     override fun buildDialog(project: Project, directory: PsiDirectory, builder: CreateFileFromTemplateDialog.Builder) {
         builder
             .setTitle(PestBundle.message("CREATE_NEW_PEST_DATASET_DIALOG_TITLE"))
-            .addKind("Shared dataset", PestIcons.Dataset, PEST_SHARED_DATASET_TEMPLATE)
-            .addKind("Scoped dataset", PestIcons.Dataset, PEST_SCOPED_DATASET_TEMPLATE)
+            .addKind(PestBundle.message("CREATE_NEW_PEST_SHARED_DATASET"), PestIcons.Dataset, PEST_SHARED_DATASET_TEMPLATE)
+            .addKind(PestBundle.message("CREATE_NEW_PEST_SCOPED_DATASET"), PestIcons.Dataset, PEST_SCOPED_DATASET_TEMPLATE)
     }
 
     override fun getActionName(directory: PsiDirectory?, newName: String, templateName: String?): String {
-        return "Pest Dataset"
+        return PestBundle.message("ACTIONS_NEW_DATASET_ACTION_NAME")
     }
 
     override fun createFileFromTemplate(name: String?, template: FileTemplate, dir: PsiDirectory): PsiFile {

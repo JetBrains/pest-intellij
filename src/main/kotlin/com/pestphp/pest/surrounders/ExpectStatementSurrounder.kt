@@ -6,10 +6,11 @@ import com.intellij.openapi.project.Project
 import com.intellij.openapi.util.TextRange
 import com.intellij.psi.PsiElement
 import com.jetbrains.php.lang.psi.PhpPsiElementFactory
+import com.pestphp.pest.PestBundle
 
 class ExpectStatementSurrounder : Surrounder {
     override fun getTemplateDescription(): String {
-        return "Expect"
+        return PestBundle.message("EXPECT_STATEMENT")
     }
 
     override fun isApplicable(elements: Array<out PsiElement>): Boolean {

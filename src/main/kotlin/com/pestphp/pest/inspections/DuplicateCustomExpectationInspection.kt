@@ -1,7 +1,6 @@
 package com.pestphp.pest.inspections
 
 import com.intellij.codeInspection.LocalQuickFix
-import com.intellij.codeInspection.ProblemHighlightType
 import com.intellij.codeInspection.ProblemsHolder
 import com.intellij.psi.PsiElementVisitor
 import com.intellij.psi.search.GlobalSearchScope
@@ -32,7 +31,6 @@ class DuplicateCustomExpectationInspection : PhpInspection() {
                     holder.registerProblem(
                         reference,
                         PestBundle.message("INSPECTION_DUPLICATE_CUSTOM_EXPECTATION"),
-                        ProblemHighlightType.GENERIC_ERROR,
                         *LocalQuickFix.EMPTY_ARRAY
                     )
                 }

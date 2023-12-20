@@ -60,7 +60,7 @@ class PestRunConfiguration(project: Project, factory: ConfigurationFactory) : Ph
             checkConfiguration()
         } catch (ignored: RuntimeConfigurationWarning) {
         } catch (exception: RuntimeConfigurationException) {
-            throw ExecutionException(exception.message + " for " + this.name + " run-configuration")
+            throw ExecutionException(PestBundle.message("RUNTIME_CONFIGURATION_EXCEPTION_MESSAGE", exception.localizedMessage, this.name))
         }
         return this.getState(env, command, null)
     }

@@ -3,6 +3,7 @@
     <name>Pest</name>
     <vendor>JetBrains</vendor>
     <description>Plugin provides Pest PHP test framework support</description>
+    <resource-bundle>pestBundle</resource-bundle>
     <category>Test Tools</category>
 
     <!-- please see https://www.jetbrains.org/intellij/sdk/docs/basics/getting_started/plugin_compatibility.html
@@ -46,38 +47,41 @@
         <localInspection
                 language="PHP"
                 groupPath="PHP"
-                groupName="Pest"
+                groupKey="INSPECTION_PHP_GROUP_PEST"
                 shortName="DuplicateTestNameInspection"
                 enabledByDefault="true"
-                displayName="Duplicate test name"
+                key="INSPECTION_DUPLICATE_TEST_NAME"
+                level="ERROR"
                 implementationClass="com.pestphp.pest.inspections.DuplicateTestNameInspection"
         />
         <localInspection
                 language="PHP"
                 groupPath="PHP"
-                groupName="Pest"
+                groupKey="INSPECTION_PHP_GROUP_PEST"
                 shortName="DuplicateCustomExpectationInspection"
                 enabledByDefault="true"
-                displayName="Duplicate extend name"
+                key="INSPECTION_DUPLICATE_CUSTOM_EXPECTATION"
+                level="ERROR"
                 implementationClass="com.pestphp.pest.inspections.DuplicateCustomExpectationInspection"
         />
         <localInspection
                 language="PHP"
                 groupPath="PHP"
-                groupName="Pest"
+                groupKey="INSPECTION_PHP_GROUP_PEST"
                 shortName="InvalidTestNameCaseInspection"
                 enabledByDefault="true"
-                displayName="Invalid test name case"
+                key="INSPECTION_INVALID_TEST_NAME_CASE"
+                level="WEAK WARNING"
                 implementationClass="com.pestphp.pest.inspections.InvalidTestNameCaseInspection"
         />
-
         <localInspection
                 language="PHP"
                 groupPath="PHP"
-                groupName="Pest"
+                groupKey="INSPECTION_PHP_GROUP_PEST"
                 shortName="MultipleExpectChainableInspection"
                 enabledByDefault="true"
-                displayName="Multiple expect can be chainable"
+                key="INSPECTION_MULTIPLE_CHAINABLE_EXPECT_CALLS"
+                level="WEAK WARNING"
                 implementationClass="com.pestphp.pest.inspections.MultipleExpectChainableInspection"
         />
 
@@ -92,7 +96,8 @@
                 language="PHP"
                 implementationClass="com.pestphp.pest.inspections.SuppressUndefinedPropertyInspection"
         />
-        <notificationGroup displayType="BALLOON" id="Outdated Pest" isLogByDefault="true"/>
+        <notificationGroup displayType="BALLOON" id="Outdated Pest" isLogByDefault="true" bundle="pestBundle"
+                           key="NOTIFICATION_GROUP_OUTDATED_PEST"/>
         <lang.structureViewExtension implementation="com.pestphp.pest.structureView.PestStructureViewExtension"/>
         <gotoSymbolContributor implementation="com.pestphp.pest.goto.PestTestGoToSymbolContributor"/>
         <liveTemplateContext
@@ -109,10 +114,11 @@
         <localInspection
                 language="PHP"
                 groupPath="PHP"
-                groupName="Pest"
+                groupKey="INSPECTION_PHP_GROUP_PEST"
                 shortName="InvalidDatasetReferenceInspection"
                 enabledByDefault="true"
-                displayName="Invalid dataset reference"
+                key="INSPECTION_INVALID_DATASET_REFERENCE"
+                level="ERROR"
                 implementationClass="com.pestphp.pest.features.datasets.InvalidDatasetReferenceInspection"
         />
         <psi.referenceContributor
@@ -154,14 +160,12 @@
     <actions>
         <action id="Pest.New.File"
                 class="com.pestphp.pest.templates.PestConfigNewFileAction"
-                icon="/file.svg"
-                text="Pest Test">
+                icon="/file.svg">
             <add-to-group group-id="NewGroup" anchor="before" relative-to-action="NewFromTemplate"/>
         </action>
         <action id="Pest.New.Dataset"
                 class="com.pestphp.pest.templates.PestConfigNewDatasetFileAction"
-                icon="/dataset.svg"
-                text="Pest Dataset">
+                icon="/dataset.svg">
             <add-to-group group-id="NewGroup" anchor="after" relative-to-action="Pest.New.File"/>
         </action>
     </actions>

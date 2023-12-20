@@ -1,6 +1,5 @@
 package com.pestphp.pest.inspections
 
-import com.intellij.codeInspection.ProblemHighlightType
 import com.intellij.codeInspection.ProblemsHolder
 import com.intellij.psi.PsiElementVisitor
 import com.intellij.util.text.NameUtilCore
@@ -40,7 +39,6 @@ class InvalidTestNameCaseInspection : PhpInspection() {
                 holder.registerProblem(
                     it,
                     PestBundle.message("INSPECTION_INVALID_TEST_NAME_CASE"),
-                    ProblemHighlightType.WEAK_WARNING,
                     ChangeTestNameCasingQuickFix()
                 )
             }

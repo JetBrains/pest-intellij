@@ -5,6 +5,7 @@ import com.intellij.codeInsight.template.TemplateContextType
 import com.jetbrains.php.lang.psi.PhpFile
 import com.jetbrains.php.lang.psi.elements.PhpNamespace
 import com.jetbrains.php.lang.psi.elements.StringLiteralExpression
+import com.pestphp.pest.PestBundle
 import com.pestphp.pest.isPestTestFile
 
 /**
@@ -13,7 +14,7 @@ import com.pestphp.pest.isPestTestFile
  * This Pest root template checks if the context is the root of a
  * pest test file.
  */
-class PestRootTemplateContextType : TemplateContextType("Pest root") {
+class PestRootTemplateContextType : TemplateContextType(PestBundle.message("LIVE_TEMPLATE_PEST_ROOT")) {
     override fun isInContext(templateActionContext: TemplateActionContext): Boolean {
         if (!templateActionContext.file.isPestTestFile()) {
             return false

@@ -1,7 +1,6 @@
 package com.pestphp.pest.inspections
 
 import com.intellij.codeInspection.LocalQuickFix
-import com.intellij.codeInspection.ProblemHighlightType
 import com.intellij.codeInspection.ProblemsHolder
 import com.intellij.psi.PsiElementVisitor
 import com.jetbrains.php.lang.inspections.PhpInspection
@@ -33,7 +32,6 @@ class DuplicateTestNameInspection : PhpInspection() {
             holder.registerProblem(
                 it,
                 PestBundle.message("INSPECTION_DUPLICATE_TEST_NAME"),
-                ProblemHighlightType.GENERIC_ERROR,
                 *LocalQuickFix.EMPTY_ARRAY
             )
         }

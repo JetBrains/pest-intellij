@@ -2,11 +2,11 @@ package com.pestphp.pest.configuration
 
 import com.intellij.openapi.editor.ReadOnlyModificationException
 import com.intellij.openapi.options.SettingsEditor
-import com.intellij.openapi.project.Project
 import com.intellij.openapi.ui.ComboBox
 import com.intellij.util.ui.UI
 import com.jetbrains.php.phpunit.coverage.PhpUnitCoverageEngine.CoverageEngine
 import com.jetbrains.php.testFramework.run.PhpTestRunConfigurationEditor
+import com.pestphp.pest.PestBundle
 import java.awt.BorderLayout
 import java.lang.reflect.InvocationTargetException
 import javax.swing.JComponent
@@ -22,7 +22,7 @@ class PestTestRunConfigurationEditor(
 
     init {
         coveragePanel = UI.PanelFactory.grid().add(
-            UI.PanelFactory.panel(coverageEngineComboBox).withLabel("Preferred Coverage engine: ")
+            UI.PanelFactory.panel(coverageEngineComboBox).withLabel(PestBundle.message("COVERAGE_ENGINE_LABEL_TEXT"))
         ).createPanel()
 
         myMainPanel.layout = BorderLayout()

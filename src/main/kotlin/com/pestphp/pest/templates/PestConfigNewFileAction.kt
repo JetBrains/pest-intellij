@@ -54,7 +54,7 @@ open class PestConfigNewFileAction : CreateFileFromTemplateAction() {
     }
 
     override fun getActionName(directory: PsiDirectory?, newName: String, templateName: String?): String {
-        return "Pest Test"
+        return PestBundle.message("ACTIONS_NEW_TEST_ACTION_NAME")
     }
 
     override fun createFileFromTemplate(name: String?, template: FileTemplate, dir: PsiDirectory): PsiFile {

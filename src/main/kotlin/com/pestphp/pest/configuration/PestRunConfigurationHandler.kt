@@ -4,6 +4,7 @@ import com.intellij.execution.ExecutionException
 import com.intellij.openapi.project.Project
 import com.jetbrains.php.config.commandLine.PhpCommandSettings
 import com.jetbrains.php.testFramework.run.PhpTestRunConfigurationHandler
+import com.pestphp.pest.PestBundle
 import com.pestphp.pest.toPestTestRegex
 
 class PestRunConfigurationHandler : PhpTestRunConfigurationHandler {
@@ -35,7 +36,7 @@ class PestRunConfigurationHandler : PhpTestRunConfigurationHandler {
         type: String,
         workingDirectory: String
     ) {
-        throw ExecutionException("Can not run pest with type.")
+        throw ExecutionException(PestBundle.message("CANNOT_RUN_PEST_WITH_TYPE_MESSAGE"))
     }
 
     override fun runDirectory(

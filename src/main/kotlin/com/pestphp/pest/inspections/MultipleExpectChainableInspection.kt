@@ -1,6 +1,5 @@
 package com.pestphp.pest.inspections
 
-import com.intellij.codeInspection.ProblemHighlightType
 import com.intellij.codeInspection.ProblemsHolder
 import com.intellij.psi.PsiElementVisitor
 import com.jetbrains.php.lang.inspections.PhpInspection
@@ -46,7 +45,6 @@ class MultipleExpectChainableInspection : PhpInspection() {
                 holder.registerProblem(
                     it,
                     PestBundle.message("INSPECTION_MULTIPLE_CHAINABLE_EXPECT_CALLS"),
-                    ProblemHighlightType.WEAK_WARNING,
                     ChangeMultipleExpectCallsToChainableQuickFix()
                 )
             }
