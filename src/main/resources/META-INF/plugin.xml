@@ -44,26 +44,8 @@
         <testFinder implementation="com.pestphp.pest.goto.PestTestFinder"/>
         <fileBasedIndex implementation="com.pestphp.pest.indexers.PestTestIndex"/>
         <fileBasedIndex implementation="com.pestphp.pest.features.customExpectations.CustomExpectationIndex"/>
-        <localInspection
-                language="PHP"
-                groupPath="PHP"
-                groupKey="INSPECTION_PHP_GROUP_PEST"
-                shortName="DuplicateTestNameInspection"
-                enabledByDefault="true"
-                key="INSPECTION_DUPLICATE_TEST_NAME"
-                level="ERROR"
-                implementationClass="com.pestphp.pest.inspections.DuplicateTestNameInspection"
-        />
-        <localInspection
-                language="PHP"
-                groupPath="PHP"
-                groupKey="INSPECTION_PHP_GROUP_PEST"
-                shortName="DuplicateCustomExpectationInspection"
-                enabledByDefault="true"
-                key="INSPECTION_DUPLICATE_CUSTOM_EXPECTATION"
-                level="ERROR"
-                implementationClass="com.pestphp.pest.inspections.DuplicateCustomExpectationInspection"
-        />
+        <annotator language="PHP" implementationClass="com.pestphp.pest.annotator.PestAnnotator"/>
+
         <localInspection
                 language="PHP"
                 groupPath="PHP"

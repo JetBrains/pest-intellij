@@ -3,25 +3,31 @@ package com.pestphp.pest
 import com.intellij.psi.PsiElement
 import com.intellij.psi.PsiFile
 import com.jetbrains.php.lang.psi.PhpFile
-import com.jetbrains.php.lang.psi.elements.FieldReference
-import com.jetbrains.php.lang.psi.elements.FunctionReference
-import com.jetbrains.php.lang.psi.elements.MethodReference
-import com.jetbrains.php.lang.psi.elements.PhpNamespace
-import com.jetbrains.php.lang.psi.elements.Statement
+import com.jetbrains.php.lang.psi.elements.*
+import com.jetbrains.php.lang.psi.elements.Function
 import com.jetbrains.php.lang.psi.elements.impl.FunctionReferenceImpl
+import com.jetbrains.php.lang.psi.resolve.types.PhpType
 
-fun PsiElement?.isPestTestReference(): Boolean {
+val PEST_TEST_CALL_TYPE = PhpType.from("\\Pest\\PendingCalls\\TestCall")
+
+fun PsiElement?.isPestTestReference(isSmart: Boolean = false): Boolean {
     return when (this) {
         null -> false
-        is MethodReference -> this.isPestTestMethodReference()
-        is FunctionReferenceImpl -> this.isPestTestFunction()
+        is MethodReference -> this.isPestTestMethodReference(isSmart)
+        is FunctionReferenceImpl -> this.isPestTestFunction(isSmart)
         else -> false
     }
 }
 
 private val testNames = setOf("it", "test", "todo", "describe", "arch")
-fun FunctionReferenceImpl.isPestTestFunction(): Boolean {
-    return this.canonicalText in testNames
+fun FunctionReferenceImpl.isPestTestFunction(isSmart: Boolean = false): Boolean {
+    if (this.canonicalText !in testNames) return false
+    return !isSmart ||
+        this.resolveGlobal(false).any {
+            val declarationType = (it as? Function)?.typeDeclaration?.type
+            if (declarationType == null) return@any false
+            PEST_TEST_CALL_TYPE.isConvertibleFromGlobal(project, declarationType)
+        }
 }
 
 fun FunctionReferenceImpl.isPestBeforeFunction(): Boolean {
@@ -42,20 +48,20 @@ fun FunctionReferenceImpl.isDescribeFunction(): Boolean {
 }
 
 
-fun MethodReference.isPestTestMethodReference(): Boolean {
+fun MethodReference.isPestTestMethodReference(isSmart: Boolean = false): Boolean {
     return when (val reference = classReference) {
-        is FunctionReferenceImpl -> reference.isPestTestFunction()
-        is MethodReference -> reference.isPestTestMethodReference()
-        is FieldReference -> reference.isPestTestMethodReference();
+        is FunctionReferenceImpl -> reference.isPestTestFunction(isSmart)
+        is MethodReference -> reference.isPestTestMethodReference(isSmart)
+        is FieldReference -> reference.isPestTestMethodReference(isSmart)
         else -> false
     }
 }
 
-fun FieldReference.isPestTestMethodReference(): Boolean {
-    return when(val reference = classReference) {
-        is FunctionReferenceImpl -> reference.isPestTestFunction()
-        is MethodReference -> reference.isPestTestMethodReference()
-        is FieldReference -> reference.isPestTestMethodReference()
+fun FieldReference.isPestTestMethodReference(isSmart: Boolean = false): Boolean {
+    return when (val reference = classReference) {
+        is FunctionReferenceImpl -> reference.isPestTestFunction(isSmart)
+        is MethodReference -> reference.isPestTestMethodReference(isSmart)
+        is FieldReference -> reference.isPestTestMethodReference(isSmart)
         else -> false
     }
 }
@@ -73,11 +79,11 @@ fun PsiFile.getRoot(): List<PsiElement> {
         .mapNotNull { it.firstChild }
 }
 
-fun PsiFile.getPestTests(): Set<FunctionReference> {
+fun PsiFile.getPestTests(isSmart: Boolean = false): Set<FunctionReference> {
     if (this !is PhpFile) return setOf()
 
     return this.getRoot()
-        .filter(PsiElement::isPestTestReference)
+        .filter { it.isPestTestReference(isSmart) }
         .filterIsInstance<FunctionReference>()
         .toSet()
 }
