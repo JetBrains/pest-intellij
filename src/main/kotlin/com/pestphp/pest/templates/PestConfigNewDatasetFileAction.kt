@@ -27,7 +27,7 @@ class PestConfigNewDatasetFileAction : PestConfigNewFileAction() {
     }
 
     override fun getActionName(directory: PsiDirectory?, newName: String, templateName: String?): String {
-        return PestBundle.message("ACTIONS_NEW_DATASET_ACTION_NAME")
+        return PestBundle.message("action.Pest.New.Dataset.text")
     }
 
     override fun createFileFromTemplate(name: String?, template: FileTemplate, dir: PsiDirectory): PsiFile {

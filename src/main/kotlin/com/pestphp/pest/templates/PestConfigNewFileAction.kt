@@ -3,7 +3,8 @@ package com.pestphp.pest.templates
 import com.intellij.ide.actions.CreateFileFromTemplateAction
 import com.intellij.ide.actions.CreateFileFromTemplateDialog
 import com.intellij.ide.fileTemplates.FileTemplate
-import com.intellij.openapi.actionSystem.*
+import com.intellij.openapi.actionSystem.DataContext
+import com.intellij.openapi.actionSystem.LangDataKeys
 import com.intellij.openapi.project.Project
 import com.intellij.psi.PsiDirectory
 import com.intellij.psi.PsiFile
@@ -54,7 +55,7 @@ open class PestConfigNewFileAction : CreateFileFromTemplateAction() {
     }
 
     override fun getActionName(directory: PsiDirectory?, newName: String, templateName: String?): String {
-        return PestBundle.message("ACTIONS_NEW_TEST_ACTION_NAME")
+        return PestBundle.message("action.Pest.New.File.text")
     }
 
     override fun createFileFromTemplate(name: String?, template: FileTemplate, dir: PsiDirectory): PsiFile {
