@@ -138,10 +138,11 @@
         <localInspection
           language="PHP"
           groupPath="PHP"
-          groupName="Pest"
+          groupKey="INSPECTION_PHP_GROUP_PEST"
           shortName="PestAssertionCanBeSimplifiedInspection"
           enabledByDefault="true"
-          displayName="Assertion can be simplified"
+          key="INSPECTION_ASSERTION_CAN_BE_SIMPLIFIED_NAME"
+          level="WEAK WARNING"
           implementationClass="com.pestphp.pest.inspections.PestAssertionCanBeSimplifiedInspection"
         />
     </extensions>
