@@ -109,7 +109,7 @@ class PestRunConfiguration(project: Project, factory: ConfigurationFactory) : Ph
         return PestConsoleProperties(
             this,
             executor,
-            PestLocationProvider(pathMapper, this.project)
+            PestLocationProvider(pathMapper, this.project, this.getConfigurationFileRootPath())
         )
     }
 
