@@ -1,7 +1,7 @@
 <?php
 
 test('example', function () {
-    expect(true)-><warning descr="Assertion 'toBe' can be simplified to 'toBeFalse'">toBe</warning>(false);
-    expect(true)-><warning descr="Assertion 'toBe' can be simplified to 'toBeFalse'">toBe</warning>(false, "message");
-    expect(true)-><warning descr="Assertion 'toBe' can be simplified to 'toBeFalse'">toBe</warning>(expected: false, message: "message");
+    expect(true)-><weak_warning descr="Assertion 'toBe' can be simplified to 'toBeFalse'">toBe</weak_warning>(false);
+    expect(true)-><weak_warning descr="Assertion 'toBe' can be simplified to 'toBeFalse'">toBe</weak_warning>(false, "message");
+    expect(true)-><weak_warning descr="Assertion 'toBe' can be simplified to 'toBeFalse'">toBe</weak_warning>(expected: false, message: "message");
 });
