@@ -31,7 +31,7 @@ class PestTestRunLineMarkerProvider : RunLineMarkerContributor() {
 
     private fun isPestTestReference(leaf: PsiElement): Boolean {
         return if (PhpPsiUtil.isOfType(leaf, PhpTokenTypes.IDENTIFIER)) {
-            leaf.parent is FunctionReferenceImpl && leaf.parent.isPestTestReference(isSmart = false)
+            leaf.parent is FunctionReferenceImpl && leaf.parent.isPestTestReference()
         } else {
             false
         }
