@@ -8,6 +8,10 @@ import com.jetbrains.php.lang.psi.PhpPsiElementFactory
 import com.jetbrains.php.lang.psi.elements.StringLiteralExpression
 import com.pestphp.pest.PestBundle
 
+fun convertTestNameToSentenceCase(testName: String) = NameUtilCore.splitNameIntoWords(testName).joinToString(" ") {
+    it.replaceFirstChar(Char::lowercase)
+}
+
 class ChangeTestNameCasingQuickFix : LocalQuickFix {
     override fun getFamilyName(): String {
         return PestBundle.message("QUICK_FIX_CHANGE_TEST_NAME_CASING")
@@ -18,9 +22,9 @@ class ChangeTestNameCasingQuickFix : LocalQuickFix {
         val pestTestName = nameParameter.contents
 
         val newNameParameter = PhpPsiElementFactory.createStringLiteralExpression(
-          project,
-          NameUtilCore.splitNameIntoWords(pestTestName).joinToString(" "),
-          true
+            project,
+            convertTestNameToSentenceCase(pestTestName),
+            true
         )
 
         nameParameter.replace(newNameParameter)

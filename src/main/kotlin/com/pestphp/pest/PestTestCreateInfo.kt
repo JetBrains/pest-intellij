@@ -6,6 +6,7 @@ import com.intellij.psi.codeStyle.CodeStyleManager
 import com.jetbrains.php.lang.psi.PhpPsiElementFactory
 import com.jetbrains.php.templates.PhpFileTemplateUtil.INTERNAL_PHP_FILE_TEMPLATE_NAME
 import com.jetbrains.php.testFramework.PhpUnitAbstractTestCreateInfo
+import com.pestphp.pest.inspections.convertTestNameToSentenceCase
 import javax.swing.Icon
 
 object PestTestCreateInfo : PhpUnitAbstractTestCreateInfo() {
@@ -22,7 +23,7 @@ object PestTestCreateInfo : PhpUnitAbstractTestCreateInfo() {
     }
 
     override fun getTestMethodText(project: Project, classFqn: String, methodName: String): String {
-        return "test('$methodName', function(){})"
+        return "test('${convertTestNameToSentenceCase(methodName)}', function(){})"
     }
 
     override fun shouldPostprocessTemplateFile(): Boolean {

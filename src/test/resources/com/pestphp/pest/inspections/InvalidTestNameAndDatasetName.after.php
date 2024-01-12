@@ -2,6 +2,6 @@
 
 dataset(name: 'someDataSet', dataset: []);
 
-test('Not Sentence Case', function () {
+test('not sentence case', function () {
     expect(true)->toBeTrue();
 })->with('someDataSet');
