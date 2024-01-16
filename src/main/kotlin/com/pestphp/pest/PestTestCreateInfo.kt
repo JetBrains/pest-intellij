@@ -4,10 +4,11 @@ import com.intellij.openapi.project.Project
 import com.intellij.psi.PsiFile
 import com.intellij.psi.codeStyle.CodeStyleManager
 import com.jetbrains.php.lang.psi.PhpPsiElementFactory
-import com.jetbrains.php.templates.PhpFileTemplateUtil.INTERNAL_PHP_FILE_TEMPLATE_NAME
 import com.jetbrains.php.testFramework.PhpUnitAbstractTestCreateInfo
 import com.pestphp.pest.inspections.convertTestNameToSentenceCase
 import javax.swing.Icon
+
+const val INTERNAL_PEST_FILE_TEMPLATE_NAME = "Pest file from class"
 
 object PestTestCreateInfo : PhpUnitAbstractTestCreateInfo() {
     override fun getName(): String {
@@ -15,7 +16,7 @@ object PestTestCreateInfo : PhpUnitAbstractTestCreateInfo() {
     }
 
     override fun getTemplateName(): String {
-        return INTERNAL_PHP_FILE_TEMPLATE_NAME
+        return INTERNAL_PEST_FILE_TEMPLATE_NAME
     }
 
     override fun getIcon(): Icon {
