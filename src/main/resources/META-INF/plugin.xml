@@ -103,6 +103,16 @@
                 level="ERROR"
                 implementationClass="com.pestphp.pest.features.datasets.InvalidDatasetReferenceInspection"
         />
+        <localInspection
+                language="PHP"
+                groupPath="PHP"
+                groupKey="INSPECTION_PHP_GROUP_PEST"
+                shortName="InvalidDatasetNameCaseInspection"
+                enabledByDefault="true"
+                key="INSPECTION_INVALID_DATASET_NAME_CASE"
+                level="WEAK WARNING"
+                implementationClass="com.pestphp.pest.features.datasets.InvalidDatasetNameCaseInspection"
+        />
         <psi.referenceContributor
                 implementation="com.pestphp.pest.features.datasets.DatasetReferenceContributor"
                 language="PHP"/>
