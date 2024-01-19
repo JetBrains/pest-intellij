@@ -9,6 +9,7 @@ import com.jetbrains.php.lang.lexer.PhpTokenTypes
 import com.jetbrains.php.lang.psi.PhpPsiUtil
 import com.jetbrains.php.lang.psi.elements.PhpUse
 import com.jetbrains.php.lang.psi.elements.impl.FunctionReferenceImpl
+import com.pestphp.pest.PestBundle
 
 class SnapshotLineMarkerProvider : RelatedItemLineMarkerProvider() {
     override fun collectNavigationMarkers(
@@ -33,7 +34,7 @@ class SnapshotLineMarkerProvider : RelatedItemLineMarkerProvider() {
 
         val builder = NavigationGutterIconBuilder.create(AllIcons.Nodes.DataSchema)
             .setTargets(snapshotFiles)
-            .setTooltipText("Navigate to snapshot files")
+            .setTooltipText(PestBundle.message("TOOLTIP_NAVIGATE_TO_SNAPSHOT_FILES"))
         result.add(builder.createLineMarkerInfo(element))
     }
 }

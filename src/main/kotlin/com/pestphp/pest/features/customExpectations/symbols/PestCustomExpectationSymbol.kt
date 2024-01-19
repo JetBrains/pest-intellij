@@ -6,6 +6,7 @@ import com.intellij.find.usages.api.SearchTarget
 import com.intellij.find.usages.api.UsageHandler
 import com.intellij.model.Pointer
 import com.intellij.model.Symbol
+import com.intellij.openapi.util.NlsSafe
 import com.intellij.openapi.util.TextRange
 import com.intellij.platform.backend.navigation.NavigationRequest
 import com.intellij.platform.backend.navigation.NavigationTarget
@@ -17,7 +18,7 @@ import com.intellij.refactoring.rename.api.RenameTarget
 import com.pestphp.pest.features.customExpectations.generators.Method
 
 class PestCustomExpectationSymbol(
-    val expectationName: String,
+    @NlsSafe val expectationName: String,
     val file: PsiFile,
     val rangeInFile: TextRange,
     val methodDescriptor: Method

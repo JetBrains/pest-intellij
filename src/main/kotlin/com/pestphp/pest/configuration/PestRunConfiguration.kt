@@ -120,12 +120,8 @@ class PestRunConfiguration(project: Project, factory: ConfigurationFactory) : Ph
             PhpTestRunnerSettings.Scope.Directory -> PathUtil.getFileName(StringUtil.notNullize(runner.directoryPath))
             PhpTestRunnerSettings.Scope.File -> PathUtil.getFileName(StringUtil.notNullize(runner.filePath))
             PhpTestRunnerSettings.Scope.Method -> {
-                val builder = StringBuilder()
                 val file = PathUtil.getFileName(StringUtil.notNullize(runner.filePath))
-                builder.append(file)
-                builder.append("::")
-                builder.append(runner.methodName)
-                builder.toString()
+                "$file::${runner.methodName}"
             }
             PhpTestRunnerSettings.Scope.ConfigurationFile -> PathUtil.getFileName(
                 StringUtil.notNullize(runner.configurationFilePath)
@@ -140,7 +136,7 @@ class PestRunConfiguration(project: Project, factory: ConfigurationFactory) : Ph
     fun applyTestArguments(command: PhpCommandSettings, coverageArguments: List<String>) {
         val config = PhpTestFrameworkSettingsManager.getInstance(project)
             .getOrCreateByInterpreter(PestFrameworkType.instance, interpreter, true)
-            ?: throw ExecutionException("Could not find php interpreter.")
+            ?: throw ExecutionException(PestBundle.message("DIALOG_MESSAGE_COULD_NOT_FIND_PHP_INTERPRETER"))
 
         val version = null
 
