@@ -8,7 +8,10 @@ import com.jetbrains.php.lang.psi.elements.Function
 import com.jetbrains.php.lang.psi.elements.impl.FunctionReferenceImpl
 import com.jetbrains.php.lang.psi.resolve.types.PhpType
 
-val PEST_TEST_CALL_TYPE = PhpType.from("\\Pest\\PendingCalls\\TestCall")
+val PEST_TEST_CALL_TYPE = PhpType.from(
+    "\\Pest\\PendingCalls\\TestCall", // for Pest versions >= 2.x
+    "\\Pest\\PendingObjects\\TestCall" // for Pest versions 1.x
+)
 
 fun PsiElement?.isPestTestReference(isSmart: Boolean = false): Boolean {
     return when (this) {
@@ -24,9 +27,9 @@ fun FunctionReferenceImpl.isPestTestFunction(isSmart: Boolean = false): Boolean 
     if (this.canonicalText !in testNames) return false
     return !isSmart ||
         this.resolveGlobal(false).any {
-            val declarationType = (it as? Function)?.typeDeclaration?.type
-            if (declarationType == null) return@any false
-            PEST_TEST_CALL_TYPE.isConvertibleFromGlobal(project, declarationType)
+            val type = (it as? Function)?.type
+            if (type == null) return@any false
+            PEST_TEST_CALL_TYPE.isConvertibleFromGlobal(project, type)
         }
 }
 
