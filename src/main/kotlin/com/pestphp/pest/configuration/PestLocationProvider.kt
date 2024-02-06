@@ -56,7 +56,12 @@ class PestLocationProvider(
         val location = link.split("::")
 
         val pathPrefix = configurationFileRootPath ?: project.basePath
-        val file = this.pathMapper.getLocalFile("$pathPrefix/${location[0]}")
+        val fileUrl = if (pathPrefix != null && location[0].startsWith(pathPrefix)) {
+            location[0] // for Pest versions 1.x
+        } else {
+            "$pathPrefix/${location[0]}" // for Pest versions >= 2.x
+        }
+        val file = this.pathMapper.getLocalFile(fileUrl)
 
         if (location.size == 1) {
             return file?.let { LocationInfo(it, null) }

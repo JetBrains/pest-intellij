@@ -12,10 +12,17 @@ class PestLocationProviderTest : PestLightCodeFixture() {
         return "$basePath/configuration/locationProvider"
     }
 
-    fun testSubproject() {
+    fun testSubprojectFor2xVersion() {
         val testName = "test"
         doTestGetLocation(
             "Test.php::$testName", testName, "subdir"
+        )
+    }
+
+    fun testSubprojectFor1xVersion() {
+        val testName = "test"
+        doTestGetLocation(
+            "Test.php::$testName", testName, "subdir", true
         )
     }
 
@@ -23,13 +30,15 @@ class PestLocationProviderTest : PestLightCodeFixture() {
         pathSuffix: String,
         expectedTestName: String,
         configurationFileRelativePath: String? = null,
+        isAbsolutePath: Boolean = false,
     ) {
         val testDir = PlatformTestUtil.getTestName(name, false)
         myFixture.copyDirectoryToProject(testDir, ".")
         val configurationFileRootPath = "${myFixture.testDataPath}/${testDir}${configurationFileRelativePath?.let { "/$it" } ?: ""}"
         val locationProvider = PestLocationProvider(PhpPathMapper.create(project), project, configurationFileRootPath)
+        val path = if (isAbsolutePath) "$configurationFileRootPath/$pathSuffix" else pathSuffix
         val resolvedLocation = locationProvider
-            .getLocation("pest_qn", pathSuffix, project, GlobalSearchScope.allScope(project)).firstOrNull()
+            .getLocation("pest_qn", path, project, GlobalSearchScope.allScope(project)).firstOrNull()
 
         assertInstanceOf(resolvedLocation, PhpPsiLocationWithDataSet::class.java)
         assertInstanceOf(resolvedLocation?.psiElement, FunctionReference::class.java)
