@@ -117,6 +117,9 @@ fun String.toPestTestRegex(rootPath: String, file: String, pathMapper: PhpPathMa
         // 6. Add P as a namespace before the generated namespace.
         .let { "(P\\\\)?$it" }
 
+    // Allow substring matching only for "describe" block execution
+    val possibleEndOfLine = if (this.endsWith(" → ")) "" else "$"
+
     // Escape characters
     val testName = this
         .replace(" ", "\\s")
@@ -131,7 +134,7 @@ fun String.toPestTestRegex(rootPath: String, file: String, pathMapper: PhpPathMa
     // Match the description of a single data set
     val dataSet = """(data\sset\s".*"|\(.*\))"""
 
-    return """^$fqn::$testName(\swith\s$dataSet(\s\/\s$dataSet)*(\s#\d+)?)?"""
+    return """^$fqn::$testName(\swith\s$dataSet(\s\/\s$dataSet)*(\s#\d+)?)?$possibleEndOfLine"""
 }
 
 val String.withoutFirstFileSeparator: String

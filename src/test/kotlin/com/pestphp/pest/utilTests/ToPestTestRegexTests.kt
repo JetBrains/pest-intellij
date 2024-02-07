@@ -80,4 +80,19 @@ class ToPestTestRegexTests : PestLightCodeFixture() {
 
         assertTrue(regex?.contains("\\^") == true)
     }
+
+    fun testRegexEndOfLine() {
+        val file = myFixture.configureByFile(
+            "PestDescribeBlockAndTestFunctionEndOfLine.php"
+        )
+
+        val testElement = file.firstChild?.children?.map { it.firstChild }?.lastOrNull()
+        val describeElement = file.firstChild?.children?.map { it.firstChild }?.firstOrNull()
+
+        val testRegex = testElement?.toPestTestRegex("src")
+        val describeRegex = describeElement?.toPestTestRegex("src")
+
+        assertTrue(testRegex?.endsWith("$") == true)
+        assertTrue(describeRegex?.endsWith("$") == false)
+    }
 }
