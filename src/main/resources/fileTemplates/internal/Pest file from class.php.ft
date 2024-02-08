@@ -4,3 +4,7 @@
 #if (${NAMESPACE})
 namespace ${NAMESPACE};
 #end
+
+test('#[[$END$]]#', function () {
+
+});

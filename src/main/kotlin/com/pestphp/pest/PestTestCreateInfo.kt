@@ -2,8 +2,8 @@ package com.pestphp.pest
 
 import com.intellij.openapi.project.Project
 import com.intellij.psi.PsiFile
-import com.intellij.psi.codeStyle.CodeStyleManager
-import com.jetbrains.php.lang.psi.PhpPsiElementFactory
+import com.intellij.psi.util.PsiTreeUtil
+import com.jetbrains.php.lang.psi.elements.FunctionReference
 import com.jetbrains.php.testFramework.PhpUnitAbstractTestCreateInfo
 import com.pestphp.pest.inspections.convertTestNameToSentenceCase
 import javax.swing.Icon
@@ -32,9 +32,7 @@ object PestTestCreateInfo : PhpUnitAbstractTestCreateInfo() {
     }
 
     override fun postprocessTemplateFile(file: PsiFile) {
-        val project = file.project
-        val statement = PhpPsiElementFactory.createStatement(project, getTestMethodText(project, "", "") + ";")
-        file.add(statement)
-        CodeStyleManager.getInstance(project).reformat(file)
+        val test = PsiTreeUtil.findChildOfType(file, FunctionReference::class.java)
+        test?.parent?.delete()
     }
 }
