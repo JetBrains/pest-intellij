@@ -1,5 +1,6 @@
 package com.pestphp.pest
 
+import com.intellij.codeInsight.daemon.impl.DaemonCodeAnalyzerImpl
 import com.intellij.testFramework.TestDataPath
 
 @TestDataPath("\$CONTENT_ROOT/resources/com/pestphp/pest/PestTestRunLineMarkerProviderTest")
@@ -8,27 +9,52 @@ class PestTestRunLineMarkerProviderTest : PestLightCodeFixture() {
         return "src/test/resources/com/pestphp/pest/PestTestRunLineMarkerProviderTest"
     }
 
+    private fun doTest(vararg expectedMarkerLines: Int) {
+        myFixture.doHighlighting()
+        val editor = myFixture.editor
+
+        val markerList = DaemonCodeAnalyzerImpl.getLineMarkers(editor.document, project)
+        val actualMarkerLines = markerList.map { marker -> editor.offsetToLogicalPosition(marker.startOffset).line }
+        assertSameElements(expectedMarkerLines.toList(), actualMarkerLines)
+    }
+
     fun testMethodCallNamedItAndVariableTestIsNotPestTest() {
-        val file = myFixture.configureByFile("MethodCallNamedItAndVariableTest.php")
-
-        val testElement = file.firstChild.lastChild.firstChild.firstChild
-
-        assertNull(PestTestRunLineMarkerProvider().getInfo(testElement))
+        myFixture.configureByFile("MethodCallNamedItAndVariableTest.php")
+        doTest()
     }
 
     fun testFunctionCallNamedItWithDescriptionAndClosure() {
-        val file = myFixture.configureByFile("PestItFunctionCallWithDescriptionAndClosure.php")
-
-        val testElement = file.firstChild.lastChild.firstChild.firstChild
-
-        assertNotNull(PestTestRunLineMarkerProvider().getInfo(testElement))
+        myFixture.configureByFile("PestItFunctionCallWithDescriptionAndClosure.php")
+        doTest(0, 5)
     }
 
-    fun testPestTestRunAllButtonOnPhpTag() {
-        val file = myFixture.configureByFile("PestItFunctionCallWithDescriptionAndClosure.php")
+    fun testFunctionCallNamedTestWithoutPest() {
+        myFixture.configureByFile("FunctionCallNamedTestWithoutPest.php")
+        doTest()
+    }
 
-        val testElement = file.firstChild.firstChild
+    fun testAssignmentFunctionCallNamedTestWithoutPest() {
+        myFixture.configureByFile("AssignmentFunctionCallNamedTestWithoutPest.php")
+        doTest()
+    }
 
-        assertNotNull(PestTestRunLineMarkerProvider().getInfo(testElement))
+    fun testAssignmentFunctionCallNamedTest() {
+        myFixture.configureByFile("AssignmentFunctionCallNamedTest.php")
+        doTest()
+    }
+
+    fun testFunctionCallNamedTestAsArgument() {
+        myFixture.configureByFile("FunctionCallNamedTestAsArgument.php")
+        doTest()
+    }
+
+    fun testFunctionCallNamedTestInsideDescribeBlock() {
+        myFixture.configureByFile("FunctionCallNamedTestInsideDescribeBlock.php")
+        doTest(0, 8, 9)
+    }
+
+    fun testFunctionCallNamedTestInsideTest() {
+        myFixture.configureByFile("FunctionCallNamedTestInsideTest.php")
+        doTest(0, 5)
     }
 }

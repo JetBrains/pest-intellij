@@ -2,10 +2,11 @@ package com.pestphp.pest
 
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.project.guessProjectDir
+import com.intellij.openapi.util.Key
 import com.intellij.openapi.util.text.StringUtil
-import com.intellij.psi.PsiElement
 import com.intellij.psi.PsiFile
 import com.intellij.psi.search.ProjectScope
+import com.intellij.psi.util.CachedValue
 import com.intellij.psi.util.CachedValueProvider
 import com.intellij.psi.util.CachedValuesManager
 import com.intellij.util.indexing.FileBasedIndex
@@ -17,10 +18,13 @@ import com.jetbrains.php.phpunit.PhpUnitUtil
 import com.jetbrains.php.testFramework.PhpTestFrameworkSettingsManager
 import com.pestphp.pest.indexers.PestTestIndex
 
-fun PsiFile.isPestTestFile(): Boolean {
+val PEST_TEST_FILE_KEY = Key<CachedValue<Boolean>>("isPestTestFile")
+val PEST_TEST_FILE_SMART_KEY = Key<CachedValue<Boolean>>("smart isPestTestFile")
+
+fun PsiFile.isPestTestFile(isSmart: Boolean = false): Boolean {
     if (this !is PhpFile) return false
-    return CachedValuesManager.getCachedValue(this) {
-        val isPestTestFile = this.getRootPhpPsiElements().any(PsiElement::isPestTestReference)
+    return CachedValuesManager.getCachedValue(this, if (isSmart) PEST_TEST_FILE_SMART_KEY else PEST_TEST_FILE_KEY) {
+        val isPestTestFile = this.getRootPhpPsiElements().any { psiElement -> psiElement.isPestTestReference(isSmart) }
         CachedValueProvider.Result.create(isPestTestFile, this)
     }
 }

@@ -5,7 +5,10 @@ import com.intellij.icons.AllIcons.RunConfigurations.TestState.Run
 import com.intellij.openapi.project.Project
 import com.intellij.psi.PsiElement
 import com.jetbrains.php.lang.lexer.PhpTokenTypes
+import com.jetbrains.php.lang.psi.PhpFile
 import com.jetbrains.php.lang.psi.PhpPsiUtil
+import com.jetbrains.php.lang.psi.elements.FunctionReference
+import com.jetbrains.php.lang.psi.elements.Statement
 import com.jetbrains.php.lang.psi.elements.impl.FunctionReferenceImpl
 
 /**
@@ -22,7 +25,7 @@ class PestTestRunLineMarkerProvider : RunLineMarkerContributor() {
         }
 
         // Handle icon for running all tests in the file.
-        if (PhpPsiUtil.isOfType(leaf, PhpTokenTypes.PHP_OPENING_TAG) && leaf.containingFile.isPestTestFile()) {
+        if (PhpPsiUtil.isOfType(leaf, PhpTokenTypes.PHP_OPENING_TAG) && leaf.containingFile.isPestTestFile(isSmart = true)) {
             return withExecutorActions(PestIcons.Run)
         }
 
@@ -30,11 +33,21 @@ class PestTestRunLineMarkerProvider : RunLineMarkerContributor() {
     }
 
     private fun isPestTestReference(leaf: PsiElement): Boolean {
-        return if (PhpPsiUtil.isOfType(leaf, PhpTokenTypes.IDENTIFIER)) {
-            leaf.parent is FunctionReferenceImpl && leaf.parent.isPestTestReference()
-        } else {
-            false
+        if (PhpPsiUtil.isOfType(leaf, PhpTokenTypes.IDENTIFIER)) {
+            val possibleFunctionReference = leaf.parent
+            if (possibleFunctionReference is FunctionReferenceImpl) {
+                val statementChild = PhpPsiUtil.getParentOfClass(possibleFunctionReference, true, Statement::class.java)?.firstChild
+                val outerFunctionReference = PhpPsiUtil.getParentByCondition<FunctionReferenceImpl>(
+                    statementChild,
+                    { it is FunctionReferenceImpl },
+                    PhpFile.INSTANCEOF
+                )
+                if (outerFunctionReference == null || outerFunctionReference.isDescribeFunction()) {
+                    return statementChild is FunctionReference && statementChild.isPestTestReference(isSmart = true)
+                }
+            }
         }
+        return false
     }
 
     private fun getPestTest(reference: FunctionReferenceImpl, project: Project): Info {
