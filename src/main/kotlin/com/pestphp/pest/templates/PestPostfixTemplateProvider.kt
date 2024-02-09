@@ -10,11 +10,11 @@ import com.intellij.psi.PsiFile
  */
 class PestPostfixTemplateProvider : PostfixTemplateProvider {
     override fun getTemplates(): MutableSet<PostfixTemplate> {
-        return mutableSetOf(PestItPostfixTemplate())
+        return mutableSetOf(PestItPostfixTemplate(), PestDescribePostfixTemplate())
     }
 
     override fun isTerminalSymbol(currentChar: Char): Boolean {
-        return currentChar == '.';
+        return currentChar == '.'
     }
 
     override fun preExpand(file: PsiFile, editor: Editor) = Unit
