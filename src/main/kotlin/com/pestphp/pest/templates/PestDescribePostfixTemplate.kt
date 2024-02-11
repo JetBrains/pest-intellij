@@ -7,16 +7,13 @@ import com.jetbrains.php.postfixCompletion.PhpPostfixUtils
 import com.jetbrains.php.postfixCompletion.PhpStringBasedPostfixTemplate
 import com.pestphp.pest.isPestTestFile
 
-/**
- * Adds a postfix template for `describe` tests.
- */
 class PestDescribePostfixTemplate : PhpStringBasedPostfixTemplate(
     "describe",
     "describe($EXPR, function...)",
     PhpPostfixUtils.selectorTopmost()
 ) {
     override fun isApplicable(context: PsiElement, copyDocument: Document, newOffset: Int): Boolean {
-        return context.containingFile.isPestTestFile() && context.parent is StringLiteralExpression
+        return context.parent is StringLiteralExpression && context.containingFile.isPestTestFile()
     }
 
     override fun getTemplateString(element: PsiElement): String {

@@ -16,7 +16,7 @@ class PestItPostfixTemplate : PhpStringBasedPostfixTemplate(
     PhpPostfixUtils.selectorTopmost()
 ) {
     override fun isApplicable(context: PsiElement, copyDocument: Document, newOffset: Int): Boolean {
-        return context.containingFile.isPestTestFile() && context.parent is StringLiteralExpression
+        return context.parent is StringLiteralExpression && context.containingFile.isPestTestFile()
     }
 
     override fun getTemplateString(element: PsiElement): String {
