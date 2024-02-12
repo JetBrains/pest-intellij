@@ -2,7 +2,6 @@ package com.pestphp.pest.inspections
 
 import com.intellij.codeInspection.ProblemsHolder
 import com.intellij.psi.PsiElementVisitor
-import com.intellij.util.text.NameUtilCore
 import com.jetbrains.php.lang.inspections.PhpInspection
 import com.jetbrains.php.lang.psi.PhpFile
 import com.jetbrains.php.lang.psi.elements.FunctionReference
@@ -23,7 +22,7 @@ class InvalidTestNameCaseInspection : PhpInspection() {
                         // Remove `it ` prefix from test names
                         val testName = if (it!!.startsWith("it ")) it.substring(3) else it
 
-                        !testName.contains(' ') && NameUtilCore.splitNameIntoWords(testName).joinToString(" ") != testName
+                        isInvalidNameCase(testName)
                     }
                     .forEach {
                         declareProblemType(holder, it.value)

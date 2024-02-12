@@ -5,7 +5,6 @@ import com.intellij.modcommand.ActionContext
 import com.intellij.modcommand.ModPsiUpdater
 import com.intellij.modcommand.PsiUpdateModCommandAction
 import com.intellij.psi.PsiElementVisitor
-import com.intellij.util.text.NameUtilCore
 import com.jetbrains.php.lang.inspections.PhpInspection
 import com.jetbrains.php.lang.psi.PhpFile
 import com.jetbrains.php.lang.psi.PhpPsiElementFactory
@@ -19,6 +18,7 @@ import com.pestphp.pest.getInitialFunctionReference
 import com.pestphp.pest.getRootPhpPsiElements
 import com.pestphp.pest.goto.getDatasetUsages
 import com.pestphp.pest.inspections.convertTestNameToSentenceCase
+import com.pestphp.pest.inspections.isInvalidNameCase
 
 class InvalidDatasetNameCaseInspection : PhpInspection() {
     override fun buildVisitor(holder: ProblemsHolder, isOnTheFly: Boolean): PsiElementVisitor {
@@ -30,9 +30,7 @@ class InvalidDatasetNameCaseInspection : PhpInspection() {
 
                 localDatasets.groupBy { it.getPestDatasetName() }
                     .filterKeys { datasetName ->
-                        datasetName != null &&
-                            !datasetName.contains(' ') &&
-                            NameUtilCore.splitNameIntoWords(datasetName).joinToString(" ") != datasetName
+                        datasetName != null && isInvalidNameCase(datasetName)
                     }
                     .forEach {
                         declareProblemType(holder, it.value)

@@ -8,9 +8,18 @@ import com.jetbrains.php.lang.psi.PhpPsiElementFactory
 import com.jetbrains.php.lang.psi.elements.StringLiteralExpression
 import com.pestphp.pest.PestBundle
 
-fun convertTestNameToSentenceCase(testName: String) = NameUtilCore.splitNameIntoWords(testName).joinToString(" ") {
-    it.replaceFirstChar(Char::lowercase)
+fun convertTestNameToSentenceCase(
+    name: String,
+    shouldLowercaseWords: Boolean = true
+) = NameUtilCore.splitNameIntoWords(name).fold("") { acc, element ->
+    val word = if (shouldLowercaseWords) element.replaceFirstChar(Char::lowercase) else element
+    if (acc.lastOrNull()?.isLetterOrDigit() != true || word.length == 1 && !word[0].isLetterOrDigit())
+        "$acc$word"
+    else
+        "$acc $word"
 }
+
+fun isInvalidNameCase(name: String) = !name.contains(' ') && convertTestNameToSentenceCase(name, false) != name
 
 class ChangeTestNameCasingQuickFix : LocalQuickFix {
     override fun getFamilyName(): String {

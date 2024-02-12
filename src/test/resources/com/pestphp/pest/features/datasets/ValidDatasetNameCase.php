@@ -5,3 +5,15 @@ dataset('some numbers', function () {
         1
     ];
 });
+
+dataset('some.numbers', function () {
+    return [
+        1
+    ];
+});
+
+dataset('some-numbers', function () {
+    return [
+        1
+    ];
+});
