@@ -59,12 +59,17 @@ class CustomExpectationIndex : FileBasedIndexExtension<String, IntList>() {
     override fun getInputFilter(): FileBasedIndex.InputFilter {
         return object : DefaultFileTypeSpecificInputFilter(PhpFileType.INSTANCE) {
             override fun acceptInput(file: VirtualFile): Boolean {
-                return true
+                return !isPestStubFile(file)
             }
         }
     }
 
     override fun dependsOnFileContent(): Boolean {
         return true
+    }
+
+    private fun isPestStubFile(file: VirtualFile): Boolean {
+        val path = file.path
+        return path.contains("vendor") && path.contains("pestphp") && path.contains("stubs")
     }
 }
