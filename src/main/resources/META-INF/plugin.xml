@@ -6,8 +6,6 @@
     <resource-bundle>pestBundle</resource-bundle>
     <category>Test Tools</category>
 
-    <!-- please see https://www.jetbrains.org/intellij/sdk/docs/basics/getting_started/plugin_compatibility.html
-         on how to target different products -->
     <depends>com.intellij.modules.platform</depends>
     <depends>com.jetbrains.php</depends>
     <depends optional="true" config-file="pest-coverage.xml">com.intellij.modules.coverage</depends>
