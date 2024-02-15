@@ -1,9 +1,9 @@
 <?php
 
-<error descr="Pest custom expectation names must be unique">expect()->extend('toBeOne', function (): bool {
+<warning descr="Pest custom expectation names must be unique">expect()->extend('toBeOne', function (): bool {
     return true;
-})</error>;
+})</warning>;
 
-<error descr="Pest custom expectation names must be unique">expect()->extend('toBeOne', function (): bool {
+<warning descr="Pest custom expectation names must be unique">expect()->extend('toBeOne', function (): bool {
     return false;
-})</error>;
+})</warning>;
