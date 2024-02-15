@@ -1,6 +1,7 @@
 package com.pestphp.pest.annotator
 
 import com.intellij.lang.annotation.AnnotationHolder
+import com.intellij.lang.annotation.HighlightSeverity
 import com.intellij.modcommand.ModCommandAction
 import com.intellij.psi.search.GlobalSearchScope
 import com.intellij.util.indexing.FileBasedIndex
@@ -49,8 +50,12 @@ class PestAnnotatorVisitor(
                 PhpDeleteElementQuickFix(reference.parent, PestBundle.message("QUICK_FIX_DELETE_CUSTOM_EXPECTATION", extendName)),
                 getNavigateToCustomExpectationFix(duplicates, reference)
             )
-            createErrorAnnotation(holder, reference, PestBundle.message("INSPECTION_DUPLICATE_CUSTOM_EXPECTATION"),
-                                  *fixes.toTypedArray())
+            val builder = holder.newAnnotation(
+                HighlightSeverity.WARNING,
+                PestBundle.message("INSPECTION_DUPLICATE_CUSTOM_EXPECTATION")
+            ).range(reference)
+            fixes.forEach { fix -> builder.withFix(fix.asIntention()) }
+            builder.create()
         }
     }
 
