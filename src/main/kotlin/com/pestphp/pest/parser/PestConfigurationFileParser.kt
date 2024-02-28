@@ -38,7 +38,7 @@ class PestConfigurationFileParser(private val settings: PestSettings) {
         return CachedValuesManager.getCachedValue(psiFile, cacheKey) {
             var baseType = PhpType().add("\\PHPUnit\\Framework\\TestCase")
             val inPaths = mutableListOf<Pair<String, PhpType>>()
-            val testsPath = settings.pestFilePath.replaceAfterLast('/', "")
+            val testsPath = settings.pestFilePath.replaceAfterLast("/", "", "")
 
             psiFile.acceptChildren(
                 Visitor { type, inPath, fullPath ->

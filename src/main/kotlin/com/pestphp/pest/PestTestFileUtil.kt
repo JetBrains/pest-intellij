@@ -12,30 +12,37 @@ import com.jetbrains.php.lang.psi.elements.Function
 import com.jetbrains.php.lang.psi.elements.impl.FunctionReferenceImpl
 import com.jetbrains.php.lang.psi.resolve.types.PhpType
 
-inline fun PsiElement?.isThisVariableInPest(condition: (FunctionReferenceImpl) -> Boolean): Boolean {
+fun PsiElement?.isThisVariableInPest(condition: (FunctionReferenceImpl) -> Boolean): Boolean {
     if ((this as? Variable)?.name != "this") return false
 
-    return this.isElementInPestTest(condition)
+    var psiElement = this
+    while (true) {
+        val functionReference = getOuterFunctionReference(psiElement) ?: return false
+        if (condition(functionReference)) {
+            return true
+        }
+        psiElement = functionReference
+    }
 }
 
-inline fun PsiElement?.isTestAsThisVariableInPest(condition: (FunctionReferenceImpl) -> Boolean): Boolean {
+fun PsiElement?.isTestAsThisVariableInPest(condition: (FunctionReferenceImpl) -> Boolean): Boolean {
     val functionReference = this as? FunctionReference ?: return false
 
     if (functionReference.name != "test" || !functionReference.parameters.isEmpty()) return false
 
-    return this.isElementInPestTest(condition)
+    return getOuterFunctionReference(this)?.let { functionReferenceImpl -> condition(functionReferenceImpl) } ?: false
 }
 
-inline fun PsiElement?.isElementInPestTest(condition: (FunctionReferenceImpl) -> Boolean): Boolean {
-    val closure = PsiTreeUtil.getParentOfType(this, Function::class.java)
+private fun getOuterFunctionReference(element: PsiElement?): FunctionReferenceImpl? {
+    val closure = PsiTreeUtil.getParentOfType(element, Function::class.java)
 
-    if (closure == null || !closure.isClosure) return false
+    if (closure == null || !closure.isClosure) return null
 
-    val parameterList = closure.parent?.parent as? ParameterList ?: return false
+    val parameterList = closure.parent?.parent as? ParameterList ?: return null
 
-    if (parameterList.parent !is FunctionReferenceImpl) return false
+    if (parameterList.parent !is FunctionReferenceImpl) return null
 
-    return condition(parameterList.parent as FunctionReferenceImpl)
+    return parameterList.parent as FunctionReferenceImpl
 }
 
 fun PsiFile.getAllBeforeThisAssignments(): List<AssignmentExpression> {
