@@ -24,7 +24,7 @@ class DatasetIndex : FileBasedIndexExtension<String, List<String>>() {
     }
 
     override fun getVersion(): Int {
-        return 1
+        return 2
     }
 
     override fun getIndexer(): DataIndexer<String, List<String>, FileContent> {
