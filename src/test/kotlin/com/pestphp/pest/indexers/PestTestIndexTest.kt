@@ -18,8 +18,8 @@ class PestTestIndexTest : PestLightCodeFixture() {
 
         val fileBasedIndex = FileBasedIndex.getInstance()
 
-        val indexKeys = fileBasedIndex.getAllKeys(PestTestIndex.key, project).filter {
-            fileBasedIndex.getContainingFiles(PestTestIndex.key, it, GlobalSearchScope.allScope(project)).isNotEmpty()
+        val indexKeys = fileBasedIndex.getAllKeys(key, project).filter {
+            fileBasedIndex.getContainingFiles(key, it, GlobalSearchScope.allScope(project)).isNotEmpty()
         }
 
         assertContainsElements(indexKeys, "/src/tests/FileWithPestTest.php")
@@ -30,8 +30,8 @@ class PestTestIndexTest : PestLightCodeFixture() {
 
         val fileBasedIndex = FileBasedIndex.getInstance()
 
-        val indexKeys = fileBasedIndex.getAllKeys(PestTestIndex.key, project).filter {
-            fileBasedIndex.getContainingFiles(PestTestIndex.key, it, GlobalSearchScope.allScope(project)).isNotEmpty()
+        val indexKeys = fileBasedIndex.getAllKeys(key, project).filter {
+            fileBasedIndex.getContainingFiles(key, it, GlobalSearchScope.allScope(project)).isNotEmpty()
         }
 
         assertDoesntContain(indexKeys, "FileWithoutPestTest.php")
@@ -44,8 +44,8 @@ class PestTestIndexTest : PestLightCodeFixture() {
 
         val fileBasedIndex = FileBasedIndex.getInstance()
 
-        val indexKeys = fileBasedIndex.getAllKeys(PestTestIndex.key, project).filter {
-            fileBasedIndex.getContainingFiles(PestTestIndex.key, it, GlobalSearchScope.allScope(project)).isNotEmpty()
+        val indexKeys = fileBasedIndex.getAllKeys(key, project).filter {
+            fileBasedIndex.getContainingFiles(key, it, GlobalSearchScope.allScope(project)).isNotEmpty()
         }
 
         assertContainsElements(indexKeys, "/src/tests/FileWithPestTodosTest.php")

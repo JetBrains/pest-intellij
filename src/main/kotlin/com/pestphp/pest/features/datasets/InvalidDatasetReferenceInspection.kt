@@ -25,12 +25,12 @@ class InvalidDatasetReferenceInspection : PhpInspection() {
                     .mapNotNull { it.getPestDatasetName() }
                 // Get all shared datasets
                 val fileBasedIndex = FileBasedIndex.getInstance()
-                val sharedDatasets = fileBasedIndex.getAllKeys(DatasetIndex.key, file.project)
+                val sharedDatasets = fileBasedIndex.getAllKeys(key, file.project)
                     .map {
                         fileBasedIndex.getValues(
-                            DatasetIndex.key,
-                            it,
-                            GlobalSearchScope.projectScope(file.project)
+                          key,
+                          it,
+                          GlobalSearchScope.projectScope(file.project)
                         )
                     }
                     .flatten()

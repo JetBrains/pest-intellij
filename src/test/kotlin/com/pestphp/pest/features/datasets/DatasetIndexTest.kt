@@ -21,9 +21,9 @@ class DatasetIndexTest : PestLightCodeFixture() {
         val fileBasedIndex = FileBasedIndex.getInstance()
 
         val values = fileBasedIndex.getValues(
-            DatasetIndex.key,
-            "/src/tests/Datasets/Datasets.php",
-            GlobalSearchScope.projectScope(project)
+          key,
+          "/src/tests/Datasets/Datasets.php",
+          GlobalSearchScope.projectScope(project)
         ).flatten()
 
         assertSize(1, values)
@@ -42,9 +42,9 @@ class DatasetIndexTest : PestLightCodeFixture() {
         val fileBasedIndex = FileBasedIndex.getInstance()
 
         val indexData = fileBasedIndex.getFileData(
-            DatasetIndex.key,
-            virtualFile,
-            project
+          key,
+          virtualFile,
+          project
         )
 
         assertEquals(0, indexData.count())

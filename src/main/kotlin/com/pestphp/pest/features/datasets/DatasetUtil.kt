@@ -18,9 +18,9 @@ fun PsiFile.isPestDatasetFile(): Boolean {
 
 fun PsiFile.isIndexedPestDatasetFile(): Boolean {
     return FileBasedIndex.getInstance().getValues(
-        DatasetIndex.key,
-        this.realPath,
-        ProjectScope.getProjectScope(this.project)
+      key,
+      this.realPath,
+      ProjectScope.getProjectScope(this.project)
     ).isNotEmpty()
 }
 

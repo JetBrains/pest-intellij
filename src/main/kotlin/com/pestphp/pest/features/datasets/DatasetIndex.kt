@@ -12,15 +12,13 @@ import com.pestphp.pest.features.customExpectations.externalizers.ListDataExtern
 import com.pestphp.pest.getRootPhpPsiElements
 import com.pestphp.pest.realPath
 
+val key = ID.create<String, List<String>>("php.pest.datasets")
+
 /**
  * Indexes all pest datasets with the following key value store
  *  `path/datasets/file => ['my-dataset', 'my-other-dataset']
  */
 class DatasetIndex : FileBasedIndexExtension<String, List<String>>() {
-    companion object {
-        val key = ID.create<String, List<String>>("php.pest.datasets")
-    }
-
     override fun getName(): ID<String, List<String>> {
         return key
     }

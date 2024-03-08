@@ -14,7 +14,7 @@ import com.jetbrains.php.lang.psi.elements.Method
 import com.jetbrains.php.lang.psi.elements.PhpClass
 import com.pestphp.pest.getPestTestName
 import com.pestphp.pest.getPestTests
-import com.pestphp.pest.indexers.PestTestIndex
+import com.pestphp.pest.indexers.key
 import com.pestphp.pest.inspections.convertTestNameToSentenceCase
 import com.pestphp.pest.isPestTestFile
 
@@ -83,14 +83,14 @@ class PestTestFinder : TestFinder {
 
     private fun findTestFilesForClass(phpClass: PhpClass): List<PsiFile> {
         return FileBasedIndex.getInstance().getAllKeys(
-            PestTestIndex.key,
-            phpClass.project
+          key,
+          phpClass.project
         ).filter { testClassName -> testClassName.contains(phpClass.name) }
             .flatMap { testClassName ->
                 FileBasedIndex.getInstance().getContainingFiles(
-                    PestTestIndex.key,
-                    testClassName,
-                    GlobalSearchScope.projectScope(phpClass.project)
+                  key,
+                  testClassName,
+                  GlobalSearchScope.projectScope(phpClass.project)
                 )
             }
             .mapNotNull { testFile -> phpClass.manager.findFile(testFile) }

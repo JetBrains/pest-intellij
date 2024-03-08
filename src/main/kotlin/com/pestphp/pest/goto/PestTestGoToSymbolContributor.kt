@@ -13,7 +13,7 @@ import com.jetbrains.php.lang.psi.elements.FunctionReference
 import com.pestphp.pest.PestIcons
 import com.pestphp.pest.getPestTestName
 import com.pestphp.pest.getPestTests
-import com.pestphp.pest.indexers.PestTestIndex
+import com.pestphp.pest.indexers.key
 
 /**
  * Adds support for navigating to pest tests via the symbol searching
@@ -23,12 +23,12 @@ class PestTestGoToSymbolContributor : ChooseByNameContributor {
         val index = FileBasedIndex.getInstance()
 
         return index
-            .getAllKeys(PestTestIndex.key, project)
+            .getAllKeys(key, project)
             .flatMap {
                 index.getValues(
-                    PestTestIndex.key,
-                    it,
-                    when {
+                  key,
+                  it,
+                  when {
                         includeNonProjectItems -> ProjectScope.getAllScope(project)
                         else -> ProjectScope.getProjectScope(project)
                     }
@@ -49,12 +49,12 @@ class PestTestGoToSymbolContributor : ChooseByNameContributor {
         val psiManager = PsiManager.getInstance(project)
 
         return index
-            .getAllKeys(PestTestIndex.key, project)
+            .getAllKeys(key, project)
             .flatMap { fileName ->
                 val hasName = index.getValues(
-                    PestTestIndex.key,
-                    fileName,
-                    when {
+                  key,
+                  fileName,
+                  when {
                         includeNonProjectItems -> ProjectScope.getAllScope(project)
                         else -> ProjectScope.getProjectScope(project)
                     }
@@ -66,9 +66,9 @@ class PestTestGoToSymbolContributor : ChooseByNameContributor {
                 }
 
                 index.getContainingFiles(
-                    PestTestIndex.key,
-                    fileName,
-                    when {
+                  key,
+                  fileName,
+                  when {
                         includeNonProjectItems -> ProjectScope.getAllScope(project)
                         else -> ProjectScope.getProjectScope(project)
                     }

@@ -18,7 +18,7 @@ import com.jetbrains.php.lang.psi.elements.PhpPsiElement
 import com.jetbrains.php.lang.psi.elements.Statement
 import com.jetbrains.php.phpunit.PhpUnitUtil
 import com.jetbrains.php.testFramework.PhpTestFrameworkSettingsManager
-import com.pestphp.pest.indexers.PestTestIndex
+import com.pestphp.pest.indexers.key
 
 val PEST_TEST_FILE_KEY = Key<CachedValue<Boolean>>("isPestTestFile")
 val PEST_TEST_FILE_SMART_KEY = Key<CachedValue<Boolean>>("smart isPestTestFile")
@@ -33,7 +33,7 @@ fun PsiFile.isPestTestFile(isSmart: Boolean = false): Boolean {
 
 fun PsiFile.isIndexedPestTestFile(): Boolean {
     return FileBasedIndex.getInstance().getValues(
-        PestTestIndex.key,
+        key,
         this.realPath,
         ProjectScope.getProjectScope(this.project)
     ).isNotEmpty()

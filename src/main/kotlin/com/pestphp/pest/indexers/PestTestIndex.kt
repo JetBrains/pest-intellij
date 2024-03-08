@@ -7,7 +7,12 @@ import com.intellij.util.io.EnumeratorStringDescriptor
 import com.intellij.util.io.KeyDescriptor
 import com.jetbrains.php.lang.PhpFileType
 import com.jetbrains.php.lang.psi.stubs.indexes.StringSetDataExternalizer
-import com.pestphp.pest.*
+import com.pestphp.pest.getPestTestName
+import com.pestphp.pest.getPestTests
+import com.pestphp.pest.isPestTestFile
+import com.pestphp.pest.realPath
+
+val key = ID.create<String, Set<String>>("php.pest")
 
 /**
  * Indexes all pest test files with the following key-value store
@@ -56,9 +61,5 @@ class PestTestIndex : FileBasedIndexExtension<String, Set<String>>() {
 
     override fun getValueExternalizer(): DataExternalizer<Set<String>> {
         return StringSetDataExternalizer.INSTANCE
-    }
-
-    companion object {
-        val key = ID.create<String, Set<String>>("php.pest")
     }
 }

@@ -29,14 +29,14 @@ class DatasetReference(
         val foundDatasets = mutableListOf<FunctionReferenceImpl>()
 
         fileBasedIndex.getAllKeys(
-            DatasetIndex.key,
-            element.project
+          key,
+          element.project
         ).forEach { key ->
             fileBasedIndex.processValues(
-                DatasetIndex.key,
-                key,
-                null,
-                { file, datasets ->
+              com.pestphp.pest.features.datasets.key,
+              key,
+              null,
+              { file, datasets ->
                     if (datasetName !in datasets) {
                         return@processValues true
                     }
@@ -49,7 +49,7 @@ class DatasetReference(
 
                     true
                 },
-                GlobalSearchScope.projectScope(element.project)
+              GlobalSearchScope.projectScope(element.project)
             )
         }
 
@@ -68,14 +68,14 @@ class DatasetReference(
         val foundDatasets = mutableListOf<FunctionReferenceImpl>()
 
         fileBasedIndex.getAllKeys(
-            DatasetIndex.key,
-            element.project
+          key,
+          element.project
         ).forEach { key ->
             fileBasedIndex.processValues(
-                DatasetIndex.key,
-                key,
-                null,
-                { file, _ ->
+              com.pestphp.pest.features.datasets.key,
+              key,
+              null,
+              { file, _ ->
                     // Add all datasets
                     PsiManager.getInstance(element.project).findFile(file)!!
                         .getDatasets()
@@ -83,7 +83,7 @@ class DatasetReference(
 
                     true
                 },
-                GlobalSearchScope.projectScope(element.project)
+              GlobalSearchScope.projectScope(element.project)
             )
         }
 
