@@ -81,6 +81,19 @@ class ToPestTestRegexTests : PestLightCodeFixture() {
         assertTrue(regex?.contains("\\^") == true)
     }
 
+    fun testRegexEscapesPlusAndQuestionMark() {
+        val file = myFixture.configureByFile(
+            "PestTestWithPlusAndQuestionMark.php"
+        )
+
+        val testElement = file.firstChild?.lastChild?.firstChild
+
+        val regex = testElement?.toPestTestRegex("src")
+
+        assertTrue(regex?.contains("\\+") == true)
+        assertTrue(regex?.contains("\\?") == true)
+    }
+
     fun testRegexEndOfLine() {
         val file = myFixture.configureByFile(
             "PestDescribeBlockAndTestFunctionEndOfLine.php"

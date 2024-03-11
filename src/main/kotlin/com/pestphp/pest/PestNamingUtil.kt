@@ -130,6 +130,7 @@ fun String.toPestTestRegex(rootPath: String, file: String, pathMapper: PhpPathMa
         .replace("^", "\\^")
         .replace("/", "\\/")
         .replace("?", "\\?")
+        .replace("+", "\\+")
 
     // Match the description of a single data set
     val dataSet = """(data\sset\s".*"|\(.*\))"""
