@@ -11,8 +11,8 @@ import com.intellij.openapi.util.text.StringUtil.toLowerCase
 import com.intellij.psi.PsiElement
 import com.intellij.psi.PsiElementVisitor
 import com.intellij.psi.SmartPointerManager
-import com.intellij.refactoring.suggested.endOffset
-import com.intellij.refactoring.suggested.startOffset
+import com.intellij.psi.util.endOffset
+import com.intellij.psi.util.startOffset
 import com.jetbrains.php.lang.PhpLangUtil
 import com.jetbrains.php.lang.inspections.PhpInspection
 import com.jetbrains.php.lang.inspections.probablyBug.PhpDivisionByZeroInspection
