@@ -12,6 +12,7 @@ import com.intellij.psi.PsiElement
 import com.intellij.psi.PsiFile
 import com.intellij.util.Function
 import com.jetbrains.php.lang.PhpFileType
+import com.jetbrains.php.lang.psi.PhpFile
 import com.jetbrains.php.testFramework.run.PhpDefaultTestRunnerSettingsValidator
 import com.jetbrains.php.testFramework.run.PhpTestConfigurationProducer
 import com.pestphp.pest.*
@@ -54,11 +55,8 @@ class PestRunConfigurationProducer : PhpTestConfigurationProducer<PestRunConfigu
         )
     }
 
-    override fun isPreferredConfiguration(self: ConfigurationFromContext?, other: ConfigurationFromContext?): Boolean {
-        return true
-    }
-
     override fun shouldReplace(self: ConfigurationFromContext, other: ConfigurationFromContext): Boolean {
-        return true
+        val file = self.sourceElement as? PhpFile ?: return false
+        return file.isPestTestFile()
     }
 }
