@@ -4,7 +4,8 @@
         <a href="https://github.com/pestphp/pest/actions"><img alt="GitHub Workflow Status (master)" src="https://github.com/pestphp/pest-intellij/workflows/Build/badge.svg"></a>
         <a href="https://plugins.jetbrains.com/plugin/14636-pest"><img alt="Total Downloads" src="https://img.shields.io/jetbrains/plugin/d/14636"></a>
         <a href="https://plugins.jetbrains.com/plugin/14636-pest"><img alt="Latest Version" src="https://img.shields.io/jetbrains/plugin/v/14636"></a>
-	<a href="https://plugins.jetbrains.com/plugin/14636-pest"><img alt="Latest EAP Version" src="https://img.shields.io/badge/dynamic/xml?label=EAP version&query=%2Fplugin-repository%2Fcategory%2Fidea-plugin%5B1%5D%2Fversion&url=https%3A%2F%2Fplugins.jetbrains.com%2Fplugins%2Flist%3Fchannel%3Deap%26pluginId%3D14636"></a>
+	    <a href="https://plugins.jetbrains.com/plugin/14636-pest"><img alt="Latest EAP Version" src="https://img.shields.io/badge/dynamic/xml?label=EAP version&query=%2Fplugin-repository%2Fcategory%2Fidea-plugin%5B1%5D%2Fversion&url=https%3A%2F%2Fplugins.jetbrains.com%2Fplugins%2Flist%3Fchannel%3Deap%26pluginId%3D14636"></a>
+	    <a href="https://confluence.jetbrains.com/display/ALL/JetBrains+on+GitHub"><img alt="official JetBrains project" src="https://jb.gg/badges/official.svg"></a>
     </p>
 </p>
 
