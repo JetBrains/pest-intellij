@@ -15,7 +15,7 @@ class PestUtilTest : PestLightCodeFixture() {
     }
 
     override fun getTestDataPath(): String {
-        return basePath
+        return "$basePath/utilTests"
     }
 
     fun testCanGetTestName() {
@@ -29,6 +29,34 @@ class PestUtilTest : PestLightCodeFixture() {
 
         assertEquals(
             "it basic",
+            functions.first().getPestTestName()
+        )
+    }
+
+    fun testClassNameResolutionTestName() {
+        val file = myFixture.configureByFile("ClassNameResolutionTest.php")
+
+        val functions = PsiTreeUtil.findChildrenOfType(file, FunctionReferenceImpl::class.java)
+            .filter(FunctionReferenceImpl::isPestTestFunction)
+
+        assertEquals(1, functions.count())
+
+        assertEquals(
+            "A",
+            functions.first().getPestTestName()
+        )
+    }
+
+    fun testClassNameResolutionInNamespaceTestName() {
+        val file = myFixture.configureByFile("ClassNameResolutionInNamespaceTest.php")
+
+        val functions = PsiTreeUtil.findChildrenOfType(file, FunctionReferenceImpl::class.java)
+            .filter(FunctionReferenceImpl::isPestTestFunction)
+
+        assertEquals(1, functions.count())
+
+        assertEquals(
+            "A\\\\B",
             functions.first().getPestTestName()
         )
     }

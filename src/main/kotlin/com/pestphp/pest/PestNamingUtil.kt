@@ -4,17 +4,14 @@ import com.intellij.psi.PsiElement
 import com.intellij.psi.util.findParentOfType
 import com.intellij.remote.RemoteSdkProperties
 import com.jetbrains.php.config.interpreters.PhpInterpretersManagerImpl
-import com.jetbrains.php.lang.psi.elements.ConcatenationExpression
-import com.jetbrains.php.lang.psi.elements.FunctionReference
-import com.jetbrains.php.lang.psi.elements.MethodReference
-import com.jetbrains.php.lang.psi.elements.StringLiteralExpression
+import com.jetbrains.php.lang.psi.elements.*
 import com.jetbrains.php.lang.psi.elements.impl.FunctionReferenceImpl
 import com.jetbrains.php.run.remote.PhpRemoteInterpreterManager
 import com.jetbrains.php.util.pathmapper.PhpPathMapper
 import java.util.*
 
-fun FunctionReferenceImpl.getPestTestName(): String {
-    val testName = getParameter(0)?.stringValue
+fun FunctionReferenceImpl.getPestTestName(): String? {
+    val testName = getParameter(0)?.stringValue ?: return null
 
     val parent = this.findParentOfType<FunctionReferenceImpl>()
     val prepend = if (parent is FunctionReferenceImpl && parent.isDescribeFunction()) {
@@ -34,6 +31,14 @@ val PsiElement.stringValue: String?
     get() = when (this) {
         is StringLiteralExpression -> this.contents
         is ConcatenationExpression -> this.contents
+        is ClassConstantReference -> {
+            val classRef = this.classReference
+            if (classRef is ClassReference && this.isStatic && this.lastChild.text == "class") {
+                classRef.fqn
+                    ?.removePrefix("\\")
+                    ?.replace("\\", "\\\\")
+            } else null
+        }
         else -> null
     }
 

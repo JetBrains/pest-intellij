@@ -8,7 +8,7 @@ class PestIconProviderTest : PestLightCodeFixture() {
     override fun setUp() {
         super.setUp()
 
-        myFixture.copyFileToProject("SimpleTest.php", "tests/SimpleTest.php")
+        myFixture.copyFileToProject("utilTests/SimpleTest.php", "tests/SimpleTest.php")
     }
 
     override fun getTestDataPath(): String {
