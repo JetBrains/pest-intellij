@@ -54,6 +54,9 @@ To configure pest to run properly, you need to setup the the proper local test f
 ## Resources
 For a great video course on how to write tests with Pest, check out [Testing Laravel](https://testing-laravel.com/) or [Pest From Scratch](https://laracasts.com/series/pest-from-scratch).
 
+## Issue?
+Please report it to [YouTrack](https://youtrack.jetbrains.com/newIssue?project=WI)
+
 ## Credits
 Originally developed by [Oliver Nybroe](https://github.com/olivernybroe)
 
