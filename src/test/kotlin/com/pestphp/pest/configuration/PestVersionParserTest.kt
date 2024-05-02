@@ -2,10 +2,9 @@ package com.pestphp.pest.configuration
 
 import com.intellij.execution.ExecutionException
 import com.pestphp.pest.PestBundle
-import junit.framework.TestCase
-import org.junit.jupiter.api.assertThrows
+import com.pestphp.pest.PestLightCodeFixture
 
-class PestVersionParserTest : TestCase() {
+class PestVersionParserTest : PestLightCodeFixture() {
     private fun doTest(output: String, expected: String) {
         val version = PestVersionDetector.instance.parse(output)
         assertNotNull(version)
@@ -13,7 +12,7 @@ class PestVersionParserTest : TestCase() {
     }
 
     private fun doFailedTest(output: String) {
-        assertThrows<ExecutionException>(PestBundle.message("PEST_CONFIGURATION_UI_CAN_NOT_PARSE_VERSION", output)) {
+        assertThrows(ExecutionException::class.java, PestBundle.message("PEST_CONFIGURATION_UI_CAN_NOT_PARSE_VERSION", output)) {
             PestVersionDetector.instance.parse(output)
         }
     }
