@@ -7,6 +7,12 @@ class HigherOrderExpectationCompletionTest: PestLightCodeFixture() {
         return "src/test/resources/com/pestphp/pest/higherOrderExpectations"
     }
 
+    override fun setUp() {
+        super.setUp()
+
+        myFixture.copyFileToProject(".phpstorm.meta.php")
+    }
+
     fun testFieldCompletion() {
         myFixture.configureByFile(
             "ExpectPropertyCompletion.php"
