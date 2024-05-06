@@ -4,10 +4,8 @@ import com.intellij.openapi.application.WriteAction
 import com.intellij.openapi.util.Segment
 import com.intellij.openapi.util.TextRange
 import com.intellij.openapi.util.text.StringUtil
-import com.intellij.platform.testFramework.core.FileComparisonFailedError
 import com.intellij.psi.PsiDocumentManager
 import com.intellij.psi.PsiFile
-import com.intellij.testFramework.VfsTestUtil
 import com.jetbrains.php.lang.PhpLangUtil
 import com.jetbrains.php.lang.psi.PhpPsiUtil
 import com.jetbrains.php.lang.psi.elements.PhpPsiElement
@@ -49,15 +47,7 @@ class PestTypeInferenceTest : PestLightCodeFixture() {
             lastOffset = segment.endOffset
         }
         contentWithActualTypes.append(text.substring(lastOffset))
-        val actualTypes = contentWithActualTypes.toString()
-        if (originalFileText != actualTypes) {
-            throw FileComparisonFailedError(
-                "Types are not matched",
-                originalFileText,
-                actualTypes,
-                file.virtualFile.getUserData(VfsTestUtil.TEST_DATA_FILE_PATH)
-            )
-        }
+        assertEquals("Types are not matched", originalFileText, contentWithActualTypes.toString())
     }
 
     private fun replaceContentOfConfiguredFile(fileTextWithExtractedTypes: StringBuilder): PsiFile {
