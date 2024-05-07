@@ -16,6 +16,8 @@ import com.pestphp.pest.PestSettings
 import java.util.regex.Pattern
 
 class PestTypeInferenceTest : PestLightCodeFixture() {
+    private lateinit var pestFilePathBackup: String
+
     override fun getTestDataPath(): String {
         return "src/test/resources/com/pestphp/pest/codeInsight/typeInference"
     }
@@ -23,7 +25,7 @@ class PestTypeInferenceTest : PestLightCodeFixture() {
     private fun doTest(block: () -> PsiFile) {
         PestSettings.getInstance(project).pestFilePath = "Pest.php"
         val pestPhpFile = block()
-        myFixture.openFileInEditor(pestPhpFile.getVirtualFile())
+        myFixture.openFileInEditor(pestPhpFile.virtualFile)
         doTypeTest()
     }
 
@@ -86,6 +88,21 @@ class PestTypeInferenceTest : PestLightCodeFixture() {
             uses(TestCase::class)->in("./");
         """.trimIndent()
         )
+    }
+
+    override fun setUp() {
+        super.setUp()
+        pestFilePathBackup = PestSettings.getInstance(project).pestFilePath
+    }
+
+    override fun tearDown() {
+        try {
+            PestSettings.getInstance(project).pestFilePath = pestFilePathBackup
+        } catch (e: Throwable) {
+            addSuppressedException(e)
+        } finally {
+            super.tearDown()
+        }
     }
 }
 
