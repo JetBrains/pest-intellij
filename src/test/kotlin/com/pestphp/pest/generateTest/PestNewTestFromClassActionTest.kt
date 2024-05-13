@@ -24,51 +24,58 @@ class PestNewTestFromClassActionTest : PestLightCodeFixture() {
     }
 
     private fun createTestFile(file: PsiFile, namespace: String): PsiFile {
-        val selectedElement = PhpPsiUtil.findClass(file as PhpFile) { _ -> true }
-        val testFile = MockPestNewTestFromClassAction.publicCreateFile(
-            project,
-            object : PhpNewTestDialog(project, file.containingDirectory, file, PestTestCreateInfo, selectedElement) {
-                override fun createUIComponents() {
-                    super.createUIComponents()
-                    myDirectoryCombobox = object : PhpPsrDirectoryComboBox(project, testDirectoryProvider) {
-                        override fun init(baseDir: VirtualFile, namespace: String) {
-                            super.init(baseDir, namespace)
-                            updateSuggestions(getNamespace())
-                        }
-
-                        override fun getExistingParent(): VirtualFile {
-                            return findExistingParent(selectedPath) ?: PlatformTestUtil.getOrCreateProjectBaseDir(project)
-                        }
-
-                        private fun findExistingParent(path: String): VirtualFile? {
-                            if (StringUtil.isEmpty(path)) {
-                                return null
-                            }
-                            val directory = TempFileSystem.getInstance().findFileByPath(path)
-                            return directory ?: findExistingParent(PathUtil.getParentPath(path))
-                        }
-
-                        override fun getBaseDirectory(): VirtualFile {
-                            return myDirectoryCombobox.existingParent ?: super.getBaseDirectory()
-                        }
-                    }
-                }
-
-                override fun getNamespace(): String {
-                    return namespace
-                }
-
-                override fun getSelectedClassMembers(): MutableSet<Method> {
-                    return selectedElement?.methods?.toMutableSet() ?: mutableSetOf()
-                }
-            })
-        assertNotNull(testFile)
-        return testFile!!
+        val dialog = getDialog(file, namespace)
+        try {
+            val testFile = MockPestNewTestFromClassAction.publicCreateFile(project, dialog)
+            assertNotNull(testFile)
+            return testFile!!
+        } finally {
+            dialog.disposeIfNeeded()
+        }
     }
 
     private object MockPestNewTestFromClassAction : PestNewTestFromClassAction() {
         fun publicCreateFile(project: Project, dataProvider: PhpCreateFileFromTemplateDataProvider): PsiFile? {
             return super.createFile(project, dataProvider)
+        }
+    }
+
+    private fun getDialog(file: PsiFile, namespace: String): PhpNewTestDialog {
+        val phpClass = PhpPsiUtil.findClass(file as PhpFile) { _ -> true }
+        return object : PhpNewTestDialog(project, file.containingDirectory, file, PestTestCreateInfo, phpClass) {
+            override fun createUIComponents() {
+                super.createUIComponents()
+                myDirectoryCombobox = object : PhpPsrDirectoryComboBox(project, testDirectoryProvider) {
+                    override fun init(baseDir: VirtualFile, namespace: String) {
+                        super.init(baseDir, namespace)
+                        updateSuggestions(getNamespace())
+                    }
+
+                    override fun getExistingParent(): VirtualFile {
+                        return findExistingParent(selectedPath) ?: PlatformTestUtil.getOrCreateProjectBaseDir(project)
+                    }
+
+                    private fun findExistingParent(path: String): VirtualFile? {
+                        if (StringUtil.isEmpty(path)) {
+                            return null
+                        }
+                        val directory = TempFileSystem.getInstance().findFileByPath(path)
+                        return directory ?: findExistingParent(PathUtil.getParentPath(path))
+                    }
+
+                    override fun getBaseDirectory(): VirtualFile {
+                        return myDirectoryCombobox.existingParent ?: super.getBaseDirectory()
+                    }
+                }
+            }
+
+            override fun getNamespace(): String {
+                return namespace
+            }
+
+            override fun getSelectedClassMembers(): MutableSet<Method> {
+                return phpClass?.methods?.toMutableSet() ?: mutableSetOf()
+            }
         }
     }
 
