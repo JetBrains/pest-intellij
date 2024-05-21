@@ -26,4 +26,15 @@ class PestRunnerSettings : PhpTestRunnerSettings() {
             return pestSettings
         }
     }
+
+    override fun equals(other: Any?): Boolean {
+        if (other !is PestRunnerSettings) return false
+        return super.equals(other) && coverageEngine == other.coverageEngine
+    }
+
+    override fun hashCode(): Int {
+        var result = super.hashCode()
+        result = 31 * result + coverageEngine.hashCode()
+        return result
+    }
 }

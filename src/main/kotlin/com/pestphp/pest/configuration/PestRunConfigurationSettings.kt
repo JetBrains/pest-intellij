@@ -24,4 +24,15 @@ class PestRunConfigurationSettings : PhpTestRunConfigurationSettings() {
             return copy
         }
         set(value) = super.setRunnerSettings(value)
+
+    override fun equals(other: Any?): Boolean {
+        if (other !is PestRunConfigurationSettings) return false
+        return super.equals(other) && pestRunnerSettings == other.pestRunnerSettings
+    }
+
+    override fun hashCode(): Int {
+        var result = super.hashCode()
+        result = 31 * result + pestRunnerSettings.hashCode()
+        return result
+    }
 }
