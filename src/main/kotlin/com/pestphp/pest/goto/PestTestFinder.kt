@@ -49,6 +49,7 @@ class PestTestFinder : TestFinder {
     }
 
     override fun isTest(element: PsiElement): Boolean {
+        if (element is PhpClass) return false
         return element.containingFile.isPestTestFile()
     }
 

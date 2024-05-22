@@ -32,6 +32,13 @@ class PestTestFinderTest : PestLightCodeFixture() {
         assertTrue(PestTestFinder().isTest(file.firstChild.children.random()))
     }
 
+    fun testClassIsNotTest() {
+        val file = myFixture.configureByFile("test/App/MockTest.php")
+        myFixture.testDataPath
+
+        assertFalse(PestTestFinder().isTest(file.firstChild.lastChild.firstChild))
+    }
+
     fun testCanFindSourceElement() {
         val file = myFixture.configureByFile("App/User.php")
 
