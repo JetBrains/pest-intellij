@@ -4,6 +4,10 @@ import com.intellij.ide.projectView.PresentationData
 import com.intellij.navigation.ChooseByNameContributor
 import com.intellij.navigation.ItemPresentation
 import com.intellij.navigation.NavigationItem
+import com.intellij.openapi.application.ReadAction
+import com.intellij.openapi.application.readAction
+import com.intellij.openapi.application.readActionBlocking
+import com.intellij.openapi.application.runReadAction
 import com.intellij.openapi.project.Project
 import com.intellij.psi.PsiManager
 import com.intellij.psi.search.ProjectScope
@@ -76,24 +80,25 @@ class PestTestGoToSymbolContributor : ChooseByNameContributor {
             }.mapNotNull { psiManager.findFile(it) }
             .flatMap { it.getPestTests() }
             .filter { it.getPestTestName().equals(name) }
-            .map { PestTestFunctionReference(it) }
+            .map { functionReference ->
+                val location = PhpPresentationUtil.getPresentablePathForFile(
+                    functionReference.containingFile.virtualFile,
+                    functionReference.project
+                )
+                val presentation = PresentationData(
+                    functionReference.getPestTestName(),
+                    location,
+                    PestIcons.Logo,
+                    null,
+                )
+                PestTestFunctionReference(functionReference, presentation)
+            }
             .toTypedArray()
     }
 
-    class PestTestFunctionReference(private val functionReference: FunctionReference) : NavigationItem {
-        override fun getPresentation(): ItemPresentation {
-            val location = PhpPresentationUtil.getPresentablePathForFile(
-                functionReference.containingFile.virtualFile,
-                functionReference.project
-            )
-
-            return PresentationData(
-                functionReference.getPestTestName(),
-                location,
-                PestIcons.Logo,
-                null,
-            )
-        }
+    class PestTestFunctionReference(private val functionReference: FunctionReference,
+                                    private val presentation: ItemPresentation) : NavigationItem {
+        override fun getPresentation(): ItemPresentation = presentation
 
         override fun navigate(requestFocus: Boolean) = functionReference.navigate(requestFocus)
 
