@@ -6,7 +6,7 @@ import org.jetbrains.annotations.PropertyKey
 import java.util.function.Supplier
 
 @NonNls
-private const val BUNDLE = "pestBundle"
+private const val BUNDLE = "messages.pestBundle"
 
 object PestBundle : DynamicBundle(BUNDLE) {
     @Suppress("SpreadOperator")

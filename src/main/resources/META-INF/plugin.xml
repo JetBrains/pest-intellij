@@ -3,7 +3,7 @@
     <name>Pest</name>
     <vendor>JetBrains</vendor>
     <description>Plugin provides Pest PHP test framework support</description>
-    <resource-bundle>pestBundle</resource-bundle>
+    <resource-bundle>messages.pestBundle</resource-bundle>
     <category>Test Tools</category>
 
     <depends>com.intellij.modules.platform</depends>
@@ -77,7 +77,7 @@
                 language="PHP"
                 implementationClass="com.pestphp.pest.inspections.SuppressUndefinedPropertyInspection"
         />
-        <notificationGroup displayType="BALLOON" id="Outdated Pest" isLogByDefault="true" bundle="pestBundle"
+        <notificationGroup displayType="BALLOON" id="Outdated Pest" isLogByDefault="true" bundle="messages.pestBundle"
                            key="NOTIFICATION_GROUP_OUTDATED_PEST"/>
         <lang.structureViewExtension implementation="com.pestphp.pest.structureView.PestStructureViewExtension"/>
         <gotoSymbolContributor implementation="com.pestphp.pest.goto.PestTestGoToSymbolContributor"/>
