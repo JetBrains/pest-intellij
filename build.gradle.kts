@@ -24,7 +24,7 @@ repositories {
 }
 
 dependencies {
-    testImplementation("org.mockito.kotlin:mockito-kotlin:5.1.0")
+    testImplementation("io.mockk:mockk:1.13.7")
 }
 
 // Set the JVM language level used to compile sources and generate files - Java 11 is required since 2020.3
