@@ -74,7 +74,7 @@ abstract class PestLightCodeFixture : BasePlatformTestCase() {
         return "$basePath/$relativePath"
     }
 
-    private fun getFileNameBeforeRelativePath(): String {
+    protected fun getFileNameBeforeRelativePath(): String {
         return getTestName(false).let { testPath ->
             val phpTestPath = "$testPath.php"
             if (phpTestPath.contains(testNameSeparator)) {

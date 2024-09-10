@@ -136,6 +136,16 @@
           level="WEAK WARNING"
           implementationClass="com.pestphp.pest.inspections.PestAssertionCanBeSimplifiedInspection"
         />
+        <localInspection
+          language="PHP"
+          groupPath="PHP"
+          groupKey="INSPECTION_PHP_GROUP_PEST"
+          shortName="PestTestFailedLineInspection"
+          enabledByDefault="true"
+          key="INSPECTION_PEST_FAILED_LINE"
+          level="WARNING"
+          implementationClass="com.pestphp.pest.inspections.PestTestFailedLineInspection"
+        />
     </extensions>
 
     <extensions defaultExtensionNs="com.jetbrains.php">
