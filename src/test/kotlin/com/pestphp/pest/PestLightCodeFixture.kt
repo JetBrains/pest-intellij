@@ -65,7 +65,17 @@ abstract class PestLightCodeFixture : BasePlatformTestCase() {
     }
 
     protected fun configureByFile(): PsiFile {
-        val path = getTestName(false).let { testPath ->
+        val path = getFileNameBeforeRelativePath()
+        configureByDirectory(path)
+        return myFixture.configureByFile(path)
+    }
+
+    private fun getFullPath(basePath: String, relativePath: String): String {
+        return "$basePath/$relativePath"
+    }
+
+    private fun getFileNameBeforeRelativePath(): String {
+        return getTestName(false).let { testPath ->
             val phpTestPath = "$testPath.php"
             if (phpTestPath.contains(testNameSeparator)) {
                 phpTestPath.replace(testNameSeparator, File.separatorChar)
@@ -73,7 +83,9 @@ abstract class PestLightCodeFixture : BasePlatformTestCase() {
                 phpTestPath
             }
         }
-        configureByDirectory(path)
-        return myFixture.configureByFile(path)
+    }
+
+    protected fun getFileBeforeFullPath(): String {
+        return getFullPath(testDataPath, getFileNameBeforeRelativePath())
     }
 }

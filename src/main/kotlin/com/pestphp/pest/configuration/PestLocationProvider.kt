@@ -19,11 +19,10 @@ import com.pestphp.pest.runner.LocationInfo
  * Adds support for goto test from test results.
  */
 class PestLocationProvider(
-    private val pathMapper: PhpPathMapper,
+    val pathMapper: PhpPathMapper,
     private val project: Project,
     private val configurationFileRootPath: String? = null
 ) : SMTestLocator {
-    private val protocolId = "pest_qn"
     private val phpUnitLocationProvider = PhpUnitQualifiedNameLocationProvider.create(pathMapper)
 
     override fun getLocation(
@@ -32,7 +31,7 @@ class PestLocationProvider(
         project: Project,
         scope: GlobalSearchScope
     ): MutableList<Location<PsiElement>> {
-        if (protocol != protocolId) {
+        if (protocol != PROTOCOL_ID) {
             return phpUnitLocationProvider.getLocation(protocol, path, project, scope)
         }
 
@@ -55,12 +54,7 @@ class PestLocationProvider(
     private fun getLocationInfo(link: String): LocationInfo? {
         val location = link.split("::")
 
-        val pathPrefix = configurationFileRootPath ?: project.basePath
-        val fileUrl = if (pathPrefix != null && location[0].startsWith(pathPrefix)) {
-            location[0] // for Pest versions 1.x
-        } else {
-            "$pathPrefix/${location[0]}" // for Pest versions >= 2.x
-        }
+        val fileUrl = calculateFileUrl(location[0])
         val file = this.pathMapper.getLocalFile(fileUrl)
 
         if (location.size == 1) {
@@ -95,5 +89,18 @@ class PestLocationProvider(
         scope: GlobalSearchScope
     ): MutableList<Location<PsiElement>> {
         return mutableListOf()
+    }
+
+    fun calculateFileUrl(locationOutput: String): String {
+        val pathPrefix = configurationFileRootPath ?: project.basePath
+        return if (pathPrefix != null && locationOutput.startsWith(pathPrefix)) {
+            locationOutput // for Pest versions 1.x
+        } else {
+            "$pathPrefix/${locationOutput}" // for Pest versions >= 2.x
+        }
+    }
+
+    companion object {
+        const val PROTOCOL_ID = "pest_qn"
     }
 }

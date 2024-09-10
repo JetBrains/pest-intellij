@@ -43,8 +43,6 @@ class PestConsoleProperties(
     }
 
     override fun getTestStackTraceParser(url: String, proxy: SMTestProxy, project: Project): TestStackTraceParser {
-        return object : TestStackTraceParser(url, proxy.stacktrace, proxy.errorMessage, proxy.locator, project) {
-
-        }
+        return parse(url, proxy.stacktrace, proxy.errorMessage, testLocator, project)
     }
 }
