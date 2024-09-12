@@ -1,17 +1,13 @@
 package com.pestphp.pest.inspections
 
-import com.intellij.codeInsight.daemon.impl.CollectHighlightsUtil
-import com.intellij.codeInspection.*
+import com.intellij.codeInspection.InspectionManager
+import com.intellij.codeInspection.ProblemHighlightType
+import com.intellij.codeInspection.ProblemsHolder
 import com.intellij.openapi.editor.colors.CodeInsightColors
-import com.intellij.openapi.util.TextRange
-import com.intellij.psi.PsiElement
 import com.intellij.psi.PsiElementVisitor
-import com.intellij.psi.PsiFile
 import com.jetbrains.php.lang.inspections.PhpInspection
 import com.jetbrains.php.lang.inspections.phpunit.PhpUnitTestFailedLineInspection
-import com.jetbrains.php.lang.psi.elements.Function
 import com.jetbrains.php.lang.psi.elements.FunctionReference
-import com.jetbrains.php.lang.psi.elements.PhpExpression
 import com.jetbrains.php.lang.psi.visitors.PhpElementVisitor
 import com.pestphp.pest.isPestTestReference
 import com.pestphp.pest.runner.PestFailedLineManager
@@ -29,7 +25,7 @@ class PestTestFailedLineInspection : PhpInspection() {
                     val file = functionCall.getContainingFile()
                     val parent = PhpUnitTestFailedLineInspection.findCommonParent(file, failedLine.textRange)
                     if (parent != null) {
-                        val failedLineRange = getRangeForHighlighting(failedLine, file, parent)
+                        val failedLineRange = PhpUnitTestFailedLineInspection.getRangeForHighlighting(failedLine, file, parent)
                         val relativeTextRange = failedLineRange.shiftLeft(parent.textRange.startOffset)
                         if (relativeTextRange.startOffset >= parent.textLength) return
                         if (relativeTextRange.endOffset > parent.textLength) return
@@ -47,14 +43,5 @@ class PestTestFailedLineInspection : PhpInspection() {
                 }
             }
         }
-    }
-
-    private fun getRangeForHighlighting(failedLine: PestFailedLineManager.FailedLine, file: PsiFile, parent: PsiElement): TextRange {
-        val range = failedLine.textRange
-        val elements = CollectHighlightsUtil.getElementsInRange(file, range.startOffset, range.endOffset)
-        if (elements.any { e -> e is PhpExpression } || elements.any { e -> e is Function && !e.isClosure() }) {
-            return range
-        }
-        return parent.getTextRange()
     }
 }
