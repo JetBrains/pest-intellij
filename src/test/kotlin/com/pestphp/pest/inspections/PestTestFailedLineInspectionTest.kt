@@ -123,19 +123,36 @@ class PestTestFailedLineInspectionTest : PestLightCodeFixture() {
         doTest(record)
     }
 
+    fun testWithDataSetAndKeys() {
+        val secondDatasetRecord = TestStateStorage.Record(
+            6, Date(), 0, 4,
+            "    expect(1)->toBe(\$a);",
+            "Failed asserting that 1 is identical to 2.", null
+        )
+        writeTestStateWithDataset(secondDatasetRecord, "\"dataset \"\"second dataset\"")
+        val thirdDatasetRecord = TestStateStorage.Record(
+            6, Date(), 0, 4,
+            "    expect(1)->toBe(\$a);",
+            "Failed asserting that 1 is identical to 3.", null
+        )
+        writeTestStateWithDataset(thirdDatasetRecord, "\"dataset \"\"third dataset\"")
+        val methodRecord = TestStateStorage.Record(6, Date(), 0, -1, "", "", null)
+        doTest(methodRecord)
+    }
+
     fun testWithDataSet() {
         val secondDatasetRecord = TestStateStorage.Record(
             6, Date(), 0, 4,
             "    expect(1)->toBe(\$a);",
             "Failed asserting that 1 is identical to 2.", null
         )
-        writeTestStateWithDataset(secondDatasetRecord, "second dataset")
+        writeTestStateWithDataset(secondDatasetRecord, "(2)")
         val thirdDatasetRecord = TestStateStorage.Record(
             6, Date(), 0, 4,
             "    expect(1)->toBe(\$a);",
             "Failed asserting that 1 is identical to 3.", null
         )
-        writeTestStateWithDataset(thirdDatasetRecord, "third dataset")
+        writeTestStateWithDataset(thirdDatasetRecord, "(3)")
         val methodRecord = TestStateStorage.Record(6, Date(), 0, -1, "", "", null)
         doTest(methodRecord)
     }
@@ -163,14 +180,14 @@ class PestTestFailedLineInspectionTest : PestLightCodeFixture() {
             "    expect(1)->toBe(\$a);",
             "Failed asserting that 1 is identical to 2.", null
         )
-        writeTestStateWithDataset(record, "#2")
+        writeTestStateWithDataset(record, "\"dataset \"\"second dataset\"")
 
         val record2 = TestStateStorage.Record(
             6, Date(), 0, 5,
             "    expect(2)->toBe(\$a);",
             "Failed asserting that 2 is identical to 1.", null
         )
-        writeTestStateWithDataset(record2, "#1")
+        writeTestStateWithDataset(record2, "\"dataset \"\"first dataset\"")
         val methodRecord = TestStateStorage.Record(6, Date(), 0, -1, "", "", null)
         doTest(methodRecord)
     }

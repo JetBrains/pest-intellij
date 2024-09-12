@@ -35,7 +35,7 @@ class PestFailedLineManager(
             val dataSetRecords: List<TestStateStorage.Record> = allRecordLocationUrls
                 .asSequence()
                 .filterNotNull()
-                .filter { recordLocationUrl -> recordLocationUrl.startsWith("$testLocationUrl with data set ") }
+                .filter { recordLocationUrl -> isLocationUrlWithNamedDatasetValue(recordLocationUrl, testLocationUrl) }
                 .map { recordLocationUrl -> TestStateStorage.getInstance(project).getState(recordLocationUrl) }
                 .filterNotNull()
                 .filter { record -> record.failedLine != -1 }
@@ -45,6 +45,9 @@ class PestFailedLineManager(
         }
         return records
     }
+
+    private fun isLocationUrlWithNamedDatasetValue(recordLocationUrl: String, testLocationUrl: String) =
+        recordLocationUrl.startsWith("$testLocationUrl with data set \"dataset")
 
     private fun getLocationUrl(containingFile: PsiFile, functionCall: FunctionReference): String {
         return getLocationUrl(containingFile) + "::" + functionCall.getPestTestName()
