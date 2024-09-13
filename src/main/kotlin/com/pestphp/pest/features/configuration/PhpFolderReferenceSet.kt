@@ -1,12 +1,10 @@
-package com.pestphp.pest.features.uses
+package com.pestphp.pest.features.configuration
 
 import com.intellij.openapi.util.Condition
 import com.intellij.psi.PsiElement
-import com.intellij.psi.PsiFile
 import com.intellij.psi.PsiFileSystemItem
 import com.intellij.psi.PsiReferenceProvider
 import com.intellij.psi.impl.source.resolve.reference.impl.providers.FileReferenceSet
-import com.jetbrains.php.config.library.PhpIncludePathManager
 import com.jetbrains.php.lang.psi.elements.PhpPsiElement
 import com.jetbrains.php.lang.psi.elements.impl.PhpFileReferenceSet
 

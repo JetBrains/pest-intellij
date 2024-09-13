@@ -5,15 +5,12 @@ import com.intellij.openapi.project.Project
 import com.intellij.openapi.project.guessProjectDir
 import com.intellij.openapi.vfs.VfsUtil
 import com.intellij.psi.PsiElement
-import com.intellij.psi.util.PsiTreeUtil
+import com.jetbrains.php.lang.psi.elements.FunctionReference
 import com.jetbrains.php.lang.psi.elements.PhpNamedElement
 import com.jetbrains.php.lang.psi.elements.impl.FunctionReferenceImpl
 import com.jetbrains.php.lang.psi.resolve.types.PhpType
 import com.jetbrains.php.lang.psi.resolve.types.PhpTypeProvider4
-import com.pestphp.pest.PestSettings
-import com.pestphp.pest.getUsesPhpType
-import com.pestphp.pest.isAnyPestFunction
-import com.pestphp.pest.isThisVariableInPest
+import com.pestphp.pest.*
 import kotlin.io.path.Path
 import kotlin.io.path.pathString
 
@@ -56,9 +53,9 @@ open class ThisTypeProvider : PhpTypeProvider4 {
             }
         }
 
-        PsiTreeUtil.findChildrenOfType(psiElement.containingFile, FunctionReferenceImpl::class.java)
-            .filter { it.name == "uses" }
-            .mapNotNull { it.getUsesPhpType() }
+        psiElement.containingFile.getRoot()
+            .filterIsInstance<FunctionReference>()
+            .mapNotNull { it.getPestConfigurationPhpType() }
             .forEach { result.add(it) }
 
         return result

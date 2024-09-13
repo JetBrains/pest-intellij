@@ -1,4 +1,4 @@
-package com.pestphp.pest.configuration
+package com.pestphp.pest.configuration.pest
 
 import com.pestphp.pest.PestLightCodeFixture
 
@@ -10,7 +10,7 @@ class PestConfigurationFileTest : PestLightCodeFixture() {
     }
 
     override fun getTestDataPath(): String {
-        return "$basePath/configuration"
+        return "$basePath/configuration/pest"
     }
 
     fun testUnit() {
@@ -19,8 +19,8 @@ class PestConfigurationFileTest : PestLightCodeFixture() {
         assertCompletion("baseTestFunc")
     }
 
-    fun testUsesUnit() {
-        myFixture.configureByFile("tests/Unit/UsesUnitTest.php")
+    fun testPestExtendUsesUnit() {
+        myFixture.configureByFile("tests/Unit/PestExtendUnitTest.php")
 
         assertCompletion("baseTestFunc", "traitFunc")
     }

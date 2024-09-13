@@ -12,6 +12,9 @@ import com.jetbrains.php.lang.psi.elements.Function
 import com.jetbrains.php.lang.psi.elements.impl.FunctionReferenceImpl
 import com.jetbrains.php.lang.psi.resolve.types.PhpType
 
+val CONFIGURATION_FUNCTIONS = listOf("pest", "uses")
+val CONFIGURATION_METHODS = listOf("use", "uses", "extend", "extends")
+
 fun PsiElement?.isThisVariableInPest(condition: (FunctionReferenceImpl) -> Boolean): Boolean {
     if ((this as? Variable)?.name != "this") return false
 
@@ -65,7 +68,8 @@ private fun FunctionReferenceImpl.getThisStatements(): List<AssignmentExpression
     }
 }
 
-fun FunctionReference.getUsesPhpType(): PhpType? {
+fun FunctionReference.getConfigurationPhpType(): PhpType? {
+    if (this.name !in CONFIGURATION_METHODS) return PhpType()
     parameters.mapNotNull {
         val classRef = it as? ClassConstantReference ?: return@mapNotNull null
 
@@ -83,4 +87,17 @@ fun FunctionReference.getUsesPhpType(): PhpType? {
 
         return res
     }
+}
+
+fun FunctionReference.getPestConfigurationPhpType(): PhpType? {
+    if (this is FunctionReferenceImpl && this.name in CONFIGURATION_FUNCTIONS) {
+        return this.getConfigurationPhpType()
+    }
+    val classReference = (this as? MethodReference)?.classReference ?: return null
+    if (classReference is FunctionReference) {
+        val typeFromClassRef = classReference.getPestConfigurationPhpType()
+        val typeFromParameters = this.getConfigurationPhpType()
+        return PhpType().add(typeFromParameters).add(typeFromClassRef)
+    }
+    return null
 }

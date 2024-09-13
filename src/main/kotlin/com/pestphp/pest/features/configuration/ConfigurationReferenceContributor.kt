@@ -1,4 +1,4 @@
-package com.pestphp.pest.features.uses
+package com.pestphp.pest.features.configuration
 
 import com.intellij.patterns.PlatformPatterns
 import com.intellij.psi.PsiReferenceContributor
@@ -7,7 +7,7 @@ import com.jetbrains.php.lang.psi.elements.ParameterList
 import com.jetbrains.php.lang.psi.elements.StringLiteralExpression
 import com.jetbrains.php.lang.psi.elements.impl.MethodReferenceImpl
 
-class UsesReferenceContributor : PsiReferenceContributor() {
+class ConfigurationReferenceContributor : PsiReferenceContributor() {
     override fun registerReferenceProviders(registrar: PsiReferenceRegistrar) {
         registrar.registerReferenceProvider(
             PlatformPatterns.psiElement(StringLiteralExpression::class.java)
@@ -15,7 +15,7 @@ class UsesReferenceContributor : PsiReferenceContributor() {
                     ParameterList::class.java,
                     MethodReferenceImpl::class.java
                 ),
-            UsesInDirectoryReferenceProvider()
+            ConfigurationInDirectoryReferenceProvider()
         )
     }
 }

@@ -12,14 +12,14 @@ import com.intellij.psi.util.CachedValue
 import com.intellij.psi.util.CachedValueProvider
 import com.intellij.psi.util.CachedValuesManager
 import com.jetbrains.php.lang.psi.PhpFile
+import com.jetbrains.php.lang.psi.elements.FunctionReference
 import com.jetbrains.php.lang.psi.elements.MethodReference
 import com.jetbrains.php.lang.psi.elements.PhpPsiElement
 import com.jetbrains.php.lang.psi.elements.impl.FunctionReferenceImpl
 import com.jetbrains.php.lang.psi.elements.impl.PhpFilePathUtils
 import com.jetbrains.php.lang.psi.resolve.types.PhpType
-import com.pestphp.pest.PestSettings
-import com.pestphp.pest.getBaseDir
-import com.pestphp.pest.getUsesPhpType
+import com.pestphp.pest.*
+import com.pestphp.pest.features.configuration.getConfigurationFunctionCall
 import kotlin.io.path.Path
 
 class PestConfigurationFileParser(private val settings: PestSettings) {
@@ -61,11 +61,15 @@ class PestConfigurationFileParser(private val settings: PestSettings) {
         PsiRecursiveElementWalkingVisitor() {
         override fun visitElement(element: PsiElement) {
             if (element is MethodReference) {
-                visitInReference(element)
+                if (element.name == "in") {
+                    visitInReference(element)
+                } else if (getConfigurationFunctionCall(element)?.name in CONFIGURATION_FUNCTIONS) {
+                    collect(element.getPestConfigurationPhpType() ?: return, null, false)
+                }
                 return
             } else if (element is FunctionReferenceImpl) {
                 if (element.name == "uses") {
-                    collect(element.getUsesPhpType() ?: return, null, false)
+                    collect(element.getConfigurationPhpType() ?: return, null, false)
                 }
                 return
             }
@@ -82,8 +86,8 @@ class PestConfigurationFileParser(private val settings: PestSettings) {
                 if (ref is MethodReference) {
                     reference = ref
                 } else if (ref is FunctionReferenceImpl) {
-                    if (ref.name == "uses") {
-                        usesType = ref.getUsesPhpType()
+                    if (ref.name in CONFIGURATION_FUNCTIONS) {
+                        usesType = (inReference.classReference as? FunctionReference)?.getPestConfigurationPhpType()
                     }
 
                     break

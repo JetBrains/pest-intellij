@@ -1,30 +1,26 @@
-package com.pestphp.pest.features.uses
+package com.pestphp.pest.features.configuration
 
 import com.intellij.psi.PsiElement
-import com.intellij.psi.PsiFile
-import com.intellij.psi.PsiFileSystemItem
 import com.intellij.psi.PsiReference
 import com.intellij.psi.PsiReferenceProvider
-import com.intellij.psi.impl.source.resolve.reference.impl.providers.FileReferenceHelperRegistrar
-import com.intellij.psi.impl.source.resolve.reference.impl.providers.FileReferenceSet
-import com.intellij.util.Function
 import com.intellij.util.ProcessingContext
+import com.jetbrains.php.lang.psi.elements.FunctionReference
+import com.jetbrains.php.lang.psi.elements.MethodReference
 import com.jetbrains.php.lang.psi.elements.StringLiteralExpression
 import com.jetbrains.php.lang.psi.elements.impl.FunctionReferenceImpl
 import com.jetbrains.php.lang.psi.elements.impl.MethodReferenceImpl
+import com.pestphp.pest.CONFIGURATION_FUNCTIONS
 
-class UsesInDirectoryReferenceProvider: PsiReferenceProvider() {
+class ConfigurationInDirectoryReferenceProvider: PsiReferenceProvider() {
     override fun getReferencesByElement(element: PsiElement, context: ProcessingContext): Array<PsiReference> {
         val inCall = element.parent.parent as MethodReferenceImpl
 
-        // Check if method call is `in`.
         if (inCall.canonicalText != "in") {
             return PsiReference.EMPTY_ARRAY
         }
 
-        // Check if the function call is `uses`
-        val usesCall = inCall.firstPsiChild as? FunctionReferenceImpl ?: return PsiReference.EMPTY_ARRAY
-        if (usesCall.canonicalText != "uses") {
+        val usesCall = getConfigurationFunctionCall(inCall) as? FunctionReferenceImpl ?: return PsiReference.EMPTY_ARRAY
+        if (usesCall.canonicalText !in CONFIGURATION_FUNCTIONS) {
             return PsiReference.EMPTY_ARRAY
         }
 
@@ -35,4 +31,15 @@ class UsesInDirectoryReferenceProvider: PsiReferenceProvider() {
             .toList()
             .toTypedArray()
     }
+}
+
+fun getConfigurationFunctionCall(inCall: MethodReference): FunctionReference? {
+    val child = inCall.firstPsiChild
+    if (child !is MethodReference) {
+        if (child is FunctionReference) {
+            return child
+        }
+        return null
+    }
+    return getConfigurationFunctionCall(child)
 }

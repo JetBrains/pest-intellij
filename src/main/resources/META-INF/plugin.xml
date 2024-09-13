@@ -116,7 +116,7 @@
                 implementation="com.pestphp.pest.features.datasets.DatasetReferenceContributor"
                 language="PHP"/>
         <psi.referenceContributor
-                implementation="com.pestphp.pest.features.uses.UsesReferenceContributor"
+                implementation="com.pestphp.pest.features.configuration.ConfigurationReferenceContributor"
                 language="PHP"/>
         <registryKey defaultValue="true"
                      description="Whether custom expectation file generation should happen."

@@ -1,12 +1,12 @@
-package com.pestphp.pest.features.uses
+package com.pestphp.pest.features.configuration
 
 import com.intellij.testFramework.TestDataPath
 import com.pestphp.pest.PestLightCodeFixture
 
-@TestDataPath("\$CONTENT_ROOT/resources/com/pestphp/pest/features/uses")
+@TestDataPath("\$CONTENT_ROOT/resources/com/pestphp/pest/features/configuration/uses")
 class UsesCompletionTest : PestLightCodeFixture() {
     override fun getTestDataPath(): String {
-        return "src/test/resources/com/pestphp/pest/features/uses"
+        return "src/test/resources/com/pestphp/pest/features/configuration/uses"
     }
 
     fun testCanCompleteSubFolder() {
