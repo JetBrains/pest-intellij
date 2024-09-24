@@ -6,7 +6,7 @@ class PestConfigurationFileTest : PestLightCodeFixture() {
     override fun setUp() {
         super.setUp()
 
-        myFixture.copyDirectoryToProject(".", "tests")
+        myFixture.copyDirectoryToProject(".", ".")
     }
 
     override fun getTestDataPath(): String {
@@ -47,5 +47,11 @@ class PestConfigurationFileTest : PestLightCodeFixture() {
         myFixture.configureByFile("tests/DynamicFeature/FeatureTest.php")
 
         assertCompletion("baseTestFunc", "featureTestFunc")
+    }
+
+    fun testUnitOutsideOfPestTestDir() {
+        myFixture.configureByFile("tests2/Unit/UnitTest.php")
+
+        assertCompletion()
     }
 }

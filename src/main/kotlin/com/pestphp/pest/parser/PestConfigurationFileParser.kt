@@ -64,7 +64,10 @@ class PestConfigurationFileParser(private val settings: PestSettings) {
                 if (element.name == "in") {
                     visitInReference(element)
                 } else if (getConfigurationFunctionCall(element)?.name in CONFIGURATION_FUNCTIONS) {
-                    collect(element.getPestConfigurationPhpType() ?: return, null, false)
+                    collect(element.getPestConfigurationPhpType() ?: return,
+                            if (getConfigurationFunctionCall(element)?.name == "pest" &&
+                                element.containingFile.name == CONFIGURATION_FILE_NAME) DEFAULT_DIRECTORY else null,
+                            false)
                 }
                 return
             } else if (element is FunctionReferenceImpl) {
@@ -115,5 +118,8 @@ class PestConfigurationFileParser(private val settings: PestSettings) {
         )
 
         private val cacheKey = Key<CachedValue<PestConfigurationFile>>("com.pestphp.pest_configuration")
+
+        private const val DEFAULT_DIRECTORY = ""
+        private const val CONFIGURATION_FILE_NAME = "Pest.php"
     }
 }
