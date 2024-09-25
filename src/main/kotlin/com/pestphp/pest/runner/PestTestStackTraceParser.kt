@@ -33,12 +33,9 @@ private fun getLineText(
     locator: PestLocationProvider
 ): String? {
     val fileUrl = locator.calculateFileUrl(path)
-    val vFile = locator.pathMapper.getLocalFile(fileUrl)
-    if (vFile == null) return null
-    val psiFile = PsiManager.getInstance(project).findFile(vFile)
-    if (psiFile == null) return null
-    val document = PsiDocumentManager.getInstance(project).getDocument(psiFile)
-    if (document == null) return null
+    val vFile = locator.pathMapper.getLocalFile(fileUrl) ?: return null
+    val psiFile = PsiManager.getInstance(project).findFile(vFile) ?: return null
+    val document = PsiDocumentManager.getInstance(project).getDocument(psiFile) ?: return null
     if (line > document.lineCount) return null
     val range = DocumentUtil.getLineTextRange(document, line - 1)
     return document.getText(range)

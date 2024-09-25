@@ -19,18 +19,18 @@ import java.nio.file.Paths
 class PestFailedLineManager(
     project: Project
 ) : PhpTestFrameworkFailedLineManager(project), FileEditorManagerListener {
-    override fun getTestLocationUrl(psiElement: PsiElement): String? {
-        if (psiElement !is FunctionReference) return null
-        return getLocationUrl(psiElement.containingFile, psiElement)
+    override fun getTestLocationUrl(testElement: PsiElement): String? {
+        if (testElement !is FunctionReference) return null
+        return getLocationUrl(testElement.containingFile, testElement)
     }
 
-    override fun getRecordsForTest(psiElement: PsiElement): List<TestStateStorage.Record> {
-        val testLocationUrl = getTestLocationUrl(psiElement) ?: return emptyList()
-        val testStateRecord = TestStateStorage.getInstance(psiElement.project).getState(testLocationUrl) ?: return emptyList()
+    override fun getRecordsForTest(testElement: PsiElement): List<TestStateStorage.Record> {
+        val testLocationUrl = getTestLocationUrl(testElement) ?: return emptyList()
+        val testStateRecord = TestStateStorage.getInstance(testElement.project).getState(testLocationUrl) ?: return emptyList()
 
-        val project = psiElement.getProject()
+        val project = testElement.getProject()
         val records = mutableListOf(testStateRecord)
-        if (testStateRecord.failedLine == -1 && (psiElement.parent as? MethodReference)?.isDatasetCall() == true) {
+        if (testStateRecord.failedLine == -1 && (testElement.parent as? MethodReference)?.isDatasetCall() == true) {
             val allRecordLocationUrls = TestStateStorage.getInstance(project).keys
             val dataSetRecords: List<TestStateStorage.Record> = allRecordLocationUrls
                 .asSequence()
@@ -46,12 +46,11 @@ class PestFailedLineManager(
         return records
     }
 
-    private fun isLocationUrlWithNamedDatasetValue(recordLocationUrl: String, testLocationUrl: String) =
+    private fun isLocationUrlWithNamedDatasetValue(recordLocationUrl: String, testLocationUrl: String): Boolean =
         recordLocationUrl.startsWith("$testLocationUrl with data set \"dataset")
 
-    private fun getLocationUrl(containingFile: PsiFile, functionCall: FunctionReference): String {
-        return getLocationUrl(containingFile) + "::" + functionCall.getPestTestName()
-    }
+    private fun getLocationUrl(containingFile: PsiFile, functionCall: FunctionReference): String =
+        getLocationUrl(containingFile) + "::" + functionCall.getPestTestName()
 
     private fun getLocationUrl(psiFile: PsiFile): String {
         val absoluteFilePath = PhpUnitTestRunLineMarkerProvider.getFilePathDeploymentAware(psiFile.getContainingFile())

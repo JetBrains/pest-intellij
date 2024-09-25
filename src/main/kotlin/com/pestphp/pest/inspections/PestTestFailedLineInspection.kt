@@ -19,7 +19,6 @@ class PestTestFailedLineInspection : PhpInspection() {
                 if (!functionCall.isPestTestReference()) return
                 val failedLineManager = holder.project.getService(PestFailedLineManager::class.java)
                 val failedLines = failedLineManager.getFailedLines(functionCall)
-                if (failedLines.isEmpty()) return
 
                 failedLines.forEach { failedLine ->
                     val file = functionCall.getContainingFile()
