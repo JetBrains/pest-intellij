@@ -6,6 +6,7 @@ import com.intellij.openapi.util.text.StringUtil
 import com.intellij.psi.PsiDocumentManager
 import com.intellij.psi.PsiManager
 import com.intellij.util.DocumentUtil
+import com.jetbrains.php.util.pathmapper.PhpLocalPathMapper
 import com.pestphp.pest.configuration.PestLocationProvider
 
 fun parse(url: String,
@@ -33,7 +34,7 @@ private fun getLineText(
     locator: PestLocationProvider
 ): String? {
     val fileUrl = locator.calculateFileUrl(path)
-    val vFile = locator.pathMapper.getLocalFile(fileUrl) ?: return null
+    val vFile = locator.pathMapper.getLocalFile(fileUrl) ?: PhpLocalPathMapper(project).getLocalFile(fileUrl) ?: return null
     val psiFile = PsiManager.getInstance(project).findFile(vFile) ?: return null
     val document = PsiDocumentManager.getInstance(project).getDocument(psiFile) ?: return null
     if (line > document.lineCount) return null

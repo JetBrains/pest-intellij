@@ -10,6 +10,7 @@ import com.intellij.psi.search.GlobalSearchScope
 import com.jetbrains.php.lang.psi.PhpFile
 import com.jetbrains.php.phpunit.PhpPsiLocationWithDataSet
 import com.jetbrains.php.phpunit.PhpUnitQualifiedNameLocationProvider
+import com.jetbrains.php.util.pathmapper.PhpLocalPathMapper
 import com.jetbrains.php.util.pathmapper.PhpPathMapper
 import com.pestphp.pest.getPestTestName
 import com.pestphp.pest.getPestTests
@@ -55,7 +56,7 @@ class PestLocationProvider(
         val location = link.split("::")
 
         val fileUrl = calculateFileUrl(location[0])
-        val file = this.pathMapper.getLocalFile(fileUrl)
+        val file = this.pathMapper.getLocalFile(fileUrl) ?: PhpLocalPathMapper(project).getLocalFile(fileUrl)
 
         if (location.size == 1) {
             return file?.let { LocationInfo(it, null) }

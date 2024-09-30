@@ -8,7 +8,6 @@ import com.intellij.psi.PsiElement
 import com.intellij.psi.PsiFile
 import com.jetbrains.php.lang.psi.elements.FunctionReference
 import com.jetbrains.php.lang.psi.elements.MethodReference
-import com.jetbrains.php.phpunit.PhpUnitTestRunLineMarkerProvider
 import com.jetbrains.php.testFramework.PhpTestFrameworkFailedLineManager
 import com.pestphp.pest.configuration.PestLocationProvider
 import com.pestphp.pest.features.datasets.isDatasetCall
@@ -53,9 +52,10 @@ class PestFailedLineManager(
         getLocationUrl(containingFile) + "::" + functionCall.getPestTestName()
 
     private fun getLocationUrl(psiFile: PsiFile): String {
-        val absoluteFilePath = PhpUnitTestRunLineMarkerProvider.getFilePathDeploymentAware(psiFile.getContainingFile())
-        val path = if (absoluteFilePath.startsWith(psiFile.getProject().getBasePath() ?: "")) {
-            Paths.get(psiFile.project.basePath ?: "").relativize(Paths.get(absoluteFilePath)).toString()
+        val absoluteFilePath = psiFile.virtualFile.path
+        val basePath = psiFile.project.basePath ?: ""
+        val path = if (absoluteFilePath.startsWith(basePath)) {
+            Paths.get(basePath).relativize(Paths.get(absoluteFilePath)).toString()
         } else {
             absoluteFilePath
         }

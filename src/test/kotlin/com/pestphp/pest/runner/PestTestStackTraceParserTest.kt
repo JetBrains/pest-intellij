@@ -1,7 +1,9 @@
 package com.pestphp.pest.runner
 
 import com.intellij.testFramework.TestDataPath
+import com.intellij.util.PathMappingSettings
 import com.jetbrains.php.util.pathmapper.PhpPathMapper
+import com.jetbrains.php.util.pathmapper.PhpRemotePathMapper
 import com.pestphp.pest.PestLightCodeFixture
 import com.pestphp.pest.configuration.PestLocationProvider
 
@@ -13,6 +15,11 @@ class PestTestStackTraceParserTest : PestLightCodeFixture() {
 
     private fun createStackTraceParser(url: String, stacktrace: String?, message: String?): PestTestStackTraceParser {
         val locator = PestLocationProvider(PhpPathMapper.create(project), project, myFixture.testDataPath)
+        return parse(url, stacktrace, message, locator, project)
+    }
+
+    private fun createRemoteStackTraceParser(url: String, stacktrace: String?, message: String?): PestTestStackTraceParser {
+        val locator = PestLocationProvider(PhpRemotePathMapper.create(listOf(PathMappingSettings.PathMapping(getFileBeforeFullPath(), "/opt/project"))), project, myFixture.testDataPath)
         return parse(url, stacktrace, message, locator, project)
     }
 
@@ -84,5 +91,15 @@ class PestTestStackTraceParserTest : PestLightCodeFixture() {
         assertEquals(10, stackTraceParser.failedLine)
         assertNull(stackTraceParser.topLocationLine)
         assertNull(stackTraceParser.failedMethodName)
+    }
+
+    fun testOneLineRemote() {
+        configureByFile()
+        val stackTraceParser =
+            createRemoteStackTraceParser("pest_qn://" + getFileBeforeFullPath() + "::myTest", getFileBeforeFullPath() + ":4", "error")
+        assertEquals("error", stackTraceParser.errorMessage)
+        assertEquals(4, stackTraceParser.failedLine)
+        assertNull(stackTraceParser.topLocationLine)
+        assertEquals("   expect(1)->toBe(2);", stackTraceParser.failedMethodName)
     }
 }
