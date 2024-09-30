@@ -2,6 +2,7 @@ package com.pestphp.pest
 
 import com.intellij.psi.PsiElement
 import com.intellij.psi.util.findParentOfType
+import com.intellij.psi.util.parents
 import com.intellij.remote.RemoteSdkProperties
 import com.jetbrains.php.config.interpreters.PhpInterpretersManagerImpl
 import com.jetbrains.php.lang.psi.elements.*
@@ -11,7 +12,7 @@ import com.jetbrains.php.util.pathmapper.PhpPathMapper
 import java.util.*
 
 fun FunctionReferenceImpl.getPestTestName(): String? {
-    val testName = getParameter(0)?.stringValue ?: return null
+    val testName = getParameter(0)?.stringValue ?: return tryGetArchTestName(this)
 
     val parent = this.findParentOfType<FunctionReferenceImpl>()
     val prepend = if (parent is FunctionReferenceImpl && parent.isDescribeFunction()) {
@@ -26,6 +27,29 @@ fun FunctionReferenceImpl.getPestTestName(): String? {
         else -> "${prepend}$testName"
     }
 }
+
+private fun tryGetArchTestName(functionReference: FunctionReference): String? =
+    if (functionReference.canonicalText == "arch") {
+        getArchTestName(functionReference)
+    } else {
+        null
+    }
+
+private fun getArchTestName(functionReference: FunctionReference): String {
+    val parents = functionReference.parents(false).takeWhile { it !is Statement }.toList()
+    return parents.joinToString(separator = " → ") { element ->
+        val name = if (element is PhpReference) element.canonicalText else element.text
+        val parameters = if (element is ParameterListOwner) getParametersString(element) else ""
+        "$name$parameters"
+    }
+}
+
+private fun getParametersString(element: ParameterListOwner) =
+    " " + when (val elem = element.parameters.firstOrNull()) {
+        is ArrayCreationExpression -> elem.children.filterIsInstance<PhpPsiElement>().joinToString(prefix = "[", postfix = "]") { it.text }
+        is StringLiteralExpression -> elem.text
+        else -> ""
+    }.replace("\"", "'")
 
 val PsiElement.stringValue: String?
     get() = when (this) {

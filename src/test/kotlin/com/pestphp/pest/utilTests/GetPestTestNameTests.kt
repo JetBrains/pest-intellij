@@ -1,6 +1,11 @@
 package com.pestphp.pest.utilTests
 
+import com.intellij.psi.PsiElement
+import com.intellij.psi.util.childrenOfType
 import com.intellij.testFramework.TestDataPath
+import com.jetbrains.php.lang.psi.elements.FieldReference
+import com.jetbrains.php.lang.psi.elements.FunctionReference
+import com.jetbrains.php.lang.psi.elements.Statement
 import com.pestphp.pest.PestLightCodeFixture
 import com.pestphp.pest.getPestTestName
 
@@ -48,5 +53,28 @@ class GetPestTestNameTests : PestLightCodeFixture() {
         val testElement = file.firstChild.lastChild.firstChild
 
         assertEquals("`sum` → ", testElement.getPestTestName())
+    }
+
+    fun testArchFunctionCall() {
+        val file = myFixture.configureByFile("PestArchFunctionCall.php")
+
+        val testElements = file.firstChild.childrenOfType<Statement>().map { getPestTestFieldReference(it.firstChild) }
+
+        listOf(
+            "preset  → laravel ",
+            "preset  → laravel  → ignoring 'A'",
+            "preset  → laravel  → ignoring ['A']",
+            "preset  → laravel  → ignoring ['A']",
+            "expect 'src' → toUseStrictTypes  → not → toUse ['die', 'dd', 'dump']"
+        ).zip(testElements).toMap().forEach { (expected, archTest) ->
+            assertEquals(expected, archTest.getPestTestName())
+        }
+    }
+
+    private fun getPestTestFieldReference(test: PsiElement): PsiElement {
+        when (test.firstChild) {
+            is FunctionReference, is FieldReference -> return getPestTestFieldReference(test.firstChild)
+            else -> return test
+        }
     }
 }

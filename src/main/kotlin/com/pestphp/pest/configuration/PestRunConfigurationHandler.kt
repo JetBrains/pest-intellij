@@ -78,8 +78,7 @@ class PestRunConfigurationHandler : PhpTestRunConfigurationHandler {
         val rootPath = this.rootPath ?: workingDirectory
 
         phpCommandSettings.addPathArgument(file)
-        phpCommandSettings.addArgument(
-            "--filter=/${methodName.toPestTestRegex(rootPath, file, pathMapper)}/"
-        )
+        phpCommandSettings.addArgument("--filter")
+        phpCommandSettings.addArgument("/${methodName.toPestTestRegex(rootPath, file, pathMapper)}/")
     }
 }
