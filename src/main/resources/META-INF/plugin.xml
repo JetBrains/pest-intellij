@@ -146,6 +146,7 @@
           level="WARNING"
           implementationClass="com.pestphp.pest.inspections.PestTestFailedLineInspection"
         />
+        <statistics.counterUsagesCollector implementationClass="com.pestphp.pest.statistics.PestUsagesCollector"/>
     </extensions>
 
     <extensions defaultExtensionNs="com.jetbrains.php">
