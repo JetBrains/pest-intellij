@@ -1,9 +1,8 @@
 <idea-plugin>
     <extensions defaultExtensionNs="com.intellij">
-
         <programRunner implementation="com.pestphp.pest.coverage.PestCoverageProgramRunner"/>
+        <programRunner implementation="com.pestphp.pest.features.mutate.PestMutateProgramRunner"/>
+        <executor implementation="com.pestphp.pest.features.mutate.PestMutateTestExecutor" order="first,after debug"/>
         <coverageEngine implementation="com.pestphp.pest.coverage.PestCoverageEngine"/>
-        <!--        <coverageRunner implementation="com.jetbrains.php.phpunit.coverage.PhpUnitCoverageRunner"/>-->
-        <!--        <projectService serviceImplementation="com.jetbrains.php.phpunit.coverage.PhpCoverageAnnotator"/>-->
     </extensions>
 </idea-plugin>

@@ -12,7 +12,7 @@ import com.jetbrains.php.run.PhpConfigurationOption
 import com.jetbrains.php.run.PhpRunConfigurationHolder
 import com.pestphp.pest.configuration.PestRunConfiguration
 
-class PestCoverageProgramRunner : PhpCoverageRunner() {
+open class PestCoverageProgramRunner : PhpCoverageRunner() {
     override fun canRun(executorId: String, profile: RunProfile): Boolean {
         return executorId == "Coverage" && profile is PestRunConfiguration
     }
