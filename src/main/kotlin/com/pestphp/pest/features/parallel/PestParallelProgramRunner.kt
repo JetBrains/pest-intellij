@@ -35,18 +35,18 @@ class PestParallelProgramRunner : GenericProgramRunner<RunnerSettings>() {
         return RunContentBuilder(executionResult, environment).showRunContent(environment.contentToReuse)
     }
 
-    private fun createPestParallelCommand(runConfiguration: PestRunConfiguration): PhpCommandSettings {
-        FileDocumentManager.getInstance().saveAllDocuments()
-        val interpreter = runConfiguration.interpreter ?: throw ExecutionException(PhpCommandSettingsBuilder.getInterpreterNotFoundError())
-        return runConfiguration.createCommand(
-            interpreter,
-            mutableMapOf(),
-            PEST_PARALLEL_ARGUMENTS,
-            false
-        )
-    }
-
     override fun getRunnerId(): String {
         return RUNNER_ID
     }
+}
+
+internal fun createPestParallelCommand(runConfiguration: PestRunConfiguration): PhpCommandSettings {
+    FileDocumentManager.getInstance().saveAllDocuments()
+    val interpreter = runConfiguration.interpreter ?: throw ExecutionException(PhpCommandSettingsBuilder.getInterpreterNotFoundError())
+    return runConfiguration.createCommand(
+        interpreter,
+        mutableMapOf(),
+        PEST_PARALLEL_ARGUMENTS,
+        false
+    )
 }

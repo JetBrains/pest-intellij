@@ -12,9 +12,13 @@ import com.jetbrains.php.phpunit.PhpPsiLocationWithDataSet
 import com.jetbrains.php.phpunit.PhpUnitQualifiedNameLocationProvider
 import com.jetbrains.php.util.pathmapper.PhpLocalPathMapper
 import com.jetbrains.php.util.pathmapper.PhpPathMapper
+import com.pestphp.pest.features.parallel.convertRuntimeTestNameToRealTestName
 import com.pestphp.pest.getPestTestName
 import com.pestphp.pest.getPestTests
 import com.pestphp.pest.runner.LocationInfo
+import java.io.File
+
+private const val PARALLEL_EXECUTION_URL_MARKER = "eval()'d code::"
 
 /**
  * Adds support for goto test from test results.
@@ -32,11 +36,12 @@ class PestLocationProvider(
         project: Project,
         scope: GlobalSearchScope
     ): MutableList<Location<PsiElement>> {
-        if (protocol != PROTOCOL_ID) {
+        val isParallelExecution = path.contains(PARALLEL_EXECUTION_URL_MARKER)
+        if (protocol != PROTOCOL_ID && !isParallelExecution) {
             return phpUnitLocationProvider.getLocation(protocol, path, project, scope)
         }
 
-        val locationInfo = getLocationInfo(path)
+        val locationInfo = if (isParallelExecution) getParallelLocationInfo(path) else getLocationInfo(path)
         val element = locationInfo?.let { findElement(it, project) } ?: return mutableListOf()
 
         return mutableListOf(
@@ -54,15 +59,22 @@ class PestLocationProvider(
 
     private fun getLocationInfo(link: String): LocationInfo? {
         val location = link.split("::")
+        return resolveLocationInfo(location)
+    }
 
+    private fun getParallelLocationInfo(link: String): LocationInfo? {
+        val rawParallelLocation = link.substringAfter(PARALLEL_EXECUTION_URL_MARKER).split("::")
+        val location = listOfNotNull(
+            convertLocationHintClassNameToFileName(rawParallelLocation[0]),
+            rawParallelLocation.getOrNull(1)?.let { runtimeTestName -> convertRuntimeTestNameToRealTestName(runtimeTestName) }
+        )
+        return resolveLocationInfo(location)
+    }
+
+    private fun resolveLocationInfo(location: List<String>): LocationInfo? {
         val fileUrl = calculateFileUrl(location[0])
+        val testName = location.getOrNull(1)
         val file = this.pathMapper.getLocalFile(fileUrl) ?: PhpLocalPathMapper(project).getLocalFile(fileUrl)
-
-        if (location.size == 1) {
-            return file?.let { LocationInfo(it, null) }
-        }
-
-        val testName = location[1]
         return file?.let { LocationInfo(it, testName) }
     }
 
@@ -104,4 +116,8 @@ class PestLocationProvider(
     companion object {
         const val PROTOCOL_ID = "pest_qn"
     }
+}
+
+private fun convertLocationHintClassNameToFileName(locationHintClassName: String): String {
+    return locationHintClassName.removePrefix("\\P\\").replace("\\", File.separator) + ".php"
 }
