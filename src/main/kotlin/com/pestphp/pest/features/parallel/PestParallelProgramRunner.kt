@@ -14,6 +14,7 @@ import com.jetbrains.php.config.commandLine.PhpCommandSettings
 import com.jetbrains.php.config.commandLine.PhpCommandSettingsBuilder
 import com.pestphp.pest.PestBundle
 import com.pestphp.pest.configuration.PestRunConfiguration
+import com.pestphp.pest.statistics.PestUsagesCollector
 
 private val PEST_PARALLEL_ARGUMENTS = mutableListOf("--parallel", "--log-teamcity", "php://stdout")
 
@@ -27,6 +28,7 @@ class PestParallelProgramRunner : GenericProgramRunner<RunnerSettings>() {
     }
 
     override fun doExecute(state: RunProfileState, environment: ExecutionEnvironment): RunContentDescriptor? {
+        PestUsagesCollector.logParallelTestExecution(environment.project)
         val runConfiguration = environment.runProfile as? PestRunConfiguration
         if (runConfiguration == null) throw ExecutionException(PestBundle.message("PEST_PARALLEL_IS_NOT_SUPPORTED_FOR_SELECTED_RUN_PROFILE"))
         val command = createPestParallelCommand(runConfiguration)
