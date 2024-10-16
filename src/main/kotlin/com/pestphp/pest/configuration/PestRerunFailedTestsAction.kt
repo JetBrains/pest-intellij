@@ -3,17 +3,15 @@ package com.pestphp.pest.configuration
 import com.intellij.execution.Executor
 import com.intellij.execution.configurations.RunProfileState
 import com.intellij.execution.runners.ExecutionEnvironment
+import com.intellij.execution.runners.ProgramRunner
 import com.intellij.execution.testframework.actions.AbstractRerunFailedTestsAction
 import com.intellij.execution.testframework.sm.runner.SMTRunnerConsoleProperties
-import com.intellij.openapi.components.service
 import com.intellij.openapi.ui.ComponentContainer
 import com.intellij.psi.search.GlobalSearchScope
 import com.jetbrains.php.composer.lib.ComposerLibraryManager
-import com.jetbrains.php.composer.lib.ComposerLibraryService
 import com.jetbrains.php.config.commandLine.PhpCommandSettings
-import com.jetbrains.php.testFramework.PhpTestFrameworkSettingsManager
 import com.pestphp.pest.PestBundle
-import com.pestphp.pest.PestFrameworkType
+import com.pestphp.pest.features.parallel.PestParallelProgramRunner
 import com.pestphp.pest.isPestTestReference
 import com.pestphp.pest.notifications.OutdatedNotification
 import com.pestphp.pest.toPestTestRegex
@@ -33,7 +31,7 @@ class PestRerunFailedTestsAction(
         }
 
         val runConfiguration: PestRunConfiguration = profile
-        return object : MyRunProfile(runConfiguration) {
+        return object : MyRunProfile(runConfiguration), PestRerunProfile {
             override fun getState(executor: Executor, environment: ExecutionEnvironment): RunProfileState? {
                 val peerRunConfiguration = this.peer as PestRunConfiguration
                 val project = peerRunConfiguration.project
@@ -73,7 +71,7 @@ class PestRerunFailedTestsAction(
                 val command: PhpCommandSettings = clone.createCommand(
                     interpreter,
                     mutableMapOf(),
-                    mutableListOf(),
+                    getArgumentsFromRunner(environment.runner),
                     false
                 )
 
@@ -99,5 +97,12 @@ class PestRerunFailedTestsAction(
 
     init {
         init(properties)
+    }
+
+    private fun getArgumentsFromRunner(pestProgramRunner: ProgramRunner<*>): MutableList<String> {
+        return when (pestProgramRunner) {
+            is PestParallelProgramRunner -> pestProgramRunner.getArguments()
+            else -> mutableListOf()
+        }
     }
 }

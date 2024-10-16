@@ -16,6 +16,7 @@ import com.jetbrains.php.testFramework.PhpTestFrameworkSettingsManager
 import com.jetbrains.php.testFramework.PhpTestFrameworkVersionCache
 import com.pestphp.pest.PestBundle
 import com.pestphp.pest.PestFrameworkType
+import com.pestphp.pest.configuration.PestRerunProfile
 import com.pestphp.pest.configuration.PestRunConfiguration
 import com.pestphp.pest.statistics.PestUsagesCollector
 
@@ -44,10 +45,15 @@ class PestParallelProgramRunner : GenericProgramRunner<RunnerSettings>() {
 
     override fun doExecute(state: RunProfileState, environment: ExecutionEnvironment): RunContentDescriptor? {
         PestUsagesCollector.logParallelTestExecution(environment.project)
-        val runConfiguration = environment.runProfile as? PestRunConfiguration
-        if (runConfiguration == null) throw ExecutionException(PestBundle.message("PEST_PARALLEL_IS_NOT_SUPPORTED_FOR_SELECTED_RUN_PROFILE"))
-        val command = createPestParallelCommand(runConfiguration)
-        val executionResult = runConfiguration.checkAndGetState(environment, command)?.execute(environment.executor, this)
+
+        val executionResult = if (environment.runProfile is PestRerunProfile) {
+            state.execute(environment.executor, this)
+        } else {
+            val runConfiguration = environment.runProfile as? PestRunConfiguration
+            if (runConfiguration == null) throw ExecutionException(PestBundle.message("PEST_PARALLEL_IS_NOT_SUPPORTED_FOR_SELECTED_RUN_PROFILE"))
+            val command = createPestParallelCommand(runConfiguration)
+            runConfiguration.checkAndGetState(environment, command)?.execute(environment.executor, this)
+        }
         if (executionResult == null) throw ExecutionException(PhpBundle.message("execution.result.is.null"))
         return RunContentBuilder(executionResult, environment).showRunContent(environment.contentToReuse)
     }
@@ -55,6 +61,8 @@ class PestParallelProgramRunner : GenericProgramRunner<RunnerSettings>() {
     override fun getRunnerId(): String {
         return RUNNER_ID
     }
+
+    fun getArguments(): MutableList<String> = PEST_PARALLEL_ARGUMENTS
 }
 
 internal fun createPestParallelCommand(runConfiguration: PestRunConfiguration): PhpCommandSettings {
