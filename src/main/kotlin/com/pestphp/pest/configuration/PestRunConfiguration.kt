@@ -40,7 +40,7 @@ class PestRunConfiguration(project: Project, factory: ConfigurationFactory) : Ph
     PestFrameworkType.instance,
     VALIDATOR,
     PestRunConfigurationHandler.instance,
-    null // PestVersionDetector.instance
+    PestVersionDetector.instance
 ), PhpAsyncRunConfiguration {
     override fun createSettings(): PestRunConfigurationSettings {
         return PestRunConfigurationSettings()

@@ -4,8 +4,6 @@ import com.intellij.execution.ExecutionException
 import com.intellij.openapi.project.Project
 import com.jetbrains.php.PhpTestFrameworkVersionDetector
 import com.jetbrains.php.config.interpreters.PhpInterpreter
-import com.jetbrains.php.testFramework.PhpTestFrameworkConfiguration
-import com.jetbrains.php.testFramework.PhpTestFrameworkVersionCache
 import com.pestphp.pest.PestBundle
 import org.jetbrains.annotations.Nls
 
@@ -40,32 +38,14 @@ class PestVersionDetector : PhpTestFrameworkVersionDetector<String>() {
         return version
     }
 
-    companion object {
-        val instance = PestVersionDetector()
-    }
-
-    fun getVersionWithCache(
-        project: Project,
-        interpreter: PhpInterpreter,
-        config: PhpTestFrameworkConfiguration,
-        executable: String?
-    ): String {
-        val cached = PhpTestFrameworkVersionCache.getCache(project, config)
-
-        if (cached.isNotBlank()) {
-            return cached
+    override fun getVersion(project: Project, interpreter: PhpInterpreter, executable: String?): String {
+        if (interpreter.isRemote) {
+            throw ExecutionException(PestBundle.message("PEST_VERSION_IS_NOT_SUPPORTED_FOR_REMOTE_INTERPRETER"))
         }
-
         return super.getVersion(project, interpreter, executable)
     }
 
-    fun getCachedVersion(project: Project, config: PhpTestFrameworkConfiguration): String? {
-        val cached = PhpTestFrameworkVersionCache.getCache(project, config)
-
-        if (cached.isNotBlank()) {
-            return cached
-        }
-
-        return null
+    companion object {
+        val instance = PestVersionDetector()
     }
 }
