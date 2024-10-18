@@ -8,7 +8,6 @@ import com.jetbrains.php.config.interpreters.PhpInterpreter
 import com.jetbrains.php.config.interpreters.PhpInterpretersManagerImpl
 import com.jetbrains.php.testFramework.PhpTestFrameworkConfiguration
 import com.jetbrains.php.testFramework.PhpTestFrameworkSettingsManager
-import com.jetbrains.php.testFramework.PhpTestFrameworkVersionCache
 import com.pestphp.pest.PestFrameworkType
 import com.pestphp.pest.PestLightCodeFixture
 import com.pestphp.pest.configuration.PestRunConfiguration
@@ -22,11 +21,6 @@ class PestParallelProgramRunnerTest : PestLightCodeFixture() {
 
     fun testCannotRunWrongExecutorId() = doTest {
         val configuration = createConfiguration(myFixture.file)
-        assertFalse(PestParallelProgramRunner().canRun(PestParallelTestExecutor.EXECUTOR_ID + "1", configuration))
-    }
-
-    fun testCannotRunOldVersion() = doTest {
-        val configuration = createConfiguration(myFixture.file, "1.12.2")
         assertFalse(PestParallelProgramRunner().canRun(PestParallelTestExecutor.EXECUTOR_ID + "1", configuration))
     }
 
@@ -80,24 +74,16 @@ class PestParallelProgramRunnerTest : PestLightCodeFixture() {
         assertEquals(expected, pestParallelCommandSettings.createGeneralCommandLine().parametersList.list.joinToString(" "))
     }
 
-    private fun createConfiguration(psiElement: PsiElement, version: String = "2.0.0"): PestRunConfiguration {
+    private fun createConfiguration(psiElement: PsiElement): PestRunConfiguration {
         createPestFrameworkConfiguration()
         val context = ConfigurationContext.createEmptyContextForLocation(PsiLocation.fromPsiElement(psiElement))
         val runConfiguration = PestRunConfigurationProducer().createConfigurationFromContext(context)?.configuration as? PestRunConfiguration
         runConfiguration!!.settings.commandLineSettings.interpreterSettings.interpreterName = getTestName(false)
-        val pestConfiguration = PhpTestFrameworkSettingsManager.getInstance(project).getOrCreateByInterpreter(
-            PestFrameworkType.instance,
-            runConfiguration.interpreter,
-            runConfiguration.getBaseFile(null, runConfiguration.interpreter),
-            true
-        ) ?: return runConfiguration
-        PhpTestFrameworkVersionCache.setCache(project, pestConfiguration, version)
         return runConfiguration
     }
 
     private fun doTest(block: () -> Unit) {
-        val file = myFixture.configureByFile("ATest.php")
-        myFixture.openFileInEditor(file.virtualFile)
+        myFixture.configureByFile("ATest.php")
         block()
     }
 
