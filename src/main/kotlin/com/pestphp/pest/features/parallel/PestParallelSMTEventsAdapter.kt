@@ -18,6 +18,7 @@ private const val PLACEHOLDER = " "
 internal fun convertRuntimeTestNameToRealTestName(runtimeTestName: String): String =
     runtimeTestName
         .removePrefix("__pest_evaluable_")
+        .replace("__→_", "  → ")
         .replace("__", PLACEHOLDER)
         .replace("_", " ")
         .replace(PLACEHOLDER, "_")
