@@ -60,6 +60,27 @@ class PestParallelSMTEventsAdapterTest : PestLightCodeFixture() {
         assertEquals("foo", test.presentableName)
     }
 
+    fun testArchTestPresentableName() {
+        val testsRoot = SMRootTestProxy()
+        processTestOutput(
+            testsRoot, """
+##teamcity[testCount count='1' flowId='6630']
+
+##teamcity[testSuiteStarted name='P\ATest' locationHint='php_qn:///Users/me/my_project/vendor/pestphp/pest/src/Factories/TestCaseFactory.php(169) : eval()|'d code::\P\ATest' flowId='6630']
+
+##teamcity[testStarted name='__pest_evaluable_preset__→_php_' locationHint='php_qn:///Users/me/my_project/vendor/pestphp/pest/src/Factories/TestCaseFactory.php(169) : eval()|'d code::\P\ATest::__pest_evaluable_preset__→_php_' flowId='6630']
+
+##teamcity[testFailed name='__pest_evaluable_preset__→_php_' message='Failed asserting that 1 is identical to 2.' details='/Users/me/my_project/tests/kek/MyThirdTest.php:4|n' duration='80' flowId='6630']
+
+##teamcity[testFinished name='__pest_evaluable_preset__→_php_' duration='82' flowId='6630']
+
+##teamcity[testSuiteFinished name='P\ATest' flowId='6630']""".trimIndent()
+        )
+        val test = testsRoot.children.first().children.first()
+        assertEquals("__pest_evaluable_preset__→_php_", test.name)
+        assertEquals("preset → php", test.presentableName)
+    }
+
     private fun processTestOutput(testsRoot: SMRootTestProxy, output: String) {
         val file = myFixture.configureByFile("ATest.php")
         project.messageBus.connect(testRootDisposable).subscribe(SMTRunnerEventsListener.TEST_STATUS, PestParallelSMTEventsAdapter())
