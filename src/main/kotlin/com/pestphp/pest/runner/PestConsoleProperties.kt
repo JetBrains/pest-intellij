@@ -54,4 +54,9 @@ class PestConsoleProperties(
     override fun getTestStackTraceParser(url: String, proxy: SMTestProxy, project: Project): TestStackTraceParser {
         return parse(url, proxy.stacktrace, proxy.errorMessage, testLocator, project)
     }
+
+    @Deprecated("Deprecated in Java", ReplaceWith("true"))
+    override fun serviceMessageHasNewLinePrefix(): Boolean {
+        return true
+    }
 }
