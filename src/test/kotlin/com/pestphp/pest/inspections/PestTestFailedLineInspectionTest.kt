@@ -19,11 +19,11 @@ class PestTestFailedLineInspectionTest : PestLightCodeFixture() {
     }
 
     private fun writeTestState(record: TestStateStorage.Record) {
-        TestStateStorage.getInstance(project).writeState("pest_qn:///src/${getFileNameBeforeRelativePath()}::myTest", record)
+        TestStateStorage.getInstance(project).writeState("pest_qn://src/${getFileNameBeforeRelativePath()}::myTest", record)
     }
 
     private fun writeTestStateWithDataset(record: TestStateStorage.Record, dataset: String) {
-        TestStateStorage.getInstance(project).writeState("pest_qn:///src/${getFileNameBeforeRelativePath()}::myTest with data set $dataset", record)
+        TestStateStorage.getInstance(project).writeState("pest_qn://src/${getFileNameBeforeRelativePath()}::myTest with data set $dataset", record)
     }
 
     private fun doTest(record: TestStateStorage.Record) {
