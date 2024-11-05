@@ -12,7 +12,7 @@ import com.jetbrains.php.testFramework.PhpTestFrameworkFailedLineManager
 import com.pestphp.pest.configuration.PestLocationProvider
 import com.pestphp.pest.features.datasets.isDatasetCall
 import com.pestphp.pest.getPestTestName
-import java.nio.file.Paths
+import com.pestphp.pest.withoutFirstFileSeparator
 
 @Service(Service.Level.PROJECT)
 class PestFailedLineManager(
@@ -55,10 +55,10 @@ class PestFailedLineManager(
         val absoluteFilePath = psiFile.virtualFile.path
         val basePath = psiFile.project.basePath ?: ""
         val path = if (absoluteFilePath.startsWith(basePath)) {
-            Paths.get(basePath).relativize(Paths.get(absoluteFilePath)).toString()
+            absoluteFilePath.removePrefix(basePath)
         } else {
             absoluteFilePath
         }
-        return "${PestLocationProvider.PROTOCOL_ID}://" + path
+        return "${PestLocationProvider.PROTOCOL_ID}://" + path.withoutFirstFileSeparator
     }
 }
