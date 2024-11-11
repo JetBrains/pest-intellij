@@ -1,0 +1,77 @@
+### auto-generated section `build intellij.pest` start
+load("@rules_jvm//:jvm.bzl", "jvm_resources")
+load("@rules_jvm//:rules.bzl", "jvm_library")
+load("@rules_kotlin//kotlin:jvm.bzl", "kt_jvm_test")
+
+jvm_resources(
+  name = "pest_resources",
+  files = glob(["src/main/resources/**/*"]),
+  strip_prefix = "src/main/resources"
+)
+
+jvm_library(
+  name = "pest",
+  module_name = "intellij.pest",
+  visibility = ["//visibility:public"],
+  srcs = glob(["src/main/java/**/*.kt", "src/main/java/**/*.java", "src/main/kotlin/**/*.kt", "src/main/kotlin/**/*.java"], allow_empty = True, exclude = ["**/module-info.java"]),
+  javac_opts = "@rules_jvm//:j17",
+  kotlinc_opts = "@rules_jvm//:k17",
+  deps = [
+    "@community//platform/execution",
+    "@community//platform/execution-impl",
+    "//phpstorm/php-openapi:php",
+    "@community//platform/analysis-api:analysis",
+    "@community//platform/util",
+    "@community//platform/indexing-api:indexing",
+    "//phpstorm/php:php-impl",
+    "@community//platform/analysis-impl",
+    "@community//platform/editor-ui-api:editor",
+    "@community//platform/smRunner",
+    "@community//platform/platform-util-io:ide-util-io",
+    "@community//platform/ide-core",
+    "@community//platform/lang-impl",
+    "@community//xml/xml-psi-impl:psi-impl",
+    "@lib//:fastutil-min",
+    "@community//plugins/coverage-common:coverage",
+    "@community//xml/dom-impl",
+    "@community//platform/core-ui",
+    "@community//platform/util/text-matching",
+    "@community//platform/statistics",
+  ],
+  runtime_deps = [":pest_resources"]
+)
+
+kt_jvm_test(
+  name = "pest_test",
+  visibility = ["//visibility:public"],
+  srcs = glob(["src/test/kotlin/**/*.kt", "src/test/kotlin/**/*.java"], allow_empty = True, exclude = ["**/module-info.java"]),
+  javac_opts = "@rules_jvm//:j17",
+  kotlinc_opts = "@rules_jvm//:k17",
+  associates = [":pest"],
+  deps = [
+    "@community//platform/execution",
+    "@community//platform/execution-impl",
+    "//phpstorm/php-openapi:php",
+    "@community//platform/analysis-api:analysis",
+    "@community//platform/util",
+    "@community//platform/indexing-api:indexing",
+    "//phpstorm/php:php-impl",
+    "@community//platform/analysis-impl",
+    "@community//platform/editor-ui-api:editor",
+    "@community//platform/smRunner",
+    "@community//platform/platform-util-io:ide-util-io",
+    "@community//platform/ide-core",
+    "@community//platform/lang-impl",
+    "@community//xml/xml-psi-impl:psi-impl",
+    "@lib//:fastutil-min",
+    "@community//plugins/coverage-common:coverage",
+    "@community//xml/dom-impl",
+    "@community//platform/core-ui",
+    "@community//platform/util/text-matching",
+    "@lib//:io_mockk",
+    "@lib//:io_mockk_jvm",
+    "@community//platform/statistics",
+  ],
+  runtime_deps = [":pest_resources"]
+)
+### auto-generated section `build intellij.pest` end
