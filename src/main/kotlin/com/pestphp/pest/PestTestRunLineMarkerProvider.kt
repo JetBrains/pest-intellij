@@ -34,9 +34,11 @@ class PestTestRunLineMarkerProvider : RunLineMarkerContributor() {
 
     private fun isPestTestReference(leaf: PsiElement): Boolean {
         if (PhpPsiUtil.isOfType(leaf, PhpTokenTypes.IDENTIFIER)) {
-            val possibleFunctionReference = leaf.parent
-            if (possibleFunctionReference is FunctionReferenceImpl) {
-                val statementChild = PhpPsiUtil.getParentOfClass(possibleFunctionReference, true, Statement::class.java)?.firstChild
+            (leaf.parent as? FunctionReferenceImpl)?.let { functionReference ->
+                if (!functionReference.isAnyPestFunction()) {
+                    return false
+                }
+                val statementChild = PhpPsiUtil.getParentOfClass(functionReference, true, Statement::class.java)?.firstChild
                 val outerFunctionReference = PhpPsiUtil.getParentByCondition<FunctionReferenceImpl>(
                     statementChild,
                     { it is FunctionReferenceImpl },

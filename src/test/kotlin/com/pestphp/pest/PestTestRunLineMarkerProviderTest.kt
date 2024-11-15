@@ -84,6 +84,11 @@ class PestTestRunLineMarkerProviderTest : PestLightCodeFixture() {
         doTest(0, 5)
     }
 
+    fun testDataSetsAreNotYetMarkedAsRunnable() {
+        myFixture.configureByFile("NamedDataSets.php")
+        doTest(14, 15)
+    }
+
      fun testRunContextFromTestDirectory() {
          initConfiguration()
          val rootDirectory = myFixture.copyDirectoryToProject("contextProject", ".")
