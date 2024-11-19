@@ -1,6 +1,7 @@
 package com.pestphp.pest.features.parallel
 
 import com.intellij.execution.ExecutionException
+import com.intellij.execution.configurations.RunConfiguration
 import com.intellij.execution.configurations.RunProfile
 import com.intellij.execution.configurations.RunProfileState
 import com.intellij.execution.configurations.RunnerSettings
@@ -27,7 +28,7 @@ import com.pestphp.pest.configuration.PestRunConfiguration
 import com.pestphp.pest.configuration.PestVersionDetector
 import com.pestphp.pest.statistics.PestUsagesCollector
 
-private val PEST_PARALLEL_ARGUMENTS = mutableListOf("--parallel", "--log-teamcity", "php://stdout")
+internal val PEST_PARALLEL_ARGUMENTS = mutableListOf("--parallel", "--log-teamcity", "php://stdout")
 
 class PestParallelProgramRunner : GenericProgramRunner<RunnerSettings>() {
     companion object {
@@ -65,7 +66,7 @@ internal fun createPestParallelCommand(runConfiguration: PestRunConfiguration): 
     return runConfiguration.createCommand(
         interpreter,
         mutableMapOf(),
-        PEST_PARALLEL_ARGUMENTS,
+        if (executeInParallel(runConfiguration)) mutableListOf() else PEST_PARALLEL_ARGUMENTS,
         false
     )
 }
@@ -121,5 +122,16 @@ private fun createAndShowNotification(
         }
         setSuggestionType(true)
         notify(environment.project)
+    }
+}
+
+internal fun executeInParallel(runConfiguration: RunConfiguration): Boolean {
+    return runConfiguration is PestRunConfiguration && runConfiguration.pestSettings.runnerSettings.isParallelTestingEnabled
+}
+
+internal fun addParallelArguments(runConfiguration: PestRunConfiguration, command: PhpCommandSettings) {
+    if (executeInParallel(runConfiguration)) {
+        PestUsagesCollector.logParallelTestExecution(runConfiguration.project)
+        command.addArguments(PEST_PARALLEL_ARGUMENTS)
     }
 }

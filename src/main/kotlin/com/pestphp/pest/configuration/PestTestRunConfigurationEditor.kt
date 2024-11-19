@@ -3,12 +3,13 @@ package com.pestphp.pest.configuration
 import com.intellij.openapi.editor.ReadOnlyModificationException
 import com.intellij.openapi.options.SettingsEditor
 import com.intellij.openapi.ui.ComboBox
+import com.intellij.ui.components.JBCheckBox
 import com.intellij.util.ui.UI
 import com.jetbrains.php.phpunit.coverage.PhpUnitCoverageEngine.CoverageEngine
 import com.jetbrains.php.testFramework.run.PhpTestRunConfigurationEditor
 import com.pestphp.pest.PestBundle
-import java.awt.BorderLayout
 import java.lang.reflect.InvocationTargetException
+import javax.swing.BoxLayout
 import javax.swing.JComponent
 import javax.swing.JPanel
 
@@ -18,16 +19,22 @@ class PestTestRunConfigurationEditor(
 ) : SettingsEditor<PestRunConfiguration>() {
     private val myMainPanel = JPanel()
     private var coveragePanel = JPanel()
+    private var parallelPanel = JPanel()
     private val coverageEngineComboBox = ComboBox(arrayOf(CoverageEngine.XDEBUG, CoverageEngine.PCOV))
+    private val enabledParallelTestingCheckBox = JBCheckBox()
 
     init {
         coveragePanel = UI.PanelFactory.grid().add(
             UI.PanelFactory.panel(coverageEngineComboBox).withLabel(PestBundle.message("COVERAGE_ENGINE_LABEL_TEXT"))
         ).createPanel()
+        parallelPanel = UI.PanelFactory.grid().add(
+            UI.PanelFactory.panel(enabledParallelTestingCheckBox).withLabel(PestBundle.message("ENABLE_PARALLEL_TESTING_LABEL_TEXT"))
+        ).createPanel()
 
-        myMainPanel.layout = BorderLayout()
-        myMainPanel.add(parentEditor.component, BorderLayout.CENTER)
-        myMainPanel.add(coveragePanel, BorderLayout.SOUTH)
+        myMainPanel.layout = BoxLayout(myMainPanel, BoxLayout.Y_AXIS)
+        myMainPanel.add(parentEditor.component)
+        myMainPanel.add(coveragePanel)
+        myMainPanel.add(parallelPanel)
         resetEditorFrom(settings)
     }
 
@@ -40,6 +47,7 @@ class PestTestRunConfigurationEditor(
         val runnerSettings = settings.runnerSettings
 
         runnerSettings.coverageEngine = coverageEngineComboBox.selectedItem as CoverageEngine
+        runnerSettings.isParallelTestingEnabled = enabledParallelTestingCheckBox.isSelected
     }
 
     private fun doReset(configuration: PestRunConfiguration) {
@@ -47,6 +55,7 @@ class PestTestRunConfigurationEditor(
         val runnerSettings = settings.runnerSettings
 
         coverageEngineComboBox.selectedItem = runnerSettings.coverageEngine
+        enabledParallelTestingCheckBox.isSelected = runnerSettings.isParallelTestingEnabled
     }
 
     override fun resetEditorFrom(settings: PestRunConfiguration) {

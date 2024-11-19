@@ -17,6 +17,7 @@ import com.pestphp.pest.configuration.PestLocationProvider
 import com.pestphp.pest.configuration.PestRerunFailedTestsAction
 import com.pestphp.pest.features.parallel.PestParallelSMTEventsAdapter
 import com.pestphp.pest.features.parallel.PestParallelTestExecutor
+import com.pestphp.pest.features.parallel.executeInParallel
 
 class PestConsoleProperties(
     config: RunConfiguration,
@@ -25,7 +26,7 @@ class PestConsoleProperties(
 ) : SMTRunnerConsoleProperties(config, PestBundle.message("FRAMEWORK_NAME"), executor) {
 
     init {
-        if (executor is PestParallelTestExecutor) {
+        if (executor is PestParallelTestExecutor || executeInParallel(config)) {
             config.project.messageBus.connect(this)
                 .subscribe(SMTRunnerEventsListener.TEST_STATUS, PestParallelSMTEventsAdapter())
         }
