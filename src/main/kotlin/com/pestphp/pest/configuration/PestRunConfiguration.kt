@@ -29,6 +29,7 @@ import com.jetbrains.php.testFramework.run.PhpTestRunnerConfigurationEditor
 import com.jetbrains.php.testFramework.run.PhpTestRunnerSettings
 import com.pestphp.pest.*
 import com.pestphp.pest.configuration.PestRunConfigurationProducer.Companion.VALIDATOR
+import com.pestphp.pest.features.parallel.addParallelArguments
 import com.pestphp.pest.runner.PestConsoleProperties
 import java.util.*
 import kotlin.io.path.Path
@@ -169,7 +170,9 @@ class PestRunConfiguration(project: Project, factory: ConfigurationFactory) : Ph
         withDebugger: Boolean
     ): PhpCommandSettings {
         PestRunConfigurationHandler.instance.rootPath = getConfigurationFileRootPath()
-        return super.createCommand(interpreter, env, arguments, withDebugger)
+        return super.createCommand(interpreter, env, arguments, withDebugger).apply {
+            addParallelArguments(this@PestRunConfiguration, this)
+        }
     }
 
     override fun getWorkingDirectory(

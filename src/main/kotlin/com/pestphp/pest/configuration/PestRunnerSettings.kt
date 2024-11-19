@@ -9,6 +9,8 @@ import com.jetbrains.php.testFramework.run.PhpTestRunnerSettings
 class PestRunnerSettings : PhpTestRunnerSettings() {
     @Attribute("coverage_engine")
     var coverageEngine: CoverageEngine = CoverageEngine.XDEBUG
+    @Attribute("is_parallel_testing_enabled")
+    var isParallelTestingEnabled: Boolean = false
 
     companion object {
         fun fromPhpTestRunnerSettings(settings: PhpTestRunnerSettings): PestRunnerSettings {
@@ -29,12 +31,13 @@ class PestRunnerSettings : PhpTestRunnerSettings() {
 
     override fun equals(other: Any?): Boolean {
         if (other !is PestRunnerSettings) return false
-        return super.equals(other) && coverageEngine == other.coverageEngine
+        return super.equals(other) && coverageEngine == other.coverageEngine && isParallelTestingEnabled == other.isParallelTestingEnabled
     }
 
     override fun hashCode(): Int {
         var result = super.hashCode()
         result = 31 * result + coverageEngine.hashCode()
+        result = 31 * result + isParallelTestingEnabled.hashCode()
         return result
     }
 }
