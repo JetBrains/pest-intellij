@@ -14,7 +14,7 @@ import com.pestphp.pest.PestIcons
  *
  * This will only show if the file is being created in a directory named "tests".
  */
-class PestConfigNewDatasetFileAction : PestConfigNewFileAction() {
+private class PestConfigNewDatasetFileAction : PestConfigNewFileAction() {
     companion object {
         const val PEST_SHARED_DATASET_TEMPLATE = "Pest Shared Dataset"
         const val PEST_SCOPED_DATASET_TEMPLATE = "Pest Scoped Dataset"
