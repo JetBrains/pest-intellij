@@ -86,7 +86,7 @@ class PestTestRunLineMarkerProviderTest : PestLightCodeFixture() {
 
     fun testDataSetsAreNotYetMarkedAsRunnable() {
         myFixture.configureByFile("NamedDataSets.php")
-        doTest(14, 15)
+        doTest(14, 15, 21)
     }
 
      fun testRunContextFromTestDirectory() {
