@@ -11,7 +11,7 @@ import com.jetbrains.php.lang.psi.elements.PhpUse
 import com.jetbrains.php.lang.psi.elements.impl.FunctionReferenceImpl
 import com.pestphp.pest.PestBundle
 
-class SnapshotLineMarkerProvider : RelatedItemLineMarkerProvider() {
+private class SnapshotLineMarkerProvider : RelatedItemLineMarkerProvider() {
     override fun collectNavigationMarkers(
         element: PsiElement,
         result: MutableCollection<in RelatedItemLineMarkerInfo<*>>,

@@ -10,7 +10,7 @@ import com.jetbrains.php.lang.psi.elements.MemberReference
 /**
  * Registers the completion providers
  */
-class PestCompletionContributor : CompletionContributor() {
+private class PestCompletionContributor : CompletionContributor() {
     init {
         extend(
             CompletionType.BASIC,

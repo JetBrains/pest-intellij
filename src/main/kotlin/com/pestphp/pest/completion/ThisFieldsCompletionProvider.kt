@@ -21,7 +21,7 @@ import com.pestphp.pest.isThisVariableInPest
  * Adds completion for variable assignments from `beforeEach` when using `$this`
  * inside a pest test.
  */
-class ThisFieldsCompletionProvider : CompletionProvider<CompletionParameters>(), GotoDeclarationHandler {
+internal class ThisFieldsCompletionProvider : CompletionProvider<CompletionParameters>(), GotoDeclarationHandler {
     override fun addCompletions(
         parameters: CompletionParameters,
         context: ProcessingContext,

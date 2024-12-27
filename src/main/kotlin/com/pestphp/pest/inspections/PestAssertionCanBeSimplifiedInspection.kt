@@ -28,7 +28,7 @@ import com.jetbrains.php.lang.psi.resolve.types.PhpType
 import com.jetbrains.php.lang.psi.visitors.PhpElementVisitor
 import com.pestphp.pest.PestBundle
 
-class PestAssertionCanBeSimplifiedInspection : PhpInspection() {
+internal class PestAssertionCanBeSimplifiedInspection : PhpInspection() {
   override fun buildVisitor(holder: ProblemsHolder, isOnTheFly: Boolean): PsiElementVisitor {
     return object : PhpElementVisitor() {
       override fun visitPhpMethodReference(reference: MethodReference) {
