@@ -8,6 +8,8 @@ import com.intellij.psi.PsiElement
 import com.intellij.psi.PsiFile
 import com.jetbrains.php.lang.psi.elements.FunctionReference
 import com.jetbrains.php.lang.psi.elements.MethodReference
+import com.jetbrains.php.phpunit.PhpUnitTestRunLineMarkerProvider
+import com.jetbrains.php.phpunit.PhpUnitTestRunLineMarkerProvider.createPathMapper
 import com.jetbrains.php.testFramework.PhpTestFrameworkFailedLineManager
 import com.pestphp.pest.configuration.PestLocationProvider
 import com.pestphp.pest.features.datasets.isDatasetCall
@@ -50,15 +52,21 @@ class PestFailedLineManager(
 
     private fun getLocationUrl(containingFile: PsiFile, functionCall: FunctionReference): String =
         getLocationUrl(containingFile) + "::" + functionCall.getPestTestName()
+}
 
-    private fun getLocationUrl(psiFile: PsiFile): String {
-        val absoluteFilePath = psiFile.virtualFile.path
-        val basePath = psiFile.project.basePath ?: ""
-        val path = if (absoluteFilePath.startsWith(basePath)) {
-            absoluteFilePath.removePrefix(basePath)
-        } else {
-            absoluteFilePath
-        }
-        return "${PestLocationProvider.PROTOCOL_ID}://" + path.withoutFirstFileSeparator
+internal fun getLocationUrl(psiFile: PsiFile): String {
+    return "${PestLocationProvider.PROTOCOL_ID}://${
+        PhpUnitTestRunLineMarkerProvider.getFilePathDeploymentAware(psiFile)
+            .removePrefix(getProjectPathDeploymentAware(psiFile.project)).withoutFirstFileSeparator
+    }"
+}
+
+private fun getProjectPathDeploymentAware(project: Project): String {
+    val projectPath = project.basePath ?: return ""
+    val remoteMapper = createPathMapper(project)
+    return if (remoteMapper.canProcess(projectPath)) {
+        remoteMapper.process(projectPath)
+    } else {
+        projectPath
     }
 }

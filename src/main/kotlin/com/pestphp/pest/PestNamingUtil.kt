@@ -9,6 +9,7 @@ import com.jetbrains.php.lang.psi.elements.*
 import com.jetbrains.php.lang.psi.elements.impl.FunctionReferenceImpl
 import com.jetbrains.php.run.remote.PhpRemoteInterpreterManager
 import com.jetbrains.php.util.pathmapper.PhpPathMapper
+import com.pestphp.pest.runner.getLocationUrl
 import java.util.*
 
 fun FunctionReferenceImpl.getPestTestName(): String? {
@@ -120,7 +121,7 @@ fun PsiElement.toPestFqn(): List<String> {
         }
         .map { it.convertToRemote(file) }
         .map { "pest_qn://$it::$testName" }
-        .plus("pest_qn://${file.removePrefix("${this.project.basePath.toString()}/")}::$testName")
+        .plus("${getLocationUrl(this.containingFile)}::$testName")
         .toList()
 }
 
