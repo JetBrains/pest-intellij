@@ -11,7 +11,7 @@ import org.jetbrains.annotations.Nls
 import org.jetbrains.annotations.NonNls
 import javax.swing.Icon
 
-class PestMutateTestExecutor : Executor() {
+internal class PestMutateTestExecutor : Executor() {
     companion object {
         const val EXECUTOR_ID: @NonNls String = "PestMutateTestExecutor"
         const val CONTEXT_ACTION_ID: @NonNls String = "PestRunMutate"
