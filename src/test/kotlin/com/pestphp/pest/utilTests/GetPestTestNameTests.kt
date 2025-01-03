@@ -6,8 +6,10 @@ import com.intellij.testFramework.TestDataPath
 import com.jetbrains.php.lang.psi.elements.FieldReference
 import com.jetbrains.php.lang.psi.elements.FunctionReference
 import com.jetbrains.php.lang.psi.elements.Statement
+import com.jetbrains.php.lang.psi.elements.impl.FunctionReferenceImpl
 import com.pestphp.pest.PestLightCodeFixture
 import com.pestphp.pest.getPestTestName
+import com.pestphp.pest.isDescribeFunction
 
 @TestDataPath("\$CONTENT_ROOT/resources/com/pestphp/pest/PestUtil")
 class GetPestTestNameTests : PestLightCodeFixture() {
@@ -55,6 +57,21 @@ class GetPestTestNameTests : PestLightCodeFixture() {
         assertEquals("`sum` → ", testElement.getPestTestName())
     }
 
+    fun testNestedDescribeFunctionCalls() {
+        val file = myFixture.configureByFile("NestedDescribeFunctionCalls.php")
+
+        val testElements = getAllPestTests(file.firstChild)
+
+        listOf(
+            "`SomeClass` → it works as well",
+            "`SomeClass` → `SomeMethod` → it does not work",
+            "`SomeClass` → `SomeMethod` → ",
+            "`SomeClass` → ",
+        ).zip(testElements).toMap().forEach { (expected, describeBlock) ->
+            assertEquals(expected, describeBlock.getPestTestName())
+        }
+    }
+
     fun testArchFunctionCall() {
         val file = myFixture.configureByFile("PestArchFunctionCall.php")
 
@@ -75,6 +92,17 @@ class GetPestTestNameTests : PestLightCodeFixture() {
         when (test.firstChild) {
             is FunctionReference, is FieldReference -> return getPestTestFieldReference(test.firstChild)
             else -> return test
+        }
+    }
+
+    private fun getAllPestTests(root: PsiElement): List<PsiElement> {
+        if (root is FunctionReferenceImpl && !root.isDescribeFunction()) return listOf(root)
+        return root.children.fold(mutableListOf<PsiElement>()) { list, element ->
+            list.addAll(
+                getAllPestTests(element) +
+                    if (root is FunctionReferenceImpl && root.isDescribeFunction()) listOf(root) else listOf()
+            )
+            list
         }
     }
 }

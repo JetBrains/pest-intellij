@@ -24,7 +24,7 @@ fun FunctionReferenceImpl.getPestTestName(): String? {
 
     return when (this.canonicalText) {
         "it" -> "${prepend}it $testName"
-        "describe" -> "`$testName` → "
+        "describe" -> "${prepend}`$testName` → "
         else -> "${prepend}$testName"
     }
 }
