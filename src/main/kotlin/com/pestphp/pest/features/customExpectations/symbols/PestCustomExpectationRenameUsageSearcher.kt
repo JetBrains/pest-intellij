@@ -24,7 +24,7 @@ private class PestCustomExpectationRenameUsageSearcher : RenameUsageSearcher {
         val usages = SearchService.getInstance()
             .searchWord(parameters.project, targetSymbol.expectationName)
             .caseSensitive(true)
-            .inContexts(SearchContext.IN_CODE)
+            .inContexts(SearchContext.inCode())
             .inFilesWithLanguage(PhpLanguage.INSTANCE)
             .inScope(parameters.searchScope)
             .buildQuery(LeafOccurrenceMapper.withPointer(symbolPointer, ::findReferencesToSymbol))

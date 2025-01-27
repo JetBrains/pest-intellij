@@ -24,7 +24,7 @@ class PestCustomExpectationUsageSearcher : UsageSearcher {
         val symbolPointer: Pointer<PestCustomExpectationSymbol> = targetSymbol.createPointer()
         val usages = SearchService.getInstance()
             .searchWord(parameters.project, targetSymbol.expectationName).caseSensitive(true)
-            .inContexts(SearchContext.IN_CODE).inFilesWithLanguage(PhpLanguage.INSTANCE)
+            .inContexts(SearchContext.inCode()).inFilesWithLanguage(PhpLanguage.INSTANCE)
             .inScope(parameters.searchScope)
             .buildQuery(LeafOccurrenceMapper.withPointer(symbolPointer, ::findReferencesToSymbol))
             .mapping { PsiUsage.textUsage(it.element.containingFile, it.element.nameNode!!.textRange) }
