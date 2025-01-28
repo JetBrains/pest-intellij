@@ -13,7 +13,6 @@ class ExpectCallCompletionTest : BaseTypeTestCase() {
         super.setUp()
 
         val dir = myFixture.copyDirectoryToProject("expect", "tests")
-        myFixture.copyFileToProject("stubs.php")
 
         val composerMock = mockk<ComposerLibraryManager>(relaxUnitFun = true) {
             every { findVendorDirForUpsource() } returns dir

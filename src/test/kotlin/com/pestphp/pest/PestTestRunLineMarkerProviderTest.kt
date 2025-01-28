@@ -36,7 +36,7 @@ class PestTestRunLineMarkerProviderTest : PestLightCodeFixture() {
 
         val markerList = DaemonCodeAnalyzerImpl.getLineMarkers(editor.document, project)
         val actualMarkerLines = markerList.map { marker -> editor.offsetToLogicalPosition(marker.startOffset).line }
-        assertSameElements(expectedMarkerLines.toList(), actualMarkerLines)
+        assertSameElements(actualMarkerLines, expectedMarkerLines.toList())
     }
 
     private fun initConfiguration() {
@@ -51,7 +51,12 @@ class PestTestRunLineMarkerProviderTest : PestLightCodeFixture() {
 
     fun testFunctionCallNamedItWithDescriptionAndClosure() {
         myFixture.configureByFile("PestItFunctionCallWithDescriptionAndClosure.php")
-        doTest(0, 5)
+        doTest(0, 2)
+    }
+
+    fun testFunctionCallNamedItRedefinition() {
+        myFixture.configureByFile("PestItFunctionCallWithRedefinition.php")
+        doTest()
     }
 
     fun testFunctionCallNamedTestWithoutPest() {
@@ -76,17 +81,17 @@ class PestTestRunLineMarkerProviderTest : PestLightCodeFixture() {
 
     fun testFunctionCallNamedTestInsideDescribeBlock() {
         myFixture.configureByFile("FunctionCallNamedTestInsideDescribeBlock.php")
-        doTest(0, 8, 9)
+        doTest(0, 2, 3)
     }
 
     fun testFunctionCallNamedTestInsideTest() {
         myFixture.configureByFile("FunctionCallNamedTestInsideTest.php")
-        doTest(0, 5)
+        doTest(0, 2)
     }
 
     fun testDataSetsAreNotYetMarkedAsRunnable() {
         myFixture.configureByFile("NamedDataSets.php")
-        doTest(14, 15, 21)
+        doTest(0, 2, 3, 9)
     }
 
      fun testRunContextFromTestDirectory() {

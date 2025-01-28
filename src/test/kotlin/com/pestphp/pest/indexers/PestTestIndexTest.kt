@@ -15,7 +15,6 @@ class PestTestIndexTest : PestLightCodeFixture() {
         val virtualFile = myFixture.copyFileToProject("FileWithPestTest.php", "tests/FileWithPestTest.php")
         myFixture.configureFromExistingVirtualFile(virtualFile)
 
-
         val fileBasedIndex = FileBasedIndex.getInstance()
 
         val indexKeys = fileBasedIndex.getAllKeys(key, project).filter {
@@ -34,13 +33,12 @@ class PestTestIndexTest : PestLightCodeFixture() {
             fileBasedIndex.getContainingFiles(key, it, GlobalSearchScope.allScope(project)).isNotEmpty()
         }
 
-        assertDoesntContain(indexKeys, "FileWithoutPestTest.php")
+        assertDoesntContain(indexKeys, "/src/tests/FileWithoutPestTest.php")
     }
 
     fun testPestTestFileWithTodoIsIndexed() {
         val virtualFile = myFixture.copyFileToProject("FileWithPestTodosTest.php", "tests/FileWithPestTodosTest.php")
         myFixture.configureFromExistingVirtualFile(virtualFile)
-
 
         val fileBasedIndex = FileBasedIndex.getInstance()
 
@@ -49,5 +47,18 @@ class PestTestIndexTest : PestLightCodeFixture() {
         }
 
         assertContainsElements(indexKeys, "/src/tests/FileWithPestTodosTest.php")
+    }
+
+    fun testPestTestFileOutsideTestDirectoryIsIndexed() {
+        val virtualFile = myFixture.copyFileToProject("FileWithPestTest.php", "anywhere-but-not-te-st/FileWithPestTest.php")
+        myFixture.configureFromExistingVirtualFile(virtualFile)
+
+        val fileBasedIndex = FileBasedIndex.getInstance()
+
+        val indexKeys = fileBasedIndex.getAllKeys(key, project).filter {
+            fileBasedIndex.getContainingFiles(key, it, GlobalSearchScope.allScope(project)).isNotEmpty()
+        }
+
+        assertContainsElements(indexKeys, "/src/anywhere-but-not-te-st/FileWithPestTest.php")
     }
 }

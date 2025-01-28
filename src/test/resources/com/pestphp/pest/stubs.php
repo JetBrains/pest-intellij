@@ -1,6 +1,25 @@
 <?php
 
 use Pest\Expectation;
+use Pest\PendingCalls\TestCall;
+
+namespace Pest\PendingCalls {
+    class TestCall {
+        public function with(Closure|iterable|string ...$data): self
+    }
+}
+
+function test(?string $description = null, ?Closure $closure = null): HigherOrderTapProxy|TestCall
+{
+}
+
+function it(string $description, ?Closure $closure = null): TestCall
+{
+}
+
+function describe(string $description, $tests): TestCall
+{
+}
 
 function expect($value = null)
 {

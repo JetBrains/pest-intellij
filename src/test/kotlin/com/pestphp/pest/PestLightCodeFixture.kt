@@ -15,6 +15,14 @@ import java.io.File
 abstract class PestLightCodeFixture : BasePlatformTestCase() {
     override fun getBasePath() = "src/test/resources/com/pestphp/pest"
 
+    override fun setUp() {
+        super.setUp()
+        val pestStubsFile = File("${this@PestLightCodeFixture.basePath}/stubs.php")
+        if (pestStubsFile.exists()) {
+            myFixture.copyFileToProject(pestStubsFile.absolutePath, "stubs.php")
+        }
+    }
+
     private val testNameSeparator = '#'
 
     protected fun assertCompletion(vararg shouldContain: String) {
