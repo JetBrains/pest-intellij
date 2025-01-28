@@ -17,6 +17,7 @@ val key = ID.create<String, Set<String>>("php.pest")
 /**
  * Indexes all pest test files with the following key-value store
  * `path/pest-test-file-name => ['it test', 'it should work']`
+ * Note that php files with pest-like named functions are indexed as well
  */
 class PestTestIndex : FileBasedIndexExtension<String, Set<String>>() {
     override fun getName(): ID<String, Set<String>> {
@@ -50,7 +51,7 @@ class PestTestIndex : FileBasedIndexExtension<String, Set<String>>() {
     override fun getInputFilter(): FileBasedIndex.InputFilter {
       return object : DefaultFileTypeSpecificInputFilter(PhpFileType.INSTANCE) {
         override fun acceptInput(file: VirtualFile): Boolean {
-          return super.acceptInput(file) && file.path.contains("test")
+          return super.acceptInput(file) && file.path.lowercase().contains("test")
         }
       }
     }
