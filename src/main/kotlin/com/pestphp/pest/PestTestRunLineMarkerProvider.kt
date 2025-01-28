@@ -16,6 +16,10 @@ import com.jetbrains.php.lang.psi.elements.impl.FunctionReferenceImpl
  */
 class PestTestRunLineMarkerProvider : RunLineMarkerContributor() {
     override fun getInfo(leaf: PsiElement): Info? {
+        if (!leaf.containingFile.isPestTestFile(isSmart = true)) {
+            return null
+        }
+
         // Handle icons if the reference is a pest test.
         if (isPestTestReference(leaf)) {
             return getPestTest(
@@ -25,7 +29,7 @@ class PestTestRunLineMarkerProvider : RunLineMarkerContributor() {
         }
 
         // Handle icon for running all tests in the file.
-        if (PhpPsiUtil.isOfType(leaf, PhpTokenTypes.PHP_OPENING_TAG) && leaf.containingFile.isPestTestFile(isSmart = true)) {
+        if (PhpPsiUtil.isOfType(leaf, PhpTokenTypes.PHP_OPENING_TAG)) {
             return withExecutorActions(PestIcons.Run)
         }
 
