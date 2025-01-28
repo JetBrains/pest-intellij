@@ -36,7 +36,7 @@ fun PsiFile.isIndexedPestTestFile(): Boolean {
         key,
         this.realPath,
         ProjectScope.getProjectScope(this.project)
-    ).isNotEmpty()
+    ).isNotEmpty() && this.isPestTestFile(isSmart = true)
 }
 
 fun PsiFile.isPestConfigurationFile(): Boolean {

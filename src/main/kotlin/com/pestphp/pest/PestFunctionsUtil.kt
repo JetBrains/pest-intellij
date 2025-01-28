@@ -2,9 +2,9 @@ package com.pestphp.pest
 
 import com.intellij.psi.PsiElement
 import com.intellij.psi.PsiFile
+import com.jetbrains.php.PhpIndex
 import com.jetbrains.php.lang.psi.PhpFile
 import com.jetbrains.php.lang.psi.elements.*
-import com.jetbrains.php.lang.psi.elements.Function
 import com.jetbrains.php.lang.psi.elements.impl.FunctionReferenceImpl
 import com.jetbrains.php.lang.psi.resolve.types.PhpType
 
@@ -25,12 +25,9 @@ fun PsiElement?.isPestTestReference(isSmart: Boolean = false): Boolean {
 private val testNames = setOf("it", "test", "todo", "describe", "arch")
 fun FunctionReferenceImpl.isPestTestFunction(isSmart: Boolean = false): Boolean {
     if (this.canonicalText !in testNames) return false
-    return !isSmart ||
-        this.resolveGlobal(false).any {
-            val type = (it as? Function)?.type
-            if (type == null) return@any false
-            PEST_TEST_CALL_TYPE.isConvertibleFromGlobal(project, type)
-        }
+    return !isSmart || (this.resolveLocal().isEmpty() && PhpIndex.getInstance(project).getFunctionsByName(this.canonicalText).any { function ->
+        PEST_TEST_CALL_TYPE.isConvertibleFromGlobal(project, function.type)
+    })
 }
 
 fun FunctionReferenceImpl.isPestBeforeFunction(): Boolean {
