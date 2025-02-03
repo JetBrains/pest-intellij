@@ -3,8 +3,6 @@ package com.pestphp.pest.features.snapshotTesting
 import com.jetbrains.php.lang.psi.elements.impl.FunctionImpl
 import com.jetbrains.php.lang.psi.elements.impl.FunctionReferenceImpl
 import com.pestphp.pest.PestLightCodeFixture
-import com.pestphp.pest.features.snapshotTesting.isSnapshotAssertionCall
-import com.pestphp.pest.features.snapshotTesting.snapshotFiles
 import junit.framework.TestCase
 import org.junit.Ignore
 import org.junit.Test

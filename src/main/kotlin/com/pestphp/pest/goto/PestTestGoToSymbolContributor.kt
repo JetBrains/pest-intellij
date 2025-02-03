@@ -4,10 +4,6 @@ import com.intellij.ide.projectView.PresentationData
 import com.intellij.navigation.ChooseByNameContributor
 import com.intellij.navigation.ItemPresentation
 import com.intellij.navigation.NavigationItem
-import com.intellij.openapi.application.ReadAction
-import com.intellij.openapi.application.readAction
-import com.intellij.openapi.application.readActionBlocking
-import com.intellij.openapi.application.runReadAction
 import com.intellij.openapi.project.Project
 import com.intellij.psi.PsiManager
 import com.intellij.psi.search.ProjectScope
