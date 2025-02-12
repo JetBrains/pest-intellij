@@ -2,6 +2,7 @@ package com.pestphp.pest
 
 import com.intellij.execution.lineMarker.RunLineMarkerContributor
 import com.intellij.icons.AllIcons.RunConfigurations.TestState.Run
+import com.intellij.icons.AllIcons.RunConfigurations.TestState.Run_run
 import com.intellij.openapi.project.Project
 import com.intellij.psi.PsiElement
 import com.jetbrains.php.lang.lexer.PhpTokenTypes
@@ -30,7 +31,7 @@ class PestTestRunLineMarkerProvider : RunLineMarkerContributor() {
 
         // Handle icon for running all tests in the file.
         if (PhpPsiUtil.isOfType(leaf, PhpTokenTypes.PHP_OPENING_TAG)) {
-            return withExecutorActions(PestIcons.Run)
+            return withExecutorActions(Run_run)
         }
 
         return null
