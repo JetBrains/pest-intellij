@@ -24,3 +24,5 @@ pest()->extend(FeatureTestCase::class, SomeBaseTrait::class)->group("some group"
 pest()->extend(FeatureTestCase::class)->in(__DIR__ . "/DIRFeature");
 
 pest()->extend(FeatureTestCase::class)->in('../tests/DynamicFeature');
+
+pest()->extend(FeatureTestCase::class)->in("*/DirectoryTest.php", "GlobPattern/Fi*st.php", "../tests/GlobPattern/Fi*st.php");

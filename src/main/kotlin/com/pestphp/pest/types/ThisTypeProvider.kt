@@ -3,6 +3,7 @@ package com.pestphp.pest.types
 import com.intellij.openapi.project.DumbService
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.project.guessProjectDir
+import com.intellij.openapi.util.io.FileUtil
 import com.intellij.openapi.vfs.VfsUtil
 import com.intellij.psi.PsiElement
 import com.jetbrains.php.lang.psi.elements.FunctionReference
@@ -11,8 +12,8 @@ import com.jetbrains.php.lang.psi.elements.impl.FunctionReferenceImpl
 import com.jetbrains.php.lang.psi.resolve.types.PhpType
 import com.jetbrains.php.lang.psi.resolve.types.PhpTypeProvider4
 import com.pestphp.pest.*
+import java.nio.file.FileSystems
 import kotlin.io.path.Path
-import kotlin.io.path.pathString
 
 /**
  * Extend `$this` type with types from `uses`.
@@ -44,12 +45,13 @@ open class ThisTypeProvider : PhpTypeProvider4 {
         val relativePath = VfsUtil.getRelativePath(virtualFile, baseDir) ?: return config.baseTestType
 
         val result = PhpType().add(config.baseTestType)
+        val defaultFileSystem = FileSystems.getDefault()
 
         config.pathsClasses.forEach { (path, type) ->
-            val normalizedPath = Path(path).normalize().pathString
-
-            if (relativePath.startsWith(normalizedPath)) {
-                result.add(type)
+            FileUtil.toCanonicalPath(path)?.let { normalizedPathForMatching ->
+                if (defaultFileSystem.getPathMatcher("glob:$normalizedPathForMatching**").matches(Path(relativePath))) {
+                    result.add(type)
+                }
             }
         }
 

@@ -48,4 +48,22 @@ class PestConfigurationFileTest : PestLightCodeFixture() {
 
         assertCompletion("baseTestFunc", "featureTestFunc")
     }
+
+    fun testGlobPatternDirectory() {
+        myFixture.configureByFile("tests/GlobPattern/DirectoryTest.php")
+
+        assertCompletion("baseTestFunc", "featureTestFunc")
+    }
+
+    fun testGlobPatternFile() {
+        myFixture.configureByFile("tests/GlobPattern/FileTest.php")
+
+        assertCompletion("baseTestFunc", "featureTestFunc")
+    }
+
+    fun testGlobPatternFileWithRelativePath() {
+        myFixture.configureByFile("tests/GlobPattern/FileWithRelativePathTest.php")
+
+        assertCompletion("baseTestFunc", "featureTestFunc")
+    }
 }

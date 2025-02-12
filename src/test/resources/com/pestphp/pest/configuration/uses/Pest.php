@@ -24,3 +24,5 @@ uses(FeatureTestCase::class, SomeBaseTrait::class)->group("some group")->in("Gro
 uses(FeatureTestCase::class)->in(__DIR__ . "/DIRFeature");
 
 uses(FeatureTestCase::class)->in('../tests/DynamicFeature');
+
+uses(FeatureTestCase::class)->in("*/DirectoryTest.php", "GlobPattern/Fi*st.php", "../tests/GlobPattern/Fi*st.php");
