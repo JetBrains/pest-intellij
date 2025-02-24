@@ -7,6 +7,12 @@ jvm_resources(
   strip_prefix = "src/main/resources"
 )
 
+jvm_resources(
+  name = "pest_test_resources",
+  files = glob(["src/test/resources/**/*"]),
+  strip_prefix = "src/test/resources"
+)
+
 jvm_library(
   name = "pest",
   module_name = "intellij.pest",
@@ -77,7 +83,10 @@ jvm_library(
     "@community//platform/statistics",
     "@community//platform/statistics:statistics_test_lib",
   ],
-  runtime_deps = [":pest_resources"]
+  runtime_deps = [
+    ":pest_resources",
+    ":pest_test_resources",
+  ]
 )
 
 jvm_test(
