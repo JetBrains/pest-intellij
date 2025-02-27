@@ -12,6 +12,7 @@ import com.intellij.psi.util.CachedValueProvider
 import com.intellij.psi.util.CachedValuesManager
 import com.intellij.util.indexing.FileBasedIndex
 import com.jetbrains.php.composer.configData.ComposerConfigManager
+import com.jetbrains.php.lang.psi.PhpExpressionCodeFragment
 import com.jetbrains.php.lang.psi.PhpFile
 import com.jetbrains.php.lang.psi.elements.PhpNamespace
 import com.jetbrains.php.lang.psi.elements.PhpPsiElement
@@ -24,7 +25,7 @@ val PEST_TEST_FILE_KEY = Key<CachedValue<Boolean>>("isPestTestFile")
 val PEST_TEST_FILE_SMART_KEY = Key<CachedValue<Boolean>>("smart isPestTestFile")
 
 fun PsiFile.isPestTestFile(isSmart: Boolean = false): Boolean {
-    if (this !is PhpFile) return false
+    if (this !is PhpFile || this is PhpExpressionCodeFragment) return false
     return CachedValuesManager.getCachedValue(this, if (isSmart) PEST_TEST_FILE_SMART_KEY else PEST_TEST_FILE_KEY) {
         val isPestTestFile = this.getRootPhpPsiElements().any { psiElement -> psiElement.isPestTestReference(isSmart) }
         CachedValueProvider.Result.create(isPestTestFile, this)
