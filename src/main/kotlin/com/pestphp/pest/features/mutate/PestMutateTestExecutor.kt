@@ -7,6 +7,7 @@ import com.intellij.openapi.util.text.StringUtil
 import com.intellij.openapi.util.text.TextWithMnemonic
 import com.intellij.openapi.wm.ToolWindowId
 import com.pestphp.pest.PestBundle
+import com.pestphp.pest.PestIcons
 import org.jetbrains.annotations.Nls
 import org.jetbrains.annotations.NonNls
 import javax.swing.Icon
@@ -21,7 +22,7 @@ internal class PestMutateTestExecutor : Executor() {
 
     override fun getToolWindowIcon(): Icon = AllIcons.Toolwindows.ToolWindowRun
 
-    override fun getIcon(): Icon = AllIcons.Actions.Execute
+    override fun getIcon(): Icon = PestIcons.RunWithMutate
 
     override fun getRerunIcon(): Icon = AllIcons.Actions.Rerun
 

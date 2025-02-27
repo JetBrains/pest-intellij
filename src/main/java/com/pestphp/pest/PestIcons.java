@@ -23,4 +23,5 @@ public final class PestIcons {
   }
 
   /** 16x16 */ public static final @NotNull Icon Run = load("run.svg", -452832596, 2);
+  /** 16x16 */ public static final @NotNull Icon RunWithMutate = load("runWithMutate.svg", 226904416, 2);
 }
