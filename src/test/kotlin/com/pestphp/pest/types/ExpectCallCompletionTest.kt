@@ -1,7 +1,8 @@
 package com.pestphp.pest.types
 
+import com.intellij.psi.PsiElement
 import com.intellij.testFramework.replaceService
-import com.jetbrains.php.composer.lib.ComposerLibraryManager
+import com.jetbrains.php.composer.configData.ComposerConfigManager
 import io.mockk.every
 import io.mockk.mockk
 import org.junit.Ignore
@@ -13,13 +14,14 @@ class ExpectCallCompletionTest : BaseTypeTestCase() {
         super.setUp()
 
         val dir = myFixture.copyDirectoryToProject("expect", "tests")
+        myFixture.addFileToProject("composer.json", "")
 
-        val composerMock = mockk<ComposerLibraryManager>(relaxUnitFun = true) {
-            every { findVendorDirForUpsource() } returns dir
+        val composerConfigManagerMock = mockk<ComposerConfigManager>(relaxUnitFun = true) {
+            every { getConfig(null as PsiElement?) } returns dir
         }
         project.replaceService(
-            ComposerLibraryManager::class.java,
-            composerMock,
+            ComposerConfigManager::class.java,
+            composerConfigManagerMock,
             testRootDisposable
         )
     }
