@@ -5,8 +5,8 @@ import com.intellij.execution.configurations.RunConfiguration
 import com.intellij.execution.configurations.RunProfile
 import com.intellij.execution.configurations.RunProfileState
 import com.intellij.execution.configurations.RunnerSettings
-import com.intellij.execution.process.ProcessAdapter
 import com.intellij.execution.process.ProcessEvent
+import com.intellij.execution.process.ProcessListener
 import com.intellij.execution.runners.ExecutionEnvironment
 import com.intellij.execution.runners.GenericProgramRunner
 import com.intellij.execution.runners.RunContentBuilder
@@ -77,7 +77,7 @@ internal fun postprocessExecutionResult(
     @NlsSafe versionRequirement: String,
 ) {
     val processHandler = contentDescriptor.processHandler
-    processHandler?.addProcessListener(object : ProcessAdapter() {
+    processHandler?.addProcessListener(object : ProcessListener {
         override fun processTerminated(event: ProcessEvent) {
             val executionConsole = contentDescriptor.executionConsole as? SMTRunnerConsoleView ?: return
             val rootProxy = executionConsole.resultsViewer.root as? SMRootTestProxy ?: return
