@@ -4,9 +4,10 @@ import com.intellij.openapi.application.runWriteAction
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.startup.ProjectActivity
 import com.intellij.openapi.startup.StartupManager
+import com.intellij.openapi.vfs.VirtualFile
 import com.jetbrains.php.composer.ComposerConfigListener
 import com.jetbrains.php.composer.ComposerDataService
-import com.jetbrains.php.composer.lib.ComposerLibraryService
+import com.jetbrains.php.composer.lib.ComposerLibraryServiceFactory
 
 class CustomExpectationRemoveGeneratedFileStartupActivity : ProjectActivity {
     override suspend fun execute(project: Project) {
@@ -23,8 +24,7 @@ class CustomExpectationRemoveGeneratedFileStartupActivity : ProjectActivity {
     }
 
     private fun tryDeleteGeneratedExpectationFile(project: Project) {
-        @Suppress("UnstableApiUsage")
-        ComposerLibraryService.getInstance(project).vendorDir?.findChild("Expectation.php")?.let {
+        ComposerLibraryServiceFactory.getInstance(project, null as VirtualFile?).vendorDir?.findChild("Expectation.php")?.let {
             runWriteAction { it.delete(null) }
         }
     }
