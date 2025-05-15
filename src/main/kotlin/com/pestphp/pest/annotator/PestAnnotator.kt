@@ -13,7 +13,7 @@ class PestAnnotator: Annotator, HighlightRangeExtension {
         element.accept(PestAnnotatorVisitor(holder))
     }
 
-    override fun isForceHighlightParents(file: PsiFile): Boolean {
+    override fun isForceHighlightParents(psiFile: PsiFile): Boolean {
         return false
     }
 }
