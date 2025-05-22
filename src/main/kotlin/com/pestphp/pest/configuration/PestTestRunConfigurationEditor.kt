@@ -44,18 +44,18 @@ class PestTestRunConfigurationEditor(
 
     private fun doApply(configuration: PestRunConfiguration) {
         val settings = configuration.settings as PestRunConfigurationSettings
-        val runnerSettings = settings.runnerSettings
+        val runnerSettings = settings.pestRunnerSettings
 
         runnerSettings.coverageEngine = coverageEngineComboBox.selectedItem as CoverageEngine
-        runnerSettings.isParallelTestingEnabled = enabledParallelTestingCheckBox.isSelected
+        runnerSettings.parallelTestingEnabled = enabledParallelTestingCheckBox.isSelected
     }
 
     private fun doReset(configuration: PestRunConfiguration) {
         val settings = configuration.settings as PestRunConfigurationSettings
-        val runnerSettings = settings.runnerSettings
+        val runnerSettings = settings.pestRunnerSettings
 
         coverageEngineComboBox.selectedItem = runnerSettings.coverageEngine
-        enabledParallelTestingCheckBox.isSelected = runnerSettings.isParallelTestingEnabled
+        enabledParallelTestingCheckBox.isSelected = runnerSettings.parallelTestingEnabled
     }
 
     override fun resetEditorFrom(settings: PestRunConfiguration) {

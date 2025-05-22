@@ -61,7 +61,7 @@ open class PestCoverageProgramRunner : PhpCoverageRunner() {
                 runConfiguration.applyTestArguments(this, coverageArguments)
             }
 
-        val options = when (runConfiguration.pestSettings.runnerSettings.coverageEngine) {
+        val options = when (runConfiguration.pestSettings.pestRunnerSettings.coverageEngine) {
             CoverageEngine.XDEBUG -> XdebugConfigurationOptionsManager
                 .getConfigurationOptionsProvider(runConfiguration.project, interpreter)
                 .enableCoverage()

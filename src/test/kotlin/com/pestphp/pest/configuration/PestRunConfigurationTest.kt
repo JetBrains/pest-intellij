@@ -5,6 +5,7 @@ import com.intellij.execution.actions.ConfigurationContext
 import com.jetbrains.php.config.commandLine.PhpCommandSettings
 import com.jetbrains.php.config.interpreters.PhpInterpreter
 import com.jetbrains.php.config.interpreters.PhpInterpretersManagerImpl
+import com.jetbrains.php.phpunit.coverage.PhpUnitCoverageEngine
 import com.jetbrains.php.testFramework.PhpTestFrameworkConfiguration
 import com.jetbrains.php.testFramework.PhpTestFrameworkSettingsManager
 import com.pestphp.pest.PestFrameworkType
@@ -25,6 +26,16 @@ class PestRunConfigurationTest : PestLightCodeFixture() {
         assertInstanceOf(configuration.settings.runnerSettings, PestRunnerSettings::class.java)
     }
 
+    fun testRunConfigurationClone() {
+        val configuration = createConfiguration()
+        configuration.pestSettings.pestRunnerSettings.coverageEngine = PhpUnitCoverageEngine.CoverageEngine.PCOV
+        configuration.pestSettings.pestRunnerSettings.parallelTestingEnabled = true
+
+        val clone = configuration.clone() as PestRunConfiguration
+        assertEquals(PhpUnitCoverageEngine.CoverageEngine.PCOV, clone.pestSettings.pestRunnerSettings.coverageEngine)
+        assertEquals(true, clone.pestSettings.pestRunnerSettings.parallelTestingEnabled)
+    }
+
     fun testRunConfigurationCommand() {
         val command = createCommand()
         val expectedCommand = "randomPath --teamcity /src/FileWithPestTest.php"
@@ -33,7 +44,7 @@ class PestRunConfigurationTest : PestLightCodeFixture() {
 
     fun testRunConfigurationCommandWithEnabledParallelTesting() {
         val configuration = createConfiguration()
-        configuration.pestSettings.runnerSettings.isParallelTestingEnabled = true
+        configuration.pestSettings.pestRunnerSettings.parallelTestingEnabled = true
         val command = configuration.createCommand(configuration.interpreter!!, mutableMapOf(), mutableListOf(), false)
 
         val expectedCommand = "randomPath --teamcity /src/FileWithPestTest.php --parallel --log-teamcity php://stdout"

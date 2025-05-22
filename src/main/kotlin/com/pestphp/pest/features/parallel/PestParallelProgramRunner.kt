@@ -126,7 +126,7 @@ private fun createAndShowNotification(
 }
 
 internal fun executeInParallel(runConfiguration: RunConfiguration): Boolean {
-    return runConfiguration is PestRunConfiguration && runConfiguration.pestSettings.runnerSettings.isParallelTestingEnabled
+    return runConfiguration is PestRunConfiguration && runConfiguration.pestSettings.pestRunnerSettings.parallelTestingEnabled
 }
 
 internal fun addParallelArguments(runConfiguration: PestRunConfiguration, command: PhpCommandSettings) {

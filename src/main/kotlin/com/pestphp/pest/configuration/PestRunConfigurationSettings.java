@@ -1,38 +1,40 @@
-package com.pestphp.pest.configuration
+package com.pestphp.pest.configuration;
 
-import com.intellij.util.xmlb.annotations.Property
-import com.jetbrains.php.testFramework.run.PhpTestRunConfigurationSettings
+import com.intellij.util.xmlb.annotations.Property;
+import com.intellij.util.xmlb.annotations.Transient;
+import com.jetbrains.php.testFramework.run.PhpTestRunConfigurationSettings;
+import com.jetbrains.php.testFramework.run.PhpTestRunnerSettings;
+import org.jetbrains.annotations.NotNull;
 
-class PestRunConfigurationSettings : PhpTestRunConfigurationSettings() {
-    override fun createDefault(): PestRunnerSettings {
-        return PestRunnerSettings()
+public class PestRunConfigurationSettings extends PhpTestRunConfigurationSettings {
+  @Override
+  protected @NotNull PestRunnerSettings createDefault() {
+    return new PestRunnerSettings();
+  }
+
+  @Property(surroundWithTag = false)
+  public @NotNull PestRunnerSettings getPestRunnerSettings() {
+    final PhpTestRunnerSettings settings = super.getRunnerSettings();
+    if (settings instanceof PestRunnerSettings) {
+      return (PestRunnerSettings)settings;
     }
 
-    @Property(surroundWithTag = false)
-    override fun getRunnerSettings(): PestRunnerSettings {
-        return pestRunnerSettings
-    }
+    final PestRunnerSettings copy = PestRunnerSettings.fromPhpTestRunnerSettings(settings);
+    setPestRunnerSettings(copy);
+    return copy;
+  }
 
-    var pestRunnerSettings: PestRunnerSettings
-        get() {
-            if (super.getRunnerSettings() is PestRunnerSettings) {
-                return super.getRunnerSettings() as PestRunnerSettings
-            }
+  public void setPestRunnerSettings(PestRunnerSettings runnerSettings) {
+    setRunnerSettings(runnerSettings);
+  }
 
-            val copy = PestRunnerSettings.fromPhpTestRunnerSettings(super.getRunnerSettings())
-            super.setRunnerSettings(copy)
-            return copy
-        }
-        set(value) = super.setRunnerSettings(value)
-
-    override fun equals(other: Any?): Boolean {
-        if (other !is PestRunConfigurationSettings) return false
-        return super.equals(other) && pestRunnerSettings == other.pestRunnerSettings
-    }
-
-    override fun hashCode(): Int {
-        var result = super.hashCode()
-        result = 31 * result + pestRunnerSettings.hashCode()
-        return result
-    }
+  /**
+   * @deprecated Use {@link #getPestRunnerSettings()}
+   **/
+  @Deprecated
+  @Transient
+  @Override
+  public @NotNull PhpTestRunnerSettings getRunnerSettings() {
+    return super.getRunnerSettings();
+  }
 }

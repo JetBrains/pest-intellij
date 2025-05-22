@@ -76,7 +76,7 @@ class PestCoverageProgramRunnerTest : PestLightCodeFixture() {
 
     fun testBuildFileWithEnabledParallelTesting() = doTest {
         val configuration = createConfiguration(myFixture.file)
-        configuration.pestSettings.runnerSettings.isParallelTestingEnabled = true
+        configuration.pestSettings.pestRunnerSettings.parallelTestingEnabled = true
 
         val pestCoverageCommandSettings = PestCoverageProgramRunner().createPestCoverageCommand(configuration, configuration.interpreter!!, emptyList(), "", "")
 
