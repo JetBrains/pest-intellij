@@ -22,7 +22,7 @@ import kotlin.io.path.Path
  */
 open class ThisTypeProvider : PhpTypeProvider4 {
     override fun getKey(): Char {
-        return '\u0221'
+        return '\u0221' // ȡ
     }
 
     override fun getType(psiElement: PsiElement): PhpType? {

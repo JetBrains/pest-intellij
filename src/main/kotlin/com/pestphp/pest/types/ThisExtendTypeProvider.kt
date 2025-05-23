@@ -14,7 +14,7 @@ import com.pestphp.pest.features.customExpectations.isThisVariableInExtend
  */
 class ThisExtendTypeProvider : PhpTypeProvider4 {
     override fun getKey(): Char {
-        return '\u0223'
+        return '\u0223' // ȣ
     }
 
     override fun getType(psiElement: PsiElement): PhpType? {

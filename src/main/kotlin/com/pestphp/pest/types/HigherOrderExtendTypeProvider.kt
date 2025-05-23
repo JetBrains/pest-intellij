@@ -12,7 +12,7 @@ import com.pestphp.pest.features.customExpectations.expectationType
 
 class HigherOrderExtendTypeProvider : PhpTypeProvider4 {
     override fun getKey(): Char {
-        return '\u0224'
+        return '\u0224' // Ȥ
     }
 
     override fun getType(psiElement: PsiElement): PhpType? {

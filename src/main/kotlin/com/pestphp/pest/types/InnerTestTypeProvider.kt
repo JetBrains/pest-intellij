@@ -13,7 +13,7 @@ import com.pestphp.pest.isTestAsThisVariableInPest
  */
 class InnerTestTypeProvider: ThisTypeProvider() {
   override fun getKey(): Char {
-    return '\u0226'
+    return '\u0226' // Ȧ
   }
 
   override fun getType(psiElement: PsiElement): PhpType? {

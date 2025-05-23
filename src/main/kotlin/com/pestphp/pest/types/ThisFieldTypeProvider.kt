@@ -19,7 +19,7 @@ import com.pestphp.pest.isThisVariableInPest
  */
 class ThisFieldTypeProvider : PhpTypeProvider4 {
     override fun getKey(): Char {
-        return '\u0225'
+        return '\u0225' // ȥ
     }
 
     override fun getType(psiElement: PsiElement): PhpType? {
