@@ -1,4 +1,4 @@
-<idea-plugin>
+<idea-plugin allow-bundled-update="true">
     <id>com.pestphp.pest-intellij</id>
     <name>Pest</name>
     <vendor>JetBrains</vendor>
