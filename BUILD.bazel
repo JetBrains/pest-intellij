@@ -62,6 +62,8 @@ jvm_library(
     "@community//platform/analysis-api:analysis",
     "@community//jps/model-api:model",
     "@community//platform/structure-view-impl:structureView-impl",
+    "@community//platform/testFramework",
+    "@community//platform/testFramework:testFramework_test_lib",
     "@community//platform/util",
     "@community//platform/indexing-api:indexing",
     "//phpstorm/php:php-impl",
