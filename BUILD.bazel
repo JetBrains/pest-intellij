@@ -19,6 +19,7 @@ jvm_library(
   visibility = ["//visibility:public"],
   srcs = glob(["src/main/java/**/*.kt", "src/main/java/**/*.java", "src/main/kotlin/**/*.kt", "src/main/kotlin/**/*.java"], allow_empty = True),
   deps = [
+    "@community//platform/core-api:core",
     "@community//platform/execution",
     "@community//platform/execution-impl",
     "@community//platform/ide-core-impl",
@@ -52,6 +53,7 @@ jvm_library(
   srcs = glob(["src/test/kotlin/**/*.kt", "src/test/kotlin/**/*.java"], allow_empty = True),
   associates = [":pest"],
   deps = [
+    "@community//platform/core-api:core",
     "@community//platform/execution",
     "@community//platform/execution-impl",
     "@community//platform/ide-core-impl",
