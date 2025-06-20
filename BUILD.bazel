@@ -62,7 +62,6 @@ jvm_library(
     "@community//platform/execution-impl",
     "@community//platform/ide-core-impl",
     "@community//platform/platform-impl:ide-impl",
-    "@community//platform/platform-impl:ide-impl_test_lib",
     "//phpstorm/php-openapi:php",
     "@community//platform/analysis-api:analysis",
     "@community//jps/model-api:model",
