@@ -1,6 +1,5 @@
 ### auto-generated section `build intellij.pest` start
-load("@community//build:tests-options.bzl", "jps_test")
-load("@rules_jvm//:jvm.bzl", "jvm_library", "jvm_resources", "jvm_test")
+load("@rules_jvm//:jvm.bzl", "jvm_library", "jvm_resources")
 
 jvm_resources(
   name = "pest_resources",
@@ -99,9 +98,13 @@ jvm_library(
     ":pest_test_resources",
   ]
 )
+### auto-generated section `build intellij.pest` end
+
+### auto-generated section `test intellij.pest` start
+load("@community//build:tests-options.bzl", "jps_test")
 
 jps_test(
   name = "pest_test",
   runtime_deps = [":pest_test_lib"]
 )
-### auto-generated section `build intellij.pest` end
+### auto-generated section `test intellij.pest` end
