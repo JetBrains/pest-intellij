@@ -1,6 +1,8 @@
+import org.jetbrains.intellij.platform.gradle.ProductMode
 import org.jetbrains.changelog.Changelog
 import org.jetbrains.changelog.markdownToHTML
-import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+import org.jetbrains.intellij.platform.gradle.TestFrameworkType
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
 fun properties(key: String) = project.findProperty(key).toString()
 
@@ -8,9 +10,9 @@ plugins {
     // Java support
     id("java")
     // Kotlin support
-    id("org.jetbrains.kotlin.jvm") version "1.9.10"
+    id("org.jetbrains.kotlin.jvm") version "2.2.0"
     // Gradle IntelliJ Plugin
-    id("org.jetbrains.intellij") version "1.15.0"
+    id("org.jetbrains.intellij.platform") version "2.7.0"
     // Gradle Changelog Plugin
     id("org.jetbrains.changelog") version "2.2.0"
 }
@@ -21,27 +23,28 @@ version = properties("pluginVersion")
 // Configure project's dependencies
 repositories {
     mavenCentral()
-}
-
-dependencies {
-    testImplementation("io.mockk:mockk:1.13.7")
-}
-
-// Set the JVM language level used to compile sources and generate files - Java 11 is required since 2020.3
-kotlin {
-    jvmToolchain {
-        this.languageVersion.set(JavaLanguageVersion.of(17))
+    intellijPlatform {
+        defaultRepositories()
     }
 }
 
-// Configure Gradle IntelliJ Plugin - read more: https://github.com/JetBrains/gradle-intellij-plugin
-intellij {
-    pluginName.set(properties("pluginName"))
-    version.set(properties("platformVersion"))
-    type.set(properties("platformType"))
+dependencies {
+    testImplementation("io.mockk:mockk:1.14.3")
+    testImplementation("junit:junit:4.13.2")
+    intellijPlatform {
+        val type = providers.gradleProperty("platformType")
+        val version = project.provider {
+            providers.gradleProperty("platformVersion").get() + providers.gradleProperty("platformBranch").get()
+        }
 
-    // Plugin Dependencies. Uses `platformPlugins` property from the gradle.properties file.
-    plugins.set(properties("platformPlugins").split(',').map(String::trim).filter(String::isNotEmpty))
+        create(type, version) {
+            useInstaller = false
+            productMode = ProductMode.MONOLITH
+        }
+        testFramework(TestFrameworkType.Platform)
+        bundledPlugins(properties("platformBundledPlugins").toPlugins())
+        bundledModules(properties("platformBundledModules").toPlugins())
+    }
 }
 
 // Configure Gradle Changelog Plugin - read more: https://github.com/JetBrains/gradle-changelog-plugin
@@ -50,16 +53,20 @@ changelog {
     groups.set(emptyList())
 }
 
+kotlin {
+    jvmToolchain {
+        languageVersion.set(JavaLanguageVersion.of(providers.gradleProperty("javaVersion").get()))
+    }
+    compilerOptions {
+        jvmTarget.set(JvmTarget.fromTarget(providers.gradleProperty("javaVersion").get()))
+    }
+}
+
 tasks {
-    // Set the JVM compatibility versions
-    properties("javaVersion").let {
-        withType<JavaCompile> {
-            sourceCompatibility = it
-            targetCompatibility = it
-        }
-        withType<KotlinCompile> {
-            kotlinOptions.jvmTarget = it
-        }
+    withType<JavaCompile>().configureEach {
+        val javaVersion = properties("javaVersion")
+        sourceCompatibility = javaVersion
+        targetCompatibility = javaVersion
     }
 
     wrapper {
@@ -67,7 +74,7 @@ tasks {
     }
 
     patchPluginXml {
-        version.set(properties("pluginVersion"))
+        version = properties("pluginVersion")
         sinceBuild.set(properties("pluginSinceBuild"))
         untilBuild.set(properties("pluginUntilBuild"))
 
@@ -92,20 +99,6 @@ tasks {
         })
     }
 
-    listProductsReleases {
-        // TODO: hot fix
-        untilVersion.set("221")
-    }
-
-    // Configure UI tests plugin
-    // Read more: https://github.com/JetBrains/intellij-ui-test-robot
-    runIdeForUiTests {
-        systemProperty("robot-server.port", "8082")
-        systemProperty("ide.mac.message.dialogs.as.sheets", "false")
-        systemProperty("jb.privacy.policy.text", "<!--999.999-->")
-        systemProperty("jb.consents.confirmation.enabled", "false")
-    }
-
     signPlugin {
         certificateChain.set(System.getenv("CERTIFICATE_CHAIN"))
         privateKey.set(System.getenv("PRIVATE_KEY"))
@@ -118,6 +111,10 @@ tasks {
         // pluginVersion is based on the SemVer (https://semver.org) and supports pre-release labels, like 2.1.7-alpha.3
         // Specify pre-release label to publish the plugin in a custom Release Channel automatically. Read more:
         // https://plugins.jetbrains.com/docs/intellij/deployment.html#specifying-a-release-channel
-        channels.set(listOf(properties("pluginVersion").split('-').getOrElse(1) { "default" }.split('.').first()))
+        // channels = listOf(properties("pluginVersion").split('-').getOrElse(1) { "default" }.split('.').first())
     }
 }
+
+private fun String.toPlugins(): List<String> = split(',')
+    .map(String::trim)
+    .filter(String::isNotEmpty)

@@ -1,5 +1,6 @@
 package com.pestphp.pest.configuration;
 
+import com.intellij.execution.BeforeRunTask;
 import com.intellij.execution.configurations.ConfigurationFactory;
 import com.intellij.openapi.project.Project;
 import com.jetbrains.php.PhpTestFrameworkVersionDetector;
@@ -17,7 +18,7 @@ public abstract class PhpTestRunConfiguration extends com.jetbrains.php.testFram
     }
 
     @Override
-    public void setBeforeRunTasks(@NotNull List value) {
+    public void setBeforeRunTasks(@NotNull List<BeforeRunTask<?>> value) {
         super.setBeforeRunTasks(value);
     }
 }
