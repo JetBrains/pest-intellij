@@ -1,5 +1,7 @@
 package com.pestphp.pest.coverage
 
+import com.intellij.coverage.CoverageDataManager
+import com.intellij.coverage.CoverageHelper;
 import com.intellij.execution.PsiLocation
 import com.intellij.execution.actions.ConfigurationContext
 import com.intellij.psi.PsiElement
@@ -82,6 +84,12 @@ class PestCoverageProgramRunnerTest : PestLightCodeFixture() {
 
         val expected = "-dxdebug.coverage_enable=1 -dxdebug.mode=coverage randomPath --teamcity /src/ATest.php --parallel --log-teamcity php://stdout"
         assertEquals(expected, pestCoverageCommandSettings.createGeneralCommandLine().parametersList.list.joinToString(" "))
+    }
+
+    fun testCreateCoverageSuiteOnRunningCoverageTests() = doTest {
+        val configuration = createConfiguration(myFixture.file)
+        CoverageHelper.resetCoverageSuit(configuration)
+        assertSize(1, CoverageDataManager.getInstance(project).getSuites())
     }
 
     private fun createConfiguration(psiElement: PsiElement): PestRunConfiguration {
