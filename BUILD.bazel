@@ -17,7 +17,7 @@ jvm_library(
   name = "pest",
   module_name = "intellij.pest",
   visibility = ["//visibility:public"],
-  srcs = glob(["src/main/java/**/*.kt", "src/main/java/**/*.java", "src/main/kotlin/**/*.kt", "src/main/kotlin/**/*.java"], allow_empty = True),
+  srcs = glob(["src/main/java/**/*.kt", "src/main/java/**/*.java", "src/main/java/**/*.form", "src/main/kotlin/**/*.kt", "src/main/kotlin/**/*.java", "src/main/kotlin/**/*.form"], allow_empty = True),
   deps = [
     "@community//platform/core-api:core",
     "@community//platform/execution",
@@ -53,7 +53,7 @@ jvm_library(
 jvm_library(
   name = "pest_test_lib",
   visibility = ["//visibility:public"],
-  srcs = glob(["src/test/kotlin/**/*.kt", "src/test/kotlin/**/*.java"], allow_empty = True),
+  srcs = glob(["src/test/kotlin/**/*.kt", "src/test/kotlin/**/*.java", "src/test/kotlin/**/*.form"], allow_empty = True),
   associates = [":pest"],
   deps = [
     "@community//platform/core-api:core",
