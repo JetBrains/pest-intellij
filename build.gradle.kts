@@ -10,9 +10,9 @@ plugins {
     // Java support
     id("java")
     // Kotlin support
-    id("org.jetbrains.kotlin.jvm") version "2.2.0"
+    id("org.jetbrains.kotlin.jvm") version "2.2.10"
     // Gradle IntelliJ Plugin
-    id("org.jetbrains.intellij.platform") version "2.7.0"
+    id("org.jetbrains.intellij.platform") version "2.7.2"
     // Gradle Changelog Plugin
     id("org.jetbrains.changelog") version "2.2.0"
 }
@@ -29,7 +29,9 @@ repositories {
 }
 
 dependencies {
-    testImplementation("io.mockk:mockk:1.14.3")
+    testImplementation("io.mockk:mockk:1.14.3") {
+        exclude("org.jetbrains.kotlinx", "kotlinx-coroutines-core-jvm")
+    }
     testImplementation("junit:junit:4.13.2")
     intellijPlatform {
         val type = providers.gradleProperty("platformType")
