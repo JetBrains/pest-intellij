@@ -1,15 +1,15 @@
 ### auto-generated section `build intellij.pest` start
-load("@rules_jvm//:jvm.bzl", "jvm_library", "jvm_resources")
+load("@rules_jvm//:jvm.bzl", "jvm_library", "resourcegroup")
 
-jvm_resources(
+resourcegroup(
   name = "pest_resources",
-  files = glob(["src/main/resources/**/*"]),
+  srcs = glob(["src/main/resources/**/*"]),
   strip_prefix = "src/main/resources"
 )
 
-jvm_resources(
+resourcegroup(
   name = "pest_test_resources",
-  files = glob(["src/test/resources/**/*"]),
+  srcs = glob(["src/test/resources/**/*"]),
   strip_prefix = "src/test/resources"
 )
 
@@ -18,6 +18,7 @@ jvm_library(
   module_name = "intellij.pest",
   visibility = ["//visibility:public"],
   srcs = glob(["src/main/java/**/*.kt", "src/main/java/**/*.java", "src/main/java/**/*.form", "src/main/kotlin/**/*.kt", "src/main/kotlin/**/*.java", "src/main/kotlin/**/*.form"], allow_empty = True),
+  resources = [":pest_resources"],
   deps = [
     "@community//platform/core-api:core",
     "@community//platform/execution",
@@ -46,14 +47,14 @@ jvm_library(
     "@community//platform/core-ui",
     "@community//platform/util/text-matching",
     "@community//platform/statistics",
-  ],
-  runtime_deps = [":pest_resources"]
+  ]
 )
 
 jvm_library(
   name = "pest_test_lib",
   visibility = ["//visibility:public"],
   srcs = glob(["src/test/kotlin/**/*.kt", "src/test/kotlin/**/*.java", "src/test/kotlin/**/*.form"], allow_empty = True),
+  resources = [":pest_test_resources"],
   associates = [":pest"],
   deps = [
     "@community//platform/core-api:core",
@@ -92,8 +93,7 @@ jvm_library(
     "@lib//:io-mockk-jvm",
     "@community//platform/statistics",
     "@community//platform/statistics:statistics_test_lib",
-  ],
-  runtime_deps = [":pest_test_resources"]
+  ]
 )
 ### auto-generated section `build intellij.pest` end
 
