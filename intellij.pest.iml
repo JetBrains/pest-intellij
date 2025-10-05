@@ -34,7 +34,7 @@
     <orderEntry type="module" module-name="intellij.platform.ide.core" />
     <orderEntry type="module" module-name="intellij.platform.lang.impl" />
     <orderEntry type="module" module-name="intellij.xml.psi.impl" />
-    <orderEntry type="library" name="fastutil-min" level="project" />
+    <orderEntry type="module" module-name="intellij.libraries.fastutil" />
     <orderEntry type="module" module-name="intellij.platform.coverage" />
     <orderEntry type="module" module-name="intellij.xml.dom.impl" />
     <orderEntry type="module" module-name="intellij.platform.core.ui" />
