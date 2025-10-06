@@ -11,6 +11,7 @@
     <depends optional="true" config-file="pest-coverage.xml">com.intellij.modules.coverage</depends>
 
     <extensions defaultExtensionNs="com.intellij">
+        <testActionProvider implementation="com.pestphp.pest.runner.PestToolbarToggleActionProvider"/>
         <psi.declarationProvider implementation="com.pestphp.pest.features.customExpectations.symbols.PestCustomExpectationSymbolDeclarationProvider"/>
         <psi.symbolReferenceProvider hostElementClass="com.jetbrains.php.lang.psi.elements.impl.MethodReferenceImpl"
                                      hostLanguage="PHP"
