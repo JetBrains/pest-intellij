@@ -148,6 +148,16 @@
           level="WARNING"
           implementationClass="com.pestphp.pest.inspections.PestTestFailedLineInspection"
         />
+        <localInspection
+          language="PHP"
+          groupPath="PHP"
+          groupKey="INSPECTION_PHP_GROUP_PEST"
+          shortName="MissingScreenshotSnapshotInspection"
+          enabledByDefault="true"
+          key="INSPECTION_MISSING_SCREENSHOT_SNAPSHOT_NAME"
+          level="WARNING"
+          implementationClass="com.pestphp.pest.inspections.MissingScreenshotSnapshotInspection"
+        />
         <statistics.counterUsagesCollector implementationClass="com.pestphp.pest.statistics.PestUsagesCollector"/>
         <programRunner implementation="com.pestphp.pest.features.parallel.PestParallelProgramRunner"/>
         <executor implementation="com.pestphp.pest.features.parallel.PestParallelTestExecutor" order="first,after debug"/>
