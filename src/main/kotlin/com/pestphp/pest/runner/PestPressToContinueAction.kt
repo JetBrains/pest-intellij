@@ -5,6 +5,7 @@ import com.intellij.execution.testframework.TestConsoleProperties
 import com.intellij.execution.testframework.TestFrameworkRunningModel
 import com.intellij.execution.testframework.ToggleModelAction
 import com.intellij.execution.testframework.ui.BaseTestsOutputConsoleView
+import com.intellij.execution.ui.ConsoleViewContentType
 import com.intellij.execution.ui.RunContentDescriptor
 import com.intellij.ide.DataManager
 import com.intellij.openapi.actionSystem.AnActionEvent
@@ -26,6 +27,7 @@ class PestPressToContinueAction(
     props,
     BooleanProperty("pest.pressToContinue", false)
 ) {
+
     override fun setModel(model: TestFrameworkRunningModel) {
     }
 
@@ -39,7 +41,7 @@ class PestPressToContinueAction(
             ?.processHandler
             ?.takeUnless { it.isProcessTerminated || it.isProcessTerminating || it.processInput == null }
             ?.let { getInnerConsoleViewImpl(descriptor) }
-            ?.let { readLastNonEmptyLineOrEmpty(it).contains(PROMPT) }
+            ?.let { shouldEnableAndPrintHint(it) }
             ?: false
     }
 
@@ -83,8 +85,18 @@ class PestPressToContinueAction(
         return ""
     }
 
-    private companion object {
+    private fun shouldEnableAndPrintHint(view: ConsoleViewImpl): Boolean {
+        val line = readLastNonEmptyLineOrEmpty(view)
+        if (line.contains(PROMPT)) {
+            view.print("\n  $HINT\n", ConsoleViewContentType.SYSTEM_OUTPUT)
+            return true
+        }
+        return line.contains(HINT)
+    }
+
+    internal companion object {
         private val logger = Logger.getInstance(PestPressToContinueAction::class.java)
-        private const val PROMPT = "Press any key to continue"
+        internal const val PROMPT: String = "Press any key to continue"
+        internal const val HINT: String = "To continue, click \"Continue Test Run\" on the test results' toolbar."
     }
 }
