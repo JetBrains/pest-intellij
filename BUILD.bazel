@@ -89,6 +89,7 @@ jvm_library(
     "@community//xml/dom-impl",
     "@community//platform/core-ui",
     "@community//platform/util/text-matching",
+    "@community//platform/util/text-matching:text-matching_test_lib",
     "@lib//:io-mockk",
     "@lib//:io-mockk-jvm",
     "@community//platform/statistics",
