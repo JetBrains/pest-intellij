@@ -11,7 +11,7 @@ import com.pestphp.pest.PestBundle
 fun convertTestNameToSentenceCase(
     name: String,
     shouldLowercaseWords: Boolean = true
-) = NameUtilCore.splitNameIntoWords(name).fold("") { acc, element ->
+) = NameUtilCore.splitNameIntoWordList(name).fold("") { acc, element ->
     val word = if (shouldLowercaseWords) element.replaceFirstChar(Char::lowercase) else element
     if (acc.lastOrNull()?.isLetterOrDigit() != true || word.length == 1 && !word[0].isLetterOrDigit())
         "$acc$word"
