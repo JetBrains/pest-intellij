@@ -11,7 +11,6 @@
     <depends optional="true" config-file="pest-coverage.xml">com.intellij.modules.coverage</depends>
 
     <extensions defaultExtensionNs="com.intellij">
-        <testActionProvider implementation="com.pestphp.pest.runner.PestToolbarToggleActionProvider"/>
         <console.folding implementation="com.pestphp.pest.runner.PestPromptConsoleFolding"/>
         <psi.declarationProvider implementation="com.pestphp.pest.features.customExpectations.symbols.PestCustomExpectationSymbolDeclarationProvider"/>
         <psi.symbolReferenceProvider hostElementClass="com.jetbrains.php.lang.psi.elements.impl.MethodReferenceImpl"
@@ -175,6 +174,12 @@
     </extensions>
 
     <actions>
+        <action id="PestPressToContinue"
+                class="com.pestphp.pest.runner.PestPressToContinueAction"
+                icon="/run.svg">
+            <add-to-group group-id="RunTab.TopToolbar" anchor="after" relative-to-action="Rerun"/>
+            <add-to-group group-id="RunTab.TopToolbar.Old" anchor="after" relative-to-action="Rerun"/>
+        </action>
         <action id="Pest.New.File"
                 class="com.pestphp.pest.templates.PestConfigNewFileAction"
                 icon="/file.svg">

@@ -5,16 +5,14 @@ import com.intellij.execution.ui.ConsoleView
 import com.intellij.openapi.project.Project
 import com.intellij.ide.DataManager
 import com.intellij.openapi.actionSystem.LangDataKeys
-import com.intellij.execution.testframework.ui.BaseTestsOutputConsoleView
+import com.pestphp.pest.configuration.PestRunConfigurationType
 
 class PestPromptConsoleFolding : ConsoleFolding() {
 
     override fun isEnabledForConsole(consoleView: ConsoleView): Boolean {
         val context = DataManager.getInstance().getDataContext(consoleView.component)
         val descriptor = context.getData(LangDataKeys.RUN_CONTENT_DESCRIPTOR) ?: return false
-        val baseConsole = descriptor.executionConsole as? BaseTestsOutputConsoleView ?: return false
-        val props = baseConsole.properties
-        return props is PestConsoleProperties
+        return descriptor.runConfigurationTypeId == PestRunConfigurationType.instance.id
     }
 
     override fun shouldFoldLine(project: Project, line: String): Boolean {
