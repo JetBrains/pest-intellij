@@ -7,8 +7,7 @@ import com.intellij.execution.testframework.sm.runner.MockRuntimeConfiguration
 import com.intellij.execution.testframework.sm.runner.ui.SMTRunnerConsoleView
 import com.intellij.execution.ui.ConsoleViewContentType
 import com.intellij.execution.ui.RunContentDescriptor
-import com.intellij.ide.DataManager
-import com.intellij.ide.impl.HeadlessDataManager
+import com.intellij.openapi.actionSystem.AnActionEvent
 import com.intellij.openapi.actionSystem.DataContext
 import com.intellij.openapi.actionSystem.LangDataKeys
 import com.intellij.openapi.util.Disposer
@@ -17,6 +16,7 @@ import com.intellij.util.ui.UIUtil
 import com.jetbrains.php.util.pathmapper.PhpPathMapper
 import com.pestphp.pest.PestLightCodeFixture
 import com.pestphp.pest.configuration.PestLocationProvider
+import com.pestphp.pest.configuration.PestRunConfigurationType
 import java.io.ByteArrayOutputStream
 import java.io.OutputStream
 
@@ -31,7 +31,7 @@ class PestPressToContinueActionTest : PestLightCodeFixture() {
         val consoleView: SMTRunnerConsoleView,
         val processHandler: CapturingProcessHandler,
         val action: PestPressToContinueAction,
-        val event: com.intellij.openapi.actionSystem.AnActionEvent,
+        val event: AnActionEvent,
     )
 
     private fun setupWithPrinted(output: String): TestContext {
@@ -48,19 +48,18 @@ class PestPressToContinueActionTest : PestLightCodeFixture() {
         consoleView.attachToProcess(processHandler)
 
         val descriptor = RunContentDescriptor(consoleView, processHandler, consoleView.component, "Pest")
-
-        val dataManager = DataManager.getInstance()
-        (dataManager as? HeadlessDataManager)?.setTestDataProvider({ dataId ->
-                                                                       if (LangDataKeys.RUN_CONTENT_DESCRIPTOR.name == dataId) descriptor else null
-                                                                   }, testRootDisposable)
+        descriptor.runConfigurationTypeId = PestRunConfigurationType.instance.id
 
         val innerConsole = (consoleView.console as ConsoleViewImpl)
         innerConsole.print(output, ConsoleViewContentType.NORMAL_OUTPUT)
         innerConsole.flushDeferredText()
         UIUtil.dispatchAllInvocationEvents()
 
-        val action = PestPressToContinueAction(props)
-        val event = createTestEvent(action, DataContext.EMPTY_CONTEXT)
+        val action = PestPressToContinueAction()
+        val dataContext = DataContext { dataId ->
+            if (LangDataKeys.RUN_CONTENT_DESCRIPTOR.name == dataId) descriptor else null
+        }
+        val event = createTestEvent(action, dataContext)
         action.update(event)
 
         return TestContext(consoleView, processHandler, action, event)
@@ -71,7 +70,7 @@ class PestPressToContinueActionTest : PestLightCodeFixture() {
         assertTrue(ctx.event.presentation.isVisible)
         assertTrue(ctx.event.presentation.isEnabled)
 
-        ctx.action.setSelected(ctx.event, true)
+        ctx.action.actionPerformed(ctx.event)
 
         assertEquals("\n", ctx.processHandler.input.toString(Charsets.UTF_8))
 
