@@ -61,4 +61,16 @@ class PestTestIndexTest : PestLightCodeFixture() {
 
         assertContainsElements(indexKeys, "/src/anywhere-but-not-te-st/FileWithPestTest.php")
     }
+
+    fun testDescribeBlockTestsAreIndexed() {
+        val virtualFile = myFixture.copyFileToProject("FileWithDescribeBlockTest.php", "tests/FileWithDescribeBlockTest.php")
+        myFixture.configureFromExistingVirtualFile(virtualFile)
+
+        val fileBasedIndex = FileBasedIndex.getInstance()
+
+        val testNames = fileBasedIndex.getValues(key, "/src/tests/FileWithDescribeBlockTest.php", GlobalSearchScope.allScope(project))
+            .flatten()
+
+        assertContainsElements(testNames, "`sum` → ", "`sum` → adds numbers", "`sum` → it handles zero")
+    }
 }

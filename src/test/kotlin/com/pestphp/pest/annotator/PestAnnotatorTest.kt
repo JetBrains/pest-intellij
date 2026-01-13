@@ -76,4 +76,10 @@ class PestAnnotatorTest: PestLightCodeFixture() {
 
         myFixture.checkHighlighting()
     }
+
+    fun testHasDuplicateTestInDescribeBlock() {
+        myFixture.configureByFile("DuplicateTestNameInDescribeBlock.php")
+
+        myFixture.checkHighlighting()
+    }
 }

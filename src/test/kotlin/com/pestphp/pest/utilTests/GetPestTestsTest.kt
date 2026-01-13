@@ -49,4 +49,11 @@ class GetPestTestsTest : PestLightCodeFixture() {
 
         assertNotEmpty(file.getPestTests())
     }
+
+    fun testNestedDescribeBlockTestsAreIncluded() {
+        val file = myFixture.configureByFile("NestedDescribeFunctionCalls.php")
+
+        val tests = file.getPestTests()
+        assertEquals(4, tests.size)
+    }
 }

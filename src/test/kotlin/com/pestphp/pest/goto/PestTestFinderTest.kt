@@ -97,4 +97,14 @@ class PestTestFinderTest : PestLightCodeFixture() {
             methods
         )
     }
+
+    fun testFindTestsForMethodInDescribeBlock() {
+        val file = myFixture.configureByFile("App/User.php")
+        myFixture.configureByFile("test/App/UserDescribeTest.php")
+        val method = PhpPsiUtil.findAllClasses(file as PhpFile).first().findMethodByName("isPestDeveloper")
+
+        val tests = PestTestFinder().findTestsForClass(method!!)
+
+        assertTrue(tests.any { it.getPestTestName()?.contains("is pest developer in describe") == true })
+    }
 }

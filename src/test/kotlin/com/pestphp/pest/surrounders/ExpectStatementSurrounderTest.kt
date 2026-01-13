@@ -80,4 +80,28 @@ class ExpectStatementSurrounderTest: SurroundTestCase() {
             """.trimIndent()
         )
     }
+
+    fun testSurroundInsideDescribeBlock() {
+        doTest(
+            ExpectStatementSurrounder(),
+            """
+                <?php
+
+                describe('sum', function () {
+                    it('adds numbers', function () {
+                        <selection>1 + 1</selection>
+                    });
+                });
+            """.trimIndent(),
+            """
+                <?php
+
+                describe('sum', function () {
+                    it('adds numbers', function () {
+                        <selection>expect(1 + 1)</selection>
+                    });
+                });
+            """.trimIndent()
+        )
+    }
 }

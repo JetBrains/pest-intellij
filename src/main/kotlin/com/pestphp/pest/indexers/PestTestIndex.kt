@@ -25,7 +25,7 @@ class PestTestIndex : FileBasedIndexExtension<String, Set<String>>() {
     }
 
     override fun getVersion(): Int {
-        return 4
+        return 5
     }
 
     override fun dependsOnFileContent(): Boolean {

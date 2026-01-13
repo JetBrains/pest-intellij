@@ -5,6 +5,7 @@ import com.intellij.psi.PsiFile
 import com.jetbrains.php.PhpIndex
 import com.jetbrains.php.lang.psi.PhpFile
 import com.jetbrains.php.lang.psi.elements.*
+import com.jetbrains.php.lang.psi.elements.Function
 import com.jetbrains.php.lang.psi.elements.impl.FunctionReferenceImpl
 import com.jetbrains.php.lang.psi.resolve.types.PhpType
 
@@ -82,8 +83,24 @@ fun PsiFile.getRoot(): List<PsiElement> {
 fun PsiFile.getPestTests(isSmart: Boolean = false): Set<FunctionReference> {
     if (this !is PhpFile) return setOf()
 
-    return this.getRoot()
-        .filter { it.isPestTestReference(isSmart) }
-        .filterIsInstance<FunctionReference>()
-        .toSet()
+    return collectPestTestsRecursively(this.getRoot(), isSmart)
+}
+
+private fun collectPestTestsRecursively(elements: List<PsiElement>, isSmart: Boolean): Set<FunctionReference> {
+    val result = mutableSetOf<FunctionReference>()
+
+    for (element in elements) {
+        if (!element.isPestTestReference(isSmart)) continue
+        val funcRef = element as? FunctionReference ?: continue
+        result.add(funcRef)
+
+        if (funcRef is FunctionReferenceImpl && funcRef.isDescribeFunction()) {
+            val closure = (funcRef.parameters.getOrNull(1) as? PhpExpression)?.firstChild as? Function
+            val body = closure?.children?.filterIsInstance<GroupStatement>()?.firstOrNull()
+            val statements = body?.statements?.mapNotNull { it.firstChild } ?: emptyList()
+            result.addAll(collectPestTestsRecursively(statements, isSmart))
+        }
+    }
+
+    return result
 }

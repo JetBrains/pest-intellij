@@ -26,6 +26,18 @@ class PestLocationProviderTest : PestLightCodeFixture() {
         )
     }
 
+    fun testDescribeBlock() {
+        doTestGetLocation(
+            "Test.php::`sum` → check true", "test", "subdir"
+        )
+    }
+
+    fun testDescribeBlockIt() {
+        doTestGetLocation(
+            "Test.php::`sum` → it check valid", "it", "subdir"
+        )
+    }
+
     private fun doTestGetLocation(
         pathSuffix: String,
         expectedTestName: String,
