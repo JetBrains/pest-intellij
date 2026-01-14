@@ -49,4 +49,22 @@ class DatasetIndexTest : PestLightCodeFixture() {
 
         assertEquals(0, indexData.count())
     }
+
+    fun testDatasetInsideDescribeBlockIsIndexed() {
+        myFixture.copyFileToProject(
+            "DatasetInDescribeBlock.php",
+            "/tests/Datasets/DatasetInDescribeBlock.php"
+        )
+
+        val fileBasedIndex = FileBasedIndex.getInstance()
+
+        val values = fileBasedIndex.getValues(
+            key,
+            "/src/tests/Datasets/DatasetInDescribeBlock.php",
+            GlobalSearchScope.projectScope(project)
+        ).flatten()
+
+        assertSize(2, values)
+        assertContainsElements(values, "top_level", "inside_describe")
+    }
 }

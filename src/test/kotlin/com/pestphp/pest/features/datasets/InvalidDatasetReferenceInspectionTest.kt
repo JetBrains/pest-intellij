@@ -38,4 +38,10 @@ class InvalidDatasetReferenceInspectionTest : PestLightCodeFixture() {
 
         myFixture.checkHighlighting()
     }
+
+    fun testDatasetInsideDescribeBlock() {
+        myFixture.configureByFile("DatasetInsideDescribeBlockTest.php")
+
+        myFixture.checkHighlighting()
+    }
 }

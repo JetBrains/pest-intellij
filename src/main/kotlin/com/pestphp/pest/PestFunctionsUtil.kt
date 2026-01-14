@@ -3,8 +3,8 @@ package com.pestphp.pest
 import com.intellij.psi.PsiElement
 import com.intellij.psi.PsiFile
 import com.jetbrains.php.PhpIndex
-import com.jetbrains.php.lang.psi.PhpFile
 import com.jetbrains.php.lang.psi.elements.*
+import com.jetbrains.php.lang.psi.elements.PhpPsiElement
 import com.jetbrains.php.lang.psi.elements.Function
 import com.jetbrains.php.lang.psi.elements.impl.FunctionReferenceImpl
 import com.jetbrains.php.lang.psi.resolve.types.PhpType
@@ -80,27 +80,32 @@ fun PsiFile.getRoot(): List<PsiElement> {
         .mapNotNull { it.firstChild }
 }
 
-fun PsiFile.getPestTests(isSmart: Boolean = false): Set<FunctionReference> {
-    if (this !is PhpFile) return setOf()
-
-    return collectPestTestsRecursively(this.getRoot(), isSmart)
-}
-
-private fun collectPestTestsRecursively(elements: List<PsiElement>, isSmart: Boolean): Set<FunctionReference> {
-    val result = mutableSetOf<FunctionReference>()
+/**
+ * Traverses elements and recursively enters describe blocks, collecting items via the collector function.
+ */
+internal fun <T> collectFromDescribeBlocks(
+    elements: List<PhpPsiElement>,
+    collector: (PhpPsiElement) -> T?
+): List<T> {
+    val result = mutableListOf<T>()
 
     for (element in elements) {
-        if (!element.isPestTestReference(isSmart)) continue
-        val funcRef = element as? FunctionReference ?: continue
-        result.add(funcRef)
+        collector(element)?.let { result.add(it) }
 
-        if (funcRef is FunctionReferenceImpl && funcRef.isDescribeFunction()) {
+        val funcRef = element as? FunctionReferenceImpl
+        if (funcRef != null && funcRef.isDescribeFunction()) {
             val closure = (funcRef.parameters.getOrNull(1) as? PhpExpression)?.firstChild as? Function
             val body = closure?.children?.filterIsInstance<GroupStatement>()?.firstOrNull()
-            val statements = body?.statements?.mapNotNull { it.firstChild } ?: emptyList()
-            result.addAll(collectPestTestsRecursively(statements, isSmart))
+            val statements = body?.statements?.mapNotNull { it.firstChild }?.filterIsInstance<PhpPsiElement>() ?: emptyList()
+            result.addAll(collectFromDescribeBlocks(statements, collector))
         }
     }
 
     return result
+}
+
+fun PsiFile.getPestTests(isSmart: Boolean = false): Set<FunctionReference> {
+    return collectFromDescribeBlocks(this.getRootPhpPsiElements()) { element ->
+        if (element.isPestTestReference(isSmart)) element as? FunctionReference else null
+    }.toSet()
 }

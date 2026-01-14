@@ -56,4 +56,15 @@ class DatasetReferenceTest : PestLightCodeFixture() {
 
         assertSize(0, datasetReference)
     }
+
+    fun testReferenceToDatasetInDescribeBlock() {
+        val file = myFixture.configureByFile("DatasetInDescribeBlockReference.php")
+
+        val caretElement = file.findElementAt(myFixture.caretOffset) ?: return fail("No element")
+        val datasetReference = caretElement.parent.references.filterIsInstance<DatasetReference>().firstOrNull() ?: return fail("No reference")
+        val resolved = datasetReference.resolve() as? FunctionReferenceImpl ?: return fail("No function")
+
+        assertTrue(resolved.isPestDataset())
+        assertEquals("some_numbers", resolved.getPestDatasetName())
+    }
 }

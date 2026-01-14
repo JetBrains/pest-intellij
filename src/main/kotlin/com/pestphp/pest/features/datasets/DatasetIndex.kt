@@ -24,7 +24,7 @@ class DatasetIndex : FileBasedIndexExtension<String, List<String>>() {
     }
 
     override fun getVersion(): Int {
-        return 2
+        return 3
     }
 
     override fun getIndexer(): DataIndexer<String, List<String>, FileContent> {
@@ -36,9 +36,7 @@ class DatasetIndex : FileBasedIndexExtension<String, List<String>>() {
             }
 
             val datasets = file
-                .getRootPhpPsiElements()
-                .filter { it.isPestDataset() }
-                .filterIsInstance<FunctionReferenceImpl>()
+                .getDatasets()
                 .mapNotNull { it.getPestDatasetName() }
 
             if (datasets.isEmpty()) {

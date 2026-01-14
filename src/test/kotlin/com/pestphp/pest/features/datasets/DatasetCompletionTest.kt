@@ -28,4 +28,10 @@ class DatasetCompletionTest : PestLightCodeFixture() {
 
         assertNoCompletion()
     }
+
+    fun testCanCompleteDatasetInDescribeBlock() {
+        myFixture.configureByFile("DatasetInDescribeBlockCompletion.php")
+
+        assertCompletion("some_numbers")
+    }
 }

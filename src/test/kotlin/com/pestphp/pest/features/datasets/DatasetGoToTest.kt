@@ -52,4 +52,18 @@ class DatasetGoToTest : PestLightCodeFixture() {
 
         assertNull(declarationElement)
     }
+
+    fun testCanGoToDatasetInDescribeBlock() {
+        myFixture.configureByFile("DatasetInDescribeBlockReference.php")
+
+        val declarationElement = GotoDeclarationAction.findTargetElement(
+            project,
+            myFixture.editor,
+            myFixture.caretOffset
+        ) as? FunctionReferenceImpl
+
+        assertNotNull(declarationElement)
+        assertTrue(declarationElement.isPestDataset())
+        assertEquals("some_numbers", declarationElement!!.getPestDatasetName())
+    }
 }

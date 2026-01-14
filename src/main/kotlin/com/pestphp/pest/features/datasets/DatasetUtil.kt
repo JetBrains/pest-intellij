@@ -7,14 +7,10 @@ import com.intellij.util.indexing.FileBasedIndex
 import com.jetbrains.php.lang.psi.elements.MethodReference
 import com.jetbrains.php.lang.psi.elements.StringLiteralExpression
 import com.jetbrains.php.lang.psi.elements.impl.FunctionReferenceImpl
+import com.pestphp.pest.collectFromDescribeBlocks
 import com.pestphp.pest.getRootPhpPsiElements
 import com.pestphp.pest.isPestTestReference
 import com.pestphp.pest.realPath
-
-fun PsiFile.isPestDatasetFile(): Boolean {
-    return this.getRootPhpPsiElements()
-        .any(PsiElement::isPestDataset)
-}
 
 fun PsiFile.isIndexedPestDatasetFile(): Boolean {
     return FileBasedIndex.getInstance().getValues(
@@ -46,7 +42,7 @@ fun MethodReference.isDatasetCall() : Boolean {
 }
 
 fun PsiFile.getDatasets(): List<FunctionReferenceImpl> {
-    return this.getRootPhpPsiElements()
-        .filter { it.isPestDataset() }
-        .filterIsInstance<FunctionReferenceImpl>()
+    return collectFromDescribeBlocks(this.getRootPhpPsiElements()) { element ->
+        (element as? FunctionReferenceImpl)?.takeIf { it.isPestDataset() }
+    }
 }

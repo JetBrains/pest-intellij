@@ -8,20 +8,16 @@ import com.intellij.util.indexing.FileBasedIndex
 import com.jetbrains.php.lang.inspections.PhpInspection
 import com.jetbrains.php.lang.psi.PhpFile
 import com.jetbrains.php.lang.psi.elements.StringLiteralExpression
-import com.jetbrains.php.lang.psi.elements.impl.FunctionReferenceImpl
 import com.jetbrains.php.lang.psi.elements.impl.MethodReferenceImpl
 import com.jetbrains.php.lang.psi.visitors.PhpElementVisitor
 import com.pestphp.pest.PestBundle
 import com.pestphp.pest.getPestTests
-import com.pestphp.pest.getRootPhpPsiElements
 
 class InvalidDatasetReferenceInspection : PhpInspection() {
     override fun buildVisitor(holder: ProblemsHolder, isOnTheFly: Boolean): PsiElementVisitor {
         return object : PhpElementVisitor() {
             override fun visitPhpFile(file: PhpFile) {
-                val localDatasets = file.getRootPhpPsiElements()
-                    .filter { it.isPestDataset() }
-                    .filterIsInstance<FunctionReferenceImpl>()
+                val localDatasets = file.getDatasets()
                     .mapNotNull { it.getPestDatasetName() }
                 // Get all shared datasets
                 val fileBasedIndex = FileBasedIndex.getInstance()
