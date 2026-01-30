@@ -146,14 +146,16 @@ fun String.toPestTestRegex(rootPath: String, file: String, pathMapper: PhpPathMa
         .withoutFirstFileSeparator
         // 2. Make the first folder's first letter uppercase.
         .replaceFirstChar { if (it.isLowerCase()) it.titlecase(Locale.getDefault()) else it.toString() }
-        // 3. Remove file extension.
-        .substringBeforeLast('.')
+        // 3. Remove file extension (.php) and compound suffixes (.test, .spec, etc.) from filename.
+        .removeSuffix(".php")
+        .let { path ->
+            truncateAtFirstDot(path)
+        }
         // 4. Make directory separators to namespace separators.
         .replace("\\", "\\\\")
         .replace("/", "\\\\")
-        // 5. Remove unsupported characters
-        .replace("-", "")
-        .replace("_", "")
+        // 5. Remove unsupported characters (keep only alphanumeric and escaped backslashes).
+        .replace(Regex("[^A-Za-z0-9\\\\]"), "")
         // 6. Add P as a namespace before the generated namespace.
         .let { "(P\\\\)?$it" }
 
@@ -176,6 +178,18 @@ fun String.toPestTestRegex(rootPath: String, file: String, pathMapper: PhpPathMa
     val dataSet = """(data\sset\s".*"|\(.*\))"""
 
     return """^$fqn::$testName(\swith\s$dataSet(\s\/\s$dataSet)*(\s#\d+)?)?$possibleEndOfLine"""
+}
+
+private fun truncateAtFirstDot(path: String): String {
+    val lastSep = maxOf(path.lastIndexOf('/'), path.lastIndexOf('\\'))
+    return if (lastSep >= 0) {
+        val dir = path.substring(0, lastSep + 1)
+        val filename = path.substring(lastSep + 1).substringBefore('.')
+        dir + filename
+    }
+    else {
+        path.substringBefore('.')
+    }
 }
 
 val String.withoutFirstFileSeparator: String
