@@ -1,5 +1,6 @@
 package com.pestphp.pest.utilTests
 
+import com.jetbrains.php.util.pathmapper.PhpPathMapper
 import com.pestphp.pest.PestLightCodeFixture
 import com.pestphp.pest.toPestTestRegex
 
@@ -107,5 +108,70 @@ class ToPestTestRegexTests : PestLightCodeFixture() {
 
         assertTrue(testRegex?.endsWith("$") == true)
         assertTrue(describeRegex?.endsWith("$") == false)
+    }
+
+    fun testRegexHandlesTestSuffix() {
+        val file = myFixture.configureByFile(
+            "Login.test.php"
+        )
+
+        val testElement = file.firstChild?.lastChild?.firstChild
+
+        val regex = testElement?.toPestTestRegex("src")
+
+        assertFalse(regex?.contains(".test") == true)
+        assertTrue(regex?.contains("Login") == true)
+    }
+
+    fun testRegexHandlesSpecSuffix() {
+        val file = myFixture.configureByFile(
+            "User.spec.php"
+        )
+
+        val testElement = file.firstChild?.lastChild?.firstChild
+
+        val regex = testElement?.toPestTestRegex("src")
+
+        assertFalse(regex?.contains(".spec") == true)
+        assertTrue(regex?.contains("User") == true)
+    }
+
+    fun testRegexHandlesEmojiInPath() {
+        val regex = "it renders components".toPestTestRegex(
+            "src",
+            "/src/livewire⚡/Component.php",
+            PhpPathMapper.create(this.project)
+        )
+
+        assertFalse(regex.contains("⚡"))
+        assertTrue(regex.contains("livewire"))
+        assertTrue(regex.contains("Component"))
+    }
+
+    fun testRegexHandlesDotInDirectoryName() {
+        val file = myFixture.configureByFile(
+            "dir.name/Test.php"
+        )
+
+        val testElement = file.firstChild?.lastChild?.firstChild
+
+        val regex = testElement?.toPestTestRegex("src")
+
+        assertFalse(regex?.contains("dir.name") == true)
+        assertTrue(regex?.contains("dirname") == true)
+    }
+
+    fun testRegexHandlesMultipleDots() {
+        val file = myFixture.configureByFile(
+            "Login.integration.test.php"
+        )
+
+        val testElement = file.firstChild?.lastChild?.firstChild
+
+        val regex = testElement?.toPestTestRegex("src")
+
+        assertFalse(regex?.contains(".integration") == true)
+        assertFalse(regex?.contains(".test") == true)
+        assertTrue(regex?.contains("Login") == true)
     }
 }
