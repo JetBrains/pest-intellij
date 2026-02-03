@@ -1,6 +1,11 @@
 package com.pestphp.pest.features.datasets
 
-import com.intellij.psi.*
+import com.intellij.psi.PsiElement
+import com.intellij.psi.PsiElementResolveResult
+import com.intellij.psi.PsiManager
+import com.intellij.psi.PsiPolyVariantReference
+import com.intellij.psi.PsiReferenceBase
+import com.intellij.psi.ResolveResult
 import com.intellij.psi.search.GlobalSearchScope
 import com.intellij.util.indexing.FileBasedIndex
 import com.jetbrains.php.lang.psi.elements.StringLiteralExpression

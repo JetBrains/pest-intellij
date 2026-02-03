@@ -3,9 +3,15 @@ package com.pestphp.pest
 import com.intellij.psi.PsiElement
 import com.intellij.psi.PsiFile
 import com.jetbrains.php.PhpIndex
-import com.jetbrains.php.lang.psi.elements.*
-import com.jetbrains.php.lang.psi.elements.PhpPsiElement
+import com.jetbrains.php.lang.psi.elements.FieldReference
 import com.jetbrains.php.lang.psi.elements.Function
+import com.jetbrains.php.lang.psi.elements.FunctionReference
+import com.jetbrains.php.lang.psi.elements.GroupStatement
+import com.jetbrains.php.lang.psi.elements.MethodReference
+import com.jetbrains.php.lang.psi.elements.PhpExpression
+import com.jetbrains.php.lang.psi.elements.PhpNamespace
+import com.jetbrains.php.lang.psi.elements.PhpPsiElement
+import com.jetbrains.php.lang.psi.elements.Statement
 import com.jetbrains.php.lang.psi.elements.impl.FunctionReferenceImpl
 import com.jetbrains.php.lang.psi.resolve.types.PhpType
 

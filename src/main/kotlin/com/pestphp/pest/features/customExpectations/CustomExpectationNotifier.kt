@@ -3,7 +3,7 @@ package com.pestphp.pest.features.customExpectations
 import com.intellij.psi.PsiFile
 import com.intellij.util.messages.Topic
 import com.pestphp.pest.features.customExpectations.generators.Method
-import java.util.*
+import java.util.EventListener
 
 interface CustomExpectationNotifier : EventListener {
     companion object {

@@ -11,7 +11,11 @@ import com.jetbrains.php.lang.psi.elements.PhpNamedElement
 import com.jetbrains.php.lang.psi.elements.impl.FunctionReferenceImpl
 import com.jetbrains.php.lang.psi.resolve.types.PhpType
 import com.jetbrains.php.lang.psi.resolve.types.PhpTypeProvider4
-import com.pestphp.pest.*
+import com.pestphp.pest.PestSettings
+import com.pestphp.pest.getPestConfigurationPhpType
+import com.pestphp.pest.getRoot
+import com.pestphp.pest.isAnyPestFunction
+import com.pestphp.pest.isThisVariableInPest
 import java.nio.file.FileSystems
 import kotlin.io.path.Path
 

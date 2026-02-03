@@ -5,12 +5,22 @@ import com.intellij.psi.util.findParentOfType
 import com.intellij.psi.util.parents
 import com.intellij.remote.RemoteSdkProperties
 import com.jetbrains.php.config.interpreters.PhpInterpretersManagerImpl
-import com.jetbrains.php.lang.psi.elements.*
+import com.jetbrains.php.lang.psi.elements.ArrayCreationExpression
+import com.jetbrains.php.lang.psi.elements.ClassConstantReference
+import com.jetbrains.php.lang.psi.elements.ClassReference
+import com.jetbrains.php.lang.psi.elements.ConcatenationExpression
+import com.jetbrains.php.lang.psi.elements.FunctionReference
+import com.jetbrains.php.lang.psi.elements.MethodReference
+import com.jetbrains.php.lang.psi.elements.ParameterListOwner
+import com.jetbrains.php.lang.psi.elements.PhpPsiElement
+import com.jetbrains.php.lang.psi.elements.PhpReference
+import com.jetbrains.php.lang.psi.elements.Statement
+import com.jetbrains.php.lang.psi.elements.StringLiteralExpression
 import com.jetbrains.php.lang.psi.elements.impl.FunctionReferenceImpl
 import com.jetbrains.php.run.remote.PhpRemoteInterpreterManager
 import com.jetbrains.php.util.pathmapper.PhpPathMapper
 import com.pestphp.pest.runner.getLocationUrl
-import java.util.*
+import java.util.Locale
 
 fun FunctionReferenceImpl.getPestTestName(): String? {
     val testName = getParameter(0)?.stringValue ?: return tryGetArchTestName(this)

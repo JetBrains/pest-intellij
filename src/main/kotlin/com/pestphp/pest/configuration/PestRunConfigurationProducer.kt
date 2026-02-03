@@ -15,7 +15,11 @@ import com.jetbrains.php.lang.PhpFileType
 import com.jetbrains.php.lang.psi.PhpFile
 import com.jetbrains.php.testFramework.run.PhpDefaultTestRunnerSettingsValidator
 import com.jetbrains.php.testFramework.run.PhpTestConfigurationProducer
-import com.pestphp.pest.*
+import com.pestphp.pest.getPestTestName
+import com.pestphp.pest.isPestConfigurationFile
+import com.pestphp.pest.isPestEnabled
+import com.pestphp.pest.isPestTestFile
+import com.pestphp.pest.isPestTestReference
 
 class PestRunConfigurationProducer : PhpTestConfigurationProducer<PestRunConfiguration>(
     VALIDATOR,

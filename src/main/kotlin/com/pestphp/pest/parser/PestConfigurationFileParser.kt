@@ -18,8 +18,12 @@ import com.jetbrains.php.lang.psi.elements.PhpPsiElement
 import com.jetbrains.php.lang.psi.elements.impl.FunctionReferenceImpl
 import com.jetbrains.php.lang.psi.elements.impl.PhpFilePathUtils
 import com.jetbrains.php.lang.psi.resolve.types.PhpType
-import com.pestphp.pest.*
+import com.pestphp.pest.CONFIGURATION_FUNCTIONS
+import com.pestphp.pest.PestSettings
 import com.pestphp.pest.features.configuration.getConfigurationFunctionCall
+import com.pestphp.pest.getBaseDir
+import com.pestphp.pest.getConfigurationPhpType
+import com.pestphp.pest.getPestConfigurationPhpType
 import kotlin.io.path.Path
 
 class PestConfigurationFileParser(private val settings: PestSettings) {

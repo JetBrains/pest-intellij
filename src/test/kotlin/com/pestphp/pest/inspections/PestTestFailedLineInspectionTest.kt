@@ -4,7 +4,7 @@ import com.intellij.execution.TestStateStorage
 import com.intellij.lang.annotation.HighlightSeverity
 import com.intellij.testFramework.TestDataPath
 import com.pestphp.pest.PestLightCodeFixture
-import java.util.*
+import java.util.Date
 
 @TestDataPath("\$CONTENT_ROOT/resources/com/pestphp/pest/inspections/pestTestFailedLine")
 class PestTestFailedLineInspectionTest : PestLightCodeFixture() {

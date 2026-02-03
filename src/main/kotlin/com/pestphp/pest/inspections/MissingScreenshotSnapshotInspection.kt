@@ -1,6 +1,8 @@
 package com.pestphp.pest.inspections
 
 import com.intellij.codeInspection.ProblemsHolder
+import com.intellij.openapi.vfs.VfsUtil
+import com.intellij.openapi.vfs.VirtualFile
 import com.intellij.psi.PsiElementVisitor
 import com.intellij.psi.util.findParentOfType
 import com.jetbrains.php.lang.PhpLangUtil
@@ -8,8 +10,6 @@ import com.jetbrains.php.lang.inspections.PhpInspection
 import com.jetbrains.php.lang.psi.elements.MethodReference
 import com.jetbrains.php.lang.psi.elements.impl.FunctionReferenceImpl
 import com.jetbrains.php.lang.psi.visitors.PhpElementVisitor
-import com.intellij.openapi.vfs.VfsUtil
-import com.intellij.openapi.vfs.VirtualFile
 import com.pestphp.pest.PestBundle
 import com.pestphp.pest.getPestTestName
 import com.pestphp.pest.isPestTestFile

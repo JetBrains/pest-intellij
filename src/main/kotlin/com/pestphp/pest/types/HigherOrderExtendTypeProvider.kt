@@ -3,7 +3,11 @@ package com.pestphp.pest.types
 import com.intellij.openapi.project.DumbService
 import com.intellij.openapi.project.Project
 import com.intellij.psi.PsiElement
-import com.jetbrains.php.lang.psi.elements.*
+import com.jetbrains.php.lang.psi.elements.FieldReference
+import com.jetbrains.php.lang.psi.elements.MemberReference
+import com.jetbrains.php.lang.psi.elements.MethodReference
+import com.jetbrains.php.lang.psi.elements.PhpNamedElement
+import com.jetbrains.php.lang.psi.elements.PhpTypedElement
 import com.jetbrains.php.lang.psi.elements.impl.FunctionReferenceImpl
 import com.jetbrains.php.lang.psi.resolve.types.PhpType
 import com.jetbrains.php.lang.psi.resolve.types.PhpTypeProvider4

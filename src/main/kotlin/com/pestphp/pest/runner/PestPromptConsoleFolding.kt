@@ -2,9 +2,9 @@ package com.pestphp.pest.runner
 
 import com.intellij.execution.ConsoleFolding
 import com.intellij.execution.ui.ConsoleView
-import com.intellij.openapi.project.Project
 import com.intellij.ide.DataManager
 import com.intellij.openapi.actionSystem.LangDataKeys
+import com.intellij.openapi.project.Project
 import com.pestphp.pest.configuration.PestRunConfigurationType
 
 class PestPromptConsoleFolding : ConsoleFolding() {

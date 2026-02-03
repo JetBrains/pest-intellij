@@ -6,8 +6,14 @@ import com.intellij.psi.PsiFile
 import com.intellij.psi.util.PsiTreeUtil
 import com.jetbrains.php.PhpIndex
 import com.jetbrains.php.lang.psi.PhpFile
-import com.jetbrains.php.lang.psi.elements.*
 import com.jetbrains.php.lang.psi.elements.Function
+import com.jetbrains.php.lang.psi.elements.MethodReference
+import com.jetbrains.php.lang.psi.elements.ParameterList
+import com.jetbrains.php.lang.psi.elements.PhpExpression
+import com.jetbrains.php.lang.psi.elements.PhpNamespace
+import com.jetbrains.php.lang.psi.elements.Statement
+import com.jetbrains.php.lang.psi.elements.StringLiteralExpression
+import com.jetbrains.php.lang.psi.elements.Variable
 import com.jetbrains.php.lang.psi.elements.impl.FunctionReferenceImpl
 import com.jetbrains.php.lang.psi.elements.impl.MethodReferenceImpl
 import com.jetbrains.php.lang.psi.resolve.types.PhpType

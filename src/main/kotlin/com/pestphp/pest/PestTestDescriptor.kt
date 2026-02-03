@@ -5,7 +5,7 @@ import com.jetbrains.php.lang.psi.elements.Method
 import com.jetbrains.php.lang.psi.elements.PhpClass
 import com.jetbrains.php.phpunit.PhpUnitTestDescriptor
 import com.jetbrains.php.testFramework.PhpTestCreateInfo
-import java.util.*
+import java.util.Collections
 
 /**
  * findTests, findClasses, and findMethods return empty collections,
