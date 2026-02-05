@@ -1,10 +1,12 @@
 package com.pestphp.pest.runner
 
+import com.intellij.execution.configurations.RunConfiguration
 import com.intellij.execution.executors.DefaultRunExecutor
 import com.intellij.execution.impl.ConsoleViewImpl
 import com.intellij.execution.process.NopProcessHandler
-import com.intellij.execution.testframework.sm.runner.MockRuntimeConfiguration
 import com.intellij.execution.testframework.sm.runner.ui.SMTRunnerConsoleView
+import io.mockk.every
+import io.mockk.mockk
 import com.intellij.execution.ui.ConsoleViewContentType
 import com.intellij.execution.ui.RunContentDescriptor
 import com.intellij.openapi.actionSystem.AnActionEvent
@@ -35,7 +37,9 @@ class PestPressToContinueActionTest : PestLightCodeFixture() {
     )
 
     private fun setupWithPrinted(output: String): TestContext {
-        val config = MockRuntimeConfiguration(project)
+        val config = mockk<RunConfiguration>()
+        every { config.project } returns project
+        every { config.name } returns "Test"
         val executor = DefaultRunExecutor.getRunExecutorInstance()
         val locator = PestLocationProvider(PhpPathMapper.create(project), project, myFixture.testDataPath)
         val props = PestConsoleProperties(config, executor, locator)
