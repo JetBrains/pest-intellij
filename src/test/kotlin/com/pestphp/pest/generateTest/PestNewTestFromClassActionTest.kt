@@ -43,9 +43,8 @@ class PestNewTestFromClassActionTest : PestLightCodeFixture() {
     private fun getDialog(file: PsiFile, namespace: String): PhpNewTestDialog {
         val phpClass = PhpPsiUtil.findClass(file as PhpFile) { _ -> true }
         return object : PhpNewTestDialog(project, file.containingDirectory, file, PestTestCreateInfo, phpClass) {
-            override fun createUIComponents() {
-                super.createUIComponents()
-                myDirectoryCombobox = object : PhpPsrDirectoryComboBox(project, testDirectoryProvider) {
+            override fun createDirectoryCombobox(): PhpPsrDirectoryComboBox {
+                return object : PhpPsrDirectoryComboBox(project, testDirectoryProvider) {
                     override fun init(baseDir: VirtualFile, namespace: String) {
                         super.init(baseDir, namespace)
                         updateSuggestions(getNamespace())
