@@ -113,7 +113,7 @@ private fun createAndShowNotification(
     @NlsSafe versionRequirement: String,
     version: String?,
 ) {
-    PhpUnitUtil.NOTIFICATION_GROUP.createNotification(
+    PhpUnitUtil.getNotificationGroup().createNotification(
         versionRequirement,
         NotificationType.ERROR
     ).apply {
