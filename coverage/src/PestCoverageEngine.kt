@@ -6,8 +6,8 @@ import com.intellij.coverage.CoverageSuite
 import com.intellij.execution.configurations.RunConfigurationBase
 import com.intellij.execution.configurations.coverage.CoverageEnabledConfiguration
 import com.intellij.openapi.project.Project
-import com.jetbrains.php.phpunit.coverage.PhpCoverageSuite
-import com.jetbrains.php.phpunit.coverage.PhpUnitCoverageEngine
+import com.intellij.php.coverage.PhpCoverageSuite
+import com.intellij.php.coverage.PhpUnitCoverageEngine
 import com.pestphp.pest.configuration.PestRunConfiguration
 
 class PestCoverageEngine : PhpUnitCoverageEngine() {

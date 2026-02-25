@@ -4,6 +4,7 @@ import com.intellij.execution.PsiLocation
 import com.intellij.execution.actions.ConfigurationContext
 import com.intellij.psi.PsiElement
 import com.intellij.testFramework.TestDataPath
+import com.intellij.testFramework.fixtures.IdeaTestExecutionPolicy
 import com.jetbrains.php.config.interpreters.PhpInterpreter
 import com.jetbrains.php.config.interpreters.PhpInterpretersManagerImpl
 import com.jetbrains.php.testFramework.PhpTestFrameworkConfiguration
@@ -12,13 +13,22 @@ import com.pestphp.pest.PestFrameworkType
 import com.pestphp.pest.PestLightCodeFixture
 import com.pestphp.pest.configuration.PestRunConfiguration
 import com.pestphp.pest.configuration.PestRunConfigurationProducer
-import org.junit.Ignore
+import java.nio.file.Path
+import kotlin.io.path.exists
+import kotlin.io.path.pathString
 
 @TestDataPath($$"$CONTENT_ROOT/testData/features/mutate")
 class PestMutateProgramRunnerTest : PestLightCodeFixture() {
     private lateinit var configurationsBackup: List<PhpTestFrameworkConfiguration>
 
-    override fun getTestDataPath(): String = "testData/features/mutate"
+    override fun getTestDataPath(): String {
+        val intellijPath = Path.of(IdeaTestExecutionPolicy.getHomePathWithPolicy(), "phpstorm/pest/coverage/tests/testData/features/mutate")
+        return if (intellijPath.exists()) {
+            intellijPath.pathString
+        } else {
+            "testData/features/mutate"
+        }
+    }
 
     fun testCannotRunWrongExecutorId() = doTest {
         val configuration = createConfiguration(myFixture.file)

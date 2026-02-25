@@ -3,11 +3,11 @@ package com.intellij.pest.coverage
 import com.intellij.execution.configurations.RunProfile
 import com.intellij.execution.configurations.RunProfileState
 import com.intellij.execution.runners.ExecutionEnvironment
+import com.intellij.php.coverage.PhpCoverageRunner
 import com.jetbrains.php.config.commandLine.PhpCommandSettings
 import com.jetbrains.php.config.commandLine.PhpCommandSettingsBuilder
 import com.jetbrains.php.config.interpreters.PhpInterpreter
 import com.jetbrains.php.debug.xdebug.options.XdebugConfigurationOptionsManager
-import com.jetbrains.php.phpunit.coverage.PhpCoverageRunner
 import com.jetbrains.php.phpunit.coverage.PhpUnitCoverageEngine.CoverageEngine
 import com.jetbrains.php.run.PhpConfigurationOption
 import com.jetbrains.php.run.PhpRunConfigurationHolder

@@ -10,7 +10,7 @@
         <plugin id="com.jetbrains.php"/>
         <plugin id="com.intellij.modules.platform"/>
     </dependencies>
-    <content>
+    <content namespace="jetbrains">
         <module name="intellij.pest.coverage"/>
     </content>
 

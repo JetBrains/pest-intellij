@@ -2,7 +2,7 @@ package com.intellij.pest.coverage
 
 import com.intellij.coverage.CoverageRunner
 import com.intellij.execution.configurations.coverage.CoverageEnabledConfiguration
-import com.jetbrains.php.phpunit.coverage.PhpUnitCoverageRunner
+import com.intellij.php.coverage.PhpUnitCoverageRunner
 import com.pestphp.pest.configuration.PestRunConfiguration
 
 class PestCoverageEnabledConfiguration(
