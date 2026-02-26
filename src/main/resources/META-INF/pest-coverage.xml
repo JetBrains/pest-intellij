@@ -1,8 +1,0 @@
-<idea-plugin>
-    <extensions defaultExtensionNs="com.intellij">
-        <programRunner implementation="com.pestphp.pest.coverage.PestCoverageProgramRunner"/>
-        <programRunner implementation="com.pestphp.pest.features.mutate.PestMutateProgramRunner"/>
-        <executor implementation="com.pestphp.pest.features.mutate.PestMutateTestExecutor" order="first,after debug"/>
-        <coverageEngine implementation="com.pestphp.pest.coverage.PestCoverageEngine"/>
-    </extensions>
-</idea-plugin>

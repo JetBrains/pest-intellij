@@ -1,4 +1,4 @@
-package com.pestphp.pest.features.mutate
+package com.intellij.pest.coverage.features.mutate
 
 import com.intellij.execution.Executor
 import com.intellij.icons.AllIcons

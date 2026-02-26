@@ -1,4 +1,4 @@
-package com.pestphp.pest.features.mutate
+package com.intellij.pest.coverage.features.mutate
 
 import com.intellij.execution.PsiLocation
 import com.intellij.execution.actions.ConfigurationContext
@@ -14,12 +14,11 @@ import com.pestphp.pest.configuration.PestRunConfiguration
 import com.pestphp.pest.configuration.PestRunConfigurationProducer
 import org.junit.Ignore
 
-@TestDataPath("/com/pestphp/pest/features/mutate")
-@Ignore("AT-3959")
+@TestDataPath($$"$CONTENT_ROOT/testData/features/mutate")
 class PestMutateProgramRunnerTest : PestLightCodeFixture() {
     private lateinit var configurationsBackup: List<PhpTestFrameworkConfiguration>
 
-    override fun getTestDataPath(): String = "src/test/resources/com/pestphp/pest/features/mutate"
+    override fun getTestDataPath(): String = "testData/features/mutate"
 
     fun testCannotRunWrongExecutorId() = doTest {
         val configuration = createConfiguration(myFixture.file)

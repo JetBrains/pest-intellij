@@ -1,7 +1,7 @@
-package com.pestphp.pest.coverage
+package com.intellij.pest.coverage
 
 import com.intellij.coverage.CoverageDataManager
-import com.intellij.coverage.CoverageHelper;
+import com.intellij.coverage.CoverageHelper
 import com.intellij.execution.PsiLocation
 import com.intellij.execution.actions.ConfigurationContext
 import com.intellij.psi.PsiElement
@@ -16,12 +16,11 @@ import com.pestphp.pest.configuration.PestRunConfiguration
 import com.pestphp.pest.configuration.PestRunConfigurationProducer
 import org.junit.Ignore
 
-@TestDataPath("/com/pestphp/pest/coverage")
-@Ignore("AT-3959")
+@TestDataPath($$"$CONTENT_ROOT/testData")
 class PestCoverageProgramRunnerTest : PestLightCodeFixture() {
     private lateinit var configurationsBackup: List<PhpTestFrameworkConfiguration>
 
-    override fun getTestDataPath(): String = "src/test/resources/com/pestphp/pest/coverage"
+    override fun getTestDataPath(): String = "testData"
 
     fun testCannotRunWrongExecutorId() = doTest {
         val configuration = createConfiguration(myFixture.file)
@@ -114,12 +113,12 @@ class PestCoverageProgramRunnerTest : PestLightCodeFixture() {
             homePath = "$testDataPath/php"
         }
         PhpInterpretersManagerImpl.getInstance(project).addInterpreter(interpreter)
-        configurationsBackup = PhpTestFrameworkSettingsManager.getInstance(project).getConfigurations(PestFrameworkType.instance)
+        configurationsBackup = PhpTestFrameworkSettingsManager.getInstance(project).getConfigurations(PestFrameworkType.Companion.instance)
     }
 
     override fun tearDown() {
         try {
-            PhpTestFrameworkSettingsManager.getInstance(project).setConfigurations(PestFrameworkType.instance, configurationsBackup)
+            PhpTestFrameworkSettingsManager.getInstance(project).setConfigurations(PestFrameworkType.Companion.instance, configurationsBackup)
             PhpInterpretersManagerImpl.getInstance(project).interpreters = emptyList()
         } catch (e: Throwable) {
             addSuppressedException(e)

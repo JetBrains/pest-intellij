@@ -71,7 +71,7 @@ internal fun createPestParallelCommand(runConfiguration: PestRunConfiguration): 
     )
 }
 
-internal fun postprocessExecutionResult(
+fun postprocessExecutionResult(
     contentDescriptor: RunContentDescriptor,
     environment: ExecutionEnvironment,
     @NlsSafe versionRequirement: String,
@@ -129,7 +129,7 @@ internal fun executeInParallel(runConfiguration: RunConfiguration): Boolean {
     return runConfiguration is PestRunConfiguration && runConfiguration.pestSettings.pestRunnerSettings.parallelTestingEnabled
 }
 
-internal fun addParallelArguments(runConfiguration: PestRunConfiguration, command: PhpCommandSettings) {
+fun addParallelArguments(runConfiguration: PestRunConfiguration, command: PhpCommandSettings) {
     if (executeInParallel(runConfiguration)) {
         PestUsagesCollector.logParallelTestExecution(runConfiguration.project)
         command.addArguments(PEST_PARALLEL_ARGUMENTS)

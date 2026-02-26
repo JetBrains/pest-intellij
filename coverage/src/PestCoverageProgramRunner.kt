@@ -1,4 +1,4 @@
-package com.pestphp.pest.coverage
+package com.intellij.pest.coverage
 
 import com.intellij.execution.configurations.RunProfile
 import com.intellij.execution.configurations.RunProfileState

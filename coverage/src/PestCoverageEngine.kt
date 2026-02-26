@@ -1,4 +1,4 @@
-package com.pestphp.pest.coverage
+package com.intellij.pest.coverage
 
 import com.intellij.coverage.CoverageFileProvider
 import com.intellij.coverage.CoverageRunner

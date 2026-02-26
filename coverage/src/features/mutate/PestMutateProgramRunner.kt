@@ -1,12 +1,12 @@
-package com.pestphp.pest.features.mutate
+package com.intellij.pest.coverage.features.mutate
 
 import com.intellij.execution.configurations.RunProfile
 import com.intellij.execution.configurations.RunProfileState
 import com.intellij.execution.runners.ExecutionEnvironment
 import com.intellij.execution.ui.RunContentDescriptor
+import com.intellij.pest.coverage.PestCoverageProgramRunner
 import com.pestphp.pest.PestBundle
 import com.pestphp.pest.configuration.PestRunConfiguration
-import com.pestphp.pest.coverage.PestCoverageProgramRunner
 import com.pestphp.pest.features.parallel.postprocessExecutionResult
 import com.pestphp.pest.statistics.PestUsagesCollector
 

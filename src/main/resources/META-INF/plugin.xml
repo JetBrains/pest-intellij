@@ -6,9 +6,13 @@
     <resource-bundle>messages.pestBundle</resource-bundle>
     <category>Test Tools</category>
 
-    <depends>com.intellij.modules.platform</depends>
-    <depends>com.jetbrains.php</depends>
-    <depends optional="true" config-file="pest-coverage.xml">com.intellij.modules.coverage</depends>
+    <dependencies>
+        <plugin id="com.jetbrains.php"/>
+        <plugin id="com.intellij.modules.platform"/>
+    </dependencies>
+    <content>
+        <module name="intellij.pest.coverage"/>
+    </content>
 
     <extensions defaultExtensionNs="com.intellij">
         <console.folding implementation="com.pestphp.pest.runner.PestPromptConsoleFolding"/>
