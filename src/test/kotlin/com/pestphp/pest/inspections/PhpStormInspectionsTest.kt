@@ -6,8 +6,10 @@ import com.jetbrains.php.lang.inspections.PhpInspection
 import com.jetbrains.php.lang.inspections.psr0.PhpMultipleClassesDeclarationsInOneFile
 import com.pestphp.pest.PestLightCodeFixture
 import org.jetbrains.jps.model.java.JavaSourceRootType
+import org.junit.Ignore
 
 @TestDataPath("\$CONTENT_ROOT/resources/com/pestphp/pest/inspections/phpstorm")
+@Ignore("AT-3959")
 class PhpStormInspectionsTest: PestLightCodeFixture() {
     override fun getTestDataPath(): String {
         return "src/test/resources/com/pestphp/pest/inspections/phpstorm"

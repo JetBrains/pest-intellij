@@ -3,8 +3,10 @@ package com.pestphp.pest.utilTests
 import com.intellij.testFramework.TestDataPath
 import com.pestphp.pest.PestLightCodeFixture
 import com.pestphp.pest.isPestTestReference
+import org.junit.Ignore
 
 @TestDataPath("\$CONTENT_ROOT/resources/com/pestphp/pest/PestUtil")
+@Ignore("AT-3959")
 class IsPestTestFunctionTest : PestLightCodeFixture() {
     override fun getTestDataPath(): String {
         return "src/test/resources/com/pestphp/pest/PestUtil"

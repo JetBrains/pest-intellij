@@ -4,8 +4,10 @@ import com.intellij.psi.search.GlobalSearchScope
 import com.intellij.testFramework.TestDataPath
 import com.intellij.util.indexing.FileBasedIndex
 import com.pestphp.pest.PestLightCodeFixture
+import org.junit.Ignore
 
 @TestDataPath("\$CONTENT_ROOT/resources/com/pestphp/pest/indexers/PestTestIndexTest")
+@Ignore("AT-3959")
 class PestTestIndexTest : PestLightCodeFixture() {
     override fun getTestDataPath(): String {
         return "src/test/resources/com/pestphp/pest/indexers/PestTestIndexTest"

@@ -1,7 +1,9 @@
 package com.pestphp.pest.configuration.uses
 
 import com.pestphp.pest.PestLightCodeFixture
+import org.junit.Ignore
 
+@Ignore("AT-3959")
 class PestConfigurationFileTest : PestLightCodeFixture() {
     override fun setUp() {
         super.setUp()

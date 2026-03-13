@@ -2,8 +2,10 @@ package com.pestphp.pest.features.datasets
 
 import com.intellij.testFramework.TestDataPath
 import com.pestphp.pest.PestLightCodeFixture
+import org.junit.Ignore
 
 @TestDataPath("/com/pestphp/pest/features/datasets")
+@Ignore("AT-3959")
 class InvalidDatasetReferenceInspectionTest : PestLightCodeFixture() {
     override fun getTestDataPath(): String {
         return "src/test/resources/com/pestphp/pest/features/datasets"

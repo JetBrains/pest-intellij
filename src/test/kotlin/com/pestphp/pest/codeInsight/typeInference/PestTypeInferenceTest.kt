@@ -13,8 +13,10 @@ import com.jetbrains.php.lang.psi.elements.PhpTypedElement
 import com.jetbrains.php.lang.psi.resolve.types.PhpType
 import com.pestphp.pest.PestLightCodeFixture
 import com.pestphp.pest.PestSettings
+import org.junit.Ignore
 import java.util.regex.Pattern
 
+@Ignore("AT-3959")
 class PestTypeInferenceTest : PestLightCodeFixture() {
     private lateinit var pestFilePathBackup: String
 

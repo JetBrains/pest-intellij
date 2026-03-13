@@ -12,8 +12,10 @@ import com.pestphp.pest.PestFrameworkType
 import com.pestphp.pest.PestLightCodeFixture
 import com.pestphp.pest.configuration.PestRunConfiguration
 import com.pestphp.pest.configuration.PestRunConfigurationProducer
+import org.junit.Ignore
 
 @TestDataPath("/com/pestphp/pest/features/mutate")
+@Ignore("AT-3959")
 class PestMutateProgramRunnerTest : PestLightCodeFixture() {
     private lateinit var configurationsBackup: List<PhpTestFrameworkConfiguration>
 

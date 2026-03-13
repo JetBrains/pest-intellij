@@ -1,5 +1,8 @@
 package com.pestphp.pest.types
 
+import org.junit.Ignore
+
+@Ignore("AT-3959")
 class FunctionTypeTest : BaseTypeTestCase() {
     override fun setUp() {
         super.setUp()

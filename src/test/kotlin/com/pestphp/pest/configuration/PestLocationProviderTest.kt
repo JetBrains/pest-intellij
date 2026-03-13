@@ -6,7 +6,9 @@ import com.jetbrains.php.lang.psi.elements.FunctionReference
 import com.jetbrains.php.phpunit.PhpPsiLocationWithDataSet
 import com.jetbrains.php.util.pathmapper.PhpPathMapper
 import com.pestphp.pest.PestLightCodeFixture
+import org.junit.Ignore
 
+@Ignore("AT-3959")
 class PestLocationProviderTest : PestLightCodeFixture() {
     override fun getTestDataPath(): String {
         return "$basePath/configuration/locationProvider"

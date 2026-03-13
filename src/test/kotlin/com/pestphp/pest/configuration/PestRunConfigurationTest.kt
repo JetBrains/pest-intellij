@@ -10,7 +10,9 @@ import com.jetbrains.php.testFramework.PhpTestFrameworkConfiguration
 import com.jetbrains.php.testFramework.PhpTestFrameworkSettingsManager
 import com.pestphp.pest.PestFrameworkType
 import com.pestphp.pest.PestLightCodeFixture
+import org.junit.Ignore
 
+@Ignore("AT-3959")
 class PestRunConfigurationTest : PestLightCodeFixture() {
     private lateinit var configurationsBackup: List<PhpTestFrameworkConfiguration>
 

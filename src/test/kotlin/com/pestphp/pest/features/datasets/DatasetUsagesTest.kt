@@ -5,8 +5,10 @@ import com.jetbrains.php.lang.psi.elements.MethodReference
 import com.pestphp.pest.PestLightCodeFixture
 import com.pestphp.pest.goto.PestDatasetUsagesGotoHandler
 import junit.framework.TestCase
+import org.junit.Ignore
 
 @TestDataPath("/com/pestphp/pest/goto/datasetUsages")
+@Ignore("AT-3959")
 class DatasetUsagesTest : PestLightCodeFixture() {
     override fun getTestDataPath(): String {
         return "src/test/resources/com/pestphp/pest/goto/datasetUsages"

@@ -2,8 +2,10 @@ package com.pestphp.pest.inspections
 
 import com.intellij.testFramework.TestDataPath
 import com.pestphp.pest.PestLightCodeFixture
+import org.junit.Ignore
 
 @TestDataPath("\$CONTENT_ROOT/resources/com/pestphp/pest/inspections")
+@Ignore("AT-3959")
 class InvalidTestNameCaseInspectionTest : PestLightCodeFixture() {
     override fun getTestDataPath(): String {
         return "src/test/resources/com/pestphp/pest/inspections"

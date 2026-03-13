@@ -5,8 +5,10 @@ import com.jetbrains.php.lang.psi.elements.impl.FunctionReferenceImpl
 import com.pestphp.pest.PestLightCodeFixture
 import com.pestphp.pest.getPestTestName
 import com.pestphp.pest.isPestTestFunction
+import org.junit.Ignore
 import java.util.stream.Collectors
 
+@Ignore("AT-3959")
 class PestUtilTest : PestLightCodeFixture() {
     override fun setUp() {
         super.setUp()

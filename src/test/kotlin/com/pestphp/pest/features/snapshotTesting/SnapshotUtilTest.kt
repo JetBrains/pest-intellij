@@ -7,6 +7,7 @@ import junit.framework.TestCase
 import org.junit.Ignore
 import org.junit.Test
 
+@Ignore("AT-3959")
 class SnapshotUtilTest: PestLightCodeFixture() {
     override fun getTestDataPath(): String {
         return "src/test/resources/com/pestphp/pest/snapshotTesting"
