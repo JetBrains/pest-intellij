@@ -7,12 +7,6 @@ resourcegroup(
   strip_prefix = "src/main/resources"
 )
 
-resourcegroup(
-  name = "pest_test_resources",
-  srcs = glob(["src/test/resources/**/*"]),
-  strip_prefix = "src/test/resources"
-)
-
 jvm_library(
   name = "pest",
   module_name = "intellij.pest",
@@ -53,10 +47,77 @@ jvm_library(
 
 jvm_library(
   name = "pest_test_lib",
+  module_name = "intellij.pest",
+  visibility = ["//visibility:public"],
+  srcs = glob([], allow_empty = True),
+  runtime_deps = [
+    ":pest",
+    "@community//platform/core-api:core_test_lib",
+    "@community//platform/execution:execution_test_lib",
+    "@community//platform/execution-impl:execution-impl_test_lib",
+    "@community//platform/ide-core-impl:ide-core-impl_test_lib",
+    "@community//platform/platform-impl:ide-impl_test_lib",
+    "//phpstorm/php-openapi:php_test_lib",
+    "@community//platform/analysis-api:analysis_test_lib",
+    "@community//jps/model-api:model",
+    "@community//jps/model-api:model_test_lib",
+    "@community//platform/lang-core:lang-core_test_lib",
+    "@community//platform/projectModel-api:projectModel_test_lib",
+    "@community//platform/remote-core:remote-core_test_lib",
+    "@community//platform/structure-view-impl:structureView-impl_test_lib",
+    "@community//platform/testFramework",
+    "@community//platform/testFramework:testFramework_test_lib",
+    "@community//platform/util:util_test_lib",
+    "@community//platform/indexing-api:indexing_test_lib",
+    "//phpstorm/php:php-impl_test_lib",
+    "@community//platform/analysis-impl:analysis-impl_test_lib",
+    "@community//platform/editor-ui-api:editor-ui_test_lib",
+    "@community//platform/smRunner:smRunner_test_lib",
+    "@community//platform/platform-util-io:ide-util-io_test_lib",
+    "@community//platform/ide-core:ide-core_test_lib",
+    "@community//platform/lang-api:lang_test_lib",
+    "@community//platform/lang-impl:lang-impl_test_lib",
+    "@community//xml/xml-psi-impl:psi-impl_test_lib",
+    "@community//libraries/fastutil:fastutil_test_lib",
+    "@community//plugins/coverage-common:coverage_test_lib",
+    "@community//xml/dom-impl:dom-impl_test_lib",
+    "@community//platform/core-ui:core-ui_test_lib",
+    "@community//platform/util/text-matching:text-matching_test_lib",
+    "@lib//:io-mockk",
+    "@lib//:io-mockk-jvm",
+    "@community//platform/statistics:statistics_test_lib",
+  ]
+)
+### auto-generated section `build intellij.pest` end
+
+### auto-generated section `iml intellij.pest` start
+exports_files([
+  "intellij.pest.iml",
+], visibility = ["//visibility:public"])
+### auto-generated section `iml intellij.pest` end
+
+### auto-generated section `build intellij.pest.tests` start
+resourcegroup(
+  name = "pest-tests_test_resources",
+  srcs = glob(["src/test/resources/**/*"]),
+  strip_prefix = "src/test/resources"
+)
+
+jvm_library(
+  name = "pest-tests",
+  visibility = ["//visibility:public"],
+  srcs = glob([], allow_empty = True)
+)
+
+jvm_library(
+  name = "pest-tests_test_lib",
   visibility = ["//visibility:public"],
   srcs = glob(["src/test/kotlin/**/*.kt", "src/test/kotlin/**/*.java", "src/test/kotlin/**/*.form"], allow_empty = True),
-  resources = [":pest_test_resources"],
-  associates = [":pest"],
+  resources = [":pest-tests_test_resources"],
+  associates = [
+    "//phpstorm/pest",
+    "//phpstorm/pest:pest_test_lib",
+  ],
   deps = [
     "@community//platform/core-api:core",
     "@community//platform/core-api:core_test_lib",
@@ -118,25 +179,26 @@ jvm_library(
     "@community//platform/statistics:statistics_test_lib",
   ],
   runtime_deps = [
+    ":pest-tests",
     "@community//platform/ide-core-impl:ide-core-impl_test_lib",
     "@community//platform/platform-impl:ide-impl_test_lib",
     "@community//platform/platform-util-io:ide-util-io_test_lib",
     "@community//platform/ide-core:ide-core_test_lib",
   ]
 )
-### auto-generated section `build intellij.pest` end
+### auto-generated section `build intellij.pest.tests` end
 
-### auto-generated section `iml intellij.pest` start
+### auto-generated section `iml intellij.pest.tests` start
 exports_files([
-  "intellij.pest.iml",
+  "intellij.pest.tests.iml",
 ], visibility = ["//visibility:public"])
-### auto-generated section `iml intellij.pest` end
+### auto-generated section `iml intellij.pest.tests` end
 
-### auto-generated section `test intellij.pest` start
+### auto-generated section `test intellij.pest.tests` start
 load("@community//build:tests-options.bzl", "jps_test")
 
 jps_test(
-  name = "pest_test",
-  runtime_deps = [":pest_test_lib"]
+  name = "pest-tests_test",
+  runtime_deps = [":pest-tests_test_lib"]
 )
-### auto-generated section `test intellij.pest` end
+### auto-generated section `test intellij.pest.tests` end
