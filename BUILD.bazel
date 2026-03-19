@@ -105,6 +105,7 @@ resourcegroup(
 
 jvm_library(
   name = "pest-tests",
+  module_name = "intellij.pest.tests",
   visibility = ["//visibility:public"],
   srcs = glob([], allow_empty = True)
 )
