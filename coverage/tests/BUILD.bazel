@@ -11,7 +11,8 @@ jvm_library(
   name = "tests",
   module_name = "intellij.pest.coverage.tests",
   visibility = ["//visibility:public"],
-  srcs = glob([], allow_empty = True)
+  srcs = glob([], allow_empty = True),
+  runtime_deps = ["@community//platform/ide-core"]
 )
 
 jvm_library(
@@ -41,16 +42,20 @@ jvm_library(
     "@community//platform/projectModel-impl",
     "@community//platform/projectModel-impl:projectModel-impl_test_lib",
     "@community//platform/platform-util-io:ide-util-io",
+    "@community//platform/ide-core",
     "@community//platform/smRunner",
     "@community//platform/smRunner:smRunner_test_lib",
     "@community//plugins/coverage-common:coverage",
     "@community//plugins/coverage-common:coverage_test_lib",
+    "@community//platform/testRunner",
+    "@community//platform/testRunner:testRunner_test_lib",
     "//phpstorm/coverage",
     "//phpstorm/coverage:coverage_test_lib",
   ],
   runtime_deps = [
     ":tests",
     "@community//platform/platform-util-io:ide-util-io_test_lib",
+    "@community//platform/ide-core:ide-core_test_lib",
   ]
 )
 ### auto-generated section `build intellij.pest.coverage.tests` end

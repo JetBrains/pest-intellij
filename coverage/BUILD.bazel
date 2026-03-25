@@ -25,6 +25,7 @@ jvm_library(
     "@community//platform/util:util-ui",
     "@community//platform/ide-core",
     "@community//platform/statistics",
+    "@community//platform/testRunner",
     "//phpstorm/coverage",
   ]
 )
@@ -54,6 +55,7 @@ jvm_library(
     "@community//platform/projectModel-api:projectModel_test_lib",
     "@community//platform/platform-util-io:ide-util-io",
     "@community//platform/platform-util-io:ide-util-io_test_lib",
+    "@community//platform/testRunner:testRunner_test_lib",
     "//phpstorm/coverage:coverage_test_lib",
   ]
 )

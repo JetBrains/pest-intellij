@@ -39,8 +39,11 @@ jvm_library(
     "@community//libraries/fastutil",
     "@community//xml/dom-impl",
     "@community//platform/core-ui",
+    "@community//platform/core-impl",
     "@community//platform/util/text-matching",
+    "@community//platform/util:util-ui",
     "@community//platform/statistics",
+    "@community//platform/testRunner",
   ]
 )
 
@@ -80,10 +83,13 @@ jvm_library(
     "@community//libraries/fastutil:fastutil_test_lib",
     "@community//xml/dom-impl:dom-impl_test_lib",
     "@community//platform/core-ui:core-ui_test_lib",
+    "@community//platform/core-impl:core-impl_test_lib",
     "@community//platform/util/text-matching:text-matching_test_lib",
+    "@community//platform/util:util-ui_test_lib",
     "@lib//:io-mockk",
     "@lib//:io-mockk-jvm",
     "@community//platform/statistics:statistics_test_lib",
+    "@community//platform/testRunner:testRunner_test_lib",
   ]
 )
 ### auto-generated section `build intellij.pest` end
@@ -170,12 +176,18 @@ jvm_library(
     "@community//xml/dom-impl:dom-impl_test_lib",
     "@community//platform/core-ui",
     "@community//platform/core-ui:core-ui_test_lib",
+    "@community//platform/core-impl",
+    "@community//platform/core-impl:core-impl_test_lib",
     "@community//platform/util/text-matching",
     "@community//platform/util/text-matching:text-matching_test_lib",
+    "@community//platform/util:util-ui",
+    "@community//platform/util:util-ui_test_lib",
     "@lib//:io-mockk",
     "@lib//:io-mockk-jvm",
     "@community//platform/statistics",
     "@community//platform/statistics:statistics_test_lib",
+    "@community//platform/testRunner",
+    "@community//platform/testRunner:testRunner_test_lib",
   ],
   runtime_deps = [
     ":pest-tests",
