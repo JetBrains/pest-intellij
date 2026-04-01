@@ -5,10 +5,8 @@ import com.intellij.testFramework.replaceService
 import com.jetbrains.php.composer.configData.ComposerConfigManager
 import io.mockk.every
 import io.mockk.mockk
-import org.junit.Ignore
 import java.util.concurrent.TimeUnit
 
-@Ignore
 class ExpectCallCompletionTest : BaseTypeTestCase() {
     override fun setUp() {
         super.setUp()

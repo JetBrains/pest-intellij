@@ -1,7 +1,7 @@
 package com.pestphp.pest.features.snapshotTesting
 
+import com.intellij.openapi.project.guessProjectDir
 import com.intellij.openapi.roots.ProjectFileIndex
-import com.intellij.openapi.vfs.LocalFileSystem
 import com.intellij.psi.PsiFile
 import com.intellij.psi.PsiManager
 import com.intellij.psi.util.parentOfType
@@ -41,9 +41,8 @@ val FunctionReferenceImpl.snapshotFiles: List<PsiFile>
             return emptyList()
         }
 
-        val projectRoot = this.project.basePath ?: return emptyList()
-        val snapshotDirectory = LocalFileSystem.getInstance()
-            .findFileByPath("$projectRoot/tests/__snapshots__") ?: return emptyList()
+        val snapshotDirectory = this.project.guessProjectDir()
+            ?.findFileByRelativePath("tests/__snapshots__") ?: return emptyList()
         val testFileName = this.containingFile.name.removeSuffix(".php")
         val testName = pestTestReference.getPestTestName() ?: return emptyList()
 
