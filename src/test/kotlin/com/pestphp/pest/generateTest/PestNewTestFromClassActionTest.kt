@@ -17,13 +17,9 @@ import com.jetbrains.php.templates.PhpCreateFileFromTemplateDataProvider
 import com.pestphp.pest.PestLightCodeFixture
 import com.pestphp.pest.PestNewTestFromClassAction
 import com.pestphp.pest.PestTestCreateInfo
-import org.junit.Ignore
 
-@Ignore("AT-3959")
 class PestNewTestFromClassActionTest : PestLightCodeFixture() {
-    override fun getTestDataPath(): String {
-        return "src/test/resources/com/pestphp/pest/generateTest"
-    }
+    override fun getBasePath(): String = "${super.getBasePath()}/generateTest"
 
     private fun createTestFile(file: PsiFile, namespace: String): PsiFile {
         val dialog = getDialog(file, namespace)

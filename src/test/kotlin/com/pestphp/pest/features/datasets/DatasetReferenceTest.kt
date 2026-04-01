@@ -3,14 +3,10 @@ package com.pestphp.pest.features.datasets
 import com.intellij.testFramework.TestDataPath
 import com.jetbrains.php.lang.psi.elements.impl.FunctionReferenceImpl
 import com.pestphp.pest.PestLightCodeFixture
-import org.junit.Ignore
 
-@TestDataPath("/com/pestphp/pest/features/datasets")
-@Ignore("AT-3959")
+@TestDataPath("\$CONTENT_ROOT/../resources/com/pestphp/pest/features/datasets")
 class DatasetReferenceTest : PestLightCodeFixture() {
-    override fun getTestDataPath(): String {
-        return "src/test/resources/com/pestphp/pest/features/datasets"
-    }
+    override fun getBasePath(): String = "${super.getBasePath()}/features/datasets"
 
     fun testReferenceToDatasetInSameFile() {
         val file = myFixture.configureByFile("DatasetReference.php")

@@ -3,14 +3,10 @@ package com.pestphp.pest.utilTests
 import com.intellij.testFramework.TestDataPath
 import com.pestphp.pest.PestLightCodeFixture
 import com.pestphp.pest.isPestTestFile
-import org.junit.Ignore
 
-@TestDataPath("\$CONTENT_ROOT/resources/com/pestphp/pest/PestUtil")
-@Ignore("AT-3959")
+@TestDataPath("\$CONTENT_ROOT/../resources/com/pestphp/pest/PestUtil")
 class IsPestTestFileTest : PestLightCodeFixture() {
-    override fun getTestDataPath(): String {
-        return "src/test/resources/com/pestphp/pest/PestUtil"
-    }
+    override fun getBasePath(): String = "${super.getBasePath()}/PestUtil"
 
     fun testMethodCallNamedTestIsNotPestTest() {
         val file = myFixture.configureByFile("MethodCallNamedTest.php")

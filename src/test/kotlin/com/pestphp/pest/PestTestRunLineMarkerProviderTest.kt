@@ -6,16 +6,12 @@ import com.intellij.testFramework.TestDataPath
 import com.jetbrains.php.testFramework.PhpTestFrameworkConfiguration
 import com.jetbrains.php.testFramework.PhpTestFrameworkSettingsManager
 import com.pestphp.pest.configuration.PestRunConfigurationType
-import org.junit.Ignore
 
-@TestDataPath("\$CONTENT_ROOT/resources/com/pestphp/pest/PestTestRunLineMarkerProviderTest")
-@Ignore("AT-3959")
+@TestDataPath("\$CONTENT_ROOT/../resources/com/pestphp/pest/PestTestRunLineMarkerProviderTest")
 class PestTestRunLineMarkerProviderTest : PestLightCodeFixture() {
     private lateinit var pestConfigurations: List<PhpTestFrameworkConfiguration>
 
-    override fun getTestDataPath(): String {
-        return "src/test/resources/com/pestphp/pest/PestTestRunLineMarkerProviderTest"
-    }
+    override fun getBasePath(): String = "${super.getBasePath()}/PestTestRunLineMarkerProviderTest"
 
     override fun setUp() {
         super.setUp()

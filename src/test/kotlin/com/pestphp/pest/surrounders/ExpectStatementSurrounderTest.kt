@@ -1,9 +1,7 @@
 package com.pestphp.pest.surrounders
 
 class ExpectStatementSurrounderTest: SurroundTestCase() {
-    override fun getTestDataPath(): String {
-        return "src/test/resources/com/pestphp/pest/surrounders"
-    }
+    override fun getBasePath(): String = "${super.getBasePath()}/surrounders"
 
     fun testSurroundSingleElements() {
         doTest(

@@ -6,14 +6,10 @@ import com.jetbrains.php.util.pathmapper.PhpPathMapper
 import com.jetbrains.php.util.pathmapper.PhpRemotePathMapper
 import com.pestphp.pest.PestLightCodeFixture
 import com.pestphp.pest.configuration.PestLocationProvider
-import org.junit.Ignore
 
-@TestDataPath("\$CONTENT_ROOT/resources/com/pestphp/pest/runner/pestTestStacktraceParser")
-@Ignore("AT-3959")
+@TestDataPath("\$CONTENT_ROOT/../resources/com/pestphp/pest/runner/pestTestStacktraceParser")
 class PestTestStackTraceParserTest : PestLightCodeFixture() {
-    override fun getTestDataPath(): String {
-        return "src/test/resources/com/pestphp/pest/runner/pestTestStacktraceParser"
-    }
+    override fun getBasePath(): String = "${super.getBasePath()}/runner/pestTestStacktraceParser"
 
     private fun createStackTraceParser(url: String, stacktrace: String?, message: String?): PestTestStackTraceParser {
         val locator = PestLocationProvider(PhpPathMapper.create(project), project, myFixture.testDataPath)

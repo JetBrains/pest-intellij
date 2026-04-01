@@ -2,14 +2,10 @@ package com.pestphp.pest.features.configuration
 
 import com.intellij.testFramework.TestDataPath
 import com.pestphp.pest.PestLightCodeFixture
-import org.junit.Ignore
 
-@TestDataPath("\$CONTENT_ROOT/resources/com/pestphp/pest/features/configuration/uses")
-@Ignore("AT-3959")
+@TestDataPath("\$CONTENT_ROOT/../resources/com/pestphp/pest/features/configuration/uses")
 class UsesCompletionTest : PestLightCodeFixture() {
-    override fun getTestDataPath(): String {
-        return "src/test/resources/com/pestphp/pest/features/configuration/uses"
-    }
+    override fun getBasePath(): String = "${super.getBasePath()}/features/configuration/uses"
 
     fun testCanCompleteSubFolder() {
         myFixture.copyFileToProject("Test.php", "myFolder/Test.php")

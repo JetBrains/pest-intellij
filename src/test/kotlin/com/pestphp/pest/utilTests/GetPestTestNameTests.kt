@@ -11,11 +11,9 @@ import com.pestphp.pest.PestLightCodeFixture
 import com.pestphp.pest.getPestTestName
 import com.pestphp.pest.isDescribeFunction
 
-@TestDataPath("\$CONTENT_ROOT/resources/com/pestphp/pest/PestUtil")
+@TestDataPath("\$CONTENT_ROOT/../resources/com/pestphp/pest/PestUtil")
 class GetPestTestNameTests : PestLightCodeFixture() {
-    override fun getTestDataPath(): String {
-        return "src/test/resources/com/pestphp/pest/PestUtil"
-    }
+    override fun getBasePath(): String = "${super.getBasePath()}/PestUtil"
 
     fun testFunctionCallNamedItWithDescriptionAndClosure() {
         val file = myFixture.configureByFile("PestItFunctionCallWithDescriptionAndClosure.php")

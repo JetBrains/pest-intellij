@@ -5,14 +5,10 @@ import com.intellij.testFramework.TestDataPath
 import com.intellij.util.indexing.FileBasedIndex
 import com.pestphp.pest.PestLightCodeFixture
 import junit.framework.TestCase
-import org.junit.Ignore
 
-@TestDataPath("/com/pestphp/pest/features/datasets")
-@Ignore("AT-3959")
+@TestDataPath("\$CONTENT_ROOT/../resources/com/pestphp/pest/features/datasets")
 class DatasetIndexTest : PestLightCodeFixture() {
-    override fun getTestDataPath(): String {
-        return "src/test/resources/com/pestphp/pest/features/datasets"
-    }
+    override fun getBasePath(): String = "${super.getBasePath()}/features/datasets"
 
     fun testDatasetIsIndexed() {
         myFixture.copyFileToProject(

@@ -6,13 +6,9 @@ import com.jetbrains.php.lang.psi.PhpPsiUtil
 import com.pestphp.pest.PestLightCodeFixture
 import com.pestphp.pest.getPestTestName
 import junit.framework.TestCase
-import org.junit.Ignore
 
-@Ignore("AT-3959")
 class PestTestFinderTest : PestLightCodeFixture() {
-    override fun getTestDataPath(): String {
-        return "src/test/resources/com/pestphp/pest/goto/PestTestFinder"
-    }
+    override fun getBasePath(): String = "${super.getBasePath()}/goto/PestTestFinder"
 
     fun testPestTestIsTest() {
         val file = myFixture.configureByFile("test/App/UserTest.php")

@@ -12,14 +12,12 @@ import com.pestphp.pest.PestFrameworkType
 import com.pestphp.pest.PestLightCodeFixture
 import com.pestphp.pest.configuration.PestRunConfiguration
 import com.pestphp.pest.configuration.PestRunConfigurationProducer
-import org.junit.Ignore
 
-@TestDataPath("/com/pestphp/pest/features/parallel")
-@Ignore("AT-3959")
+@TestDataPath("\$CONTENT_ROOT/../resources/com/pestphp/pest/features/parallel")
 class PestParallelProgramRunnerTest : PestLightCodeFixture() {
     private lateinit var configurationsBackup: List<PhpTestFrameworkConfiguration>
 
-    override fun getTestDataPath(): String = "src/test/resources/com/pestphp/pest/features/parallel"
+    override fun getBasePath(): String = "${super.getBasePath()}/features/parallel"
 
     fun testCannotRunWrongExecutorId() = doTest {
         val configuration = createConfiguration(myFixture.file)

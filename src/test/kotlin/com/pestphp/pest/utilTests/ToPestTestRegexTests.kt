@@ -5,9 +5,7 @@ import com.pestphp.pest.PestLightCodeFixture
 import com.pestphp.pest.toPestTestRegex
 
 class ToPestTestRegexTests : PestLightCodeFixture() {
-    override fun getTestDataPath(): String {
-        return "src/test/resources/com/pestphp/pest/PestUtil"
-    }
+    override fun getBasePath(): String = "${super.getBasePath()}/PestUtil"
 
     fun testRegexContainsStartBounds() {
         val file = myFixture.configureByFile(

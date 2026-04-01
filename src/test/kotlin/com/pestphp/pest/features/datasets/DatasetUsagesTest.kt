@@ -5,14 +5,10 @@ import com.jetbrains.php.lang.psi.elements.MethodReference
 import com.pestphp.pest.PestLightCodeFixture
 import com.pestphp.pest.goto.PestDatasetUsagesGotoHandler
 import junit.framework.TestCase
-import org.junit.Ignore
 
-@TestDataPath("/com/pestphp/pest/goto/datasetUsages")
-@Ignore("AT-3959")
+@TestDataPath("\$CONTENT_ROOT/../resources/com/pestphp/pest/goto/datasetUsages")
 class DatasetUsagesTest : PestLightCodeFixture() {
-    override fun getTestDataPath(): String {
-        return "src/test/resources/com/pestphp/pest/goto/datasetUsages"
-    }
+    override fun getBasePath(): String = "${super.getBasePath()}/goto/datasetUsages"
 
     fun testGotoUsages() {
         myFixture.copyFileToProject("DatasetUsage.php", "tests/usages.php")

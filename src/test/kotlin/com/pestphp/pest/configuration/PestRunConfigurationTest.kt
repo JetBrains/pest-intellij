@@ -10,15 +10,11 @@ import com.jetbrains.php.testFramework.PhpTestFrameworkConfiguration
 import com.jetbrains.php.testFramework.PhpTestFrameworkSettingsManager
 import com.pestphp.pest.PestFrameworkType
 import com.pestphp.pest.PestLightCodeFixture
-import org.junit.Ignore
 
-@Ignore("AT-3959")
 class PestRunConfigurationTest : PestLightCodeFixture() {
     private lateinit var configurationsBackup: List<PhpTestFrameworkConfiguration>
 
-    override fun getTestDataPath(): String {
-        return "src/test/resources/com/pestphp/pest/configuration"
-    }
+    override fun getBasePath(): String = "${super.getBasePath()}/configuration"
 
     fun testRunConfigurationRunnerSettingsIsPestRunnerSettings() {
         val configuration = createConfiguration()

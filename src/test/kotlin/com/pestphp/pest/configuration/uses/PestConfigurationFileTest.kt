@@ -1,9 +1,7 @@
 package com.pestphp.pest.configuration.uses
 
 import com.pestphp.pest.PestLightCodeFixture
-import org.junit.Ignore
 
-@Ignore("AT-3959")
 class PestConfigurationFileTest : PestLightCodeFixture() {
     override fun setUp() {
         super.setUp()
@@ -11,9 +9,7 @@ class PestConfigurationFileTest : PestLightCodeFixture() {
         myFixture.copyDirectoryToProject(".", "tests")
     }
 
-    override fun getTestDataPath(): String {
-        return "$basePath/configuration/uses"
-    }
+    override fun getBasePath(): String = "${super.getBasePath()}/configuration/uses"
 
     fun testUnit() {
         myFixture.configureByFile("tests/Unit/UnitTest.php")

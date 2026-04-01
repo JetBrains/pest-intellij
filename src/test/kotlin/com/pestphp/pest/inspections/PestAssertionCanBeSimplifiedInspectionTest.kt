@@ -1,13 +1,9 @@
 package com.pestphp.pest.inspections
 
 import com.pestphp.pest.PestLightCodeFixture
-import org.junit.Ignore
 
-@Ignore("AT-3959")
 class PestAssertionCanBeSimplifiedInspectionTest: PestLightCodeFixture() {
-  override fun getTestDataPath(): String {
-    return "src/test/resources/com/pestphp/pest/inspections/assertionCanBeSimplified"
-  }
+  override fun getBasePath(): String = "${super.getBasePath()}/inspections/assertionCanBeSimplified"
 
   override fun setUp() {
     super.setUp()

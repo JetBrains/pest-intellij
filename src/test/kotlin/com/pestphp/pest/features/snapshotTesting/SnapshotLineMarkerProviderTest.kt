@@ -1,13 +1,9 @@
 package com.pestphp.pest.features.snapshotTesting
 
 import com.pestphp.pest.PestLightCodeFixture
-import org.junit.Ignore
 
-@Ignore("AT-3959")
 class SnapshotLineMarkerProviderTest: PestLightCodeFixture() {
-    override fun getTestDataPath(): String {
-        return "src/test/resources/com/pestphp/pest/snapshotTesting"
-    }
+    override fun getBasePath(): String = "${super.getBasePath()}/snapshotTesting"
 
     fun testCanProvideIconForSnapshotAssertion() {
         val file = myFixture.configureByFile("allSnapshotAssertions.php")

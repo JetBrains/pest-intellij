@@ -4,20 +4,38 @@ import com.intellij.openapi.util.io.FileUtil
 import com.intellij.psi.PsiFile
 import com.intellij.testFramework.TestDataPath
 import com.intellij.testFramework.fixtures.BasePlatformTestCase
+import com.intellij.testFramework.fixtures.IdeaTestExecutionPolicy
 import com.jetbrains.php.config.interpreters.PhpInterpreter
 import com.jetbrains.php.lang.PhpFileType
 import com.jetbrains.php.testFramework.PhpTestFrameworkConfiguration
 import com.jetbrains.php.testFramework.PhpTestFrameworkSettingsManager
 import java.io.File
+import java.nio.file.Files
+import kotlin.io.path.Path
 
 @Suppress("UnnecessaryAbstractClass")
-@TestDataPath("\$CONTENT_ROOT/resources/com/pestphp/pest")
+@TestDataPath("\$CONTENT_ROOT/../resources/com/pestphp/pest")
 abstract class PestLightCodeFixture : BasePlatformTestCase() {
-    override fun getBasePath() = "src/test/resources/com/pestphp/pest"
+    companion object {
+        private const val TEST_DATA_REL_PATH = "src/test/resources/com/pestphp/pest"
+        private const val MONOREPO_PREFIX = "phpstorm/pest"
+
+        private val baseTestDataPath: String by lazy {
+            val homePath = IdeaTestExecutionPolicy.getHomePathWithPolicy()
+            if (Files.exists(Path(homePath, MONOREPO_PREFIX, TEST_DATA_REL_PATH))) {
+                "/$MONOREPO_PREFIX/$TEST_DATA_REL_PATH"
+            }
+            else {
+                "/$TEST_DATA_REL_PATH"
+            }
+        }
+    }
+
+    override fun getBasePath() = baseTestDataPath
 
     override fun setUp() {
         super.setUp()
-        val pestStubsFile = File("${this@PestLightCodeFixture.basePath}/stubs.php")
+        val pestStubsFile = File("${IdeaTestExecutionPolicy.getHomePathWithPolicy()}$baseTestDataPath/stubs.php")
         if (pestStubsFile.exists()) {
             myFixture.copyFileToProject(pestStubsFile.absolutePath, "stubs.php")
         }

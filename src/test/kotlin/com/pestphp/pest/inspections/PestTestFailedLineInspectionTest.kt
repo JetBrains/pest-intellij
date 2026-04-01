@@ -4,15 +4,11 @@ import com.intellij.execution.TestStateStorage
 import com.intellij.lang.annotation.HighlightSeverity
 import com.intellij.testFramework.TestDataPath
 import com.pestphp.pest.PestLightCodeFixture
-import org.junit.Ignore
 import java.util.Date
 
-@TestDataPath("\$CONTENT_ROOT/resources/com/pestphp/pest/inspections/pestTestFailedLine")
-@Ignore("AT-3959")
+@TestDataPath("\$CONTENT_ROOT/../resources/com/pestphp/pest/inspections/pestTestFailedLine")
 class PestTestFailedLineInspectionTest : PestLightCodeFixture() {
-    override fun getTestDataPath(): String {
-        return "src/test/resources/com/pestphp/pest/inspections/pestTestFailedLine"
-    }
+    override fun getBasePath(): String = "${super.getBasePath()}/inspections/pestTestFailedLine"
 
     override fun setUp() {
         super.setUp()

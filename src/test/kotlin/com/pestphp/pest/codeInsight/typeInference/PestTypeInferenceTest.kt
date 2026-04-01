@@ -13,16 +13,12 @@ import com.jetbrains.php.lang.psi.elements.PhpTypedElement
 import com.jetbrains.php.lang.psi.resolve.types.PhpType
 import com.pestphp.pest.PestLightCodeFixture
 import com.pestphp.pest.PestSettings
-import org.junit.Ignore
 import java.util.regex.Pattern
 
-@Ignore("AT-3959")
 class PestTypeInferenceTest : PestLightCodeFixture() {
     private lateinit var pestFilePathBackup: String
 
-    override fun getTestDataPath(): String {
-        return "src/test/resources/com/pestphp/pest/codeInsight/typeInference"
-    }
+    override fun getBasePath(): String = "${super.getBasePath()}/codeInsight/typeInference"
 
     private fun doTest(block: () -> PsiFile) {
         PestSettings.getInstance(project).pestFilePath = "Pest.php"

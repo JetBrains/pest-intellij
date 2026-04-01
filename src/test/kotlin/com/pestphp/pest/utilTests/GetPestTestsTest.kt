@@ -2,13 +2,9 @@ package com.pestphp.pest.utilTests
 
 import com.pestphp.pest.PestLightCodeFixture
 import com.pestphp.pest.getPestTests
-import org.junit.Ignore
 
-@Ignore("AT-3959")
 class GetPestTestsTest : PestLightCodeFixture() {
-    override fun getTestDataPath(): String {
-        return "src/test/resources/com/pestphp/pest/PestUtil"
-    }
+    override fun getBasePath(): String = "${super.getBasePath()}/PestUtil"
 
     fun testMethodCallNamedTestIsNotPestTest() {
         val file = myFixture.configureByFile("MethodCallNamedTest.php")

@@ -4,9 +4,7 @@ import com.pestphp.pest.PestLightCodeFixture
 import com.pestphp.pest.toPestFqn
 
 class ToPestFqnTests : PestLightCodeFixture() {
-    override fun getTestDataPath(): String {
-        return "src/test/resources/com/pestphp/pest/PestUtil"
-    }
+    override fun getBasePath(): String = "${super.getBasePath()}/PestUtil"
 
     fun testCanGeneratePqn() {
         val file = myFixture.configureByFile(

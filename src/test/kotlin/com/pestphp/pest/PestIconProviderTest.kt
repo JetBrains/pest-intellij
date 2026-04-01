@@ -2,18 +2,12 @@ package com.pestphp.pest
 
 import com.intellij.openapi.util.Iconable.ICON_FLAG_VISIBILITY
 import com.intellij.psi.PsiManager
-import org.junit.Ignore
 
-@Ignore("AT-3959")
 class PestIconProviderTest : PestLightCodeFixture() {
     override fun setUp() {
         super.setUp()
 
         myFixture.copyFileToProject("utilTests/SimpleTest.php", "tests/SimpleTest.php")
-    }
-
-    override fun getTestDataPath(): String {
-        return basePath
     }
 
     fun testCanGetPestIconForPestFile() {

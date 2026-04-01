@@ -1,13 +1,9 @@
 package com.pestphp.pest.higherOrderExpectations
 
 import com.pestphp.pest.PestLightCodeFixture
-import org.junit.Ignore
 
-@Ignore("AT-3959")
 class HigherOrderExpectationAssertionCompletionTest: PestLightCodeFixture() {
-    override fun getTestDataPath(): String {
-        return "src/test/resources/com/pestphp/pest/higherOrderExpectations"
-    }
+    override fun getBasePath(): String = "${super.getBasePath()}/higherOrderExpectations"
 
     override fun setUp() {
         super.setUp()
