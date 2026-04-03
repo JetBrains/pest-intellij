@@ -167,6 +167,7 @@
         <statistics.counterUsagesCollector implementationClass="com.pestphp.pest.statistics.PestUsagesCollector"/>
         <programRunner implementation="com.pestphp.pest.features.parallel.PestParallelProgramRunner"/>
         <executor implementation="com.pestphp.pest.features.parallel.PestParallelTestExecutor" order="first,after debug"/>
+        <projectSettings service="com.pestphp.pest.PestSettings"/>
     </extensions>
 
     <extensions defaultExtensionNs="com.jetbrains.php">
