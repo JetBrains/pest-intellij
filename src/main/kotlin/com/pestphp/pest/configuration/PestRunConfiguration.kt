@@ -36,6 +36,7 @@ import com.pestphp.pest.PestFrameworkType
 import com.pestphp.pest.PestIcons
 import com.pestphp.pest.configuration.PestRunConfigurationProducer.Companion.VALIDATOR
 import com.pestphp.pest.features.parallel.addParallelArguments
+import com.pestphp.pest.features.parallel.createPestParallelDurationListener
 import com.pestphp.pest.getPestTestName
 import com.pestphp.pest.getPestTests
 import com.pestphp.pest.runner.PestConsoleProperties
@@ -72,7 +73,7 @@ class PestRunConfiguration(project: Project, factory: ConfigurationFactory) : Ph
         } catch (exception: RuntimeConfigurationException) {
             throw ExecutionException(PestBundle.message("RUNTIME_CONFIGURATION_EXCEPTION_MESSAGE", exception.localizedMessage, this.name))
         }
-        return this.getState(env, command, null)
+        return this.getState(env, command, createPestParallelDurationListener(env, this))
     }
 
     override fun createMethodFieldCompletionProvider(
