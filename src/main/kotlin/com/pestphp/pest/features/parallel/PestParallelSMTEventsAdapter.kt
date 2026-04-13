@@ -1,15 +1,17 @@
 package com.pestphp.pest.features.parallel
 
-import com.intellij.execution.testframework.sm.runner.SMTRunnerEventsAdapter
 import com.intellij.execution.testframework.sm.runner.SMTestProxy
+import com.jetbrains.php.testFramework.run.PhpParallelTestSMTEventsAdapter
 
-class PestParallelSMTEventsAdapter : SMTRunnerEventsAdapter() {
+class PestParallelSMTEventsAdapter : PhpParallelTestSMTEventsAdapter() {
     override fun onSuiteStarted(suite: SMTestProxy) {
         suite.setPresentableName(convertSuiteNameToClassName(suite.name))
+        super.onSuiteStarted(suite)
     }
 
     override fun onTestStarted(test: SMTestProxy) {
         test.setPresentableName(convertRuntimeTestNameToRealTestName(test.name))
+        super.onTestStarted(test)
     }
 }
 

@@ -16,11 +16,14 @@ import com.intellij.execution.ui.RunContentDescriptor
 import com.intellij.notification.NotificationType
 import com.intellij.openapi.fileEditor.FileDocumentManager
 import com.intellij.openapi.util.NlsSafe
+import com.intellij.openapi.util.Version
 import com.jetbrains.php.PhpBundle
 import com.jetbrains.php.config.commandLine.PhpCommandSettings
 import com.jetbrains.php.config.commandLine.PhpCommandSettingsBuilder
 import com.jetbrains.php.phpunit.PhpUnitUtil
 import com.jetbrains.php.testFramework.PhpTestFrameworkSettingsManager
+import com.jetbrains.php.testFramework.PhpTestFrameworkVersionCache
+import com.jetbrains.php.testFramework.run.PhpParallelTestingUtils
 import com.pestphp.pest.PestBundle
 import com.pestphp.pest.PestFrameworkType
 import com.pestphp.pest.configuration.PestRerunProfile
@@ -28,7 +31,9 @@ import com.pestphp.pest.configuration.PestRunConfiguration
 import com.pestphp.pest.configuration.PestVersionDetector
 import com.pestphp.pest.statistics.PestUsagesCollector
 
-internal val PEST_PARALLEL_ARGUMENTS = mutableListOf("--parallel", "--log-teamcity", "php://stdout")
+private val PEST_PARALLEL_ARGUMENTS_LEGACY = listOf("--parallel", "--log-teamcity", "php://stdout")
+private val PEST_PARALLEL_ARGUMENTS = listOf("--parallel")
+private val PEST_PARALLEL_VIA_PARATEST_FROM_VERSION = Version(4, 6, 0)
 
 class PestParallelProgramRunner : GenericProgramRunner<RunnerSettings>() {
     companion object {
@@ -57,7 +62,7 @@ class PestParallelProgramRunner : GenericProgramRunner<RunnerSettings>() {
 
     override fun getRunnerId(): String = RUNNER_ID
 
-    fun getArguments(): MutableList<String> = PEST_PARALLEL_ARGUMENTS
+    fun getArguments(runConfiguration: PestRunConfiguration): List<String> = getPestParallelArguments(runConfiguration)
 }
 
 internal fun createPestParallelCommand(runConfiguration: PestRunConfiguration): PhpCommandSettings {
@@ -66,7 +71,7 @@ internal fun createPestParallelCommand(runConfiguration: PestRunConfiguration): 
     return runConfiguration.createCommand(
         interpreter,
         mutableMapOf(),
-        if (executeInParallel(runConfiguration)) mutableListOf() else PEST_PARALLEL_ARGUMENTS,
+        if (executeInParallel(runConfiguration)) mutableListOf() else getPestParallelArguments(runConfiguration).toMutableList(),
         false
     )
 }
@@ -132,6 +137,38 @@ internal fun executeInParallel(runConfiguration: RunConfiguration): Boolean {
 internal fun addParallelArguments(runConfiguration: PestRunConfiguration, command: PhpCommandSettings) {
     if (executeInParallel(runConfiguration)) {
         PestUsagesCollector.logParallelTestExecution(runConfiguration.project)
-        command.addArguments(PEST_PARALLEL_ARGUMENTS)
+        command.addArguments(getPestParallelArguments(runConfiguration))
     }
 }
+
+private fun getPestVersion(runConfiguration: PestRunConfiguration): Version? {
+    val interpreter = runConfiguration.interpreter ?: return null
+    if (interpreter.isRemote) return null
+    val config = PhpTestFrameworkSettingsManager.getInstance(runConfiguration.project)
+                     .getOrCreateByInterpreter(PestFrameworkType.instance, interpreter, null, true) ?: return null
+    return try {
+        val versionString = PestVersionDetector.instance.getVersion(runConfiguration.project, interpreter, config.executablePath)
+        PhpTestFrameworkVersionCache.setCache(runConfiguration.project, config, versionString)
+        PhpTestFrameworkVersionCache.getCachedVersion(runConfiguration.project, config)
+    }
+    catch (_: ExecutionException) {
+        null
+    }
+}
+
+private fun getPestParallelArguments(runConfiguration: PestRunConfiguration): List<String> =
+    if (supportsParaTestMode(runConfiguration)) PEST_PARALLEL_ARGUMENTS
+    else PEST_PARALLEL_ARGUMENTS_LEGACY
+
+private fun supportsParaTestMode(runConfiguration: PestRunConfiguration): Boolean =
+    getPestVersion(runConfiguration)?.let { it >= PEST_PARALLEL_VIA_PARATEST_FROM_VERSION } == true
+
+internal fun createPestParallelDurationListener(
+    env: ExecutionEnvironment,
+    runConfiguration: PestRunConfiguration,
+): ProcessListener? =
+    if (env.executor is PestParallelTestExecutor || executeInParallel(runConfiguration)) {
+        PhpParallelTestingUtils.createManualDurationStrategyListener()
+    } else {
+        null
+    }

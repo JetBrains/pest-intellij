@@ -13,6 +13,7 @@ import com.jetbrains.php.composer.configData.ComposerConfigManager
 import com.jetbrains.php.config.commandLine.PhpCommandSettings
 import com.pestphp.pest.PestBundle
 import com.pestphp.pest.features.parallel.PestParallelProgramRunner
+import com.pestphp.pest.features.parallel.createPestParallelDurationListener
 import com.pestphp.pest.isPestTestReference
 import com.pestphp.pest.notifications.OutdatedNotification
 import com.pestphp.pest.toPestTestRegex
@@ -65,14 +66,14 @@ class PestRerunFailedTestsAction(
                             mutableListOf(),
                             false
                         ),
-                        null
+                        createPestParallelDurationListener(environment, peerRunConfiguration)
                     )
                 }
 
                 val command: PhpCommandSettings = clone.createCommand(
                     interpreter,
                     mutableMapOf(),
-                    getArgumentsFromRunner(environment.runner),
+                    getArgumentsFromRunner(environment.runner, peerRunConfiguration),
                     false
                 )
 
@@ -88,7 +89,7 @@ class PestRerunFailedTestsAction(
                 return peerRunConfiguration.getState(
                     environment,
                     command,
-                    null
+                    createPestParallelDurationListener(environment, peerRunConfiguration)
                 )
             }
         }
@@ -98,9 +99,9 @@ class PestRerunFailedTestsAction(
         init(properties)
     }
 
-    private fun getArgumentsFromRunner(pestProgramRunner: ProgramRunner<*>): MutableList<String> {
+    private fun getArgumentsFromRunner(pestProgramRunner: ProgramRunner<*>, runConfiguration: PestRunConfiguration): MutableList<String> {
         return when (pestProgramRunner) {
-            is PestParallelProgramRunner -> pestProgramRunner.getArguments()
+            is PestParallelProgramRunner -> pestProgramRunner.getArguments(runConfiguration).toMutableList()
             else -> mutableListOf()
         }
     }
