@@ -9,6 +9,8 @@ import com.jetbrains.php.config.interpreters.PhpInterpreter
 import com.jetbrains.php.lang.PhpFileType
 import com.jetbrains.php.testFramework.PhpTestFrameworkConfiguration
 import com.jetbrains.php.testFramework.PhpTestFrameworkSettingsManager
+import io.mockk.clearAllMocks
+import io.mockk.unmockkAll
 import java.io.File
 import java.nio.file.Files
 import kotlin.io.path.Path
@@ -38,6 +40,19 @@ abstract class PestLightCodeFixture : BasePlatformTestCase() {
         val pestStubsFile = File("${IdeaTestExecutionPolicy.getHomePathWithPolicy()}$baseTestDataPath/stubs.php")
         if (pestStubsFile.exists()) {
             myFixture.copyFileToProject(pestStubsFile.absolutePath, "stubs.php")
+        }
+    }
+
+    override fun tearDown() {
+        try {
+            clearAllMocks()
+            unmockkAll()
+        }
+        catch (e: Throwable) {
+            addSuppressedException(e)
+        }
+        finally {
+            super.tearDown()
         }
     }
 

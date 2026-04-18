@@ -46,6 +46,7 @@ class PestPressToContinueActionTest : PestLightCodeFixture() {
 
         val consoleView = SMTRunnerConsoleView(props)
         consoleView.initUI()
+        Disposer.register(testRootDisposable, consoleView)
 
         val processHandler = CapturingProcessHandler()
         processHandler.startNotify()
@@ -53,6 +54,7 @@ class PestPressToContinueActionTest : PestLightCodeFixture() {
 
         val descriptor = RunContentDescriptor(consoleView, processHandler, consoleView.component, "Pest")
         descriptor.runConfigurationTypeId = PestRunConfigurationType.instance.id
+        Disposer.register(testRootDisposable, descriptor)
 
         val innerConsole = (consoleView.console as ConsoleViewImpl)
         innerConsole.print(output, ConsoleViewContentType.NORMAL_OUTPUT)
@@ -77,15 +79,11 @@ class PestPressToContinueActionTest : PestLightCodeFixture() {
         ctx.action.actionPerformed(ctx.event)
 
         assertEquals("\n", ctx.processHandler.input.toString(Charsets.UTF_8))
-
-        Disposer.dispose(ctx.consoleView)
     }
 
     fun testDisabledWhenPromptAbsent() {
         val ctx = setupWithPrinted("no prompt here")
         assertTrue(ctx.event.presentation.isVisible)
         assertFalse(ctx.event.presentation.isEnabled)
-
-        Disposer.dispose(ctx.consoleView)
     }
 }
