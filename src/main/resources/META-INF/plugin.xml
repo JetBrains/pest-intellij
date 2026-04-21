@@ -7,8 +7,11 @@
     <category>Test Tools</category>
 
     <dependencies>
-        <plugin id="com.jetbrains.php"/>
-        <plugin id="com.intellij.modules.platform"/>
+      <!-- region Generated dependencies - run `Generate Product Layouts` to regenerate -->
+      <plugin id="com.jetbrains.php"/>
+      <module name="intellij.xml.dom.impl"/>
+      <module name="intellij.xml.psi.impl"/>
+      <!-- endregion -->
     </dependencies>
     <content namespace="jetbrains">
         <module name="intellij.pest.coverage"/>
