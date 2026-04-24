@@ -24,8 +24,6 @@ class PestParallelTestExecutor : Executor() {
 
     override fun getIcon(): Icon = PhpIcons.RUN_PARA_TEST
 
-    override fun getRerunIcon(): Icon = AllIcons.Actions.Rerun
-
     override fun getDisabledIcon(): Icon = getDisabledIcon(icon)
 
     override fun getDescription(): String = PestBundle.message("ACTION_RUN_SELECTED_CONFIGURATION_WITH_PARALLEL_DESCRIPTION")
