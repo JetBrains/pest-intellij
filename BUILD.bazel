@@ -49,6 +49,7 @@ jvm_library(
 
 jvm_library(
   name = "pest_test_lib",
+  testonly = True,
   module_name = "intellij.pest",
   visibility = ["//visibility:public"],
   srcs = glob([], allow_empty = True),
@@ -116,6 +117,7 @@ jvm_library(
 
 jvm_library(
   name = "pest-tests_test_lib",
+  testonly = True,
   visibility = ["//visibility:public"],
   srcs = glob(["src/test/kotlin/**/*.kt", "src/test/kotlin/**/*.java", "src/test/kotlin/**/*.form"], allow_empty = True),
   resources = [":pest-tests_test_resources"],
