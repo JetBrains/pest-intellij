@@ -144,8 +144,9 @@ internal fun addParallelArguments(runConfiguration: PestRunConfiguration, comman
 private fun getPestVersion(runConfiguration: PestRunConfiguration): Version? {
     val interpreter = runConfiguration.interpreter ?: return null
     if (interpreter.isRemote) return null
+    val baseFile = runConfiguration.getBaseFile(null, interpreter)
     val config = PhpTestFrameworkSettingsManager.getInstance(runConfiguration.project)
-                     .getOrCreateByInterpreter(PestFrameworkType.instance, interpreter, null, true) ?: return null
+                     .getOrCreateByInterpreter(PestFrameworkType.instance, interpreter, baseFile, true) ?: return null
     return try {
         val versionString = PestVersionDetector.instance.getVersion(runConfiguration.project, interpreter, config.executablePath)
         PhpTestFrameworkVersionCache.setCache(runConfiguration.project, config, versionString)
