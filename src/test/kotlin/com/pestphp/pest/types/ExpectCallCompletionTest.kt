@@ -14,7 +14,7 @@ class ExpectCallCompletionTest : BaseTypeTestCase() {
         val dir = myFixture.copyDirectoryToProject("expect", "tests")
         myFixture.addFileToProject("composer.json", "")
 
-        val composerConfigManagerMock = mockk<ComposerConfigManager>(relaxUnitFun = true) {
+        val composerConfigManagerMock = mockk<ComposerConfigManager>(relaxed = true) {
             every { getConfig(null as PsiElement?) } returns dir
         }
         project.replaceService(
