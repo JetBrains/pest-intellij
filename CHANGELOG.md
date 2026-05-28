@@ -13,6 +13,7 @@
 ### Fixed
 
 - Fixed infinite "Closing project..." dialog issue on project close
+- Fixed Pest files not being detected when `describe` is the only top-level call
 
 ### Changed
 
