@@ -20,6 +20,10 @@ val PEST_TEST_CALL_TYPE = PhpType.from(
     "\\Pest\\PendingObjects\\TestCall" // for Pest versions 1.x
 )
 
+val PEST_DESCRIBE_CALL_TYPE = PhpType.from(
+    "\\Pest\\PendingCalls\\DescribeCall" // for Pest versions >= 2.x
+)
+
 fun PsiElement?.isPestTestReference(isSmart: Boolean = false): Boolean {
     return when (this) {
         null -> false
@@ -32,9 +36,12 @@ fun PsiElement?.isPestTestReference(isSmart: Boolean = false): Boolean {
 private val testNames = setOf("it", "test", "todo", "describe", "arch")
 fun FunctionReferenceImpl.isPestTestFunction(isSmart: Boolean = false): Boolean {
     if (this.canonicalText !in testNames) return false
-    return !isSmart || (this.resolveLocal().isEmpty() && PhpIndex.getInstance(project).getFunctionsByName(this.canonicalText).any { function ->
-        PEST_TEST_CALL_TYPE.isConvertibleFromGlobal(project, function.type)
-    })
+    if (!isSmart) return true
+    if (this.resolveLocal().isNotEmpty()) return false
+    val expectedType = if (this.isDescribeFunction()) PEST_DESCRIBE_CALL_TYPE else PEST_TEST_CALL_TYPE
+    return PhpIndex.getInstance(project).getFunctionsByName(this.canonicalText).any { function ->
+        expectedType.isConvertibleFromGlobal(project, function.type)
+    }
 }
 
 fun FunctionReferenceImpl.isPestBeforeFunction(): Boolean {
