@@ -1,6 +1,6 @@
 package com.pestphp.pest.features.snapshotTesting
 
-import com.jetbrains.php.lang.psi.elements.impl.FunctionImpl
+import com.intellij.psi.util.PsiTreeUtil
 import com.jetbrains.php.lang.psi.elements.impl.FunctionReferenceImpl
 import com.pestphp.pest.PestLightCodeFixture
 import junit.framework.TestCase
@@ -11,23 +11,16 @@ class SnapshotUtilTest : PestLightCodeFixture() {
     fun testIsSnapshotAssertion() {
         val file = myFixture.configureByFile("allSnapshotAssertions.php")
 
-        val statements = file.firstChild.children
-            .map { it.firstChild }
-        assertNotEmpty(statements)
+        val references = PsiTreeUtil.findChildrenOfType(file, FunctionReferenceImpl::class.java)
+        assertNotEmpty(references)
 
-        statements.forEach { assertInstanceOf(it, FunctionReferenceImpl::class.java) }
-
-        statements
-            .filterIsInstance<FunctionReferenceImpl>()
-            .forEach {
-                TestCase.assertTrue(it.isSnapshotAssertionCall)
-            }
+        references.forEach { TestCase.assertTrue(it.isSnapshotAssertionCall) }
     }
 
     fun testIsNotSnapshotAssertion() {
         val file = myFixture.configureByFile("nonSnapshotAssertions.php")
 
-        val functionReference = file.firstChild.children[0].firstChild as FunctionReferenceImpl
+        val functionReference = PsiTreeUtil.findChildOfType(file, FunctionReferenceImpl::class.java)!!
 
         assertFalse(functionReference.isSnapshotAssertionCall)
     }
@@ -40,11 +33,8 @@ class SnapshotUtilTest : PestLightCodeFixture() {
 
         val file = myFixture.configureByFile("snapshotTest.php")
 
-        val pestTest = file.firstChild.children[0].firstChild as FunctionReferenceImpl
-
-        val pestTestBody = pestTest.parameters[1].firstChild as FunctionImpl
-
-        val snapshotReference = pestTestBody.children[1].children[1].firstChild as FunctionReferenceImpl
+        val snapshotReference = PsiTreeUtil.findChildrenOfType(file, FunctionReferenceImpl::class.java)
+            .first { it.isSnapshotAssertionCall }
 
         assertSize(1, snapshotReference.snapshotFiles)
     }

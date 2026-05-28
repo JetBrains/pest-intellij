@@ -1,10 +1,14 @@
 package com.pestphp.pest.goto
 
 import com.intellij.testFramework.UsefulTestCase
+import com.intellij.psi.util.PsiTreeUtil
 import com.jetbrains.php.lang.psi.PhpFile
 import com.jetbrains.php.lang.psi.PhpPsiUtil
+import com.jetbrains.php.lang.psi.elements.FunctionReference
+import com.jetbrains.php.lang.psi.elements.PhpClass
 import com.pestphp.pest.PestLightCodeFixture
 import com.pestphp.pest.getPestTestName
+import com.pestphp.pest.getPestTests
 import junit.framework.TestCase
 
 class PestTestFinderTest : PestLightCodeFixture() {
@@ -13,7 +17,7 @@ class PestTestFinderTest : PestLightCodeFixture() {
     fun testPestTestIsTest() {
         val file = myFixture.configureByFile("test/App/UserTest.php")
 
-        val testElement = file.firstChild.lastChild.firstChild
+        val testElement = PsiTreeUtil.findChildOfType(file, FunctionReference::class.java)!!
 
         assertTrue(PestTestFinder().isTest(testElement))
     }
@@ -34,7 +38,7 @@ class PestTestFinderTest : PestLightCodeFixture() {
         val file = myFixture.configureByFile("test/App/MockTest.php")
         myFixture.testDataPath
 
-        assertFalse(PestTestFinder().isTest(file.firstChild.lastChild.firstChild))
+        assertFalse(PestTestFinder().isTest(PsiTreeUtil.findChildOfType(file, PhpClass::class.java)!!))
     }
 
     fun testCanFindSourceElement() {
@@ -72,7 +76,7 @@ class PestTestFinderTest : PestLightCodeFixture() {
         val file = myFixture.configureByFile("App/User.php")
         val testFile = myFixture.configureByFile("test/App/UserTest.php")
         val method = PhpPsiUtil.findAllClasses(file as PhpFile).first().findMethodByName("isPestDeveloper")
-        val tests = testFile.firstChild.children.map { it.firstChild }.filter {
+        val tests = (testFile as PhpFile).getPestTests().filter {
             it.getPestTestName()?.contains("is pest developer") == true
         }
 
@@ -85,7 +89,7 @@ class PestTestFinderTest : PestLightCodeFixture() {
     fun testFindMethodsForTest() {
         val file = myFixture.configureByFile("App/User.php")
         val testFile = myFixture.configureByFile("test/App/UserTest.php")
-        val test = testFile.firstChild.children.map { it.firstChild }.first {
+        val test = (testFile as PhpFile).getPestTests().first {
             it.getPestTestName() == "is pest developer"
         }
         val methods = PhpPsiUtil.findAllClasses(file as PhpFile).first().methods.filter { it.name.contains("is") }
@@ -104,5 +108,11 @@ class PestTestFinderTest : PestLightCodeFixture() {
         val tests = PestTestFinder().findTestsForClass(method!!)
 
         assertTrue(tests.any { it.getPestTestName()?.contains("is pest developer in describe") == true })
+    }
+
+    fun testFindClassForNonPestTestFileIsEmpty() {
+        val file = myFixture.configureByFile("test/App/MockTest.php")
+
+        assertEmpty(PestTestFinder().findClassesForTest(file))
     }
 }

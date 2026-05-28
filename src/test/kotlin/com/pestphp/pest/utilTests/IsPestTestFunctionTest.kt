@@ -1,6 +1,8 @@
 package com.pestphp.pest.utilTests
 
+import com.intellij.psi.util.PsiTreeUtil
 import com.intellij.testFramework.TestDataPath
+import com.jetbrains.php.lang.psi.elements.FunctionReference
 import com.pestphp.pest.PestLightCodeFixture
 import com.pestphp.pest.isPestTestReference
 
@@ -11,7 +13,7 @@ class IsPestTestFunctionTest : PestLightCodeFixture() {
     fun testMethodCallNamedTestIsNotPestTest() {
         val file = myFixture.configureByFile("MethodCallNamedTest.php")
 
-        val testElement = file.firstChild.lastChild.firstChild
+        val testElement = PsiTreeUtil.findChildOfType(file, FunctionReference::class.java)!!
 
         assertFalse(testElement.isPestTestReference())
     }
@@ -19,7 +21,7 @@ class IsPestTestFunctionTest : PestLightCodeFixture() {
     fun testMethodCallNamedItIsNotPestTest() {
         val file = myFixture.configureByFile("MethodCallNamedIt.php")
 
-        val testElement = file.firstChild.lastChild.firstChild
+        val testElement = PsiTreeUtil.findChildOfType(file, FunctionReference::class.java)!!
 
         assertFalse(testElement.isPestTestReference())
     }
@@ -27,7 +29,7 @@ class IsPestTestFunctionTest : PestLightCodeFixture() {
     fun testFunctionCallNamedItWithDescriptionAndClosure() {
         val file = myFixture.configureByFile("PestItFunctionCallWithDescriptionAndClosure.php")
 
-        val testElement = file.firstChild.lastChild.firstChild
+        val testElement = PsiTreeUtil.findChildOfType(file, FunctionReference::class.java)!!
 
         assertTrue(testElement.isPestTestReference())
     }
@@ -35,7 +37,7 @@ class IsPestTestFunctionTest : PestLightCodeFixture() {
     fun testFunctionCallNamedItWithDescriptionAndHigherOrder() {
         val file = myFixture.configureByFile("PestItFunctionCallWithDescriptionAndHigherOrder.php")
 
-        val testElement = file.firstChild.lastChild.firstChild
+        val testElement = PsiTreeUtil.findChildOfType(file, FunctionReference::class.java)!!
 
         assertTrue(testElement.isPestTestReference())
     }
@@ -43,7 +45,7 @@ class IsPestTestFunctionTest : PestLightCodeFixture() {
     fun testFunctionCallNamedTestWithDescriptionAndHigherOrder() {
         val file = myFixture.configureByFile("PestTestFunctionCallWithDescriptionAndHigherOrder.php")
 
-        val testElement = file.firstChild.lastChild.firstChild
+        val testElement = PsiTreeUtil.findChildOfType(file, FunctionReference::class.java)!!
 
         assertTrue(testElement.isPestTestReference())
     }
@@ -51,7 +53,7 @@ class IsPestTestFunctionTest : PestLightCodeFixture() {
     fun testMethodCallNamedItAndVariableTestIsNotPestTest() {
         val file = myFixture.configureByFile("MethodCallNamedItAndVariableTest.php")
 
-        val testElement = file.firstChild.lastChild.firstChild
+        val testElement = PsiTreeUtil.findChildOfType(file, FunctionReference::class.java)!!
 
         assertFalse(testElement.isPestTestReference())
     }
@@ -59,7 +61,7 @@ class IsPestTestFunctionTest : PestLightCodeFixture() {
     fun testFunctionCallNamedItWithConcatStringTest() {
         val file = myFixture.configureByFile("PestItFunctionCallWithConcatString.php")
 
-        val testElement = file.firstChild.lastChild.firstChild
+        val testElement = PsiTreeUtil.findChildOfType(file, FunctionReference::class.java)!!
 
         assertTrue(testElement.isPestTestReference())
     }
@@ -67,7 +69,7 @@ class IsPestTestFunctionTest : PestLightCodeFixture() {
     fun testFunctionCallNamedTestWithConcatStringTest() {
         val file = myFixture.configureByFile("PestTestFunctionCallWithConcatString.php")
 
-        val testElement = file.firstChild.lastChild.firstChild
+        val testElement = PsiTreeUtil.findChildOfType(file, FunctionReference::class.java)!!
 
         assertTrue(testElement.isPestTestReference())
     }

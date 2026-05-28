@@ -24,6 +24,8 @@ class PestTestFinder : TestFinder {
      *         classes otherwise
      */
     override fun findClassesForTest(element: PsiElement): Collection<PsiElement> {
+        if (element.containingFile?.isPestTestFile() != true) return emptyList()
+
         val classes = PhpIndex.getInstance(element.project)
             .getClassesByNameInScope(
                 element.containingFile.name.removeSuffix("Test.php"),

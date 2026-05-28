@@ -1,5 +1,7 @@
 package com.pestphp.pest.features.snapshotTesting
 
+import com.intellij.psi.util.PsiTreeUtil
+import com.jetbrains.php.lang.psi.elements.impl.FunctionReferenceImpl
 import com.pestphp.pest.PestLightCodeFixture
 
 class SnapshotLineMarkerProviderTest: PestLightCodeFixture() {
@@ -8,11 +10,11 @@ class SnapshotLineMarkerProviderTest: PestLightCodeFixture() {
     fun testCanProvideIconForSnapshotAssertion() {
         val file = myFixture.configureByFile("allSnapshotAssertions.php")
 
-        val identifiers = file.firstChild.children
-            .map { it.firstChild.firstChild }
-        assertNotEmpty(identifiers)
+        val snapshotCalls = PsiTreeUtil.findChildrenOfType(file, FunctionReferenceImpl::class.java)
+            .filter { it.isSnapshotAssertionCall }
+        assertNotEmpty(snapshotCalls)
 
-        assertSize(identifiers.count(), this.myFixture.findAllGutters())
+        assertSize(snapshotCalls.count(), this.myFixture.findAllGutters())
     }
 
     fun testDoNotShowIconForSnapshotUse() {

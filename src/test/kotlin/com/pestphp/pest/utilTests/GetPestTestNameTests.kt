@@ -1,6 +1,7 @@
 package com.pestphp.pest.utilTests
 
 import com.intellij.psi.PsiElement
+import com.intellij.psi.util.PsiTreeUtil
 import com.intellij.psi.util.childrenOfType
 import com.intellij.testFramework.TestDataPath
 import com.jetbrains.php.lang.psi.elements.FieldReference
@@ -18,7 +19,7 @@ class GetPestTestNameTests : PestLightCodeFixture() {
     fun testFunctionCallNamedItWithDescriptionAndClosure() {
         val file = myFixture.configureByFile("PestItFunctionCallWithDescriptionAndClosure.php")
 
-        val testElement = file.firstChild.lastChild.firstChild
+        val testElement = PsiTreeUtil.findChildOfType(file, FunctionReference::class.java)!!
 
         assertEquals("it basic", testElement.getPestTestName())
     }
@@ -26,7 +27,7 @@ class GetPestTestNameTests : PestLightCodeFixture() {
     fun testFunctionCallNamedTestWithDescriptionAndClosure() {
         val file = myFixture.configureByFile("PestTestFunctionCallWithDescriptionAndClosure.php")
 
-        val testElement = file.firstChild.lastChild.firstChild
+        val testElement = PsiTreeUtil.findChildOfType(file, FunctionReference::class.java)!!
 
         assertEquals("basic", testElement.getPestTestName())
     }
@@ -34,7 +35,7 @@ class GetPestTestNameTests : PestLightCodeFixture() {
     fun testFunctionCallNamedItWithConcatStringTest() {
         val file = myFixture.configureByFile("PestItFunctionCallWithConcatString.php")
 
-        val testElement = file.firstChild.lastChild.firstChild
+        val testElement = PsiTreeUtil.findChildOfType(file, FunctionReference::class.java)!!
 
         assertEquals("it basic supertest", testElement.getPestTestName())
     }
@@ -42,7 +43,7 @@ class GetPestTestNameTests : PestLightCodeFixture() {
     fun testFunctionCallNamedTestWithConcatStringTest() {
         val file = myFixture.configureByFile("PestTestFunctionCallWithConcatString.php")
 
-        val testElement = file.firstChild.lastChild.firstChild
+        val testElement = PsiTreeUtil.findChildOfType(file, FunctionReference::class.java)!!
 
         assertEquals("basic super", testElement.getPestTestName())
     }
@@ -50,7 +51,7 @@ class GetPestTestNameTests : PestLightCodeFixture() {
     fun testFunctionCallNamedDescribeWithDescriptionAndClosure() {
         val file = myFixture.configureByFile("PestDescribeBlock.php")
 
-        val testElement = file.firstChild.lastChild.firstChild
+        val testElement = PsiTreeUtil.findChildOfType(file, FunctionReference::class.java)!!
 
         assertEquals("`sum` → ", testElement.getPestTestName())
     }
