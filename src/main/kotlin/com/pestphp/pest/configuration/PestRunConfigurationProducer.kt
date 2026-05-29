@@ -13,6 +13,7 @@ import com.intellij.psi.PsiFile
 import com.intellij.util.Function
 import com.jetbrains.php.lang.PhpFileType
 import com.jetbrains.php.lang.psi.PhpFile
+import com.jetbrains.php.phpunit.PhpUnitUtil
 import com.jetbrains.php.testFramework.run.PhpDefaultTestRunnerSettingsValidator
 import com.jetbrains.php.testFramework.run.PhpTestConfigurationProducer
 import com.pestphp.pest.getPestTestName
@@ -47,12 +48,16 @@ class PestRunConfigurationProducer : PhpTestConfigurationProducer<PestRunConfigu
             element.getPestTestName()
         }
         private val FILE_TO_SCOPE = Function<PsiFile, PsiElement?> { file: PsiFile ->
-            if (file.isPestTestFile()) file else null
+            when {
+                file.isPestTestFile() -> file
+                file is PhpFile && PhpUnitUtil.isPhpUnitTestFile(file) -> PhpUnitUtil.findTestClass(file) ?: file
+                else -> null
+            }
         }
         val VALIDATOR = PhpDefaultTestRunnerSettingsValidator(
             setOf<FileType>(PhpFileType.INSTANCE, XmlFileType.INSTANCE).toList(),
             { file: PsiFile, _: String ->
-                file.isPestConfigurationFile() || file.isPestTestFile()
+                file.isPestConfigurationFile() || file.isPestTestFile() || PhpUnitUtil.isPhpUnitTestFile(file)
             },
             false,
             false

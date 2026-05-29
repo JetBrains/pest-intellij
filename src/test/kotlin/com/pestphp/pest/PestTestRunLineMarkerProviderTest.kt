@@ -2,7 +2,11 @@ package com.pestphp.pest
 
 import com.intellij.codeInsight.daemon.impl.DaemonCodeAnalyzerImpl
 import com.intellij.execution.actions.ConfigurationContext
+import com.intellij.psi.util.PsiTreeUtil
 import com.intellij.testFramework.TestDataPath
+import com.jetbrains.php.lang.psi.elements.Method
+import com.jetbrains.php.phpunit.PhpUnitLocalRunConfiguration
+import com.jetbrains.php.phpunit.PhpUnitTestRunnerSettings
 import com.jetbrains.php.testFramework.PhpTestFrameworkConfiguration
 import com.jetbrains.php.testFramework.PhpTestFrameworkSettingsManager
 import com.pestphp.pest.configuration.PestRunConfigurationType
@@ -109,5 +113,37 @@ class PestTestRunLineMarkerProviderTest : PestLightCodeFixture() {
 
         assertSize(1, configurationsFromContext)
         assertEquals(PestRunConfigurationType.instance, configurationsFromContext[0].configurationType)
+    }
+
+    fun testRunContextFromPhpUnitStyleFileOffersBothConfigs() {
+        initConfiguration()
+        myFixture.copyDirectoryToProject("contextProjectPhpUnit", ".")
+        val context = myFixture.configureByFile("contextProjectPhpUnit/tests/PhpUnitStyleTest.php")
+        val configurationsFromContext = ConfigurationContext(context).configurationsFromContext!!
+
+        val types = configurationsFromContext.map { it.configurationType }.toSet()
+        assertContainsElements(types, PestRunConfigurationType.instance)
+        assertSize(2, configurationsFromContext)
+    }
+
+    fun testRunContextFromPhpUnitStyleMethodIsOwnedByPhpUnit() {
+        initConfiguration()
+        myFixture.copyDirectoryToProject("contextProjectPhpUnit", ".")
+        val file = myFixture.configureByFile("contextProjectPhpUnit/tests/PhpUnitStyleTest.php")
+        val method = PsiTreeUtil.findChildrenOfType(file, Method::class.java).single()
+        val configurationsFromContext = ConfigurationContext(method).configurationsFromContext!!
+
+        assertSize(1, configurationsFromContext)
+
+        val phpUnitConfiguration = configurationsFromContext.single().configuration as PhpUnitLocalRunConfiguration
+        assertEquals(
+            "PHPUnit's own producer must own the individual method run",
+            PhpUnitTestRunnerSettings.Scope.Method,
+            phpUnitConfiguration.settings.testRunnerSettings.scope
+        )
+        assertTrue(
+            "PHPUnit method-scope run must target the clicked method",
+            phpUnitConfiguration.settings.testRunnerSettings.methodName?.endsWith("testFoo") == true
+        )
     }
 }
