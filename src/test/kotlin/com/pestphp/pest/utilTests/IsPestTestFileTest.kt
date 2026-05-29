@@ -61,4 +61,28 @@ class IsPestTestFileTest : PestLightCodeFixture() {
 
         assertTrue(file.isPestTestFile(isSmart = true))
     }
+
+    fun testNestedDescribeBlocksIsPestTest() {
+        val file = myFixture.configureByFile("NestedDescribeFunctionCalls.php")
+
+        assertTrue(file.isPestTestFile())
+    }
+
+    fun testNestedDescribeBlocksIsPestTestSmart() {
+        val file = myFixture.configureByFile("NestedDescribeFunctionCalls.php")
+
+        assertTrue(file.isPestTestFile(isSmart = true))
+    }
+
+    fun testLifecycleHookFollowedByDescribeIsPestTest() {
+        val file = myFixture.configureByFile("PestLifecycleAndDescribeBlock.php")
+
+        assertTrue(file.isPestTestFile())
+    }
+
+    fun testLifecycleHookFollowedByDescribeIsPestTestSmart() {
+        val file = myFixture.configureByFile("PestLifecycleAndDescribeBlock.php")
+
+        assertTrue(file.isPestTestFile(isSmart = true))
+    }
 }

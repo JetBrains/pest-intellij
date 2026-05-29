@@ -2,10 +2,14 @@
 
 use Pest\Expectation;
 use Pest\PendingCalls\TestCall;
+use Pest\PendingCalls\DescribeCall;
 
 namespace Pest\PendingCalls {
     class TestCall {
         public function with(Closure|iterable|string ...$data): self
+    }
+
+    class DescribeCall {
     }
 }
 
@@ -17,7 +21,7 @@ function it(string $description, ?Closure $closure = null): TestCall
 {
 }
 
-function describe(string $description, $tests): TestCall
+function describe(string $description, $tests): DescribeCall
 {
 }
 
@@ -626,4 +630,3 @@ namespace Pest {
         }
     }
 }
-

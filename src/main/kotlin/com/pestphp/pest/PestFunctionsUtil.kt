@@ -15,13 +15,10 @@ import com.jetbrains.php.lang.psi.elements.Statement
 import com.jetbrains.php.lang.psi.elements.impl.FunctionReferenceImpl
 import com.jetbrains.php.lang.psi.resolve.types.PhpType
 
-val PEST_TEST_CALL_TYPE = PhpType.from(
-    "\\Pest\\PendingCalls\\TestCall", // for Pest versions >= 2.x
-    "\\Pest\\PendingObjects\\TestCall" // for Pest versions 1.x
-)
-
-val PEST_DESCRIBE_CALL_TYPE = PhpType.from(
-    "\\Pest\\PendingCalls\\DescribeCall" // for Pest versions >= 2.x
+val PEST_CALL_TYPES: PhpType = PhpType.from(
+    "\\Pest\\PendingCalls\\TestCall", // `it`, `test`, `to do`, `arch` — Pest >= 2.x
+    "\\Pest\\PendingCalls\\DescribeCall", // `describe` — Pest >= 2.x
+    "\\Pest\\PendingObjects\\TestCall" // `it`, `test`, `to do` — Pest 1.x
 )
 
 fun PsiElement?.isPestTestReference(isSmart: Boolean = false): Boolean {
@@ -38,9 +35,8 @@ fun FunctionReferenceImpl.isPestTestFunction(isSmart: Boolean = false): Boolean 
     if (this.canonicalText !in testNames) return false
     if (!isSmart) return true
     if (this.resolveLocal().isNotEmpty()) return false
-    val expectedType = if (this.isDescribeFunction()) PEST_DESCRIBE_CALL_TYPE else PEST_TEST_CALL_TYPE
     return PhpIndex.getInstance(project).getFunctionsByName(this.canonicalText).any { function ->
-        expectedType.isConvertibleFromGlobal(project, function.type)
+        PEST_CALL_TYPES.isConvertibleFromGlobal(project, function.type)
     }
 }
 
