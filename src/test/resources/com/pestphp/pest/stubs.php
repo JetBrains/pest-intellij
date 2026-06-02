@@ -73,7 +73,7 @@ namespace Pest {
          *
          * @param mixed $expected
          */
-        public function toBe($expected): Expectation
+        public function toBe($expected, string $message = ''): Expectation
         {
             Assert::assertSame($expected, $this->value);
 
@@ -197,7 +197,7 @@ namespace Pest {
         /**
          * Asserts that $count matches the number of elements of the value.
          */
-        public function toHaveCount(int $count): Expectation
+        public function toHaveCount(int $count, string $message = ''): Expectation
         {
             Assert::assertCount($count, $this->value);
 
