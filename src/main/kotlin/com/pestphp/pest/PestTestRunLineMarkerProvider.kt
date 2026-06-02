@@ -21,17 +21,26 @@ class PestTestRunLineMarkerProvider : RunLineMarkerContributor() {
             return null
         }
 
+        // Handle icon for running all tests in the file.
+        if (PhpPsiUtil.isOfType(leaf, PhpTokenTypes.PHP_OPENING_TAG)) {
+            return withExecutorActions(Run_run)
+        }
+
+        return null
+    }
+
+    override fun getSlowInfo(leaf: PsiElement): Info? {
+        if (!leaf.containingFile.isPestTestFile(isSmart = true)) {
+            return null
+        }
+
         // Handle icons if the reference is a pest test.
+        // Runs on BGT because toPestFqn() calls createPathMappings() which can be slow.
         if (isPestTestReference(leaf)) {
             return getPestTest(
                 leaf.parent as FunctionReferenceImpl,
                 leaf.project,
             )
-        }
-
-        // Handle icon for running all tests in the file.
-        if (PhpPsiUtil.isOfType(leaf, PhpTokenTypes.PHP_OPENING_TAG)) {
-            return withExecutorActions(Run_run)
         }
 
         return null
