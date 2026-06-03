@@ -11,10 +11,7 @@ jvm_library(
     ),
     module_name = "intellij.pest.coverage.tests",
     visibility = ["//visibility:public"],
-    runtime_deps = [
-        # do not sort,
-        "@community//platform/ide-core",
-    ],
+    runtime_deps = ["@community//platform/ide-core"],
 )
 
 jvm_library(
