@@ -1,72 +1,93 @@
-### auto-generated section `build intellij.pest.coverage.tests` start
+load("@community//build:tests-options.bzl", "jps_test")
 load("@rules_jvm//:jvm.bzl", "jvm_library")
 
+### auto-generated section `build intellij.pest.coverage.tests` start
+
 jvm_library(
-  name = "tests",
-  module_name = "intellij.pest.coverage.tests",
-  visibility = ["//visibility:public"],
-  srcs = glob([], allow_empty = True),
-  runtime_deps = ["@community//platform/ide-core"]
+    name = "tests",
+    srcs = glob(
+        [],
+        allow_empty = True,
+    ),
+    module_name = "intellij.pest.coverage.tests",
+    visibility = ["//visibility:public"],
+    runtime_deps = [
+        # do not sort,
+        "@community//platform/ide-core",
+    ],
 )
 
 jvm_library(
-  name = "tests_test_lib",
-  testonly = True,
-  visibility = ["//visibility:public"],
-  srcs = glob(["src/**/*.kt", "src/**/*.java", "src/**/*.form"], allow_empty = True),
-  resources = glob(["testData/**/*"]),
-  resource_strip_prefix = "testData",
-  associates = [
-    "//phpstorm/pest/coverage",
-    "//phpstorm/pest/coverage:coverage_test_lib",
-  ],
-  deps = [
-    "//phpstorm/pest:pest-tests",
-    "//phpstorm/pest:pest-tests_test_lib",
-    "@community//platform/lang-api:lang",
-    "@community//platform/lang-api:lang_test_lib",
-    "//phpstorm/php:php-impl",
-    "//phpstorm/php:php-impl_test_lib",
-    "//phpstorm/pest",
-    "//phpstorm/pest:pest_test_lib",
-    "@community//platform/core-api:core",
-    "@community//platform/core-api:core_test_lib",
-    "@community//platform/execution",
-    "@community//platform/execution:execution_test_lib",
-    "@community//platform/projectModel-api:projectModel",
-    "@community//platform/projectModel-api:projectModel_test_lib",
-    "@community//platform/projectModel-impl",
-    "@community//platform/projectModel-impl:projectModel-impl_test_lib",
-    "@community//platform/platform-util-io:ide-util-io",
-    "@community//platform/ide-core",
-    "@community//platform/smRunner",
-    "@community//platform/smRunner:smRunner_test_lib",
-    "@community//plugins/coverage-common:coverage",
-    "@community//plugins/coverage-common:coverage_test_lib",
-    "@community//platform/testRunner",
-    "@community//platform/testRunner:testRunner_test_lib",
-    "//phpstorm/coverage",
-    "//phpstorm/coverage:coverage_test_lib",
-  ],
-  runtime_deps = [
-    ":tests",
-    "@community//platform/platform-util-io:ide-util-io_test_lib",
-    "@community//platform/ide-core:ide-core_test_lib",
-  ]
+    name = "tests_test_lib",
+    testonly = True,
+    srcs = glob(
+        [
+            "src/**/*.kt",
+            "src/**/*.java",
+            "src/**/*.form",
+        ],
+        allow_empty = True,
+    ),
+    associates = [
+        "//phpstorm/pest/coverage",
+        "//phpstorm/pest/coverage:coverage_test_lib",
+    ],
+    resource_strip_prefix = "testData",
+    resources = glob(
+        ["testData/**/*"],
+    ),
+    visibility = ["//visibility:public"],
+    runtime_deps = [
+        # do not sort,
+        ":tests",
+        "@community//platform/platform-util-io:ide-util-io_test_lib",
+        "@community//platform/ide-core:ide-core_test_lib",
+    ],
+    deps = [
+        # do not sort,
+        "//phpstorm/pest:pest-tests",
+        "//phpstorm/pest:pest-tests_test_lib",
+        "@community//platform/lang-api:lang",
+        "@community//platform/lang-api:lang_test_lib",
+        "//phpstorm/php:php-impl",
+        "//phpstorm/php:php-impl_test_lib",
+        "//phpstorm/pest",
+        "//phpstorm/pest:pest_test_lib",
+        "@community//platform/core-api:core",
+        "@community//platform/core-api:core_test_lib",
+        "@community//platform/execution",
+        "@community//platform/execution:execution_test_lib",
+        "@community//platform/projectModel-api:projectModel",
+        "@community//platform/projectModel-api:projectModel_test_lib",
+        "@community//platform/projectModel-impl",
+        "@community//platform/projectModel-impl:projectModel-impl_test_lib",
+        "@community//platform/platform-util-io:ide-util-io",
+        "@community//platform/ide-core",
+        "@community//platform/smRunner",
+        "@community//platform/smRunner:smRunner_test_lib",
+        "@community//plugins/coverage-common:coverage",
+        "@community//plugins/coverage-common:coverage_test_lib",
+        "@community//platform/testRunner",
+        "@community//platform/testRunner:testRunner_test_lib",
+        "//phpstorm/coverage",
+        "//phpstorm/coverage:coverage_test_lib",
+    ],
 )
 ### auto-generated section `build intellij.pest.coverage.tests` end
 
 ### auto-generated section `iml intellij.pest.coverage.tests` start
-exports_files([
-  "intellij.pest.coverage.tests.iml",
-], visibility = ["//visibility:public"])
+exports_files(
+    [
+        "intellij.pest.coverage.tests.iml",
+    ],
+    visibility = ["//visibility:public"],
+)
 ### auto-generated section `iml intellij.pest.coverage.tests` end
 
 ### auto-generated section `test intellij.pest.coverage.tests` start
-load("@community//build:tests-options.bzl", "jps_test")
 
 jps_test(
-  name = "tests_test",
-  runtime_deps = [":tests_test_lib"]
+    name = "tests_test",
+    runtime_deps = [":tests_test_lib"],
 )
 ### auto-generated section `test intellij.pest.coverage.tests` end
