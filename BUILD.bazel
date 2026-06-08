@@ -54,6 +54,7 @@ jvm_library(
         "@community//platform/util:util-ui",
         "@community//platform/statistics",
         "@community//platform/testRunner",
+        "@community//platform/testIntegration",
     ],
 )
 
@@ -107,6 +108,7 @@ jvm_library(
         "@community//libraries/mockk/jvm:jvm_test_lib",
         "@community//platform/statistics:statistics_test_lib",
         "@community//platform/testRunner:testRunner_test_lib",
+        "@community//platform/testIntegration:testIntegration_test_lib",
     ],
 )
 ### auto-generated section `build intellij.pest` end
@@ -228,6 +230,8 @@ jvm_library(
         "@community//platform/statistics:statistics_test_lib",
         "@community//platform/testRunner",
         "@community//platform/testRunner:testRunner_test_lib",
+        "@community//platform/testIntegration",
+        "@community//platform/testIntegration:testIntegration_test_lib",
     ],
 )
 ### auto-generated section `build intellij.pest.tests` end
