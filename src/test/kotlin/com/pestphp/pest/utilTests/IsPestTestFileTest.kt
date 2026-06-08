@@ -49,4 +49,16 @@ class IsPestTestFileTest : PestLightCodeFixture() {
 
         assertTrue(file.isPestTestFile())
     }
+
+    fun testDescribeOnlyFileIsPestTest() {
+        val file = myFixture.configureByFile("PestDescribeBlock.php")
+
+        assertTrue(file.isPestTestFile())
+    }
+
+    fun testDescribeOnlyFileIsPestTestSmart() {
+        val file = myFixture.configureByFile("PestDescribeBlock.php")
+
+        assertTrue(file.isPestTestFile(isSmart = true))
+    }
 }
