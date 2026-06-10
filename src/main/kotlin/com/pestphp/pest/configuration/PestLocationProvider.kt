@@ -35,16 +35,16 @@ class PestLocationProvider(
         path: String,
         project: Project,
         scope: GlobalSearchScope
-    ): MutableList<Location<PsiElement>> {
+    ): List<Location<PsiElement>> {
         val isParallelExecution = path.contains(PARALLEL_EXECUTION_URL_MARKER)
         if (protocol != PROTOCOL_ID && !isParallelExecution) {
             return phpUnitLocationProvider.getLocation(protocol, path, project, scope)
         }
 
         val locationInfo = if (isParallelExecution) getParallelLocationInfo(path) else getLocationInfo(path)
-        val element = locationInfo?.let { findElement(it, project) } ?: return mutableListOf()
+        val element = locationInfo?.let { findElement(it, project) } ?: return emptyList()
 
-        return mutableListOf(
+        return listOf(
             PhpPsiLocationWithDataSet(
                 project,
                 element,
@@ -100,8 +100,8 @@ class PestLocationProvider(
         stacktraceLine: String,
         project: Project,
         scope: GlobalSearchScope
-    ): MutableList<Location<PsiElement>> {
-        return mutableListOf()
+    ): List<Location<PsiElement>> {
+        return emptyList()
     }
 
     fun calculateFileUrl(locationOutput: String): String {

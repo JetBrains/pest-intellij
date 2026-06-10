@@ -13,7 +13,7 @@ class PhpFolderReferenceSet(element: PsiElement, argument: PhpPsiElement, provid
         return FileReferenceSet.DIRECTORY_FILTER
     }
 
-    override fun computeDefaultContexts(): MutableCollection<PsiFileSystemItem> {
+    override fun computeDefaultContexts(): Collection<PsiFileSystemItem> {
         val containingFile = this.element.containingFile.originalFile
         val directory = containingFile.virtualFile.parent
 
