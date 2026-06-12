@@ -1,14 +1,14 @@
 <idea-plugin>
+    <!-- region Generated dependencies - run `Generate Product Layouts` to regenerate -->
     <dependencies>
-      <!-- region Generated dependencies - run `Generate Product Layouts` to regenerate -->
-      <plugin id="com.jetbrains.php"/>
+      <module name="intellij.php.backend"/>
       <plugin id="com.pestphp.pest-intellij"/>
       <module name="intellij.php.coverage"/>
       <module name="intellij.platform.coverage"/>
       <module name="intellij.platform.smRunner"/>
       <module name="intellij.platform.testRunner"/>
-      <!-- endregion -->
     </dependencies>
+    <!-- endregion -->
     
     <extensions defaultExtensionNs="com.intellij">
         <programRunner implementation="com.intellij.pest.coverage.PestCoverageProgramRunner"/>
