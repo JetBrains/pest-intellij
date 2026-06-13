@@ -23,6 +23,7 @@
     <orderEntry type="module" module-name="intellij.platform.coverage" scope="TEST" />
     <orderEntry type="module" module-name="intellij.platform.testRunner" scope="TEST" />
     <orderEntry type="module" module-name="intellij.php.coverage" scope="TEST" />
+    <orderEntry type="module" module-name="intellij.libraries.junit4" scope="TEST" />
   </component>
   <component name="TestModuleProperties" production-module="intellij.pest.coverage" />
 </module>
