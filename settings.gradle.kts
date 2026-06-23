@@ -1,5 +1,7 @@
 rootProject.name = "pest-intellij"
 
+include(":coverage")
+
 pluginManagement {
     repositories {
         maven {

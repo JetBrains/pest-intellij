@@ -12,7 +12,9 @@ plugins {
     // Kotlin support
     id("org.jetbrains.kotlin.jvm") version "2.3.0"
     // Gradle IntelliJ Plugin
-    id("org.jetbrains.intellij.platform") version "2.7.0"
+    id("org.jetbrains.intellij.platform") version "2.16.0"
+    // Module variant of the IntelliJ Platform plugin, applied by the :coverage subproject.
+    id("org.jetbrains.intellij.platform.module") version "2.16.0" apply false
     // Gradle Changelog Plugin
     id("org.jetbrains.changelog") version "2.2.0"
 }
@@ -45,7 +47,21 @@ dependencies {
         testFramework(TestFrameworkType.Platform)
         bundledPlugins(properties("platformBundledPlugins").toPlugins())
         bundledModules(properties("platformBundledModules").toPlugins())
+
+        // Compose the :coverage content module into lib/modules/; runtimeOnly avoids a compile cycle
+        // (the main module never references coverage, but coverage depends back on it).
+        pluginModule(runtimeOnly(project(":coverage")))
     }
+}
+
+// Share the main test classes with the :coverage subproject's tests.
+configurations.create("testClassesExport") {
+    isCanBeConsumed = true
+    isCanBeResolved = false
+    outgoing.artifact(tasks.register<Jar>("testClassesJar") {
+        archiveClassifier = "test"
+        from(sourceSets.test.get().output)
+    })
 }
 
 // Configure Gradle Changelog Plugin - read more: https://github.com/JetBrains/gradle-changelog-plugin
@@ -68,6 +84,10 @@ tasks {
         val javaVersion = properties("javaVersion")
         sourceCompatibility = javaVersion
         targetCompatibility = javaVersion
+    }
+
+    test {
+        systemProperty("idea.home.path", projectDir.absolutePath)
     }
 
     wrapper {
