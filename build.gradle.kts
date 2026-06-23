@@ -1,34 +1,15 @@
-import org.jetbrains.intellij.platform.gradle.ProductMode
 import org.jetbrains.changelog.Changelog
 import org.jetbrains.changelog.markdownToHTML
-import org.jetbrains.intellij.platform.gradle.TestFrameworkType
-import org.jetbrains.kotlin.gradle.dsl.JvmTarget
-
-fun properties(key: String) = project.findProperty(key).toString()
 
 plugins {
-    // Java support
     id("java")
-    // Kotlin support
-    id("org.jetbrains.kotlin.jvm") version "2.3.0"
-    // Gradle IntelliJ Plugin
-    id("org.jetbrains.intellij.platform") version "2.16.0"
-    // Module variant of the IntelliJ Platform plugin, applied by the :coverage subproject.
-    id("org.jetbrains.intellij.platform.module") version "2.16.0" apply false
-    // Gradle Changelog Plugin
+    id("org.jetbrains.kotlin.jvm")
+    id("org.jetbrains.intellij.platform")
     id("org.jetbrains.changelog") version "2.2.0"
 }
 
-group = properties("pluginGroup")
-version = properties("pluginVersion")
-
-// Configure project's dependencies
-repositories {
-    mavenCentral()
-    intellijPlatform {
-        defaultRepositories()
-    }
-}
+group = prop("pluginGroup")
+version = prop("pluginVersion")
 
 dependencies {
     implementation(kotlin("stdlib"))
@@ -37,16 +18,7 @@ dependencies {
     }
     testImplementation("junit:junit:4.13.2")
     intellijPlatform {
-        val type = providers.gradleProperty("platformType")
-        val version = providers.gradleProperty("platformVersion")
-
-        create(type, version) {
-            useInstaller = false
-            productMode = ProductMode.MONOLITH
-        }
-        testFramework(TestFrameworkType.Platform)
-        bundledPlugins(properties("platformBundledPlugins").toPlugins())
-        bundledModules(properties("platformBundledModules").toPlugins())
+        platform(project)
 
         // Compose the :coverage content module into lib/modules/; runtimeOnly avoids a compile cycle
         // (the main module never references coverage, but coverage depends back on it).
@@ -59,6 +31,7 @@ configurations.create("testClassesExport") {
     isCanBeConsumed = true
     isCanBeResolved = false
     outgoing.artifact(tasks.register<Jar>("testClassesJar") {
+        description = "test classes for the main module"
         archiveClassifier = "test"
         from(sourceSets.test.get().output)
     })
@@ -66,38 +39,25 @@ configurations.create("testClassesExport") {
 
 // Configure Gradle Changelog Plugin - read more: https://github.com/JetBrains/gradle-changelog-plugin
 changelog {
-    version.set(properties("pluginVersion"))
+    version.set(prop("pluginVersion"))
     groups.set(emptyList())
 }
 
-kotlin {
-    jvmToolchain {
-        languageVersion.set(JavaLanguageVersion.of(providers.gradleProperty("javaVersion").get()))
-    }
-    compilerOptions {
-        jvmTarget.set(JvmTarget.fromTarget(providers.gradleProperty("javaVersion").get()))
-    }
-}
+configureJvm()
 
 tasks {
-    withType<JavaCompile>().configureEach {
-        val javaVersion = properties("javaVersion")
-        sourceCompatibility = javaVersion
-        targetCompatibility = javaVersion
-    }
-
     test {
         systemProperty("idea.home.path", projectDir.absolutePath)
     }
 
     wrapper {
-        gradleVersion = properties("gradleVersion")
+        gradleVersion = prop("gradleVersion")
     }
 
     patchPluginXml {
-        version = properties("pluginVersion")
-        sinceBuild.set(properties("pluginSinceBuild"))
-        untilBuild.set(properties("pluginUntilBuild"))
+        version = prop("pluginVersion")
+        sinceBuild.set(prop("pluginSinceBuild"))
+        untilBuild.set(prop("pluginUntilBuild"))
 
         // Extract the <!-- Plugin description --> section from README.md and provide for the plugin's manifest
         pluginDescription.set(
@@ -115,7 +75,7 @@ tasks {
         // Get the latest available change notes from the changelog file
         changeNotes.set(provider {
             changelog.renderItem(changelog.run {
-                getOrNull(properties("pluginVersion")) ?: getLatest()
+                getOrNull(prop("pluginVersion")) ?: getLatest()
             }, Changelog.OutputType.HTML)
         })
     }
@@ -135,7 +95,3 @@ tasks {
         // channels = listOf(properties("pluginVersion").split('-').getOrElse(1) { "default" }.split('.').first())
     }
 }
-
-private fun String.toPlugins(): List<String> = split(',')
-    .map(String::trim)
-    .filter(String::isNotEmpty)
