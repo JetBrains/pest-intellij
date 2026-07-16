@@ -89,6 +89,12 @@ fun PsiFile.getRoot(): List<PsiElement> {
         .mapNotNull { it.firstChild }
 }
 
+private fun FunctionReferenceImpl.getDescribeBodyElements(): List<PhpPsiElement> {
+    val closure = (this.parameters.getOrNull(1) as? PhpExpression)?.firstChild as? Function
+    val body = closure?.children?.filterIsInstance<GroupStatement>()?.firstOrNull()
+    return body?.statements?.mapNotNull { it.firstChild }?.filterIsInstance<PhpPsiElement>() ?: emptyList()
+}
+
 /**
  * Traverses elements and recursively enters describe blocks, collecting items via the collector function.
  */
@@ -103,10 +109,7 @@ internal fun <T> collectFromDescribeBlocks(
 
         val funcRef = element as? FunctionReferenceImpl
         if (funcRef != null && funcRef.isDescribeFunction()) {
-            val closure = (funcRef.parameters.getOrNull(1) as? PhpExpression)?.firstChild as? Function
-            val body = closure?.children?.filterIsInstance<GroupStatement>()?.firstOrNull()
-            val statements = body?.statements?.mapNotNull { it.firstChild }?.filterIsInstance<PhpPsiElement>() ?: emptyList()
-            result.addAll(collectFromDescribeBlocks(statements, collector))
+            result.addAll(collectFromDescribeBlocks(funcRef.getDescribeBodyElements(), collector))
         }
     }
 
@@ -117,4 +120,19 @@ fun PsiFile.getPestTests(isSmart: Boolean = false): Set<FunctionReference> {
     return collectFromDescribeBlocks(this.getRootPhpPsiElements()) { element ->
         if (element.isPestTestReference(isSmart)) element as? FunctionReference else null
     }.toSet()
+}
+
+internal fun PsiFile.getTopLevelPestTests(isSmart: Boolean = false): List<FunctionReference> {
+    return this.getRootPhpPsiElements()
+        .filter { it.isPestTestReference(isSmart) }
+        .filterIsInstance<FunctionReference>()
+}
+
+internal fun FunctionReference.getDirectNestedPestTests(isSmart: Boolean = false): List<FunctionReference> {
+    val describe = this.getInitialFunctionReference() as? FunctionReferenceImpl ?: return emptyList()
+    if (!describe.isDescribeFunction()) return emptyList()
+
+    return describe.getDescribeBodyElements()
+        .filter { it.isPestTestReference(isSmart) }
+        .filterIsInstance<FunctionReference>()
 }

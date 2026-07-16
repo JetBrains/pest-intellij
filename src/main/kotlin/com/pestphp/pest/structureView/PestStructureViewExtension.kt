@@ -5,7 +5,7 @@ import com.intellij.ide.structureView.StructureViewTreeElement
 import com.intellij.openapi.editor.Editor
 import com.intellij.psi.PsiElement
 import com.jetbrains.php.lang.psi.PhpFile
-import com.pestphp.pest.getPestTests
+import com.pestphp.pest.getTopLevelPestTests
 
 /**
  * Extends the structure view, so we can include all
@@ -20,7 +20,7 @@ class PestStructureViewExtension : StructureViewExtension {
         if (parent !is PhpFile) {
             return arrayOf()
         }
-        return parent.getPestTests()
+        return parent.getTopLevelPestTests()
             .map { PestStructureViewElement(it) }
             .toTypedArray()
     }

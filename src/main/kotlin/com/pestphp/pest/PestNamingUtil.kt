@@ -22,11 +22,11 @@ import com.jetbrains.php.util.pathmapper.PhpPathMapper
 import com.pestphp.pest.runner.getLocationUrl
 import java.util.Locale
 
-fun FunctionReferenceImpl.getPestTestName(): String? {
+fun FunctionReferenceImpl.getPestTestName(withParents: Boolean = true): String? {
     val testName = getParameter(0)?.stringValue ?: return tryGetArchTestName(this)
 
     val parent = this.findParentOfType<FunctionReferenceImpl>()
-    val prepend = if (parent is FunctionReferenceImpl && parent.isDescribeFunction()) {
+    val prepend = if (withParents && parent is FunctionReferenceImpl && parent.isDescribeFunction()) {
         parent.getPestTestName()
     } else {
         ""
@@ -34,7 +34,9 @@ fun FunctionReferenceImpl.getPestTestName(): String? {
 
     return when (this.canonicalText) {
         "it" -> "${prepend}it $testName"
-        "describe" -> "${prepend}`$testName` → "
+        // The backticks and trailing " → " decorate the describe name when it is prepended to
+        // nested test names; on its own (e.g. structure view) the plain name is shown.
+        "describe" -> if (withParents) "${prepend}`$testName` → " else testName
         else -> "${prepend}$testName"
     }
 }
@@ -89,10 +91,10 @@ val ConcatenationExpression.contents: String?
         return left + right
     }
 
-fun PsiElement?.getPestTestName(): String? {
+fun PsiElement?.getPestTestName(withParents: Boolean = true): String? {
     return when (this) {
-        is MethodReference -> (this.classReference as? FunctionReference)?.getPestTestName()
-        is FunctionReferenceImpl -> this.getPestTestName()
+        is MethodReference -> (this.classReference as? FunctionReference).getPestTestName(withParents)
+        is FunctionReferenceImpl -> this.getPestTestName(withParents)
         else -> null
     }
 }
