@@ -134,11 +134,22 @@ class ToPestTestRegexTests : PestLightCodeFixture() {
         assertTrue(regex?.contains("User") == true)
     }
 
+    fun testPrefixMatchControlsEndOfLineAnchor() {
+        val mapper = PhpPathMapper.create(this.project)
+
+        val exact = "`my block`".toPestTestRegex("src", "/src/ExampleTest.php", mapper, prefixMatch = false)
+        val prefix = "`my block`".toPestTestRegex("src", "/src/ExampleTest.php", mapper, prefixMatch = true)
+
+        assertTrue(exact.endsWith("$"))
+        assertFalse(prefix.endsWith("$"))
+    }
+
     fun testRegexHandlesEmojiInPath() {
         val regex = "it renders components".toPestTestRegex(
             "src",
             "/src/livewire⚡/Component.php",
-            PhpPathMapper.create(this.project)
+            PhpPathMapper.create(this.project),
+            prefixMatch = false
         )
 
         assertFalse(regex.contains("⚡"))

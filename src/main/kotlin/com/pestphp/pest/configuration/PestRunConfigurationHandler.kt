@@ -5,6 +5,7 @@ import com.intellij.openapi.project.Project
 import com.jetbrains.php.config.commandLine.PhpCommandSettings
 import com.jetbrains.php.testFramework.run.PhpTestRunConfigurationHandler
 import com.pestphp.pest.PestBundle
+import com.pestphp.pest.PestTestId
 import com.pestphp.pest.toPestTestRegex
 
 class PestRunConfigurationHandler : PhpTestRunConfigurationHandler {
@@ -79,6 +80,8 @@ class PestRunConfigurationHandler : PhpTestRunConfigurationHandler {
 
         phpCommandSettings.addPathArgument(file)
         phpCommandSettings.addArgument("--filter")
-        phpCommandSettings.addArgument("/${methodName.toPestTestRegex(rootPath, file, pathMapper)}/")
+        // methodName is the persisted filter identifier; its trailing separator marks a describe run.
+        val prefixMatch = PestTestId.isDescribePrefix(methodName)
+        phpCommandSettings.addArgument("/${methodName.toPestTestRegex(rootPath, file, pathMapper, prefixMatch)}/")
     }
 }

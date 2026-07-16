@@ -45,6 +45,14 @@ internal data class PestTestId(val segments: List<Segment>, val describePrefix: 
          */
         fun presentableOf(filterId: String): String =
             filterId.removeSuffix(SEPARATOR).replace("`", "")
+
+        /**
+         * Whether a persisted [filterId] addresses a describe *block* (a prefix / whole-block run)
+         * rather than a single test. The trailing separator is the serialized form of that flag; use
+         * this only where the PSI is gone (the persisted run-config methodName). With the PSI, read
+         * [describePrefix] instead.
+         */
+        fun isDescribePrefix(filterId: String): Boolean = filterId.endsWith(SEPARATOR)
     }
 }
 

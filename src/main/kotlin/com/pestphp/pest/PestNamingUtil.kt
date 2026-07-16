@@ -83,10 +83,12 @@ fun PsiElement?.getInitialFunctionReference(): FunctionReference? {
 }
 
 fun PsiElement.toPestTestRegex(workingDirectory: String): String? {
-    return this.getPestTestName()?.toPestTestRegex(
+    val id = pestTestId() ?: return null
+    return id.filterId.toPestTestRegex(
         workingDirectory,
         this.containingFile.virtualFile.path,
-        PhpPathMapper.create(this.project)
+        PhpPathMapper.create(this.project),
+        prefixMatch = id.describePrefix
     )
 }
 
@@ -112,7 +114,7 @@ fun PsiElement.toPestFqn(): List<String> {
         .toList()
 }
 
-fun String.toPestTestRegex(rootPath: String, file: String, pathMapper: PhpPathMapper): String {
+fun String.toPestTestRegex(rootPath: String, file: String, pathMapper: PhpPathMapper, prefixMatch: Boolean): String {
     val mappedWorkingDirectory = pathMapper.getRemoteFilePath(rootPath) ?: rootPath
     val mappedFile = pathMapper.getRemoteFilePath(file) ?: file
 
@@ -136,8 +138,8 @@ fun String.toPestTestRegex(rootPath: String, file: String, pathMapper: PhpPathMa
         // 6. Add P as a namespace before the generated namespace.
         .let { "(P\\\\)?$it" }
 
-    // Allow substring matching only for "describe" block execution
-    val possibleEndOfLine = if (this.endsWith(" → ")) "" else "$"
+    // A describe (whole-block) run matches every nested test, so it must not anchor at end-of-line.
+    val possibleEndOfLine = if (prefixMatch) "" else "$"
 
     // Escape characters
     val testName = this
