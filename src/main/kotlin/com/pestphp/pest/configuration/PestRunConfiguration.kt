@@ -35,13 +35,13 @@ import com.jetbrains.php.testFramework.run.PhpTestRunnerSettings
 import com.pestphp.pest.PestBundle
 import com.pestphp.pest.PestFrameworkType
 import com.pestphp.pest.PestIcons
+import com.pestphp.pest.PestTestId
 import com.pestphp.pest.configuration.PestRunConfigurationProducer.Companion.VALIDATOR
 import com.pestphp.pest.features.parallel.addParallelArguments
 import com.pestphp.pest.features.parallel.createPestParallelDurationListener
 import com.pestphp.pest.getPestTestName
 import com.pestphp.pest.getPestTests
 import com.pestphp.pest.runner.PestConsoleProperties
-import com.pestphp.pest.toPestTestPresentableName
 import java.util.EnumMap
 import kotlin.io.path.Path
 
@@ -133,8 +133,7 @@ class PestRunConfiguration(project: Project, factory: ConfigurationFactory) : Ph
             PhpTestRunnerSettings.Scope.File -> PathUtil.getFileName(StringUtil.notNullize(runner.filePath))
             PhpTestRunnerSettings.Scope.Method -> {
                 val file = PathUtil.getFileName(StringUtil.notNullize(runner.filePath))
-                // Present a clean label; the raw methodName (with backticks/arrow) is kept for the --filter regex.
-                "$file::${StringUtil.notNullize(runner.methodName).toPestTestPresentableName()}"
+                "$file::${PestTestId.presentableOf(StringUtil.notNullize(runner.methodName))}"
             }
             PhpTestRunnerSettings.Scope.ConfigurationFile -> PathUtil.getFileName(
                 StringUtil.notNullize(runner.configurationFilePath)
@@ -152,8 +151,7 @@ class PestRunConfiguration(project: Project, factory: ConfigurationFactory) : Ph
             return super.getActionName()
         }
 
-        val name = runner.methodName.toPestTestPresentableName()
-        return truncateActionName(name)
+        return truncateActionName(PestTestId.presentableOf(runner.methodName))
     }
 
     fun applyTestArguments(command: PhpCommandSettings, coverageArguments: List<String>) {

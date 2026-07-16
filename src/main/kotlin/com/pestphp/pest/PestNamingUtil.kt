@@ -1,8 +1,6 @@
 package com.pestphp.pest
 
-import com.intellij.openapi.util.NlsSafe
 import com.intellij.psi.PsiElement
-import com.intellij.psi.util.findParentOfType
 import com.intellij.psi.util.parents
 import com.intellij.remote.RemoteSdkProperties
 import com.jetbrains.php.config.interpreters.PhpInterpretersManagerImpl
@@ -23,28 +21,9 @@ import com.jetbrains.php.util.pathmapper.PhpPathMapper
 import com.pestphp.pest.runner.getLocationUrl
 import java.util.Locale
 
-fun FunctionReferenceImpl.getPestTestName(withParents: Boolean = true): String? {
-    val testName = getParameter(0)?.stringValue ?: return tryGetArchTestName(this)
-
-    val parent = this.findParentOfType<FunctionReferenceImpl>()
-    val prepend = if (withParents && parent is FunctionReferenceImpl && parent.isDescribeFunction()) {
-        parent.getPestTestName()
-    } else {
-        ""
-    }
-
-    return when (this.canonicalText) {
-        "it" -> "${prepend}it $testName"
-        // The backticks and trailing " → " decorate the describe name when it is prepended to
-        // nested test names; on its own (e.g. structure view) the plain name is shown.
-        "describe" -> if (withParents) "${prepend}`$testName` → " else testName
-        else -> "${prepend}$testName"
-    }
-}
-
-private fun tryGetArchTestName(functionReference: FunctionReference): String? =
-    if (functionReference.canonicalText == "arch") {
-        getArchTestName(functionReference)
+internal fun FunctionReferenceImpl.archTestName(): String? =
+    if (canonicalText == "arch") {
+        getArchTestName(this)
     } else {
         null
     }
@@ -92,16 +71,8 @@ val ConcatenationExpression.contents: String?
         return left + right
     }
 
-fun PsiElement?.getPestTestName(withParents: Boolean = true): String? {
-    return when (this) {
-        is MethodReference -> (this.classReference as? FunctionReference).getPestTestName(withParents)
-        is FunctionReferenceImpl -> this.getPestTestName(withParents)
-        else -> null
-    }
-}
-
-fun String.toPestTestPresentableName(): String =
-    this.removeSuffix(" → ").replace("`", "")
+/** The machine filter identifier. For a human label, build a [pestTestId] and read presentableName. */
+fun PsiElement?.getPestTestName(): String? = pestTestId()?.filterId
 
 fun PsiElement?.getInitialFunctionReference(): FunctionReference? {
     return when (this) {

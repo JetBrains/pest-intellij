@@ -11,8 +11,8 @@ import com.jetbrains.php.lang.psi.elements.impl.FunctionReferenceImpl
 import com.pestphp.pest.PestIcons
 import com.pestphp.pest.getDirectNestedPestTests
 import com.pestphp.pest.getInitialFunctionReference
-import com.pestphp.pest.getPestTestName
 import com.pestphp.pest.isDescribeFunction
+import com.pestphp.pest.pestTestId
 import com.pestphp.pest.isPestTestReference
 
 /**
@@ -28,7 +28,7 @@ class PestStructureViewElement(val element: NavigatablePsiElement) : StructureVi
         val isDescribe = (element.getInitialFunctionReference() as? FunctionReferenceImpl)?.isDescribeFunction() == true
 
         return PresentationData(
-            element.getPestTestName(withParents = false),
+            element.pestTestId()?.localName,
             null,
             if (isDescribe) AllIcons.Nodes.TestGroup else PestIcons.Logo,
             null,
