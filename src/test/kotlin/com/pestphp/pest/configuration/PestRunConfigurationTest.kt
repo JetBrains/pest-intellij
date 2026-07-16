@@ -55,8 +55,18 @@ class PestRunConfigurationTest : PestLightCodeFixture() {
         return configuration.createCommand(configuration.interpreter!!, mutableMapOf(), mutableListOf(), false)
     }
 
-    private fun createConfiguration(): PestRunConfiguration {
-        val file = myFixture.configureByFile("FileWithPestTest.php")
+    fun testDescribeBlockActionNameIsCleanWhileFilterKeepsRawName() {
+        val configuration = createConfiguration("FileWithDescribeBlock.php")
+        val runner = configuration.settings.runnerSettings
+
+        assertEquals("`my block` → ", runner.methodName)
+
+        assertEquals("my block", configuration.actionName)
+        assertEquals("FileWithDescribeBlock.php::my block", configuration.suggestedName())
+    }
+
+    private fun createConfiguration(fileName: String = "FileWithPestTest.php"): PestRunConfiguration {
+        val file = myFixture.configureByFile(fileName)
         val elementAtCaret = file.findElementAt(myFixture.editor.caretModel.offset)
 
         createPestFrameworkConfiguration()

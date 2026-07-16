@@ -1,5 +1,6 @@
 package com.pestphp.pest
 
+import com.intellij.openapi.util.NlsSafe
 import com.intellij.psi.PsiElement
 import com.intellij.psi.util.findParentOfType
 import com.intellij.psi.util.parents
@@ -98,6 +99,9 @@ fun PsiElement?.getPestTestName(withParents: Boolean = true): String? {
         else -> null
     }
 }
+
+fun String.toPestTestPresentableName(): String =
+    this.removeSuffix(" → ").replace("`", "")
 
 fun PsiElement?.getInitialFunctionReference(): FunctionReference? {
     return when (this) {

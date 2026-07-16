@@ -15,6 +15,7 @@ import com.intellij.execution.testframework.sm.runner.SMTRunnerConsoleProperties
 import com.intellij.execution.ui.ConsoleView
 import com.intellij.openapi.options.SettingsEditor
 import com.intellij.openapi.project.Project
+import com.intellij.openapi.util.NlsSafe
 import com.intellij.openapi.util.text.StringUtil
 import com.intellij.openapi.vfs.VfsUtil
 import com.intellij.util.PathUtil
@@ -40,6 +41,7 @@ import com.pestphp.pest.features.parallel.createPestParallelDurationListener
 import com.pestphp.pest.getPestTestName
 import com.pestphp.pest.getPestTests
 import com.pestphp.pest.runner.PestConsoleProperties
+import com.pestphp.pest.toPestTestPresentableName
 import java.util.EnumMap
 import kotlin.io.path.Path
 
@@ -131,7 +133,8 @@ class PestRunConfiguration(project: Project, factory: ConfigurationFactory) : Ph
             PhpTestRunnerSettings.Scope.File -> PathUtil.getFileName(StringUtil.notNullize(runner.filePath))
             PhpTestRunnerSettings.Scope.Method -> {
                 val file = PathUtil.getFileName(StringUtil.notNullize(runner.filePath))
-                "$file::${runner.methodName}"
+                // Present a clean label; the raw methodName (with backticks/arrow) is kept for the --filter regex.
+                "$file::${StringUtil.notNullize(runner.methodName).toPestTestPresentableName()}"
             }
             PhpTestRunnerSettings.Scope.ConfigurationFile -> PathUtil.getFileName(
                 StringUtil.notNullize(runner.configurationFilePath)
@@ -141,6 +144,16 @@ class PestRunConfiguration(project: Project, factory: ConfigurationFactory) : Ph
                 null
             }
         }
+    }
+
+    override fun getActionName(): @NlsSafe String? {
+        val runner = this.settings.runnerSettings
+        if (runner.scope != PhpTestRunnerSettings.Scope.Method || StringUtil.isEmpty(runner.methodName)) {
+            return super.getActionName()
+        }
+
+        val name = runner.methodName.toPestTestPresentableName()
+        return truncateActionName(name)
     }
 
     fun applyTestArguments(command: PhpCommandSettings, coverageArguments: List<String>) {
