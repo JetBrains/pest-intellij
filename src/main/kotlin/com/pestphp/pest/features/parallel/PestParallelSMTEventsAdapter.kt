@@ -6,15 +6,22 @@ import com.pestphp.pest.toPestTestPresentableName
 
 class PestParallelSMTEventsAdapter : PhpParallelTestSMTEventsAdapter() {
     override fun onSuiteStarted(suite: SMTestProxy) {
-        suite.setPresentableName(convertSuiteNameToClassName(suite.name).toPestTestPresentableName())
+        suite.setPresentableName(convertSuiteName(suite.name).toPestTestPresentableName())
         super.onSuiteStarted(suite)
     }
 
     override fun onTestStarted(test: SMTestProxy) {
-        test.setPresentableName(convertRuntimeTestNameToRealTestName(test.name).toPestTestPresentableName())
+        test.setPresentableName(convertRuntimeTestNameToRealTestName(test.presentableName).toPestTestPresentableName())
         super.onTestStarted(test)
     }
 }
+
+private fun convertSuiteName(suiteName: String): String =
+    if (suiteName.startsWith("__pest_evaluable_")) {
+        convertRuntimeTestNameToRealTestName(suiteName)
+    } else {
+        convertSuiteNameToClassName(suiteName)
+    }
 
 private const val PLACEHOLDER = " "
 

@@ -67,21 +67,26 @@ class PestParallelSMTEventsAdapterTest : PestLightCodeFixture() {
         assertEquals("preset → php", test.presentableName)
     }
 
-    fun testDescribeBackticksStrippedFromDatasetSuiteName() {
+    fun testDescribeDatasetSuiteAndChildrenUseRealNames() {
         val testsRoot = SMRootTestProxy()
         processTestOutput(
             testsRoot, """
-##teamcity[testCount count='1' flowId='6630']
+##teamcity[testCount count='2' flowId='6630']
 ##teamcity[testSuiteStarted name='P\ATest' locationHint='php_qn:///src/a.php::\P\ATest' flowId='6630']
-##teamcity[testSuiteStarted name='`my block` → check valid' locationHint='php_qn:///src/a.php::\P\ATest::`my block` → check valid' flowId='6630']
-##teamcity[testStarted name='__pest_evaluable_with_data_set_"(1)"' locationHint='php_qn:///src/a.php::\P\ATest::`my block` → check valid with data set "(1)"' flowId='6630']
-##teamcity[testFinished name='__pest_evaluable_with_data_set_"(1)"' duration='1' flowId='6630']
-##teamcity[testSuiteFinished name='`my block` → check valid' flowId='6630']
+##teamcity[testSuiteStarted name='__pest_evaluable__my_block__→_check_valid' locationHint='php_qn:///src/a.php::\P\ATest::__pest_evaluable__my_block__→_check_valid' flowId='6630']
+##teamcity[testStarted name='__pest_evaluable__my_block__→_check_valid_with_data_set_"(1)"' locationHint='php_qn:///src/a.php::\P\ATest::__pest_evaluable__my_block__→_check_valid_with_data_set_"(1)"' flowId='6630']
+##teamcity[testFinished name='__pest_evaluable__my_block__→_check_valid_with_data_set_"(1)"' duration='1' flowId='6630']
+##teamcity[testStarted name='__pest_evaluable__my_block__→_check_valid_with_data_set_"(2)"' locationHint='php_qn:///src/a.php::\P\ATest::__pest_evaluable__my_block__→_check_valid_with_data_set_"(2)"' flowId='6630']
+##teamcity[testFinished name='__pest_evaluable__my_block__→_check_valid_with_data_set_"(2)"' duration='1' flowId='6630']
+##teamcity[testSuiteFinished name='__pest_evaluable__my_block__→_check_valid' flowId='6630']
 ##teamcity[testSuiteFinished name='P\ATest' flowId='6630']""".trimIndent()
         )
         val datasetSuite = testsRoot.children.first().children.first()
-        assertEquals("`my block` → check valid", datasetSuite.name)
         assertEquals("my block → check valid", datasetSuite.presentableName)
+        assertEquals(
+            listOf("with data set \"(1)\"", "with data set \"(2)\""),
+            datasetSuite.children.map { it.presentableName },
+        )
     }
 
     fun testTotalTimeDurationSeconds() {
