@@ -26,9 +26,11 @@ class PestConsoleProperties(
 ) : SMTRunnerConsoleProperties(config, PestBundle.message("FRAMEWORK_NAME"), executor) {
 
     init {
+        val connection = config.project.messageBus.connect(this)
         if (executor is PestParallelTestExecutor || executeInParallel(config)) {
-            config.project.messageBus.connect(this)
-                .subscribe(SMTRunnerEventsListener.TEST_STATUS, PestParallelSMTEventsAdapter())
+            connection.subscribe(SMTRunnerEventsListener.TEST_STATUS, PestParallelSMTEventsAdapter())
+        } else {
+            connection.subscribe(SMTRunnerEventsListener.TEST_STATUS, PestSMTEventsAdapter())
         }
     }
 

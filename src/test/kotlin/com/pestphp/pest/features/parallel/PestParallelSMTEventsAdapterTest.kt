@@ -67,6 +67,23 @@ class PestParallelSMTEventsAdapterTest : PestLightCodeFixture() {
         assertEquals("preset → php", test.presentableName)
     }
 
+    fun testDescribeBackticksStrippedFromDatasetSuiteName() {
+        val testsRoot = SMRootTestProxy()
+        processTestOutput(
+            testsRoot, """
+##teamcity[testCount count='1' flowId='6630']
+##teamcity[testSuiteStarted name='P\ATest' locationHint='php_qn:///src/a.php::\P\ATest' flowId='6630']
+##teamcity[testSuiteStarted name='`my block` → check valid' locationHint='php_qn:///src/a.php::\P\ATest::`my block` → check valid' flowId='6630']
+##teamcity[testStarted name='__pest_evaluable_with_data_set_"(1)"' locationHint='php_qn:///src/a.php::\P\ATest::`my block` → check valid with data set "(1)"' flowId='6630']
+##teamcity[testFinished name='__pest_evaluable_with_data_set_"(1)"' duration='1' flowId='6630']
+##teamcity[testSuiteFinished name='`my block` → check valid' flowId='6630']
+##teamcity[testSuiteFinished name='P\ATest' flowId='6630']""".trimIndent()
+        )
+        val datasetSuite = testsRoot.children.first().children.first()
+        assertEquals("`my block` → check valid", datasetSuite.name)
+        assertEquals("my block → check valid", datasetSuite.presentableName)
+    }
+
     fun testTotalTimeDurationSeconds() {
         val testsRoot = SMRootTestProxy()
         processTestOutput(
