@@ -45,6 +45,8 @@ import com.pestphp.pest.runner.PestConsoleProperties
 import java.util.EnumMap
 import kotlin.io.path.Path
 
+private const val ACTION_NAME_MAX_LENGTH = 20
+
 class PestRunConfiguration(project: Project, factory: ConfigurationFactory) : PhpTestRunConfiguration(
     project,
     factory,
@@ -151,7 +153,8 @@ class PestRunConfiguration(project: Project, factory: ConfigurationFactory) : Ph
             return super.getActionName()
         }
 
-        return truncateActionName(PestTestId.presentableOf(runner.methodName))
+        val name = PestTestId.presentableOf(runner.methodName)
+        return if (name.length < ACTION_NAME_MAX_LENGTH) name else name.substring(0, ACTION_NAME_MAX_LENGTH) + "..."
     }
 
     fun applyTestArguments(command: PhpCommandSettings, coverageArguments: List<String>) {
