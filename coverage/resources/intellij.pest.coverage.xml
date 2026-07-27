@@ -1,12 +1,17 @@
 <idea-plugin>
     <!-- region Generated dependencies - run `Generate Product Layouts` to regenerate -->
     <dependencies>
-      <module name="intellij.php.backend"/>
       <plugin id="com.pestphp.pest-intellij"/>
+      <module name="intellij.php.backend"/>
       <module name="intellij.php.coverage"/>
+      <module name="intellij.platform.core"/>
       <module name="intellij.platform.coverage"/>
+      <module name="intellij.platform.execution"/>
+      <module name="intellij.platform.ide.core"/>
       <module name="intellij.platform.smRunner"/>
+      <module name="intellij.platform.statistics"/>
       <module name="intellij.platform.testRunner"/>
+      <module name="intellij.platform.util.ui"/>
     </dependencies>
     <!-- endregion -->
     
