@@ -3,38 +3,41 @@ package com.pestphp.pest.configuration
 import com.intellij.openapi.editor.ReadOnlyModificationException
 import com.intellij.openapi.options.SettingsEditor
 import com.intellij.openapi.ui.ComboBox
+import com.intellij.openapi.ui.DialogPanel
 import com.intellij.ui.components.JBCheckBox
-import com.intellij.util.ui.UI
+import com.intellij.ui.dsl.builder.AlignX
+import com.intellij.ui.dsl.builder.RowLayout
+import com.intellij.ui.dsl.builder.panel
 import com.jetbrains.php.phpunit.coverage.PhpUnitCoverageEngine.CoverageEngine
 import com.jetbrains.php.testFramework.run.PhpTestRunConfigurationEditor
 import com.pestphp.pest.PestBundle
 import java.lang.reflect.InvocationTargetException
-import javax.swing.BoxLayout
 import javax.swing.JComponent
-import javax.swing.JPanel
 
 class PestTestRunConfigurationEditor(
     private val parentEditor: PhpTestRunConfigurationEditor,
     settings: PestRunConfiguration
 ) : SettingsEditor<PestRunConfiguration>() {
-    private val myMainPanel = JPanel()
-    private var coveragePanel = JPanel()
-    private var parallelPanel = JPanel()
-    private val coverageEngineComboBox = ComboBox(arrayOf(CoverageEngine.XDEBUG, CoverageEngine.PCOV))
-    private val enabledParallelTestingCheckBox = JBCheckBox()
+    private val myMainPanel: DialogPanel
+    private lateinit var coverageEngineComboBox: ComboBox<CoverageEngine>
+    private lateinit var enabledParallelTestingCheckBox: JBCheckBox
 
     init {
-        coveragePanel = UI.PanelFactory.grid().add(
-            UI.PanelFactory.panel(coverageEngineComboBox).withLabel(PestBundle.message("COVERAGE_ENGINE_LABEL_TEXT"))
-        ).createPanel()
-        parallelPanel = UI.PanelFactory.grid().add(
-            UI.PanelFactory.panel(enabledParallelTestingCheckBox).withLabel(PestBundle.message("ENABLE_PARALLEL_TESTING_LABEL_TEXT"))
-        ).createPanel()
-
-        myMainPanel.layout = BoxLayout(myMainPanel, BoxLayout.Y_AXIS)
-        myMainPanel.add(parentEditor.component)
-        myMainPanel.add(coveragePanel)
-        myMainPanel.add(parallelPanel)
+        myMainPanel = panel {
+            row {
+                cell(parentEditor.component)
+                    .align(AlignX.FILL)
+            }
+            row(PestBundle.message("COVERAGE_ENGINE_LABEL_TEXT")) {
+                coverageEngineComboBox = comboBox(listOf(CoverageEngine.XDEBUG, CoverageEngine.PCOV))
+                    .align(AlignX.FILL)
+                    .component
+            }
+            row(PestBundle.message("ENABLE_PARALLEL_TESTING_LABEL_TEXT")) {
+                enabledParallelTestingCheckBox = checkBox("")
+                    .component
+            }.layout(RowLayout.INDEPENDENT)
+        }
         resetEditorFrom(settings)
     }
 
