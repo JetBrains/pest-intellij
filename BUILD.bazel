@@ -117,6 +117,7 @@ exports_files(
     [
         "intellij.pest.iml",
         "src/main/resources/META-INF/plugin.xml",
+        "src/main/resources/liveTemplates/PestPHP.xml",
     ],
     visibility = ["//visibility:public"],
 )
