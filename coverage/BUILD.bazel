@@ -75,6 +75,7 @@ jvm_library(
 exports_files(
     [
         "intellij.pest.coverage.iml",
+        "resources/intellij.pest.coverage.xml",
     ],
     visibility = ["//visibility:public"],
 )
