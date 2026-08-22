@@ -128,7 +128,6 @@ exports_files(
 ### auto-generated section `dev content intellij.pest` start
 dev_dist_plugin_content(
     name = "pest_dev_content",
-    content_modules = ["//phpstorm/pest/coverage"],
     descriptor_module = ":pest",
     libraries = [
         "@lib//:com.hankcs/aho-corasick-double-array-trie-1.2.3.jar",
@@ -149,6 +148,9 @@ dev_dist_plugin_content(
         "@lib//:org.slf4j/slf4j-jdk14-2.0.13.jar",
         "@lib//:xml-resolver/xml-resolver-1.2.jar",
     ],
+    prepacked_content_modules = {
+        "//phpstorm/pest/coverage": "modules/intellij.pest.coverage.jar",
+    },
     visibility = ["//visibility:public"],
 )
 ### auto-generated section `dev content intellij.pest` end
