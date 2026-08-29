@@ -3,7 +3,7 @@ package com.intellij.pest.coverage
 import com.intellij.execution.configurations.RunProfile
 import com.intellij.execution.configurations.RunProfileState
 import com.intellij.execution.runners.ExecutionEnvironment
-import com.intellij.php.coverage.PhpCoverageRunner
+import com.intellij.php.coverage.PhpCoverageProgramRunner
 import com.jetbrains.php.config.commandLine.PhpCommandSettings
 import com.jetbrains.php.config.commandLine.PhpCommandSettingsBuilder
 import com.jetbrains.php.config.interpreters.PhpInterpreter
@@ -14,7 +14,7 @@ import com.jetbrains.php.run.PhpRunConfigurationHolder
 import com.pestphp.pest.configuration.PestRunConfiguration
 import com.pestphp.pest.features.parallel.addParallelArguments
 
-open class PestCoverageProgramRunner : PhpCoverageRunner() {
+open class PestCoverageProgramRunner : PhpCoverageProgramRunner() {
     companion object {
         const val EXECUTOR_ID: String = "Coverage"
         const val RUNNER_ID: String = "PestCoverageRunner"
