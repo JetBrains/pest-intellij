@@ -7,10 +7,10 @@ import com.intellij.execution.configurations.RunConfigurationBase
 import com.intellij.execution.configurations.coverage.CoverageEnabledConfiguration
 import com.intellij.openapi.project.Project
 import com.intellij.php.coverage.PhpCoverageSuite
-import com.intellij.php.coverage.PhpUnitCoverageEngine
+import com.intellij.php.coverage.PhpCoverageEngine
 import com.pestphp.pest.configuration.PestRunConfiguration
 
-class PestCoverageEngine : PhpUnitCoverageEngine() {
+class PestCoverageEngine : PhpCoverageEngine() {
     override fun isApplicableTo(conf: RunConfigurationBase<*>): Boolean {
         return conf is PestRunConfiguration
     }
