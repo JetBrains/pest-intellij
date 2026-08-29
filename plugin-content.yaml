@@ -1,6 +1,0 @@
-- name: lib/modules/intellij.pest.coverage.jar
-  contentModules:
-  - name: intellij.pest.coverage
-- name: lib/pest.jar
-  modules:
-  - name: intellij.pest
