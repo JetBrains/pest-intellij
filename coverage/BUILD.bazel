@@ -1,6 +1,10 @@
 load("@community//platform/build-scripts/bazel-rules:content_module_jar.bzl", "content_module_jar")
 load("@rules_jvm//:jvm.bzl", "jvm_library")
 
+### auto-generated section `dev intellij.pest.coverage` start
+content_module_jar(module = ":coverage")
+### auto-generated section `dev intellij.pest.coverage` end
+
 ### auto-generated section `build intellij.pest.coverage` start
 jvm_library(
     name = "coverage",
@@ -35,8 +39,6 @@ jvm_library(
         "//phpstorm/coverage",
     ],
 )
-
-content_module_jar(module = ":coverage")
 
 jvm_library(
     name = "coverage_test_lib",
