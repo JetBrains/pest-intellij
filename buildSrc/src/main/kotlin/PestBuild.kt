@@ -24,6 +24,7 @@ fun IntelliJPlatformDependenciesExtension.platform(project: Project) {
     bundledPlugin("intellij.testRunner.plugin")
     bundledPlugin("intellij.structuralSearch.plugin")
     bundledModule("intellij.platform.coverage")
+    bundledModule("intellij.xml.psi.impl")
 }
 
 fun Project.configureJvm() {
