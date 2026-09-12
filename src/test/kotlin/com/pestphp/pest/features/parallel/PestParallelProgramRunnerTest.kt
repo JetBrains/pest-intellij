@@ -5,7 +5,7 @@ import com.intellij.execution.PsiLocation
 import com.intellij.execution.actions.ConfigurationContext
 import com.intellij.psi.PsiElement
 import com.intellij.testFramework.TestDataPath
-import com.intellij.openapi.vfs.LocalFileSystem
+import com.intellij.openapi.vfs.StandardFileSystems
 import com.jetbrains.php.composer.ComposerDataService
 import com.jetbrains.php.composer.configData.ComposerConfigManager
 import com.jetbrains.php.config.interpreters.PhpInterpreter
@@ -150,7 +150,7 @@ class PestParallelProgramRunnerTest : PestLightCodeFixture() {
     }
 
     private fun createMultiComposerConfigurations(): MultiComposerPaths {
-        val root = LocalFileSystem.getInstance().refreshAndFindFileByPath("$testDataPath/multiComposer")!!
+        val root = StandardFileSystems.local().refreshAndFindFileByPath("$testDataPath/multiComposer")!!
         val interpreter = PhpInterpretersManagerImpl.getInstance(project).interpreters.single()
         val settingsManager = PhpTestFrameworkSettingsManager.getInstance(project)
         val rootExecutable = root.findFileByRelativePath("vendor/bin/pest")!!
