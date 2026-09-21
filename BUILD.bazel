@@ -6,6 +6,11 @@ load("@rules_jvm//:jvm.bzl", "jvm_library")
 ### auto-generated section `dev intellij.pest` start
 dev_dist_plugin(
     content_modules = ["intellij.pest.coverage"],
+    descriptor = "src/main/resources/META-INF/plugin.xml",
+    descriptor_modules = ["intellij.pest.coverage"],
+    jars = {
+        "lib/pest.jar": ["intellij.pest"],
+    },
     main_module = "intellij.pest",
 )
 ### auto-generated section `dev intellij.pest` end
