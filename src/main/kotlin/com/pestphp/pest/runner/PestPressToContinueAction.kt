@@ -6,7 +6,7 @@ import com.intellij.execution.ui.ConsoleViewContentType
 import com.intellij.execution.ui.RunContentDescriptor
 import com.intellij.openapi.actionSystem.ActionUpdateThread
 import com.intellij.openapi.actionSystem.AnActionEvent
-import com.intellij.openapi.actionSystem.LangDataKeys
+import com.intellij.openapi.actionSystem.ExecutionDataKeys
 import com.intellij.openapi.diagnostic.Logger
 import com.intellij.openapi.project.DumbAwareAction
 import com.intellij.openapi.util.TextRange
@@ -22,7 +22,7 @@ class PestPressToContinueAction : DumbAwareAction() {
     }
 
     override fun update(e: AnActionEvent) {
-        val descriptor = e.getData(LangDataKeys.RUN_CONTENT_DESCRIPTOR)
+        val descriptor = e.getData(ExecutionDataKeys.RUN_CONTENT_DESCRIPTOR)
         val processHandler = descriptor?.processHandler
         e.presentation.setText(PestBundle.messagePointer("action.press.to.continue.text"))
         e.presentation.isVisible = descriptor?.runConfigurationTypeId == PestRunConfigurationType.instance.id
@@ -33,7 +33,7 @@ class PestPressToContinueAction : DumbAwareAction() {
     }
 
     override fun actionPerformed(e: AnActionEvent) {
-        val descriptor = e.getData(LangDataKeys.RUN_CONTENT_DESCRIPTOR) ?: return
+        val descriptor = e.getData(ExecutionDataKeys.RUN_CONTENT_DESCRIPTOR) ?: return
         val processHandler = descriptor.processHandler ?: return
         val processInput = processHandler.processInput ?: return
         processInput.let { stream ->

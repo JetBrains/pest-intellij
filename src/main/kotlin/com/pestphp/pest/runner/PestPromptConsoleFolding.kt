@@ -3,7 +3,7 @@ package com.pestphp.pest.runner
 import com.intellij.execution.ConsoleFolding
 import com.intellij.execution.ui.ConsoleView
 import com.intellij.ide.DataManager
-import com.intellij.openapi.actionSystem.LangDataKeys
+import com.intellij.openapi.actionSystem.ExecutionDataKeys
 import com.intellij.openapi.project.Project
 import com.pestphp.pest.configuration.PestRunConfigurationType
 
@@ -11,7 +11,7 @@ class PestPromptConsoleFolding : ConsoleFolding() {
 
     override fun isEnabledForConsole(consoleView: ConsoleView): Boolean {
         val context = DataManager.getInstance().getDataContext(consoleView.component)
-        val descriptor = context.getData(LangDataKeys.RUN_CONTENT_DESCRIPTOR) ?: return false
+        val descriptor = context.getData(ExecutionDataKeys.RUN_CONTENT_DESCRIPTOR) ?: return false
         return descriptor.runConfigurationTypeId == PestRunConfigurationType.instance.id
     }
 

@@ -11,7 +11,7 @@ import com.intellij.execution.ui.ConsoleViewContentType
 import com.intellij.execution.ui.RunContentDescriptor
 import com.intellij.openapi.actionSystem.AnActionEvent
 import com.intellij.openapi.actionSystem.DataContext
-import com.intellij.openapi.actionSystem.LangDataKeys
+import com.intellij.openapi.actionSystem.ExecutionDataKeys
 import com.intellij.openapi.util.Disposer
 import com.intellij.testFramework.TestActionEvent.createTestEvent
 import com.intellij.util.ui.UIUtil
@@ -63,7 +63,7 @@ class PestPressToContinueActionTest : PestLightCodeFixture() {
 
         val action = PestPressToContinueAction()
         val dataContext = DataContext { dataId ->
-            if (LangDataKeys.RUN_CONTENT_DESCRIPTOR.name == dataId) descriptor else null
+            if (ExecutionDataKeys.RUN_CONTENT_DESCRIPTOR.name == dataId) descriptor else null
         }
         val event = createTestEvent(action, dataContext)
         action.update(event)
