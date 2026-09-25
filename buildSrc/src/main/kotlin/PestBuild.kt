@@ -19,9 +19,9 @@ fun IntelliJPlatformDependenciesExtension.platform(project: Project) {
     testFramework(TestFrameworkType.Platform)
 
     bundledPlugin("com.jetbrains.php")
-    bundledPlugin("intellij.structureView.plugin")
-    bundledPlugin("intellij.testRunner.plugin")
-    bundledPlugin("intellij.structuralSearch.plugin")
+    bundledPlugin("com.intellij.structureView")
+    bundledPlugin("com.intellij.platform.testRunner")
+    bundledPlugin("com.intellij.structuralSearch")
     bundledModule("intellij.platform.coverage")
     bundledModule("intellij.xml.psi.impl")
 }
