@@ -12,6 +12,9 @@ dev_dist_plugin(
         "lib/pest.jar": ["intellij.pest"],
     },
     main_module = "intellij.pest",
+    mode_refused_content_modules = {
+        "frontend": ["intellij.pest.coverage"],
+    },
 )
 ### auto-generated section `dev intellij.pest` end
 
