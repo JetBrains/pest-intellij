@@ -1,6 +1,6 @@
 package com.pestphp.pest
 
-import com.intellij.codeInsight.daemon.impl.DaemonCodeAnalyzerImpl
+import com.intellij.codeInsight.daemon.impl.LineMarkersPass.getDisplayedLineMarkers
 import com.intellij.execution.actions.ConfigurationContext
 import com.intellij.psi.util.PsiTreeUtil
 import com.intellij.testFramework.TestDataPath
@@ -36,7 +36,7 @@ class PestTestRunLineMarkerProviderTest : PestLightCodeFixture() {
         myFixture.doHighlighting()
         val editor = myFixture.editor
 
-        val markerList = DaemonCodeAnalyzerImpl.getLineMarkers(editor.document, project)
+        val markerList = getDisplayedLineMarkers(editor.document, project)
         val actualMarkerLines = markerList.map { marker -> editor.offsetToLogicalPosition(marker.startOffset).line }
         assertSameElements(actualMarkerLines, expectedMarkerLines.toList())
     }
