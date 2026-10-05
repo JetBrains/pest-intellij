@@ -2,7 +2,6 @@ package com.pestphp.pest.features.datasets
 
 import com.intellij.psi.PsiElement
 import com.intellij.psi.PsiFile
-import com.intellij.psi.search.ProjectScope
 import com.intellij.util.indexing.FileBasedIndex
 import com.jetbrains.php.lang.psi.elements.MethodReference
 import com.jetbrains.php.lang.psi.elements.StringLiteralExpression
@@ -10,14 +9,9 @@ import com.jetbrains.php.lang.psi.elements.impl.FunctionReferenceImpl
 import com.pestphp.pest.collectFromDescribeBlocks
 import com.pestphp.pest.getRootPhpPsiElements
 import com.pestphp.pest.isPestTestReference
-import com.pestphp.pest.realPath
 
 fun PsiFile.isIndexedPestDatasetFile(): Boolean {
-    return FileBasedIndex.getInstance().getValues(
-      key,
-      this.realPath,
-      ProjectScope.getProjectScope(this.project)
-    ).isNotEmpty()
+    return FileBasedIndex.getInstance().getFileData(key, this.viewProvider.virtualFile, this.project).isNotEmpty()
 }
 
 fun PsiElement?.isPestDataset(): Boolean {

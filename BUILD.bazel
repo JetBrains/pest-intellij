@@ -215,6 +215,8 @@ jvm_library(
         "@community//platform/util:util_test_lib",
         "@community//platform/indexing-api:indexing",
         "@community//platform/indexing-api:indexing_test_lib",
+        "@community//platform/indexing-impl",
+        "@community//platform/indexing-impl:indexing-impl_test_lib",
         "//phpstorm/php-backend",
         "//phpstorm/php-backend:php-backend_test_lib",
         "@community//platform/analysis-impl",

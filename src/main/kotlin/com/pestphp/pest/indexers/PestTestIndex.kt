@@ -56,7 +56,7 @@ class PestTestIndex : FileBasedIndexExtension<String, Set<String>>() {
     override fun getInputFilter(): FileBasedIndex.InputFilter {
       return object : DefaultFileTypeSpecificInputFilter(PhpFileType.INSTANCE) {
         override fun acceptInput(file: VirtualFile): Boolean {
-          return super.acceptInput(file) && file.path.lowercase().contains("test")
+          return super.acceptInput(file) && file.isPestTestFileCandidate()
         }
       }
     }
@@ -68,4 +68,8 @@ class PestTestIndex : FileBasedIndexExtension<String, Set<String>>() {
     override fun getValueExternalizer(): DataExternalizer<Set<String>> {
         return StringSetDataExternalizer.INSTANCE
     }
+}
+
+internal fun VirtualFile.isPestTestFileCandidate(): Boolean {
+    return this.path.lowercase().contains("test")
 }

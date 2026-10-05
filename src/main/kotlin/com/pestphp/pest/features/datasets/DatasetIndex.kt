@@ -63,7 +63,7 @@ class DatasetIndex : FileBasedIndexExtension<String, List<String>>() {
     override fun getInputFilter(): FileBasedIndex.InputFilter {
       return object : DefaultFileTypeSpecificInputFilter(PhpFileType.INSTANCE) {
         override fun acceptInput(file: VirtualFile): Boolean {
-          return super.acceptInput(file) && file.parent.path.endsWith("/Datasets")
+          return super.acceptInput(file) && file.isPestDatasetFileCandidate()
         }
       }
     }
@@ -71,4 +71,8 @@ class DatasetIndex : FileBasedIndexExtension<String, List<String>>() {
     override fun dependsOnFileContent(): Boolean {
         return true
     }
+}
+
+internal fun VirtualFile.isPestDatasetFileCandidate(): Boolean {
+    return this.parent?.path?.endsWith("/Datasets") == true
 }

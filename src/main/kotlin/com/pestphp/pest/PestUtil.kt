@@ -6,7 +6,6 @@ import com.intellij.openapi.util.Key
 import com.intellij.openapi.util.text.StringUtil
 import com.intellij.openapi.vfs.VirtualFile
 import com.intellij.psi.PsiFile
-import com.intellij.psi.search.ProjectScope
 import com.intellij.psi.util.CachedValue
 import com.intellij.psi.util.CachedValueProvider
 import com.intellij.psi.util.CachedValuesManager
@@ -33,11 +32,8 @@ fun PsiFile.isPestTestFile(isSmart: Boolean = false): Boolean {
 }
 
 fun PsiFile.isIndexedPestTestFile(): Boolean {
-    return FileBasedIndex.getInstance().getValues(
-        key,
-        this.realPath,
-        ProjectScope.getProjectScope(this.project)
-    ).isNotEmpty() && this.isPestTestFile(isSmart = true)
+    return FileBasedIndex.getInstance().getFileData(key, this.viewProvider.virtualFile, this.project).isNotEmpty() &&
+        this.isPestTestFile(isSmart = true)
 }
 
 fun PsiFile.isPestConfigurationFile(): Boolean {

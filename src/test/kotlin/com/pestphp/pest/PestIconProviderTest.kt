@@ -19,6 +19,17 @@ class PestIconProviderTest : PestLightCodeFixture() {
         )
     }
 
+    fun testCanGetOtherIconForFileRedefiningPestFunction() {
+        val virtualFile = myFixture.copyFileToProject(
+            "PestTestRunLineMarkerProviderTest/PestItFunctionCallWithRedefinition.php",
+            "tests/RedefinitionTest.php"
+        )
+
+        assertNull(
+            PestIconProvider().getIcon(virtualFile, ICON_FLAG_VISIBILITY, project)
+        )
+    }
+
     fun testCanGetOtherIconForNonPestFile() {
         val file = myFixture.configureByFile("SimpleScript.php")
 
