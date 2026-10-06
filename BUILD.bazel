@@ -252,6 +252,8 @@ jvm_library(
         "@community//platform/lang-api:lang_test_lib",
         "@community//platform/lang-impl",
         "@community//platform/lang-impl:lang-impl_test_lib",
+        "@community//platform/lang-impl/backend",
+        "@community//platform/lang-impl/backend:backend_test_lib",
         "@community//xml/xml-psi-impl:psi-impl",
         "@community//xml/xml-psi-impl:psi-impl_test_lib",
         "@community//plugins/coverage-common:coverage",
