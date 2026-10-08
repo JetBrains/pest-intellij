@@ -50,6 +50,12 @@
     <orderEntry type="module" module-name="intellij.platform.testRunner" scope="TEST" />
     <orderEntry type="module" module-name="intellij.platform.testIntegration" scope="TEST" />
     <orderEntry type="module" module-name="intellij.pest" scope="TEST" />
+    <orderEntry type="module" module-name="intellij.php.impl" scope="RUNTIME" />
+    <orderEntry type="module" module-name="intellij.php.resources" scope="RUNTIME" />
+    <orderEntry type="module" module-name="intellij.platform.structureView.plugin" scope="RUNTIME" />
+    <orderEntry type="module" module-name="intellij.platform.testRunner.plugin" scope="RUNTIME" />
+    <orderEntry type="module" module-name="intellij.platform.vcs.plugin" scope="RUNTIME" />
+    <orderEntry type="module" module-name="intellij.xml.plugin" scope="RUNTIME" />
     <orderEntry type="module" module-name="intellij.libraries.junit4" scope="TEST" />
   </component>
   <component name="TestModuleProperties" production-module="intellij.pest" />
