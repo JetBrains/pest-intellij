@@ -151,6 +151,15 @@ jvm_library(
     ),
     module_name = "intellij.pest.tests",
     visibility = ["//visibility:public"],
+    runtime_deps = [
+        # do not sort,
+        "//phpstorm/php:php-impl",
+        "//phpstorm:php-resources",
+        "@community//platform/structure-view-impl/plugin",
+        "@community//platform/testRunner/plugin",
+        "@community//platform/vcs/plugin",
+        "@community//xml/plugin",
+    ],
 )
 
 jvm_library(
@@ -180,6 +189,12 @@ jvm_library(
         "@community//platform/platform-impl:ide-impl_test_lib",
         "@community//platform/platform-util-io:ide-util-io_test_lib",
         "@community//platform/ide-core:ide-core_test_lib",
+        "//phpstorm/php:php-impl_test_lib",
+        "//phpstorm:php-resources_test_lib",
+        "@community//platform/structure-view-impl/plugin:plugin_test_lib",
+        "@community//platform/testRunner/plugin:plugin_test_lib",
+        "@community//platform/vcs/plugin:plugin_test_lib",
+        "@community//xml/plugin:plugin_test_lib",
     ],
     deps = [
         # do not sort,
