@@ -14,12 +14,17 @@ import com.jetbrains.php.lang.PhpFileType
 import com.jetbrains.php.lang.psi.PhpFile
 import com.jetbrains.php.lang.psi.elements.MethodReference
 import com.jetbrains.php.lang.psi.elements.impl.MethodReferenceImpl
+import com.jetbrains.php.lang.psi.stubs.indexes.AsciiSubstringSetMatcher
 import com.jetbrains.php.lang.psi.stubs.indexes.PhpDepthLimitedRecursiveElementVisitor
 import com.jetbrains.php.lang.psi.stubs.indexes.PhpInvokeCallsOffsetsIndex.IntArrayExternalizer
 import it.unimi.dsi.fastutil.ints.IntArrayList
 import it.unimi.dsi.fastutil.ints.IntList
+import org.jetbrains.annotations.VisibleForTesting
 
 val KEY = ID.create<String, IntList>("php.pest.custom_expectations")
+
+private val EXPECT_GATE = AsciiSubstringSetMatcher.createForWords(listOf("expect"))
+private val EXTEND_GATE = AsciiSubstringSetMatcher.createForWords(listOf("extend"))
 
 class CustomExpectationIndex : FileBasedIndexExtension<String, IntList>() {
 
@@ -33,23 +38,8 @@ class CustomExpectationIndex : FileBasedIndexExtension<String, IntList>() {
 
     override fun getIndexer(): DataIndexer<String, IntList, FileContent> {
         return DataIndexer { inputData ->
-            val file = inputData.psiFile
-            val map: MutableMap<String, IntList> = mutableMapOf()
-            if (file is PhpFile) {
-                file.accept(object : PhpDepthLimitedRecursiveElementVisitor() {
-                    override fun visitPhpMethodReference(reference: MethodReference) {
-                        if (reference is MethodReferenceImpl && reference.isPestExtendReference()) {
-                            reference.extendName?.let {
-                                if (it !in map) {
-                                    map[it] = IntArrayList()
-                                }
-                                map[it]!!.add(reference.parameters[0].textOffset + 1)
-                            }
-                        }
-                    }
-                })
-            }
-            return@DataIndexer map
+            val text = inputData.contentAsText
+            if (EXPECT_GATE.containsAny(text) && EXTEND_GATE.containsAny(text)) collectCustomExpectations(inputData) else emptyMap()
         }
     }
 
@@ -77,4 +67,25 @@ class CustomExpectationIndex : FileBasedIndexExtension<String, IntList>() {
         val path = file.path
         return path.contains("vendor") && path.contains("pestphp") && path.contains("stubs")
     }
+}
+
+@VisibleForTesting
+fun collectCustomExpectations(inputData: FileContent): Map<String, IntList> {
+    val file = inputData.psiFile
+    val map: MutableMap<String, IntList> = mutableMapOf()
+    if (file is PhpFile) {
+        file.accept(object : PhpDepthLimitedRecursiveElementVisitor() {
+            override fun visitPhpMethodReference(reference: MethodReference) {
+                if (reference is MethodReferenceImpl && reference.isPestExtendReference()) {
+                    reference.extendName?.let {
+                        if (it !in map) {
+                            map[it] = IntArrayList()
+                        }
+                        map[it]!!.add(reference.parameters[0].textOffset + 1)
+                    }
+                }
+            }
+        })
+    }
+    return map
 }
