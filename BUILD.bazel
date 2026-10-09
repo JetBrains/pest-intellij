@@ -151,6 +151,7 @@ jvm_library(
         "@community//platform/util",
         "@community//platform/indexing-api:indexing",
         "@community//platform/indexing-impl",
+        "@community//libraries/fastutil",
         "//phpstorm/php-backend",
         "@community//platform/analysis-impl",
         "@community//platform/editor-ui-api:editor-ui",
