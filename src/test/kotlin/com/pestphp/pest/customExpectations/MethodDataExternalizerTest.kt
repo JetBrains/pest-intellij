@@ -1,16 +1,34 @@
 package com.pestphp.pest.customExpectations
 
+import com.intellij.platform.testFramework.junit5.codeInsight.fixture.codeInsightModuleFixture
+import com.intellij.testFramework.junit5.TestApplication
+import com.intellij.testFramework.junit5.fixture.projectFixture
 import com.intellij.util.io.DataOutputStream
 import com.jetbrains.php.lang.psi.resolve.types.PhpType
-import com.pestphp.pest.PestLightCodeFixture
+import com.pestphp.pest.PestTestUtil
 import com.pestphp.pest.features.customExpectations.externalizers.MethodDataExternalizer
 import com.pestphp.pest.features.customExpectations.generators.Method
 import com.pestphp.pest.features.customExpectations.generators.Parameter
+import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.Test
 import java.io.ByteArrayInputStream
 import java.io.ByteArrayOutputStream
 import java.io.DataInputStream
 
-class MethodDataExternalizerTest : PestLightCodeFixture() {
+@TestApplication
+class MethodDataExternalizerTest {
+    companion object {
+        private val projectFixture = projectFixture(openAfterCreation = true)
+    }
+
+    private val myFixture by codeInsightModuleFixture(projectFixture)
+
+    @BeforeEach
+    fun setUp() {
+        PestTestUtil.setUp(myFixture, PestTestUtil.getTestDataPath())
+    }
+
     private fun saveAndRead(method: Method): Method {
         val dataOutput = ByteArrayOutputStream()
 
@@ -27,6 +45,7 @@ class MethodDataExternalizerTest : PestLightCodeFixture() {
         return externalizer.read(dataInput)
     }
 
+    @Test
     fun testCanExternalizeMethod() {
         val method = Method(
             "works",
@@ -42,6 +61,7 @@ class MethodDataExternalizerTest : PestLightCodeFixture() {
         )
     }
 
+    @Test
     fun testCanExternalizeMethodWithMultipleTypes() {
         val method = Method(
             "works",
@@ -57,6 +77,7 @@ class MethodDataExternalizerTest : PestLightCodeFixture() {
         )
     }
 
+    @Test
     fun testCanExternalizeMethodWithParameter() {
         val method = Method(
             "getName",
@@ -77,6 +98,7 @@ class MethodDataExternalizerTest : PestLightCodeFixture() {
         )
     }
 
+    @Test
     fun testCanExternalizeMethodWithParameterWithDefaultValue() {
         val method = Method(
             "getName",
@@ -98,6 +120,7 @@ class MethodDataExternalizerTest : PestLightCodeFixture() {
         )
     }
 
+    @Test
     fun testCanExternalizeMethodWithMultipleParameters() {
         val method = Method(
             "someMethod",

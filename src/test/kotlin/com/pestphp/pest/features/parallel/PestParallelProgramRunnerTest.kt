@@ -2,10 +2,18 @@ package com.pestphp.pest.features.parallel
 
 import com.intellij.execution.ExecutionException
 import com.intellij.execution.PsiLocation
+import com.intellij.execution.RunManager
 import com.intellij.execution.actions.ConfigurationContext
-import com.intellij.psi.PsiElement
-import com.intellij.testFramework.TestDataPath
+import com.intellij.openapi.application.EDT
+import com.intellij.openapi.application.runReadActionBlocking
 import com.intellij.openapi.vfs.StandardFileSystems
+import com.intellij.platform.testFramework.junit5.codeInsight.fixture.codeInsightModuleFixture
+import com.intellij.psi.PsiElement
+import com.intellij.testFramework.PlatformTestUtil
+import com.intellij.testFramework.TestDataPath
+import com.intellij.testFramework.common.timeoutRunBlocking
+import com.intellij.testFramework.junit5.TestApplication
+import com.intellij.testFramework.junit5.fixture.projectFixture
 import com.jetbrains.php.composer.ComposerDataService
 import com.jetbrains.php.composer.configData.ComposerConfigManager
 import com.jetbrains.php.config.interpreters.PhpInterpreter
@@ -13,19 +21,41 @@ import com.jetbrains.php.config.interpreters.PhpInterpretersManagerImpl
 import com.jetbrains.php.testFramework.PhpTestFrameworkConfiguration
 import com.jetbrains.php.testFramework.PhpTestFrameworkSettingsManager
 import com.pestphp.pest.PestFrameworkType
-import com.pestphp.pest.PestLightCodeFixture
+import com.pestphp.pest.PestTestUtil
 import com.pestphp.pest.configuration.PestRunConfiguration
 import com.pestphp.pest.configuration.PestRunConfigurationProducer
+import com.pestphp.pest.configuration.PestRunConfigurationType
 import com.pestphp.pest.configuration.PestVersionDetector
+import io.mockk.clearAllMocks
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.mockkObject
+import io.mockk.unmockkAll
 import io.mockk.unmockkObject
 import io.mockk.verify
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
+import org.junit.jupiter.api.AfterEach
+import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Assertions.assertFalse
+import org.junit.jupiter.api.Assertions.assertTrue
+import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.TestInfo
 
-@TestDataPath("\$CONTENT_ROOT/../resources/com/pestphp/pest/features/parallel")
-class PestParallelProgramRunnerTest : PestLightCodeFixture() {
+@TestApplication
+@TestDataPath($$"$PROJECT_ROOT/phpstorm/pest/src/test/resources/com/pestphp/pest/features/parallel")
+class PestParallelProgramRunnerTest {
+    companion object {
+        private val projectFixture = projectFixture(openAfterCreation = true)
+    }
+
+    private val myFixture by codeInsightModuleFixture(projectFixture)
+
+    private val project get() = myFixture.project
+
     private lateinit var configurationsBackup: List<PhpTestFrameworkConfiguration>
+    private lateinit var testMethodName: String
     private lateinit var mockDetector: PestVersionDetector
 
     private data class MultiComposerPaths(
@@ -34,46 +64,50 @@ class PestParallelProgramRunnerTest : PestLightCodeFixture() {
         val subprojectTestFilePath: String,
     )
 
-    override fun getBasePath(): String = "${super.getBasePath()}/features/parallel"
-
-    fun testCannotRunWrongExecutorId() = doTest {
+    @Test
+    fun testCannotRunWrongExecutorId(): Unit = doTest {
         val configuration = createConfiguration(myFixture.file)
         assertFalse(PestParallelProgramRunner().canRun(PestParallelTestExecutor.EXECUTOR_ID + "1", configuration))
     }
 
-    fun testCanRunFile() = doTest {
+    @Test
+    fun testCanRunFile(): Unit = doTest {
         val configuration = createConfiguration(myFixture.file)
         assertTrue(PestParallelProgramRunner().canRun(PestParallelTestExecutor.EXECUTOR_ID, configuration))
     }
 
-    fun testCanRunFunction() = doTest {
-        val testElement = myFixture.file?.firstChild?.lastChild?.firstChild ?: return@doTest
+    @Test
+    fun testCanRunFunction(): Unit = doTest {
+        val testElement = runReadActionBlocking { myFixture.file?.firstChild?.lastChild?.firstChild } ?: return@doTest
         val configuration = createConfiguration(testElement)
         assertTrue(PestParallelProgramRunner().canRun(PestParallelTestExecutor.EXECUTOR_ID, configuration))
     }
 
-    fun testCanRunDirectory() = doTest {
-        val testElement = myFixture.file?.containingDirectory ?: return@doTest
+    @Test
+    fun testCanRunDirectory(): Unit = doTest {
+        val testElement = runReadActionBlocking { myFixture.file?.containingDirectory } ?: return@doTest
         val configuration = createConfiguration(testElement)
         assertTrue(PestParallelProgramRunner().canRun(PestParallelTestExecutor.EXECUTOR_ID, configuration))
     }
 
-    fun testBuildFile() = doTest {
+    @Test
+    fun testBuildFile(): Unit = doTest {
         val configuration = createConfiguration(myFixture.file)
 
         val pestParallelCommandSettings = createPestParallelCommand(configuration)
 
-        val expected = "randomPath --teamcity --parallel --log-teamcity php://stdout /src/ATest.php"
+        val expected = "randomPath --teamcity --parallel --log-teamcity php://stdout ${configuredFilePath()}"
         assertEquals(expected, pestParallelCommandSettings.createGeneralCommandLine().parametersList.list.joinToString(" "))
     }
 
-    fun testBuildFunction() = doTest {
-        val testElement = myFixture.file?.firstChild?.lastChild?.firstChild ?: return@doTest
+    @Test
+    fun testBuildFunction(): Unit = doTest {
+        val testElement = runReadActionBlocking { myFixture.file?.firstChild?.lastChild?.firstChild } ?: return@doTest
         val configuration = createConfiguration(testElement)
 
         val pestParallelCommandSettings = createPestParallelCommand(configuration)
 
-        val expected = "randomPath --teamcity --parallel --log-teamcity php://stdout /src/ATest.php"
+        val expected = "randomPath --teamcity --parallel --log-teamcity php://stdout ${configuredFilePath()}"
         assertEquals(
             expected,
             pestParallelCommandSettings.createGeneralCommandLine().parametersList.list
@@ -82,32 +116,36 @@ class PestParallelProgramRunnerTest : PestLightCodeFixture() {
         )
     }
 
-    fun testBuildDirectory() = doTest {
-        val testElement = myFixture.file?.containingDirectory ?: return@doTest
+    @Test
+    fun testBuildDirectory(): Unit = doTest {
+        val testElement = runReadActionBlocking { myFixture.file?.containingDirectory } ?: return@doTest
         val configuration = createConfiguration(testElement)
         val pestParallelCommandSettings = createPestParallelCommand(configuration)
 
-        val expected = "randomPath --teamcity --parallel --log-teamcity php://stdout /src"
+        val expected = "randomPath --teamcity --parallel --log-teamcity php://stdout ${configuredFilePath().substringBeforeLast('/')}"
         assertEquals(expected, pestParallelCommandSettings.createGeneralCommandLine().parametersList.list.joinToString(" "))
     }
 
-    fun testBuildWithParaTestModeWhenVersionAtLeast4_6_0() = doTest {
+    @Test
+    fun testBuildWithParaTestModeWhenVersionAtLeast4_6_0(): Unit = doTest {
         every { mockDetector.getVersion(any(), any(), any()) } returns "4.6.0"
         val configuration = createConfiguration(myFixture.file)
 
-        val expected = "randomPath --teamcity --parallel /src/ATest.php"
+        val expected = "randomPath --teamcity --parallel ${configuredFilePath()}"
         assertEquals(expected, createPestParallelCommand(configuration).createGeneralCommandLine().parametersList.list.joinToString(" "))
     }
 
-    fun testBuildWithLegacyModeWhenVersionBelow4_6_0() = doTest {
+    @Test
+    fun testBuildWithLegacyModeWhenVersionBelow4_6_0(): Unit = doTest {
         every { mockDetector.getVersion(any(), any(), any()) } returns "4.5.0"
         val configuration = createConfiguration(myFixture.file)
 
-        val expected = "randomPath --teamcity --parallel --log-teamcity php://stdout /src/ATest.php"
+        val expected = "randomPath --teamcity --parallel --log-teamcity php://stdout ${configuredFilePath()}"
         assertEquals(expected, createPestParallelCommand(configuration).createGeneralCommandLine().parametersList.list.joinToString(" "))
     }
 
-    fun testBuildWithParaTestModeUsesConfigurationFromBaseFileComposer() = doTest {
+    @Test
+    fun testBuildWithParaTestModeUsesConfigurationFromBaseFileComposer(): Unit = doTest {
         withMultiComposerConfigurations { paths ->
             every { mockDetector.getVersion(project, any(), paths.rootExecutablePath) } returns "4.5.0"
             every { mockDetector.getVersion(project, any(), paths.subprojectExecutablePath) } returns "4.6.0"
@@ -125,11 +163,13 @@ class PestParallelProgramRunnerTest : PestLightCodeFixture() {
 
     private fun createConfiguration(psiElement: PsiElement, withDefaultFrameworkConfiguration: Boolean = true): PestRunConfiguration {
         if (withDefaultFrameworkConfiguration) {
-            createPestFrameworkConfiguration()
+            PestTestUtil.createPestFrameworkConfiguration(project)
         }
-        val context = ConfigurationContext.createEmptyContextForLocation(PsiLocation.fromPsiElement(psiElement))
-        val runConfiguration = PestRunConfigurationProducer().createConfigurationFromContext(context)?.configuration as? PestRunConfiguration
-        runConfiguration!!.settings.commandLineSettings.interpreterSettings.interpreterName = getTestName(false)
+        val runConfiguration = runReadActionBlocking {
+            val context = ConfigurationContext.createEmptyContextForLocation(PsiLocation.fromPsiElement(psiElement))
+            PestRunConfigurationProducer().createConfigurationFromContext(context)?.configuration as? PestRunConfiguration
+        }
+        runConfiguration!!.settings.commandLineSettings.interpreterSettings.interpreterName = PlatformTestUtil.getTestName(testMethodName, false)
         return runConfiguration
     }
 
@@ -144,13 +184,15 @@ class PestParallelProgramRunnerTest : PestLightCodeFixture() {
             block(createMultiComposerConfigurations())
         }
         finally {
-            composerDataService.setConfigPathAndLibraryUpdateStatus(oldConfigPath, oldUpdateLibrary)
-            composerConfigManager.setSubProjectConfigs(oldSubProjectConfigs)
+            onEdt {
+                composerDataService.setConfigPathAndLibraryUpdateStatus(oldConfigPath, oldUpdateLibrary)
+                composerConfigManager.setSubProjectConfigs(oldSubProjectConfigs)
+            }
         }
     }
 
     private fun createMultiComposerConfigurations(): MultiComposerPaths {
-        val root = StandardFileSystems.local().refreshAndFindFileByPath("$testDataPath/multiComposer")!!
+        val root = StandardFileSystems.local().refreshAndFindFileByPath("${myFixture.testDataPath}/multiComposer")!!
         val interpreter = PhpInterpretersManagerImpl.getInstance(project).interpreters.single()
         val settingsManager = PhpTestFrameworkSettingsManager.getInstance(project)
         val rootExecutable = root.findFileByRelativePath("vendor/bin/pest")!!
@@ -159,8 +201,10 @@ class PestParallelProgramRunnerTest : PestLightCodeFixture() {
         val rootComposer = root.findFileByRelativePath("composer.json")!!
         val subprojectComposer = root.findFileByRelativePath("subproject/composer.json")!!
 
-        ComposerDataService.getInstance(project).setConfigPathAndLibraryUpdateStatus(rootComposer.path, true)
-        ComposerConfigManager.getInstance(project).addConfig(subprojectComposer)
+        onEdt {
+            ComposerDataService.getInstance(project).setConfigPathAndLibraryUpdateStatus(rootComposer.path, true)
+            ComposerConfigManager.getInstance(project).addConfig(subprojectComposer)
+        }
 
         val rootConfiguration = settingsManager
             .getOrCreateByInterpreter(PestFrameworkType.instance, interpreter, rootComposer, false)
@@ -177,37 +221,46 @@ class PestParallelProgramRunnerTest : PestLightCodeFixture() {
         return MultiComposerPaths(rootExecutable.path, subprojectExecutable.path, subprojectTestFile.path)
     }
 
+    private fun onEdt(block: () -> Unit): Unit = timeoutRunBlocking {
+        withContext(Dispatchers.EDT) {
+            block()
+        }
+    }
+
+    private fun configuredFilePath(): String = runReadActionBlocking { myFixture.file.virtualFile.path }
+
     private fun doTest(block: () -> Unit) {
         myFixture.configureByFile("ATest.php")
         block()
     }
 
-    override fun setUp() {
-        super.setUp()
+    @BeforeEach
+    fun setUp(testInfo: TestInfo) {
+        PestTestUtil.setUp(myFixture, "${PestTestUtil.getTestDataPath()}/features/parallel")
+        testMethodName = testInfo.testMethod.get().name
         val interpreter = PhpInterpreter().apply {
-            name = getTestName(false)
-            homePath = "$testDataPath/php"
+            name = PlatformTestUtil.getTestName(testMethodName, false)
+            homePath = "${myFixture.testDataPath}/php"
         }
         PhpInterpretersManagerImpl.getInstance(project).addInterpreter(interpreter)
         configurationsBackup = PhpTestFrameworkSettingsManager.getInstance(project).getConfigurations(PestFrameworkType.instance)
         PhpTestFrameworkSettingsManager.getInstance(project)
             .getOrCreateByInterpreter(PestFrameworkType.instance, interpreter, null, false)
             ?.executablePath = "randomPath"
+        // Each run configuration clones the template. Create the template before the mocks, so that it keeps the real version detector.
+        RunManager.getInstance(project).getConfigurationTemplate(PestRunConfigurationType.instance)
         mockDetector = mockk()
         mockkObject(PestVersionDetector.Companion)
         every { PestVersionDetector.instance } returns mockDetector
         every { mockDetector.getVersion(any(), any(), any()) } throws ExecutionException("not available in tests")
     }
 
-    override fun tearDown() {
-        try {
-            PhpTestFrameworkSettingsManager.getInstance(project).setConfigurations(PestFrameworkType.instance, configurationsBackup)
-            PhpInterpretersManagerImpl.getInstance(project).interpreters = emptyList()
-            unmockkObject(PestVersionDetector.Companion)
-        } catch (e: Throwable) {
-            addSuppressedException(e)
-        } finally {
-            super.tearDown()
-        }
+    @AfterEach
+    fun tearDown() {
+        PhpTestFrameworkSettingsManager.getInstance(project).setConfigurations(PestFrameworkType.instance, configurationsBackup)
+        PhpInterpretersManagerImpl.getInstance(project).interpreters = emptyList()
+        unmockkObject(PestVersionDetector.Companion)
+        clearAllMocks()
+        unmockkAll()
     }
 }

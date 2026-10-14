@@ -1,26 +1,49 @@
 package com.pestphp.pest.runner
 
+import com.intellij.openapi.application.runReadActionBlocking
+import com.intellij.platform.testFramework.junit5.codeInsight.fixture.codeInsightModuleFixture
 import com.intellij.testFramework.TestDataPath
+import com.intellij.testFramework.junit5.TestApplication
+import com.intellij.testFramework.junit5.fixture.projectFixture
 import com.intellij.util.PathMappingSettings
 import com.jetbrains.php.util.pathmapper.PhpPathMapper
 import com.jetbrains.php.util.pathmapper.PhpRemotePathMapper
-import com.pestphp.pest.PestLightCodeFixture
+import com.pestphp.pest.PestTestUtil
 import com.pestphp.pest.configuration.PestLocationProvider
+import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Assertions.assertNull
+import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.TestInfo
 
-@TestDataPath("\$CONTENT_ROOT/../resources/com/pestphp/pest/runner/pestTestStacktraceParser")
-class PestTestStackTraceParserTest : PestLightCodeFixture() {
-    override fun getBasePath(): String = "${super.getBasePath()}/runner/pestTestStacktraceParser"
+@TestApplication
+@TestDataPath($$"$PROJECT_ROOT/phpstorm/pest/src/test/resources/com/pestphp/pest/runner/pestTestStacktraceParser")
+class PestTestStackTraceParserTest {
+    companion object {
+        private val projectFixture = projectFixture(openAfterCreation = true)
+    }
+
+    private val myFixture by codeInsightModuleFixture(projectFixture)
+
+    private lateinit var testMethodName: String
+
+    @BeforeEach
+    fun setUp(testInfo: TestInfo) {
+        PestTestUtil.setUp(myFixture, "${PestTestUtil.getTestDataPath()}/runner/pestTestStacktraceParser")
+        testMethodName = testInfo.testMethod.get().name
+    }
 
     private fun createStackTraceParser(url: String, stacktrace: String?, message: String?): PestTestStackTraceParser {
-        val locator = PestLocationProvider(PhpPathMapper.create(project), project, myFixture.testDataPath)
-        return parse(url, stacktrace, message, locator, project)
+        val locator = PestLocationProvider(PhpPathMapper.create(myFixture.project), myFixture.project, myFixture.testDataPath)
+        return runReadActionBlocking { parse(url, stacktrace, message, locator, myFixture.project) }
     }
 
     private fun createRemoteStackTraceParser(url: String, stacktrace: String?, message: String?): PestTestStackTraceParser {
-        val locator = PestLocationProvider(PhpRemotePathMapper.create(listOf(PathMappingSettings.PathMapping(getFileBeforeFullPath(), "/opt/project"))), project, myFixture.testDataPath)
-        return parse(url, stacktrace, message, locator, project)
+        val locator = PestLocationProvider(PhpRemotePathMapper.create(listOf(PathMappingSettings.PathMapping(getFileBeforeFullPath(), "/opt/project"))), myFixture.project, myFixture.testDataPath)
+        return runReadActionBlocking { parse(url, stacktrace, message, locator, myFixture.project) }
     }
 
+    @Test
     fun testNull() {
         val stackTraceParser = createStackTraceParser("pest_qn://path/to/test.php::myTest", null, null)
         assertNull(stackTraceParser.errorMessage)
@@ -29,6 +52,7 @@ class PestTestStackTraceParserTest : PestLightCodeFixture() {
         assertNull(stackTraceParser.failedMethodName)
     }
 
+    @Test
     fun testEmptyLine() {
         val stackTraceParser = createStackTraceParser("pest_qn://path/to/test.php::myTest", "", "error")
         assertEquals("error", stackTraceParser.errorMessage)
@@ -37,6 +61,7 @@ class PestTestStackTraceParserTest : PestLightCodeFixture() {
         assertNull(stackTraceParser.failedMethodName)
     }
 
+    @Test
     fun testWithoutTestMention() {
         val stackTraceParser =
             createStackTraceParser("pest_qn://path/to/test.php::myTest", "at /path/to/test2.php:14\nat /path/to/test3.php:11", "error")
@@ -46,8 +71,9 @@ class PestTestStackTraceParserTest : PestLightCodeFixture() {
         assertNull(stackTraceParser.failedMethodName)
     }
 
+    @Test
     fun testOneLine() {
-        configureByFile()
+        PestTestUtil.configureByFile(myFixture, testMethodName)
         val stackTraceParser =
             createStackTraceParser("pest_qn://" + getFileBeforeFullPath() + "::myTest", getFileBeforeFullPath() + ":4", "error")
         assertEquals("error", stackTraceParser.errorMessage)
@@ -56,8 +82,9 @@ class PestTestStackTraceParserTest : PestLightCodeFixture() {
         assertEquals("   expect(1)->toBe(2);", stackTraceParser.failedMethodName)
     }
 
+    @Test
     fun testMultiline() {
-        configureByFile()
+        PestTestUtil.configureByFile(myFixture, testMethodName)
         val stackTraceParser = createStackTraceParser(
             "pest_qn://" + getFileBeforeFullPath() + "::\\MyTest::test",
             getFileBeforeFullPath() + ":12\n " +
@@ -70,9 +97,9 @@ class PestTestStackTraceParserTest : PestLightCodeFixture() {
         assertEquals("    foo();", stackTraceParser.failedMethodName)
     }
 
-
+    @Test
     fun testWrongLineNumber() {
-        configureByFile()
+        PestTestUtil.configureByFile(myFixture, testMethodName)
         val stackTraceParser =
             createStackTraceParser("pest_qn://" + getFileBeforeFullPath() + "::myTest", getFileBeforeFullPath() + ":seven", "error")
         assertEquals("error", stackTraceParser.errorMessage)
@@ -81,8 +108,9 @@ class PestTestStackTraceParserTest : PestLightCodeFixture() {
         assertNull(stackTraceParser.failedMethodName)
     }
 
+    @Test
     fun testOutRangeLineNumber() {
-        configureByFile()
+        PestTestUtil.configureByFile(myFixture, testMethodName)
         val stackTraceParser =
             createStackTraceParser("pest_qn://" + getFileBeforeFullPath() + "::myTest", getFileBeforeFullPath() + ":10", "error")
         assertEquals("error", stackTraceParser.errorMessage)
@@ -91,8 +119,9 @@ class PestTestStackTraceParserTest : PestLightCodeFixture() {
         assertNull(stackTraceParser.failedMethodName)
     }
 
+    @Test
     fun testOneLineRemote() {
-        configureByFile()
+        PestTestUtil.configureByFile(myFixture, testMethodName)
         val stackTraceParser =
             createRemoteStackTraceParser("pest_qn://" + getFileBeforeFullPath() + "::myTest", getFileBeforeFullPath() + ":4", "error")
         assertEquals("error", stackTraceParser.errorMessage)
@@ -100,4 +129,6 @@ class PestTestStackTraceParserTest : PestLightCodeFixture() {
         assertNull(stackTraceParser.topLocationLine)
         assertEquals("   expect(1)->toBe(2);", stackTraceParser.failedMethodName)
     }
+
+    private fun getFileBeforeFullPath(): String = PestTestUtil.getFileBeforeFullPath(myFixture, testMethodName)
 }

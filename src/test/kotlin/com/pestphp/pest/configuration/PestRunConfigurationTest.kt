@@ -2,6 +2,11 @@ package com.pestphp.pest.configuration
 
 import com.intellij.execution.PsiLocation
 import com.intellij.execution.actions.ConfigurationContext
+import com.intellij.openapi.application.runReadActionBlocking
+import com.intellij.platform.testFramework.junit5.codeInsight.fixture.codeInsightModuleFixture
+import com.intellij.testFramework.PlatformTestUtil
+import com.intellij.testFramework.junit5.TestApplication
+import com.intellij.testFramework.junit5.fixture.projectFixture
 import com.jetbrains.php.config.commandLine.PhpCommandSettings
 import com.jetbrains.php.config.interpreters.PhpInterpreter
 import com.jetbrains.php.config.interpreters.PhpInterpretersManagerImpl
@@ -9,21 +14,38 @@ import com.jetbrains.php.phpunit.coverage.PhpUnitCoverageEngine
 import com.jetbrains.php.testFramework.PhpTestFrameworkConfiguration
 import com.jetbrains.php.testFramework.PhpTestFrameworkSettingsManager
 import com.pestphp.pest.PestFrameworkType
-import com.pestphp.pest.PestLightCodeFixture
+import com.pestphp.pest.PestTestUtil
+import org.junit.jupiter.api.AfterEach
+import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Assertions.assertInstanceOf
+import org.junit.jupiter.api.Assertions.assertNotNull
+import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.TestInfo
 
-class PestRunConfigurationTest : PestLightCodeFixture() {
+@TestApplication
+class PestRunConfigurationTest {
+    companion object {
+        private val projectFixture = projectFixture(openAfterCreation = true)
+    }
+
+    private val myFixture by codeInsightModuleFixture(projectFixture)
+
+    private val project get() = myFixture.project
+
     private lateinit var configurationsBackup: List<PhpTestFrameworkConfiguration>
+    private lateinit var testMethodName: String
 
-    override fun getBasePath(): String = "${super.getBasePath()}/configuration"
-
+    @Test
     fun testRunConfigurationRunnerSettingsIsPestRunnerSettings() {
         val configuration = createConfiguration()
 
         assertNotNull(configuration)
-        assertInstanceOf(configuration.settings, PestRunConfigurationSettings::class.java)
-        assertInstanceOf(configuration.settings.runnerSettings, PestRunnerSettings::class.java)
+        assertInstanceOf(PestRunConfigurationSettings::class.java, configuration.settings)
+        assertInstanceOf(PestRunnerSettings::class.java, configuration.settings.runnerSettings)
     }
 
+    @Test
     fun testRunConfigurationClone() {
         val configuration = createConfiguration()
         configuration.pestSettings.pestRunnerSettings.coverageEngine = PhpUnitCoverageEngine.CoverageEngine.PCOV
@@ -34,18 +56,20 @@ class PestRunConfigurationTest : PestLightCodeFixture() {
         assertEquals(true, clone.pestSettings.pestRunnerSettings.parallelTestingEnabled)
     }
 
+    @Test
     fun testRunConfigurationCommand() {
         val command = createCommand()
-        val expectedCommand = "randomPath --teamcity /src/FileWithPestTest.php"
+        val expectedCommand = "randomPath --teamcity ${configuredFilePath()}"
         assertEquals(expectedCommand, command.createGeneralCommandLine().parametersList.list.joinToString(" "))
     }
 
+    @Test
     fun testRunConfigurationCommandWithEnabledParallelTesting() {
         val configuration = createConfiguration()
         configuration.pestSettings.pestRunnerSettings.parallelTestingEnabled = true
         val command = configuration.createCommand(configuration.interpreter!!, mutableMapOf(), mutableListOf(), false)
 
-        val expectedCommand = "randomPath --teamcity /src/FileWithPestTest.php --parallel --log-teamcity php://stdout"
+        val expectedCommand = "randomPath --teamcity ${configuredFilePath()} --parallel --log-teamcity php://stdout"
         assertEquals(expectedCommand, command.createGeneralCommandLine().parametersList.list.joinToString(" "))
     }
 
@@ -55,6 +79,7 @@ class PestRunConfigurationTest : PestLightCodeFixture() {
         return configuration.createCommand(configuration.interpreter!!, mutableMapOf(), mutableListOf(), false)
     }
 
+    @Test
     fun testDescribeBlockActionNameIsCleanWhileFilterKeepsRawName() {
         val configuration = createConfiguration("FileWithDescribeBlock.php")
         val runner = configuration.settings.runnerSettings
@@ -67,37 +92,38 @@ class PestRunConfigurationTest : PestLightCodeFixture() {
 
     private fun createConfiguration(fileName: String = "FileWithPestTest.php"): PestRunConfiguration {
         val file = myFixture.configureByFile(fileName)
-        val elementAtCaret = file.findElementAt(myFixture.editor.caretModel.offset)
+        val elementAtCaret = runReadActionBlocking { file.findElementAt(myFixture.editor.caretModel.offset) }
 
-        createPestFrameworkConfiguration()
+        PestTestUtil.createPestFrameworkConfiguration(project)
 
-        val configuration = PestRunConfigurationProducer().createConfigurationFromContext(
-            ConfigurationContext.createEmptyContextForLocation(
-                PsiLocation.fromPsiElement(elementAtCaret)
-            )
-        )?.configuration as PestRunConfiguration
-        configuration.settings.commandLineSettings.interpreterSettings.interpreterName = getTestName(false)
+        val configuration = runReadActionBlocking {
+            PestRunConfigurationProducer().createConfigurationFromContext(
+                ConfigurationContext.createEmptyContextForLocation(
+                    PsiLocation.fromPsiElement(elementAtCaret)
+                )
+            )?.configuration as PestRunConfiguration
+        }
+        configuration.settings.commandLineSettings.interpreterSettings.interpreterName = PlatformTestUtil.getTestName(testMethodName, false)
         return configuration
     }
 
-    override fun setUp() {
-        super.setUp()
+    private fun configuredFilePath(): String = runReadActionBlocking { myFixture.file.virtualFile.path }
+
+    @BeforeEach
+    fun setUp(testInfo: TestInfo) {
+        PestTestUtil.setUp(myFixture, "${PestTestUtil.getTestDataPath()}/configuration")
+        testMethodName = testInfo.testMethod.get().name
         val interpreter = PhpInterpreter().apply {
-            name = getTestName(false)
-            homePath = "$testDataPath/php"
+            name = PlatformTestUtil.getTestName(testMethodName, false)
+            homePath = "${myFixture.testDataPath}/php"
         }
         PhpInterpretersManagerImpl.getInstance(project).addInterpreter(interpreter)
         configurationsBackup = PhpTestFrameworkSettingsManager.getInstance(project).getConfigurations(PestFrameworkType.instance)
     }
 
-    override fun tearDown() {
-        try {
-            PhpTestFrameworkSettingsManager.getInstance(project).setConfigurations(PestFrameworkType.instance, configurationsBackup)
-            PhpInterpretersManagerImpl.getInstance(project).interpreters = emptyList()
-        } catch (e: Throwable) {
-            addSuppressedException(e)
-        } finally {
-            super.tearDown()
-        }
+    @AfterEach
+    fun tearDown() {
+        PhpTestFrameworkSettingsManager.getInstance(project).setConfigurations(PestFrameworkType.instance, configurationsBackup)
+        PhpInterpretersManagerImpl.getInstance(project).interpreters = emptyList()
     }
 }

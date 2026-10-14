@@ -1,62 +1,91 @@
 package com.pestphp.pest.inspections
 
+import com.intellij.openapi.application.EDT
+import com.intellij.platform.testFramework.junit5.codeInsight.fixture.codeInsightModuleFixture
 import com.intellij.testFramework.TestDataPath
-import com.pestphp.pest.PestLightCodeFixture
+import com.intellij.testFramework.common.timeoutRunBlocking
+import com.intellij.testFramework.junit5.TestApplication
+import com.intellij.testFramework.junit5.fixture.projectFixture
+import com.pestphp.pest.PestTestUtil
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
+import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.Test
 
-@TestDataPath("\$CONTENT_ROOT/../resources/com/pestphp/pest/inspections")
-class MissingScreenshotSnapshotInspectionTest : PestLightCodeFixture() {
-    override fun getBasePath(): String = "${super.getBasePath()}/inspections"
+@TestApplication
+@TestDataPath($$"$PROJECT_ROOT/phpstorm/pest/src/test/resources/com/pestphp/pest/inspections")
+class MissingScreenshotSnapshotInspectionTest {
+    companion object {
+        private val projectFixture = projectFixture(openAfterCreation = true)
+    }
 
-    override fun setUp() {
-        super.setUp()
+    private val myFixture by codeInsightModuleFixture(projectFixture)
+
+    @BeforeEach
+    fun setUp() {
+        PestTestUtil.setUp(myFixture, "${PestTestUtil.getTestDataPath()}/inspections")
         myFixture.enableInspections(MissingScreenshotSnapshotInspection::class.java)
     }
 
+    @Test
     fun testSimple() {
         myFixture.copyDirectoryToProject("screenshotProject", ".")
         myFixture.configureFromTempProjectFile("tests/Feature/MissingScreenshotSnapshot.php")
-        myFixture.checkHighlighting()
+        checkHighlighting()
     }
 
+    @Test
     fun testSimpleExists() {
         myFixture.copyDirectoryToProject("screenshotProject", ".")
         myFixture.configureFromTempProjectFile("tests/Feature/ScreenshotSnapshot.php")
-        myFixture.checkHighlighting()
+        checkHighlighting()
     }
 
+    @Test
     fun testMultiple() {
         myFixture.copyDirectoryToProject("screenshotProject", ".")
         myFixture.configureFromTempProjectFile("tests/Feature/MissingScreenshotSnapshotMultiple.php")
-        myFixture.checkHighlighting()
+        checkHighlighting()
     }
 
+    @Test
     fun testMultipleExists() {
         myFixture.copyDirectoryToProject("screenshotProject", ".")
         myFixture.configureFromTempProjectFile("tests/Feature/ScreenshotSnapshotMultiple.php")
-        myFixture.checkHighlighting()
+        checkHighlighting()
     }
 
+    @Test
     fun testComplexName() {
         myFixture.copyDirectoryToProject("screenshotProject", ".")
         myFixture.configureFromTempProjectFile("tests/Feature/MissingScreenshotSnapshotComplexName.php")
-        myFixture.checkHighlighting()
+        checkHighlighting()
     }
 
+    @Test
     fun testComplexNameExists() {
         myFixture.copyDirectoryToProject("screenshotProject", ".")
         myFixture.configureFromTempProjectFile("tests/Feature/ScreenshotSnapshotComplexName.php")
-        myFixture.checkHighlighting()
+        checkHighlighting()
     }
 
+    @Test
     fun testNestedDir() {
         myFixture.copyDirectoryToProject("screenshotProject", ".")
         myFixture.configureFromTempProjectFile("tests/Feature/nested/MissingScreenshotSnapshotNested.php")
-        myFixture.checkHighlighting()
+        checkHighlighting()
     }
 
+    @Test
     fun testNestedDirExists() {
         myFixture.copyDirectoryToProject("screenshotProject", ".")
         myFixture.configureFromTempProjectFile("tests/Feature/nested/ScreenshotSnapshotNested.php")
-        myFixture.checkHighlighting()
+        checkHighlighting()
+    }
+
+    private fun checkHighlighting(): Unit = timeoutRunBlocking {
+        withContext(Dispatchers.EDT) {
+            myFixture.checkHighlighting()
+        }
     }
 }

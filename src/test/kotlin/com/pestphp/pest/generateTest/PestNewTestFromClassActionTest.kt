@@ -1,11 +1,16 @@
 package com.pestphp.pest.generateTest
 
+import com.intellij.openapi.application.EDT
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.util.text.StringUtil
+import com.intellij.openapi.vfs.LocalFileSystem
 import com.intellij.openapi.vfs.VirtualFile
-import com.intellij.openapi.vfs.ex.temp.TempFileSystem
+import com.intellij.platform.testFramework.junit5.codeInsight.fixture.codeInsightModuleFixture
 import com.intellij.psi.PsiFile
 import com.intellij.testFramework.PlatformTestUtil
+import com.intellij.testFramework.common.timeoutRunBlocking
+import com.intellij.testFramework.junit5.TestApplication
+import com.intellij.testFramework.junit5.fixture.projectFixture
 import com.intellij.testFramework.utils.vfs.getPsiFile
 import com.intellij.util.PathUtil
 import com.jetbrains.php.lang.psi.PhpFile
@@ -14,12 +19,29 @@ import com.jetbrains.php.lang.psi.elements.Method
 import com.jetbrains.php.phpunit.codeGeneration.PhpNewTestDialog
 import com.jetbrains.php.roots.ui.PhpPsrDirectoryComboBox
 import com.jetbrains.php.templates.PhpCreateFileFromTemplateDataProvider
-import com.pestphp.pest.PestLightCodeFixture
 import com.pestphp.pest.PestNewTestFromClassAction
 import com.pestphp.pest.PestTestCreateInfo
+import com.pestphp.pest.PestTestUtil
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
+import org.junit.jupiter.api.Assertions.assertNotNull
+import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.Test
 
-class PestNewTestFromClassActionTest : PestLightCodeFixture() {
-    override fun getBasePath(): String = "${super.getBasePath()}/generateTest"
+@TestApplication
+class PestNewTestFromClassActionTest {
+    companion object {
+        private val projectFixture = projectFixture(openAfterCreation = true)
+    }
+
+    private val myFixture by codeInsightModuleFixture(projectFixture)
+
+    @BeforeEach
+    fun setUp() {
+        PestTestUtil.setUp(myFixture, "${PestTestUtil.getTestDataPath()}/generateTest")
+    }
+
+    private val project get() = myFixture.project
 
     private fun createTestFile(file: PsiFile, namespace: String): PsiFile {
         val dialog = getDialog(file, namespace)
@@ -56,7 +78,7 @@ class PestNewTestFromClassActionTest : PestLightCodeFixture() {
                         if (StringUtil.isEmpty(path)) {
                             return null
                         }
-                        val directory = TempFileSystem.getInstance().findFileByPath(path)
+                        val directory = LocalFileSystem.getInstance().findFileByPath(path)
                         return directory ?: findExistingParent(PathUtil.getParentPath(path))
                     }
 
@@ -76,10 +98,16 @@ class PestNewTestFromClassActionTest : PestLightCodeFixture() {
         }
     }
 
+    @Test
     fun testPestWithNamespace() {
         val fileWithClass = myFixture.copyFileToProject("testWithNamespace.php")
-        val testFile = createTestFile(fileWithClass.getPsiFile(project), "a")
-        myFixture.configureByText(testFile.getName(), testFile.getText())
+        val (testFileName, testFileText) = timeoutRunBlocking {
+            withContext(Dispatchers.EDT) {
+                val testFile = createTestFile(fileWithClass.getPsiFile(project), "a")
+                testFile.getName() to testFile.getText()
+            }
+        }
+        myFixture.configureByText(testFileName, testFileText)
         myFixture.checkResultByFile("testWithNamespace.after.php")
     }
 }

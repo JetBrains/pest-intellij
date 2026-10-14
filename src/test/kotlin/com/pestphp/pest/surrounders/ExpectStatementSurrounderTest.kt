@@ -1,8 +1,14 @@
 package com.pestphp.pest.surrounders
 
-class ExpectStatementSurrounderTest: SurroundTestCase() {
-    override fun getBasePath(): String = "${super.getBasePath()}/surrounders"
+import com.intellij.testFramework.junit5.TestApplication
+import com.pestphp.pest.PestTestUtil
+import org.junit.jupiter.api.Test
 
+@TestApplication
+class ExpectStatementSurrounderTest: SurroundTestCase() {
+    override fun getTestDataPath(): String = "${PestTestUtil.getTestDataPath()}/surrounders"
+
+    @Test
     fun testSurroundSingleElements() {
         doTest(
             ExpectStatementSurrounder(),
@@ -23,6 +29,7 @@ class ExpectStatementSurrounderTest: SurroundTestCase() {
         )
     }
 
+    @Test
     fun testSurroundMultipleElements() {
         doTest(
             ExpectStatementSurrounder(),
@@ -43,6 +50,7 @@ class ExpectStatementSurrounderTest: SurroundTestCase() {
         )
     }
 
+    @Test
     fun testNoSurroundOutsideTest() {
         doTest(
             ExpectStatementSurrounder(),
@@ -59,6 +67,7 @@ class ExpectStatementSurrounderTest: SurroundTestCase() {
         )
     }
 
+    @Test
     fun testNoSurroundOnTestItself() {
         doTest(
             ExpectStatementSurrounder(),
@@ -79,6 +88,7 @@ class ExpectStatementSurrounderTest: SurroundTestCase() {
         )
     }
 
+    @Test
     fun testSurroundInsideDescribeBlock() {
         doTest(
             ExpectStatementSurrounder(),

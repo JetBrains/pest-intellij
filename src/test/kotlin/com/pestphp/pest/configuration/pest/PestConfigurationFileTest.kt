@@ -1,73 +1,93 @@
 package com.pestphp.pest.configuration.pest
 
-import com.pestphp.pest.PestLightCodeFixture
+import com.intellij.platform.testFramework.junit5.codeInsight.fixture.codeInsightModuleFixture
+import com.intellij.testFramework.junit5.TestApplication
+import com.intellij.testFramework.junit5.fixture.projectFixture
+import com.pestphp.pest.PestTestUtil
+import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.Test
 
-class PestConfigurationFileTest : PestLightCodeFixture() {
-    override fun setUp() {
-        super.setUp()
+@TestApplication
+class PestConfigurationFileTest {
+    companion object {
+        private val projectFixture = projectFixture(openAfterCreation = true)
+    }
 
+    private val myFixture by codeInsightModuleFixture(projectFixture)
+
+    @BeforeEach
+    fun setUp() {
+        PestTestUtil.setUp(myFixture, "${PestTestUtil.getTestDataPath()}/configuration/pest")
         myFixture.copyDirectoryToProject(".", ".")
     }
 
-    override fun getBasePath(): String = "${super.getBasePath()}/configuration/pest"
-
+    @Test
     fun testUnit() {
         myFixture.configureByFile("tests/Unit/UnitTest.php")
 
-        assertCompletion("baseTestFunc")
+        PestTestUtil.assertCompletion(myFixture, "baseTestFunc")
     }
 
+    @Test
     fun testPestExtendUsesUnit() {
         myFixture.configureByFile("tests/Unit/PestExtendUnitTest.php")
 
-        assertCompletion("baseTestFunc", "traitFunc")
+        PestTestUtil.assertCompletion(myFixture, "baseTestFunc", "traitFunc")
     }
 
+    @Test
     fun testFeature() {
         myFixture.configureByFile("tests/Feature/FeatureTest.php")
 
-        assertCompletion("baseTestFunc", "featureTestFunc")
+        PestTestUtil.assertCompletion(myFixture, "baseTestFunc", "featureTestFunc")
     }
 
+    @Test
     fun testGroupedFeature() {
         myFixture.configureByFile("tests/GroupedFeature/GroupedFeatureTest.php")
 
-        assertCompletion("baseTestFunc", "featureTestFunc", "someBaseTraitFunc")
+        PestTestUtil.assertCompletion(myFixture, "baseTestFunc", "featureTestFunc", "someBaseTraitFunc")
     }
 
+    @Test
     fun testDIRFeature() {
         myFixture.configureByFile("tests/DIRFeature/FeatureTest.php")
 
-        assertCompletion("baseTestFunc", "featureTestFunc")
+        PestTestUtil.assertCompletion(myFixture, "baseTestFunc", "featureTestFunc")
     }
 
+    @Test
     fun testDynamicFolderFeature() {
         myFixture.configureByFile("tests/DynamicFeature/FeatureTest.php")
 
-        assertCompletion("baseTestFunc", "featureTestFunc")
+        PestTestUtil.assertCompletion(myFixture, "baseTestFunc", "featureTestFunc")
     }
 
+    @Test
     fun testUnitOutsideOfPestTestDir() {
         myFixture.configureByFile("tests2/Unit/UnitTest.php")
 
-        assertCompletion()
+        PestTestUtil.assertCompletion(myFixture)
     }
 
+    @Test
     fun testGlobPatternDirectory() {
         myFixture.configureByFile("tests/GlobPattern/DirectoryTest.php")
 
-        assertCompletion("baseTestFunc", "featureTestFunc")
+        PestTestUtil.assertCompletion(myFixture, "baseTestFunc", "featureTestFunc")
     }
 
+    @Test
     fun testGlobPatternFile() {
         myFixture.configureByFile("tests/GlobPattern/FileTest.php")
 
-        assertCompletion("baseTestFunc", "featureTestFunc")
+        PestTestUtil.assertCompletion(myFixture, "baseTestFunc", "featureTestFunc")
     }
 
+    @Test
     fun testGlobPatternFileWithRelativePath() {
         myFixture.configureByFile("tests/GlobPattern/FileWithRelativePathTest.php")
 
-        assertCompletion("baseTestFunc", "featureTestFunc")
+        PestTestUtil.assertCompletion(myFixture, "baseTestFunc", "featureTestFunc")
     }
 }

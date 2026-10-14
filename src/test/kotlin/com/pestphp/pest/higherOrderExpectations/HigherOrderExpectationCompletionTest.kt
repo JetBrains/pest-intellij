@@ -1,61 +1,77 @@
 package com.pestphp.pest.higherOrderExpectations
 
-import com.pestphp.pest.PestLightCodeFixture
+import com.intellij.platform.testFramework.junit5.codeInsight.fixture.codeInsightModuleFixture
+import com.intellij.testFramework.junit5.TestApplication
+import com.intellij.testFramework.junit5.fixture.projectFixture
+import com.pestphp.pest.PestTestUtil
+import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.Test
 
-class HigherOrderExpectationCompletionTest: PestLightCodeFixture() {
-    override fun getBasePath(): String = "${super.getBasePath()}/higherOrderExpectations"
+@TestApplication
+class HigherOrderExpectationCompletionTest {
+    companion object {
+        private val projectFixture = projectFixture(openAfterCreation = true)
+    }
 
-    override fun setUp() {
-        super.setUp()
+    private val myFixture by codeInsightModuleFixture(projectFixture)
 
+    @BeforeEach
+    fun setUp() {
+        PestTestUtil.setUp(myFixture, "${PestTestUtil.getTestDataPath()}/higherOrderExpectations")
         myFixture.copyFileToProject(".phpstorm.meta.php")
     }
 
+    @Test
     fun testFieldCompletion() {
         myFixture.configureByFile(
             "ExpectPropertyCompletion.php"
         )
 
-        assertCompletion("otherExample", "test")
+        PestTestUtil.assertCompletion(myFixture, "otherExample", "test")
     }
 
+    @Test
     fun testMethodCompletion() {
         myFixture.configureByFile(
             "ExpectMethodCompletion.php"
         )
 
-        assertCompletion("getOtherExample", "getTest")
+        PestTestUtil.assertCompletion(myFixture, "getOtherExample", "getTest")
     }
 
+    @Test
     fun testMethodCompletionChained() {
         myFixture.configureByFile(
             "ExpectMethodCompletionChained.php"
         )
 
-        assertCompletion("getTimestamp");
+        PestTestUtil.assertCompletion(myFixture, "getTimestamp")
     }
 
+    @Test
     fun testFieldCompletionChained() {
         myFixture.configureByFile(
             "ExpectPropertyCompletionChained.php"
         )
 
-        assertCompletion("getTimestamp")
+        PestTestUtil.assertCompletion(myFixture, "getTimestamp")
     }
 
+    @Test
     fun testChainedAssertionsFieldCompletion() {
         myFixture.configureByFile(
             "ExpectPropertyCompletionChainedAssertions.php"
         )
 
-        assertCompletion("otherExample", "test")
+        PestTestUtil.assertCompletion(myFixture, "otherExample", "test")
     }
 
+    @Test
     fun testChainedAssertionsMethodCompletion() {
         myFixture.configureByFile(
             "ExpectMethodCompletionChainedAssertions.php"
         )
 
-        assertCompletion("getOtherExample", "getTest")
+        PestTestUtil.assertCompletion(myFixture, "getOtherExample", "getTest")
     }
 }

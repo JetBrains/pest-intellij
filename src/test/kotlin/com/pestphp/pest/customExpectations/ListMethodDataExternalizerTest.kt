@@ -1,17 +1,35 @@
 package com.pestphp.pest.customExpectations
 
+import com.intellij.platform.testFramework.junit5.codeInsight.fixture.codeInsightModuleFixture
+import com.intellij.testFramework.junit5.TestApplication
+import com.intellij.testFramework.junit5.fixture.projectFixture
 import com.intellij.util.io.DataOutputStream
 import com.jetbrains.php.lang.psi.resolve.types.PhpType
-import com.pestphp.pest.PestLightCodeFixture
+import com.pestphp.pest.PestTestUtil
 import com.pestphp.pest.features.customExpectations.externalizers.ListDataExternalizer
 import com.pestphp.pest.features.customExpectations.externalizers.MethodDataExternalizer
 import com.pestphp.pest.features.customExpectations.generators.Method
 import com.pestphp.pest.features.customExpectations.generators.Parameter
+import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.Test
 import java.io.ByteArrayInputStream
 import java.io.ByteArrayOutputStream
 import java.io.DataInputStream
 
-class ListMethodDataExternalizerTest : PestLightCodeFixture() {
+@TestApplication
+class ListMethodDataExternalizerTest {
+    companion object {
+        private val projectFixture = projectFixture(openAfterCreation = true)
+    }
+
+    private val myFixture by codeInsightModuleFixture(projectFixture)
+
+    @BeforeEach
+    fun setUp() {
+        PestTestUtil.setUp(myFixture, PestTestUtil.getTestDataPath())
+    }
+
     private fun saveAndRead(method: List<Method>): List<Method> {
         val dataOutput = ByteArrayOutputStream()
 
@@ -28,6 +46,7 @@ class ListMethodDataExternalizerTest : PestLightCodeFixture() {
         return externalizer.read(dataInput)
     }
 
+    @Test
     fun testCanExternalizeMethod() {
         val methods = listOf(
             Method(
@@ -45,6 +64,7 @@ class ListMethodDataExternalizerTest : PestLightCodeFixture() {
         )
     }
 
+    @Test
     fun testCanExternalizeMultipleMethods() {
         val methods = listOf(
             Method(
@@ -67,6 +87,7 @@ class ListMethodDataExternalizerTest : PestLightCodeFixture() {
         )
     }
 
+    @Test
     fun testCanExternalizeMethodsWithMultipleTypes() {
         val methods = listOf(
             Method(
@@ -89,6 +110,7 @@ class ListMethodDataExternalizerTest : PestLightCodeFixture() {
         )
     }
 
+    @Test
     fun testCanExternalizeMethodsWithParameter() {
         val methods = listOf(
             Method(
@@ -126,6 +148,7 @@ class ListMethodDataExternalizerTest : PestLightCodeFixture() {
         )
     }
 
+    @Test
     fun testCanExternalizeMethodWithParameterWithDefaultValue() {
         val methods = listOf(
             Method(
@@ -160,6 +183,7 @@ class ListMethodDataExternalizerTest : PestLightCodeFixture() {
         )
     }
 
+    @Test
     fun testCanExternalizeMethodWithMultipleParameters() {
         val methods = listOf(
             Method(

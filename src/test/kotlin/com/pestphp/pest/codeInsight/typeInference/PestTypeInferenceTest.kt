@@ -1,39 +1,76 @@
 package com.pestphp.pest.codeInsight.typeInference
 
+import com.intellij.openapi.application.EDT
 import com.intellij.openapi.application.WriteAction
+import com.intellij.openapi.application.runReadActionBlocking
 import com.intellij.openapi.util.Segment
 import com.intellij.openapi.util.TextRange
 import com.intellij.openapi.util.text.StringUtil
+import com.intellij.platform.testFramework.junit5.codeInsight.fixture.codeInsightModuleFixture
 import com.intellij.psi.PsiDocumentManager
 import com.intellij.psi.PsiFile
+import com.intellij.testFramework.common.timeoutRunBlocking
+import com.intellij.testFramework.junit5.TestApplication
+import com.intellij.testFramework.junit5.fixture.projectFixture
 import com.jetbrains.php.lang.PhpLangUtil
 import com.jetbrains.php.lang.psi.PhpPsiUtil
 import com.jetbrains.php.lang.psi.elements.PhpPsiElement
 import com.jetbrains.php.lang.psi.elements.PhpTypedElement
 import com.jetbrains.php.lang.psi.resolve.types.PhpType
-import com.pestphp.pest.PestLightCodeFixture
 import com.pestphp.pest.PestSettings
+import com.pestphp.pest.PestTestUtil
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
+import org.junit.jupiter.api.AfterEach
+import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Assertions.assertNotNull
+import org.junit.jupiter.api.Assertions.assertTrue
+import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.TestInfo
 import java.util.regex.Pattern
 
-class PestTypeInferenceTest : PestLightCodeFixture() {
-    private lateinit var pestFilePathBackup: String
+@TestApplication
+class PestTypeInferenceTest {
+    companion object {
+        private val projectFixture = projectFixture(openAfterCreation = true)
+    }
 
-    override fun getBasePath(): String = "${super.getBasePath()}/codeInsight/typeInference"
+    private val myFixture by codeInsightModuleFixture(projectFixture)
+
+    private lateinit var pestFilePathBackup: String
+    private lateinit var testMethodName: String
+
+    @BeforeEach
+    fun setUp(testInfo: TestInfo) {
+        PestTestUtil.setUp(myFixture, "${PestTestUtil.getTestDataPath()}/codeInsight/typeInference")
+        testMethodName = testInfo.testMethod.get().name
+        pestFilePathBackup = PestSettings.getInstance(myFixture.project).pestFilePath
+    }
+
+    @AfterEach
+    fun tearDown() {
+        PestSettings.getInstance(myFixture.project).pestFilePath = pestFilePathBackup
+    }
 
     private fun doTest(block: () -> PsiFile) {
-        PestSettings.getInstance(project).pestFilePath = "Pest.php"
+        PestSettings.getInstance(myFixture.project).pestFilePath = "Pest.php"
         val pestPhpFile = block()
-        myFixture.openFileInEditor(pestPhpFile.virtualFile)
+        timeoutRunBlocking {
+            withContext(Dispatchers.EDT) {
+                myFixture.openFileInEditor(pestPhpFile.virtualFile)
+            }
+        }
         doTypeTest()
     }
 
     private fun doTypeTest() {
-        val file = configureByFile()
-        val originalFileText = file.text
+        val file = PestTestUtil.configureByFile(myFixture, testMethodName)
+        val originalFileText = runReadActionBlocking { file.text }
         val fileTextWithExtractedTypes = StringBuilder()
         val rangesToTypes = extractRangesToTypes(originalFileText, fileTextWithExtractedTypes)
         val fileWithExtractedTypes = replaceContentOfConfiguredFile(fileTextWithExtractedTypes)
-        val text = fileWithExtractedTypes.text
+        val text = runReadActionBlocking { fileWithExtractedTypes.text }
         var lastOffset = 0
         val contentWithActualTypes = StringBuilder()
         for ((segment, stringTypes) in rangesToTypes.entries) {
@@ -47,31 +84,35 @@ class PestTypeInferenceTest : PestLightCodeFixture() {
             lastOffset = segment.endOffset
         }
         contentWithActualTypes.append(text.substring(lastOffset))
-        assertEquals("Types are not matched", originalFileText, contentWithActualTypes.toString())
+        assertEquals(originalFileText, contentWithActualTypes.toString(), "Types are not matched")
     }
 
-    private fun replaceContentOfConfiguredFile(fileTextWithExtractedTypes: StringBuilder): PsiFile {
-        WriteAction.run<RuntimeException> { myFixture.editor.getDocument().setText(fileTextWithExtractedTypes.toString()) }
-        PsiDocumentManager.getInstance(project).commitAllDocuments()
-        return myFixture.file
+    private fun replaceContentOfConfiguredFile(fileTextWithExtractedTypes: StringBuilder): PsiFile = timeoutRunBlocking {
+        withContext(Dispatchers.EDT) {
+            WriteAction.run<RuntimeException> { myFixture.editor.getDocument().setText(fileTextWithExtractedTypes.toString()) }
+            PsiDocumentManager.getInstance(myFixture.project).commitAllDocuments()
+            myFixture.file
+        }
     }
 
-    private fun getType(start: Int, end: Int): PhpType {
+    private fun getType(start: Int, end: Int): PhpType = runReadActionBlocking {
         val expression = PhpPsiUtil.findElementOfClassAtRange(
             myFixture.file, start, end,
             PhpPsiElement::class.java, true, true
         )
         assertNotNull(expression)
-        assertTrue(expression!!.text, expression is PhpTypedElement)
-        return (expression as PhpTypedElement?)!!.globalType
+        assertTrue(expression is PhpTypedElement, expression!!.text)
+        (expression as PhpTypedElement?)!!.globalType
     }
 
-    fun testThisInInnerClosure() = doTest {
+    @Test
+    fun testThisInInnerClosure(): Unit = doTest {
         myFixture.addFileToProject("Pest.php", "<?php")
     }
 
-    fun `testThisInSubproject#Test`() = doTest {
-        PestSettings.getInstance(project).pestFilePath = "ThisInSubproject/Pest.php"
+    @Test
+    fun `testThisInSubproject#Test`(): Unit = doTest {
+        PestSettings.getInstance(myFixture.project).pestFilePath = "ThisInSubproject/Pest.php"
         myFixture.addFileToProject(
             "ThisInSubproject/TestCase.php", """
             <?php
@@ -86,21 +127,6 @@ class PestTypeInferenceTest : PestLightCodeFixture() {
             uses(TestCase::class)->in("./");
         """.trimIndent()
         )
-    }
-
-    override fun setUp() {
-        super.setUp()
-        pestFilePathBackup = PestSettings.getInstance(project).pestFilePath
-    }
-
-    override fun tearDown() {
-        try {
-            PestSettings.getInstance(project).pestFilePath = pestFilePathBackup
-        } catch (e: Throwable) {
-            addSuppressedException(e)
-        } finally {
-            super.tearDown()
-        }
     }
 }
 

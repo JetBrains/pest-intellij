@@ -2,13 +2,30 @@ package com.pestphp.pest.structureView
 
 import com.intellij.icons.AllIcons
 import com.intellij.ide.structureView.StructureViewTreeElement
+import com.intellij.openapi.application.runReadActionBlocking
+import com.intellij.platform.testFramework.junit5.codeInsight.fixture.codeInsightModuleFixture
+import com.intellij.testFramework.junit5.TestApplication
+import com.intellij.testFramework.junit5.fixture.projectFixture
 import com.jetbrains.php.lang.psi.PhpFile
 import com.pestphp.pest.PestIcons
-import com.pestphp.pest.PestLightCodeFixture
+import com.pestphp.pest.PestTestUtil
+import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.Test
 import javax.swing.Icon
 
-class PestStructureViewTest : PestLightCodeFixture() {
-    override fun getBasePath(): String = "${super.getBasePath()}/structureView"
+@TestApplication
+class PestStructureViewTest {
+    companion object {
+        private val projectFixture = projectFixture(openAfterCreation = true)
+    }
+
+    private val myFixture by codeInsightModuleFixture(projectFixture)
+
+    @BeforeEach
+    fun setUp() {
+        PestTestUtil.setUp(myFixture, "${PestTestUtil.getTestDataPath()}/structureView")
+    }
 
     private data class Node(val name: String?, val icon: Icon?, val children: List<Node>)
 
@@ -25,10 +42,13 @@ class PestStructureViewTest : PestLightCodeFixture() {
 
     private fun topLevelNodes(fileName: String): List<Node> {
         val file = myFixture.configureByFile(fileName) as PhpFile
-        return PestStructureViewExtension().getChildren(file)
-            .map { it.toNode() }
+        return runReadActionBlocking {
+            PestStructureViewExtension().getChildren(file)
+                .map { it.toNode() }
+        }
     }
 
+    @Test
     fun testDescribeBlockExposesNestedTestsAsChildren() {
         val roots = topLevelNodes("DescribeBlockWithNestedTests.php")
 
@@ -45,6 +65,7 @@ class PestStructureViewTest : PestLightCodeFixture() {
         )
     }
 
+    @Test
     fun testNestedDescribeBlocksAreNestedInTree() {
         val roots = topLevelNodes("NestedDescribeBlocks.php")
 
