@@ -102,17 +102,13 @@ class MultipleExpectChainableInspectionTest {
         myFixture.checkResultByFile("ManyExpectCall.after.php")
     }
 
-    private fun checkHighlighting(): Unit = timeoutRunBlocking {
-        withContext(Dispatchers.EDT) {
-            myFixture.checkHighlighting()
-        }
+    private fun checkHighlighting() {
+        myFixture.checkHighlighting()
     }
 
-    private fun <T> checkHighlighting(pickQuickFix: (List<IntentionAction>) -> T): T = timeoutRunBlocking {
-        withContext(Dispatchers.EDT) {
-            myFixture.checkHighlighting()
-            pickQuickFix(myFixture.getAllQuickFixes())
-        }
+    private fun <T> checkHighlighting(pickQuickFix: (List<IntentionAction>) -> T): T {
+        myFixture.checkHighlighting()
+        return pickQuickFix(myFixture.getAllQuickFixes())
     }
 
     private fun getAllQuickFixes(): List<IntentionAction> = timeoutRunBlocking {

@@ -3,15 +3,11 @@ package com.pestphp.pest.inspections
 import com.intellij.codeInsight.daemon.impl.HighlightInfo
 import com.intellij.execution.TestStateStorage
 import com.intellij.lang.annotation.HighlightSeverity
-import com.intellij.openapi.application.EDT
 import com.intellij.platform.testFramework.junit5.codeInsight.fixture.codeInsightModuleFixture
 import com.intellij.testFramework.TestDataPath
-import com.intellij.testFramework.common.timeoutRunBlocking
 import com.intellij.testFramework.junit5.TestApplication
 import com.intellij.testFramework.junit5.fixture.projectFixture
 import com.pestphp.pest.PestTestUtil
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.withContext
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
@@ -229,15 +225,9 @@ class PestTestFailedLineInspectionTest {
         doTest(methodRecord)
     }
 
-    private fun checkHighlighting(): Unit = timeoutRunBlocking {
-        withContext(Dispatchers.EDT) {
-            myFixture.checkHighlighting()
-        }
+    private fun checkHighlighting() {
+        myFixture.checkHighlighting()
     }
 
-    private fun doWarningHighlighting(): List<HighlightInfo> = timeoutRunBlocking {
-        withContext(Dispatchers.EDT) {
-            myFixture.doHighlighting(HighlightSeverity.WARNING)
-        }
-    }
+    private fun doWarningHighlighting(): List<HighlightInfo> = myFixture.doHighlighting(HighlightSeverity.WARNING)
 }

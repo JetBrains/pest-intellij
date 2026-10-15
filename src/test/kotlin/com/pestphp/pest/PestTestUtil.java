@@ -5,7 +5,6 @@ import com.intellij.openapi.project.Project;
 import com.intellij.openapi.util.io.FileUtil;
 import com.intellij.openapi.util.text.StringUtil;
 import com.intellij.psi.PsiFile;
-import com.intellij.testFramework.EdtTestUtil;
 import com.intellij.testFramework.PlatformTestUtil;
 import com.intellij.testFramework.fixtures.CodeInsightTestFixture;
 import com.intellij.testFramework.fixtures.IdeaTestExecutionPolicy;
@@ -96,10 +95,8 @@ public final class PestTestUtil {
   }
 
   private static @Nullable List<String> completeBasic(@NotNull CodeInsightTestFixture fixture) {
-    return EdtTestUtil.runInEdtAndGet(() -> {
-      fixture.completeBasic();
-      return fixture.getLookupElementStrings();
-    });
+    fixture.completeBasic();
+    return fixture.getLookupElementStrings();
   }
 
   /**

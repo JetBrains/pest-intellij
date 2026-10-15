@@ -1,17 +1,13 @@
 package com.pestphp.pest.inspections
 
-import com.intellij.openapi.application.EDT
 import com.intellij.platform.testFramework.junit5.codeInsight.fixture.codeInsightModuleFixture
 import com.intellij.testFramework.PsiTestUtil
 import com.intellij.testFramework.TestDataPath
-import com.intellij.testFramework.common.timeoutRunBlocking
 import com.intellij.testFramework.junit5.TestApplication
 import com.intellij.testFramework.junit5.fixture.projectFixture
 import com.jetbrains.php.lang.inspections.PhpInspection
 import com.jetbrains.php.lang.inspections.psr0.PhpMultipleClassesDeclarationsInOneFile
 import com.pestphp.pest.PestTestUtil
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.withContext
 import org.jetbrains.jps.model.java.JavaSourceRootType
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
@@ -46,9 +42,7 @@ class PhpStormInspectionsTest {
         doTest(PhpMultipleClassesDeclarationsInOneFile::class.java, "${testSrcDir.name}/MultipleClassesDeclarationsInPestFileTest.php")
     }
 
-    private fun checkHighlighting(): Unit = timeoutRunBlocking {
-        withContext(Dispatchers.EDT) {
-            myFixture.checkHighlighting()
-        }
+    private fun checkHighlighting() {
+        myFixture.checkHighlighting()
     }
 }

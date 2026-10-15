@@ -49,9 +49,9 @@ class PestTestRunLineMarkerProviderTest {
     }
 
     private fun doTest(vararg expectedMarkerLines: Int) {
+        myFixture.doHighlighting()
         val actualMarkerLines = timeoutRunBlocking {
             withContext(Dispatchers.EDT) {
-                myFixture.doHighlighting()
                 val editor = myFixture.editor
 
                 val markerList = getDisplayedLineMarkers(editor.document, project)

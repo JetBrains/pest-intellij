@@ -1,14 +1,10 @@
 package com.pestphp.pest.inspections
 
 import com.intellij.codeInsight.intention.IntentionAction
-import com.intellij.openapi.application.EDT
 import com.intellij.platform.testFramework.junit5.codeInsight.fixture.codeInsightModuleFixture
-import com.intellij.testFramework.common.timeoutRunBlocking
 import com.intellij.testFramework.junit5.TestApplication
 import com.intellij.testFramework.junit5.fixture.projectFixture
 import com.pestphp.pest.PestTestUtil
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.withContext
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 
@@ -62,10 +58,8 @@ class PestAssertionCanBeSimplifiedInspectionTest {
     myFixture.checkResultByFile("ToHaveCountWithZero.after.php")
   }
 
-  private fun <T> checkHighlighting(pickQuickFix: (List<IntentionAction>) -> T): T = timeoutRunBlocking {
-    withContext(Dispatchers.EDT) {
-      myFixture.checkHighlighting()
-      pickQuickFix(myFixture.getAllQuickFixes())
-    }
+  private fun <T> checkHighlighting(pickQuickFix: (List<IntentionAction>) -> T): T {
+    myFixture.checkHighlighting()
+    return pickQuickFix(myFixture.getAllQuickFixes())
   }
 }
