@@ -227,7 +227,9 @@
                 icon="/dataset.svg">
             <add-to-group group-id="PhpNewTestGroup" anchor="last"/>
         </action>
-        <action id="Pest.New.File.From.Class" class="com.pestphp.pest.PestNewTestFromClassAction">
+        <action id="Pest.New.File.From.Class"
+                class="com.pestphp.pest.PestNewTestFromClassAction"
+                icon="com.pestphp.pest.PestIcons.Logo">
         </action>
     </actions>
 </idea-plugin>
