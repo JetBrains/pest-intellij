@@ -52,10 +52,9 @@ class PestFrameworkType : PhpTestFrameworkType() {
         return PestTestDescriptor
     }
 
-    companion object {
-        @NonNls
-        val ID = "Pest"
-        val instance: PhpTestFrameworkType
-            get() = getTestFrameworkType(ID)
-    }
 }
+
+@NonNls
+private val ID: String = "Pest"
+val PEST_FRAMEWORK_TYPE: PhpTestFrameworkType
+    get() = PhpTestFrameworkType.getTestFrameworkType(ID)

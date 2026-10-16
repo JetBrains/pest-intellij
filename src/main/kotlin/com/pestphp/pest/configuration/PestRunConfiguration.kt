@@ -33,14 +33,13 @@ import com.jetbrains.php.testFramework.run.PhpTestRunConfigurationSettings
 import com.jetbrains.php.testFramework.run.PhpTestRunnerConfigurationEditor
 import com.jetbrains.php.testFramework.run.PhpTestRunnerSettings
 import com.pestphp.pest.PestBundle
-import com.pestphp.pest.PestFrameworkType
 import com.pestphp.pest.PestIcons
 import com.pestphp.pest.PestTestId
-import com.pestphp.pest.configuration.PestRunConfigurationProducer.Companion.VALIDATOR
 import com.pestphp.pest.features.parallel.addParallelArguments
 import com.pestphp.pest.features.parallel.createPestParallelDurationListener
 import com.pestphp.pest.getPestTestName
 import com.pestphp.pest.getPestTests
+import com.pestphp.pest.PEST_FRAMEWORK_TYPE
 import com.pestphp.pest.runner.PestConsoleProperties
 import java.util.EnumMap
 import kotlin.io.path.Path
@@ -51,7 +50,7 @@ class PestRunConfiguration(project: Project, factory: ConfigurationFactory) : Ph
     project,
     factory,
     PestBundle.message("FRAMEWORK_NAME"),
-    PestFrameworkType.instance,
+    PEST_FRAMEWORK_TYPE,
     VALIDATOR,
     PestRunConfigurationHandler.instance,
     PestVersionDetector.instance
@@ -159,7 +158,7 @@ class PestRunConfiguration(project: Project, factory: ConfigurationFactory) : Ph
 
     fun applyTestArguments(command: PhpCommandSettings, coverageArguments: List<String>) {
         val config = PhpTestFrameworkSettingsManager.getInstance(project)
-            .getOrCreateByInterpreter(PestFrameworkType.instance, interpreter, true)
+            .getOrCreateByInterpreter(PEST_FRAMEWORK_TYPE, interpreter, true)
             ?: throw ExecutionException(PestBundle.message("DIALOG_MESSAGE_COULD_NOT_FIND_PHP_INTERPRETER"))
 
         val version = null
@@ -221,7 +220,7 @@ class PestRunConfiguration(project: Project, factory: ConfigurationFactory) : Ph
         val configFile = getConfigurationFile(
             settings.runnerSettings,
             PhpTestFrameworkSettingsManager.getInstance(project)
-                .getOrCreateByInterpreter(PestFrameworkType.instance, interpreter, true)
+                .getOrCreateByInterpreter(PEST_FRAMEWORK_TYPE, interpreter, true)
         ) ?: return null
 
         return VfsUtil.findFile(Path(configFile), false)?.parent?.path

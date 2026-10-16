@@ -13,8 +13,8 @@ import com.jetbrains.php.config.interpreters.PhpInterpretersManagerImpl
 import com.jetbrains.php.testFramework.PhpTestFrameworkConfiguration
 import com.jetbrains.php.testFramework.PhpTestFrameworkSettingsManager
 import com.jetbrains.php.testFramework.run.PhpTestRunnerSettings
-import com.pestphp.pest.PestFrameworkType
 import com.pestphp.pest.PestTestUtil
+import com.pestphp.pest.PEST_FRAMEWORK_TYPE
 import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertNotNull
@@ -95,13 +95,13 @@ class PestPhpUnitRunConfigurationProducerTest {
             homePath = "${myFixture.testDataPath}/php"
         }
         PhpInterpretersManagerImpl.getInstance(project).addInterpreter(interpreter)
-        configurationsBackup = PhpTestFrameworkSettingsManager.getInstance(project).getConfigurations(PestFrameworkType.instance)
-        PhpTestFrameworkSettingsManager.getInstance(project).setConfigurations(PestFrameworkType.instance, emptyList())
+        configurationsBackup = PhpTestFrameworkSettingsManager.getInstance(project).getConfigurations(PEST_FRAMEWORK_TYPE)
+        PhpTestFrameworkSettingsManager.getInstance(project).setConfigurations(PEST_FRAMEWORK_TYPE, emptyList())
     }
 
     @AfterEach
     fun tearDown() {
-        PhpTestFrameworkSettingsManager.getInstance(project).setConfigurations(PestFrameworkType.instance, configurationsBackup)
+        PhpTestFrameworkSettingsManager.getInstance(project).setConfigurations(PEST_FRAMEWORK_TYPE, configurationsBackup)
         PhpInterpretersManagerImpl.getInstance(project).interpreters = emptyList()
     }
 }

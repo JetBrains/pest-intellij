@@ -21,7 +21,7 @@ import com.intellij.util.ui.UIUtil
 import com.jetbrains.php.util.pathmapper.PhpPathMapper
 import com.pestphp.pest.PestTestUtil
 import com.pestphp.pest.configuration.PestLocationProvider
-import com.pestphp.pest.configuration.PestRunConfigurationType
+import com.pestphp.pest.configuration.PEST_RUN_CONFIGURATION_TYPE
 import io.mockk.clearAllMocks
 import io.mockk.every
 import io.mockk.mockk
@@ -81,7 +81,7 @@ class PestPressToContinueActionTest {
             consoleView.attachToProcess(processHandler)
 
             val descriptor = RunContentDescriptor(consoleView, processHandler, consoleView.component, "Pest")
-            descriptor.runConfigurationTypeId = PestRunConfigurationType.instance.id
+            descriptor.runConfigurationTypeId = PEST_RUN_CONFIGURATION_TYPE.id
             Disposer.register(myFixture.projectDisposable, descriptor)
 
             val innerConsole = (consoleView.console as ConsoleViewImpl)

@@ -25,10 +25,10 @@ import com.jetbrains.php.testFramework.PhpTestFrameworkSettingsManager
 import com.jetbrains.php.testFramework.PhpTestFrameworkVersionCache
 import com.jetbrains.php.testFramework.run.PhpParallelTestingUtils
 import com.pestphp.pest.PestBundle
-import com.pestphp.pest.PestFrameworkType
 import com.pestphp.pest.configuration.PestRerunProfile
 import com.pestphp.pest.configuration.PestRunConfiguration
 import com.pestphp.pest.configuration.PestVersionDetector
+import com.pestphp.pest.PEST_FRAMEWORK_TYPE
 import com.pestphp.pest.statistics.PestUsagesCollector
 
 private val PEST_PARALLEL_ARGUMENTS_LEGACY = listOf("--parallel", "--log-teamcity", "php://stdout")
@@ -101,7 +101,7 @@ private fun handleEmptySuite(
     val project = profile.project
     val interpreter = profile.interpreter ?: return
     val config = PhpTestFrameworkSettingsManager.getInstance(project).getOrCreateByInterpreter(
-        PestFrameworkType.instance, interpreter, profile.getBaseFile(null, interpreter), true
+        PEST_FRAMEWORK_TYPE, interpreter, profile.getBaseFile(null, interpreter), true
     ) ?: return
 
     val version = if (!interpreter.isRemote) {
@@ -146,7 +146,7 @@ private fun getPestVersion(runConfiguration: PestRunConfiguration): Version? {
     if (interpreter.isRemote) return null
     val baseFile = runConfiguration.getBaseFile(null, interpreter)
     val config = PhpTestFrameworkSettingsManager.getInstance(runConfiguration.project)
-                     .getOrCreateByInterpreter(PestFrameworkType.instance, interpreter, baseFile, true) ?: return null
+                     .getOrCreateByInterpreter(PEST_FRAMEWORK_TYPE, interpreter, baseFile, true) ?: return null
     return try {
         val versionString = PestVersionDetector.instance.getVersion(runConfiguration.project, interpreter, config.executablePath)
         PhpTestFrameworkVersionCache.setCache(runConfiguration.project, config, versionString)

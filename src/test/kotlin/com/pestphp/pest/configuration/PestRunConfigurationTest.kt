@@ -13,8 +13,8 @@ import com.jetbrains.php.config.interpreters.PhpInterpretersManagerImpl
 import com.jetbrains.php.phpunit.coverage.PhpUnitCoverageEngine
 import com.jetbrains.php.testFramework.PhpTestFrameworkConfiguration
 import com.jetbrains.php.testFramework.PhpTestFrameworkSettingsManager
-import com.pestphp.pest.PestFrameworkType
 import com.pestphp.pest.PestTestUtil
+import com.pestphp.pest.PEST_FRAMEWORK_TYPE
 import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertInstanceOf
@@ -118,12 +118,12 @@ class PestRunConfigurationTest {
             homePath = "${myFixture.testDataPath}/php"
         }
         PhpInterpretersManagerImpl.getInstance(project).addInterpreter(interpreter)
-        configurationsBackup = PhpTestFrameworkSettingsManager.getInstance(project).getConfigurations(PestFrameworkType.instance)
+        configurationsBackup = PhpTestFrameworkSettingsManager.getInstance(project).getConfigurations(PEST_FRAMEWORK_TYPE)
     }
 
     @AfterEach
     fun tearDown() {
-        PhpTestFrameworkSettingsManager.getInstance(project).setConfigurations(PestFrameworkType.instance, configurationsBackup)
+        PhpTestFrameworkSettingsManager.getInstance(project).setConfigurations(PEST_FRAMEWORK_TYPE, configurationsBackup)
         PhpInterpretersManagerImpl.getInstance(project).interpreters = emptyList()
     }
 }

@@ -11,7 +11,7 @@ import com.intellij.openapi.diagnostic.Logger
 import com.intellij.openapi.project.DumbAwareAction
 import com.intellij.openapi.util.TextRange
 import com.pestphp.pest.PestBundle
-import com.pestphp.pest.configuration.PestRunConfigurationType
+import com.pestphp.pest.configuration.PEST_RUN_CONFIGURATION_TYPE
 import java.io.IOException
 import java.nio.charset.StandardCharsets
 
@@ -25,7 +25,7 @@ class PestPressToContinueAction : DumbAwareAction() {
         val descriptor = e.getData(ExecutionDataKeys.RUN_CONTENT_DESCRIPTOR)
         val processHandler = descriptor?.processHandler
         e.presentation.setText(PestBundle.messagePointer("action.press.to.continue.text"))
-        e.presentation.isVisible = descriptor?.runConfigurationTypeId == PestRunConfigurationType.instance.id
+        e.presentation.isVisible = descriptor?.runConfigurationTypeId == PEST_RUN_CONFIGURATION_TYPE.id
         e.presentation.isEnabled = processHandler != null &&
             !processHandler.isProcessTerminated &&
             !processHandler.isProcessTerminating &&

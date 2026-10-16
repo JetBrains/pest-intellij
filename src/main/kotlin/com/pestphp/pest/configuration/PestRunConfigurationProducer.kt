@@ -28,7 +28,7 @@ class PestRunConfigurationProducer : PhpTestConfigurationProducer<PestRunConfigu
     METHOD_NAMER,
     METHOD
 ) {
-    override fun getConfigurationFactory(): ConfigurationFactory = PestRunConfigurationType.instance
+    override fun getConfigurationFactory(): ConfigurationFactory = PEST_RUN_CONFIGURATION_TYPE
 
     override fun isEnabled(project: Project): Boolean = project.isPestEnabled()
 
@@ -40,32 +40,30 @@ class PestRunConfigurationProducer : PhpTestConfigurationProducer<PestRunConfigu
         return element.containingFile?.containingDirectory?.virtualFile
     }
 
-    companion object {
-        val METHOD = Condition<PsiElement> { element: PsiElement? ->
-            element.isPestTestReference()
-        }
-        private val METHOD_NAMER = Function<PsiElement, String?> { element: PsiElement? ->
-            element.getPestTestName()
-        }
-        private val FILE_TO_SCOPE = Function<PsiFile, PsiElement?> { file: PsiFile ->
-            when {
-                file.isPestTestFile() -> file
-                file is PhpFile && PhpUnitUtil.isPhpUnitTestFile(file) -> PhpUnitUtil.findTestClass(file) ?: file
-                else -> null
-            }
-        }
-        val VALIDATOR = PhpDefaultTestRunnerSettingsValidator(
-            setOf<FileType>(PhpFileType.INSTANCE, XmlFileType.INSTANCE).toList(),
-            { file: PsiFile, _: String ->
-                file.isPestConfigurationFile() || file.isPestTestFile() || PhpUnitUtil.isPhpUnitTestFile(file)
-            },
-            false,
-            false
-        )
-    }
-
     override fun shouldReplace(self: ConfigurationFromContext, other: ConfigurationFromContext): Boolean {
         val file = self.sourceElement as? PhpFile ?: return false
         return file.isPestTestFile()
     }
 }
+
+private val METHOD = Condition<PsiElement> { element: PsiElement? ->
+    element.isPestTestReference()
+}
+private val METHOD_NAMER = Function<PsiElement, String?> { element: PsiElement? ->
+    element.getPestTestName()
+}
+private val FILE_TO_SCOPE = Function<PsiFile, PsiElement?> { file: PsiFile ->
+    when {
+        file.isPestTestFile() -> file
+        file is PhpFile && PhpUnitUtil.isPhpUnitTestFile(file) -> PhpUnitUtil.findTestClass(file) ?: file
+        else -> null
+    }
+}
+internal val VALIDATOR = PhpDefaultTestRunnerSettingsValidator(
+    setOf<FileType>(PhpFileType.INSTANCE, XmlFileType.INSTANCE).toList(),
+    { file: PsiFile, _: String ->
+        file.isPestConfigurationFile() || file.isPestTestFile() || PhpUnitUtil.isPhpUnitTestFile(file)
+    },
+    false,
+    false
+)

@@ -2,15 +2,15 @@ package com.pestphp.pest
 
 import com.intellij.execution.configurations.ConfigurationType
 import com.jetbrains.php.testFramework.PhpTestFrameworkComposerConfig
-import com.pestphp.pest.configuration.PestRunConfigurationType.Companion.instance
+import com.pestphp.pest.configuration.PEST_RUN_CONFIGURATION_TYPE
 
-class PestComposerConfig : PhpTestFrameworkComposerConfig(PestFrameworkType.instance, PACKAGE, RELATIVE_PATH) {
+class PestComposerConfig : PhpTestFrameworkComposerConfig(PEST_FRAMEWORK_TYPE, PACKAGE, RELATIVE_PATH) {
     override fun getDefaultConfigName(): String {
         return "phpunit.xml"
     }
 
     override fun getConfigurationType(): ConfigurationType {
-        return instance
+        return PEST_RUN_CONFIGURATION_TYPE
     }
 
     companion object {

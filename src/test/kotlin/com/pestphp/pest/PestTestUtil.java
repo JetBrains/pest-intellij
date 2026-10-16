@@ -107,7 +107,7 @@ public final class PestTestUtil {
   public static @Nullable PhpTestFrameworkConfiguration createPestFrameworkConfiguration(@NotNull Project project) {
     PhpTestFrameworkConfiguration configuration = PhpTestFrameworkSettingsManager
       .getInstance(project)
-      .getOrCreateByInterpreter(PestFrameworkType.Companion.getInstance(), new PhpInterpreter(), null, false);
+      .getOrCreateByInterpreter(PestFrameworkTypeKt.getPEST_FRAMEWORK_TYPE(), new PhpInterpreter(), null, false);
     if (configuration != null) {
       configuration.setExecutablePath("randomPath");
     }

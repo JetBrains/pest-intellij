@@ -20,12 +20,12 @@ import com.jetbrains.php.config.interpreters.PhpInterpreter
 import com.jetbrains.php.config.interpreters.PhpInterpretersManagerImpl
 import com.jetbrains.php.testFramework.PhpTestFrameworkConfiguration
 import com.jetbrains.php.testFramework.PhpTestFrameworkSettingsManager
-import com.pestphp.pest.PestFrameworkType
 import com.pestphp.pest.PestTestUtil
 import com.pestphp.pest.configuration.PestRunConfiguration
 import com.pestphp.pest.configuration.PestRunConfigurationProducer
-import com.pestphp.pest.configuration.PestRunConfigurationType
 import com.pestphp.pest.configuration.PestVersionDetector
+import com.pestphp.pest.PEST_FRAMEWORK_TYPE
+import com.pestphp.pest.configuration.PEST_RUN_CONFIGURATION_TYPE
 import io.mockk.clearAllMocks
 import io.mockk.every
 import io.mockk.mockk
@@ -207,14 +207,14 @@ class PestParallelProgramRunnerTest {
         }
 
         val rootConfiguration = settingsManager
-            .getOrCreateByInterpreter(PestFrameworkType.instance, interpreter, rootComposer, false)
+            .getOrCreateByInterpreter(PEST_FRAMEWORK_TYPE, interpreter, rootComposer, false)
             ?.apply { executablePath = rootExecutable.path }
         val subprojectConfiguration = settingsManager
-            .getOrCreateByInterpreter(PestFrameworkType.instance, interpreter, subprojectComposer, false)
+            .getOrCreateByInterpreter(PEST_FRAMEWORK_TYPE, interpreter, subprojectComposer, false)
             ?.apply { executablePath = subprojectExecutable.path }
 
         settingsManager.setConfigurations(
-            PestFrameworkType.instance,
+            PEST_FRAMEWORK_TYPE,
             listOfNotNull(rootConfiguration, subprojectConfiguration)
         )
 
@@ -243,12 +243,12 @@ class PestParallelProgramRunnerTest {
             homePath = "${myFixture.testDataPath}/php"
         }
         PhpInterpretersManagerImpl.getInstance(project).addInterpreter(interpreter)
-        configurationsBackup = PhpTestFrameworkSettingsManager.getInstance(project).getConfigurations(PestFrameworkType.instance)
+        configurationsBackup = PhpTestFrameworkSettingsManager.getInstance(project).getConfigurations(PEST_FRAMEWORK_TYPE)
         PhpTestFrameworkSettingsManager.getInstance(project)
-            .getOrCreateByInterpreter(PestFrameworkType.instance, interpreter, null, false)
+            .getOrCreateByInterpreter(PEST_FRAMEWORK_TYPE, interpreter, null, false)
             ?.executablePath = "randomPath"
         // Each run configuration clones the template. Create the template before the mocks, so that it keeps the real version detector.
-        RunManager.getInstance(project).getConfigurationTemplate(PestRunConfigurationType.instance)
+        RunManager.getInstance(project).getConfigurationTemplate(PEST_RUN_CONFIGURATION_TYPE)
         mockDetector = mockk()
         mockkObject(PestVersionDetector.Companion)
         every { PestVersionDetector.instance } returns mockDetector
@@ -257,7 +257,7 @@ class PestParallelProgramRunnerTest {
 
     @AfterEach
     fun tearDown() {
-        PhpTestFrameworkSettingsManager.getInstance(project).setConfigurations(PestFrameworkType.instance, configurationsBackup)
+        PhpTestFrameworkSettingsManager.getInstance(project).setConfigurations(PEST_FRAMEWORK_TYPE, configurationsBackup)
         PhpInterpretersManagerImpl.getInstance(project).interpreters = emptyList()
         unmockkObject(PestVersionDetector.Companion)
         clearAllMocks()

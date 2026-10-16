@@ -21,9 +21,7 @@ class PestRunConfigurationType private constructor() :
         return PestRunConfiguration(project, this)
     }
 
-    companion object {
-        @JvmStatic
-        val instance: PestRunConfigurationType
-            get() = findConfigurationType(PestRunConfigurationType::class.java)
-    }
 }
+
+val PEST_RUN_CONFIGURATION_TYPE: PestRunConfigurationType
+    get() = findConfigurationType(PestRunConfigurationType::class.java)

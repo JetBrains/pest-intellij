@@ -15,7 +15,7 @@ import com.jetbrains.php.phpunit.PhpUnitLocalRunConfiguration
 import com.jetbrains.php.phpunit.PhpUnitTestRunnerSettings
 import com.jetbrains.php.testFramework.PhpTestFrameworkConfiguration
 import com.jetbrains.php.testFramework.PhpTestFrameworkSettingsManager
-import com.pestphp.pest.configuration.PestRunConfigurationType
+import com.pestphp.pest.configuration.PEST_RUN_CONFIGURATION_TYPE
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import org.junit.jupiter.api.AfterEach
@@ -40,12 +40,12 @@ class PestTestRunLineMarkerProviderTest {
     @BeforeEach
     fun setUp() {
         PestTestUtil.setUp(myFixture, "${PestTestUtil.getTestDataPath()}/PestTestRunLineMarkerProviderTest")
-        pestConfigurations = PhpTestFrameworkSettingsManager.getInstance(project).getConfigurations(PestFrameworkType.instance)
+        pestConfigurations = PhpTestFrameworkSettingsManager.getInstance(project).getConfigurations(PEST_FRAMEWORK_TYPE)
     }
 
     @AfterEach
     fun tearDown() {
-        PhpTestFrameworkSettingsManager.getInstance(project).setConfigurations(PestFrameworkType.instance, pestConfigurations)
+        PhpTestFrameworkSettingsManager.getInstance(project).setConfigurations(PEST_FRAMEWORK_TYPE, pestConfigurations)
     }
 
     private fun doTest(vararg expectedMarkerLines: Int) {
@@ -64,7 +64,7 @@ class PestTestRunLineMarkerProviderTest {
 
     private fun initConfiguration() {
         val configuration = PestTestUtil.createPestFrameworkConfiguration(project)
-        PhpTestFrameworkSettingsManager.getInstance(project).setConfigurations(PestFrameworkType.instance, listOf(configuration))
+        PhpTestFrameworkSettingsManager.getInstance(project).setConfigurations(PEST_FRAMEWORK_TYPE, listOf(configuration))
     }
 
     @Test
@@ -147,7 +147,7 @@ class PestTestRunLineMarkerProviderTest {
         val configurationsFromContext = runReadActionBlocking { ConfigurationContext(context).configurationsFromContext!! }
 
         assertEquals(1, configurationsFromContext.size)
-        assertEquals(PestRunConfigurationType.instance, configurationsFromContext[0].configurationType)
+        assertEquals(PEST_RUN_CONFIGURATION_TYPE, configurationsFromContext[0].configurationType)
     }
 
     @Test
@@ -158,7 +158,7 @@ class PestTestRunLineMarkerProviderTest {
         val configurationsFromContext = runReadActionBlocking { ConfigurationContext(context).configurationsFromContext!! }
 
         val types = configurationsFromContext.map { it.configurationType }.toSet()
-        assertTrue(types.contains(PestRunConfigurationType.instance), "$types does not contain ${PestRunConfigurationType.instance}")
+        assertTrue(types.contains(PEST_RUN_CONFIGURATION_TYPE), "$types does not contain ${PEST_RUN_CONFIGURATION_TYPE}")
         assertEquals(2, configurationsFromContext.size)
     }
 
