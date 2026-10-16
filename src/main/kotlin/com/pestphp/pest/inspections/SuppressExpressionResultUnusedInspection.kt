@@ -8,9 +8,6 @@ import com.jetbrains.php.lang.psi.elements.impl.FunctionReferenceImpl
 import com.pestphp.pest.isPestTestFunction
 
 class SuppressExpressionResultUnusedInspection : InspectionSuppressor {
-    companion object {
-        private val SUPPRESSED_PHP_INSPECTIONS = listOf(PhpExpressionResultUnusedInspection().id)
-    }
 
     override fun isSuppressedFor(element: PsiElement, toolId: String): Boolean {
         if (element !is FunctionReferenceImpl) {
@@ -28,3 +25,5 @@ class SuppressExpressionResultUnusedInspection : InspectionSuppressor {
         return SuppressQuickFix.EMPTY_ARRAY
     }
 }
+
+private val SUPPRESSED_PHP_INSPECTIONS = listOf(PhpExpressionResultUnusedInspection().id)
