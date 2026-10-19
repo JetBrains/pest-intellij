@@ -2,8 +2,8 @@ package com.pestphp.pest
 
 import com.intellij.psi.PsiElement
 import com.intellij.psi.util.parents
-import com.intellij.remote.RemoteSdkProperties
 import com.jetbrains.php.config.interpreters.PhpInterpretersManagerImpl
+import com.jetbrains.php.config.interpreters.target.PhpInterpreterTarget
 import com.jetbrains.php.lang.psi.elements.ArrayCreationExpression
 import com.jetbrains.php.lang.psi.elements.ClassConstantReference
 import com.jetbrains.php.lang.psi.elements.ClassReference
@@ -16,7 +16,6 @@ import com.jetbrains.php.lang.psi.elements.PhpReference
 import com.jetbrains.php.lang.psi.elements.Statement
 import com.jetbrains.php.lang.psi.elements.StringLiteralExpression
 import com.jetbrains.php.lang.psi.elements.impl.FunctionReferenceImpl
-import com.jetbrains.php.run.remote.PhpRemoteInterpreterManager
 import com.jetbrains.php.util.pathmapper.PhpPathMapper
 import com.pestphp.pest.runner.getLocationUrl
 import java.util.Locale
@@ -100,14 +99,7 @@ fun PsiElement.toPestFqn(): List<String> {
     return PhpInterpretersManagerImpl.getInstance(this.project)
         .interpreters
         .asSequence()
-        .map { it.phpSdkAdditionalData }
-        .filter { it is RemoteSdkProperties }
-        .mapNotNull {
-            PhpRemoteInterpreterManager.getInstance()?.createPathMappings(
-                this.project,
-                it
-            )
-        }
+        .mapNotNull { PhpInterpreterTarget.of(it).createPathMappings(this.project) }
         .map { it.convertToRemote(file) }
         .map { "pest_qn://$it::$testName" }
         .plus("${getLocationUrl(this.containingFile)}::$testName")
