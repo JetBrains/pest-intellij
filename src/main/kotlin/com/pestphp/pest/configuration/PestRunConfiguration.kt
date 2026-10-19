@@ -24,9 +24,9 @@ import com.jetbrains.php.PhpBundle
 import com.jetbrains.php.config.commandLine.PhpCommandLinePathProcessor
 import com.jetbrains.php.config.commandLine.PhpCommandSettings
 import com.jetbrains.php.config.interpreters.PhpInterpreter
+import com.jetbrains.php.config.interpreters.target.PhpInterpreterTarget
 import com.jetbrains.php.run.PhpAsyncRunConfiguration
 import com.jetbrains.php.run.PhpRunUtil
-import com.jetbrains.php.run.remote.PhpRemoteInterpreterManager
 import com.jetbrains.php.testFramework.PhpTestFrameworkConfiguration
 import com.jetbrains.php.testFramework.PhpTestFrameworkSettingsManager
 import com.jetbrains.php.testFramework.run.PhpTestRunConfigurationSettings
@@ -101,13 +101,7 @@ class PestRunConfiguration(project: Project, factory: ConfigurationFactory) : Ph
     }
 
     override fun createTestConsoleProperties(executor: Executor): SMTRunnerConsoleProperties {
-        val manager = PhpRemoteInterpreterManager.getInstance()
-
-
-        val pathProcessor = when (this.interpreter?.isRemote) {
-            true -> manager?.createPathMapper(this.project, interpreter!!.phpSdkAdditionalData)
-            else -> null
-        }
+        val pathProcessor = this.interpreter?.let { PhpInterpreterTarget.of(it).createPathProcessor(this.project) }
 
         return this.createTestConsoleProperties(
             executor,
