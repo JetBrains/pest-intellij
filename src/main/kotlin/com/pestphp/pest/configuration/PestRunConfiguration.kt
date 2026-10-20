@@ -160,7 +160,8 @@ class PestRunConfiguration(project: Project, factory: ConfigurationFactory) : Ph
         val workingDirectory = getWorkingDirectory(project, settings, config)
             ?: throw ExecutionException(PhpBundle.message("php.interpreter.base.configuration.working.directory"))
 
-        PestRunConfigurationHandler.instance.prepareCommand(
+        prepareHandlerCommand(
+            PestRunConfigurationHandler.instance,
             project,
             command,
             config.executablePath!!,
