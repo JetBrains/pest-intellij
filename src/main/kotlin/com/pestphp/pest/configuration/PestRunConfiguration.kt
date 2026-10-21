@@ -101,7 +101,7 @@ class PestRunConfiguration(project: Project, factory: ConfigurationFactory) : Ph
     }
 
     override fun createTestConsoleProperties(executor: Executor): SMTRunnerConsoleProperties {
-        val pathProcessor = this.interpreter?.let { PhpInterpreterTarget.of(it).createPathProcessor(this.project) }
+        val pathProcessor = this.interpreter?.let { PhpInterpreterTarget.of(this.project, it).createPathProcessor(this.project) }
 
         return this.createTestConsoleProperties(
             executor,

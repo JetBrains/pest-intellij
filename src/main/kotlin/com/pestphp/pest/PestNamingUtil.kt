@@ -99,7 +99,7 @@ fun PsiElement.toPestFqn(): List<String> {
     return PhpInterpretersManagerImpl.getInstance(this.project)
         .interpreters
         .asSequence()
-        .map { PhpInterpreterTarget.of(it) }
+        .map { PhpInterpreterTarget.of(project, it) }
         .filter { it.createPathMappings(this.project) != null }
         .map { it.mapToInterpreter(this.project, file) ?: file }
         .map { "pest_qn://$it::$testName" }
