@@ -22,7 +22,6 @@
     <orderEntry type="module" module-name="intellij.platform.jps.model" scope="TEST" />
     <orderEntry type="module" module-name="intellij.platform.lang.core" scope="TEST" />
     <orderEntry type="module" module-name="intellij.platform.projectModel" scope="TEST" />
-    <orderEntry type="module" module-name="intellij.platform.remote.core" scope="TEST" />
     <orderEntry type="module" module-name="intellij.platform.structureView" scope="TEST" />
     <orderEntry type="module" module-name="intellij.platform.testFramework" scope="TEST" />
     <orderEntry type="module" module-name="intellij.platform.testFramework.junit5" scope="TEST" />
@@ -41,16 +40,12 @@
     <orderEntry type="module" module-name="intellij.platform.lang" scope="TEST" />
     <orderEntry type="module" module-name="intellij.platform.lang.impl" scope="TEST" />
     <orderEntry type="module" module-name="intellij.xml.psi.impl" scope="TEST" />
-    <orderEntry type="module" module-name="intellij.libraries.fastutil" scope="TEST" />
     <orderEntry type="module" module-name="intellij.platform.coverage" scope="TEST" />
-    <orderEntry type="module" module-name="intellij.xml.dom.impl" scope="TEST" />
     <orderEntry type="module" module-name="intellij.platform.core.ui" scope="TEST" />
     <orderEntry type="module" module-name="intellij.platform.core.impl" scope="TEST" />
-    <orderEntry type="module" module-name="intellij.platform.util.text.matching" scope="TEST" />
     <orderEntry type="module" module-name="intellij.platform.util.ui" scope="TEST" />
     <orderEntry type="module" module-name="intellij.libraries.mockk" scope="TEST" />
     <orderEntry type="module" module-name="intellij.libraries.mockk.jvm" scope="TEST" />
-    <orderEntry type="module" module-name="intellij.platform.statistics" scope="TEST" />
     <orderEntry type="module" module-name="intellij.platform.testRunner" scope="TEST" />
     <orderEntry type="module" module-name="intellij.platform.testIntegration" scope="TEST" />
     <orderEntry type="module" module-name="intellij.pest" scope="TEST" />
