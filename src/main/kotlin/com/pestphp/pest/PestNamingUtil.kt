@@ -100,8 +100,8 @@ fun PsiElement.toPestFqn(): List<String> {
         .interpreters
         .asSequence()
         .map { PhpInterpreterTarget.of(project, it) }
-        .filter { it.createPathMappings(this.project) != null }
-        .map { it.mapToInterpreter(this.project, file) ?: file }
+        .filterNot { it.isOnIdeHost }
+        .mapNotNull { it.mapToInterpreter(this.project, file) }
         .map { "pest_qn://$it::$testName" }
         .plus("${getLocationUrl(this.containingFile)}::$testName")
         .toList()
