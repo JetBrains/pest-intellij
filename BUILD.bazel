@@ -122,14 +122,16 @@ jvm_library(
         "@community//platform/testIntegration:testIntegration_test_lib",
     ],
 )
+### auto-generated section `build intellij.pest` end
 
+### auto-generated section `plugin intellij.pest` start
 ij_plugin(
     name = "pest_plugin",
     descriptor_module = ":pest",
     content_modules = ["//phpstorm/pest/coverage"],
     visibility = ["//visibility:public"],
 )
-### auto-generated section `build intellij.pest` end
+### auto-generated section `plugin intellij.pest` end
 
 ### auto-generated section `iml intellij.pest` start
 exports_files(
