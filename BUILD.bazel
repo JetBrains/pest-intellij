@@ -155,7 +155,7 @@ jvm_library(
         "@community//platform/ide-core",
         "@community//platform/lang-api:lang",
         "@community//platform/lang-impl",
-        "@community//platform/lang-impl/backend",
+        "@community//platform/indexing-impl/backend",
         "@community//xml/xml-psi-impl:psi-impl",
         "@community//plugins/coverage-common:coverage",
         "@community//platform/core-ui",
