@@ -2,15 +2,12 @@ package com.pestphp.pest.features.customExpectations
 
 import com.intellij.openapi.project.Project
 import com.intellij.psi.PsiElement
-import com.intellij.psi.PsiFile
 import com.intellij.psi.util.PsiTreeUtil
 import com.jetbrains.php.PhpIndex
-import com.jetbrains.php.lang.psi.PhpFile
 import com.jetbrains.php.lang.psi.elements.Function
 import com.jetbrains.php.lang.psi.elements.MethodReference
 import com.jetbrains.php.lang.psi.elements.ParameterList
 import com.jetbrains.php.lang.psi.elements.PhpExpression
-import com.jetbrains.php.lang.psi.elements.PhpNamespace
 import com.jetbrains.php.lang.psi.elements.Statement
 import com.jetbrains.php.lang.psi.elements.StringLiteralExpression
 import com.jetbrains.php.lang.psi.elements.Variable
@@ -88,24 +85,6 @@ val MethodReference.extendName: String?
         }
 
         return name.contents
-    }
-
-val PsiFile.customExpects: List<MethodReferenceImpl>
-    get() {
-        if (this !is PhpFile) return emptyList()
-
-        val element = this.firstChild
-
-        return element.children.filterIsInstance<PhpNamespace>()
-            .mapNotNull { it.statements }
-            .getOrElse(
-                0
-            ) { element }
-            .children
-            .filterIsInstance<Statement>()
-            .mapNotNull { it.firstChild }
-            .filterIsInstance<MethodReferenceImpl>()
-            .filter { it.isPestExtendReference() }
     }
 
 fun MethodReference.toMethod(): Method? {

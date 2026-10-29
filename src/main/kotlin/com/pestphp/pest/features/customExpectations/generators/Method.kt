@@ -1,21 +1,8 @@
 package com.pestphp.pest.features.customExpectations.generators
 
-import com.intellij.openapi.project.Project
 import com.jetbrains.php.lang.psi.resolve.types.PhpType
 
 class Method(val name: String, val returnType: PhpType, val parameters: List<Parameter>) {
-    fun parametersAsString(project: Project): List<String> {
-        return parameters.map {
-            var parameterAsString = "${it.returnType.global(project).toStringResolved()} $${it.name}"
-
-            if (it.defaultValue !== null) {
-                parameterAsString += " = ${it.defaultValue}"
-            }
-
-            parameterAsString
-        }
-    }
-
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
         if (javaClass != other?.javaClass) return false
