@@ -1,7 +1,11 @@
 package com.pestphp.pest.configuration
 
+import com.intellij.execution.ExecutionException
 import com.intellij.execution.PsiLocation
 import com.intellij.execution.actions.ConfigurationContext
+import com.intellij.execution.executors.DefaultRunExecutor
+import com.intellij.execution.runners.ExecutionEnvironmentBuilder
+import com.intellij.execution.runners.ProgramRunner
 import com.intellij.openapi.application.runReadActionBlocking
 import com.intellij.platform.testFramework.junit5.codeInsight.fixture.codeInsightModuleFixture
 import com.intellij.testFramework.PlatformTestUtil
@@ -13,15 +17,19 @@ import com.jetbrains.php.config.interpreters.PhpInterpretersManagerImpl
 import com.jetbrains.php.phpunit.coverage.PhpUnitCoverageEngine
 import com.jetbrains.php.testFramework.PhpTestFrameworkConfiguration
 import com.jetbrains.php.testFramework.PhpTestFrameworkSettingsManager
+import com.jetbrains.php.testFramework.run.PhpTestRunnerSettings
 import com.pestphp.pest.PestTestUtil
 import com.pestphp.pest.PEST_FRAMEWORK_TYPE
+import io.mockk.mockk
 import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertInstanceOf
 import org.junit.jupiter.api.Assertions.assertNotNull
+import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestInfo
+import org.junit.jupiter.api.assertThrows
 
 @TestApplication
 class PestRunConfigurationTest {
@@ -89,6 +97,82 @@ class PestRunConfigurationTest {
         assertEquals("my block", configuration.actionName)
         assertEquals("FileWithDescribeBlock.php::my block", configuration.suggestedName())
     }
+
+    @Test
+    fun testSuggestedNameForFileScopeIsFileName() {
+        val configuration = createConfiguration()
+
+        assertEquals(PhpTestRunnerSettings.Scope.File, configuration.settings.runnerSettings.scope)
+        assertEquals("FileWithPestTest.php", configuration.suggestedName())
+    }
+
+    @Test
+    fun testSuggestedNameForDirectoryScopeIsDirectoryName() {
+        val configuration = createConfiguration()
+        val runner = configuration.settings.runnerSettings
+        runner.scope = PhpTestRunnerSettings.Scope.Directory
+        runner.directoryPath = "/project/tests/Unit"
+
+        assertEquals("Unit", configuration.suggestedName())
+    }
+
+    @Test
+    fun testSuggestedNameForConfigurationFileScopeIsConfigurationFileName() {
+        val configuration = createConfiguration()
+        val runner = configuration.settings.runnerSettings
+        runner.scope = PhpTestRunnerSettings.Scope.ConfigurationFile
+        runner.configurationFilePath = "/project/phpunit.xml"
+
+        assertEquals("phpunit.xml", configuration.suggestedName())
+    }
+
+    @Test
+    fun testLongActionNameIsTruncated() {
+        val configuration = createConfiguration()
+        val runner = configuration.settings.runnerSettings
+        runner.scope = PhpTestRunnerSettings.Scope.Method
+        runner.methodName = "it adds two numbers together"
+
+        assertEquals("it adds two numbers ...", configuration.actionName)
+    }
+
+    @Test
+    fun testWorkingDirectoryIsCommandLineWorkingDirectory() {
+        val configuration = createConfiguration()
+        configuration.settings.commandLineSettings.workingDirectory = "/custom/working/directory"
+
+        assertEquals("/custom/working/directory", createCommand(configuration).workingDirectory)
+    }
+
+    @Test
+    fun testWorkingDirectoryIsConfigurationFileDirectory() {
+        val configurationFile = myFixture.copyFileToProject("workingDirectory/phpunit.xml", "app/phpunit.xml")
+        val configuration = createConfiguration()
+        val runner = configuration.settings.runnerSettings
+        runner.isUseAlternativeConfigurationFile = true
+        runner.configurationFilePath = configurationFile.path
+
+        assertEquals(configurationFile.parent.path, createCommand(configuration).workingDirectory)
+    }
+
+    @Test
+    fun testCheckAndGetStateWrapsConfigurationError() {
+        val configuration = createConfiguration()
+        configuration.settings.runnerSettings.filePath = "/missing/FileWithPestTest.php"
+        val environment = ExecutionEnvironmentBuilder(project, DefaultRunExecutor.getRunExecutorInstance())
+            .runProfile(configuration)
+            .runner(mockk<ProgramRunner<*>>(relaxed = true))
+            .build()
+
+        val exception = assertThrows<ExecutionException> {
+            configuration.checkAndGetState(environment, createCommand(configuration))
+        }
+
+        assertTrue(exception.message!!.endsWith("for '${configuration.name}' run configuration"), exception.message)
+    }
+
+    private fun createCommand(configuration: PestRunConfiguration): PhpCommandSettings =
+        configuration.createCommand(configuration.interpreter!!, mutableMapOf(), mutableListOf(), false)
 
     private fun createConfiguration(fileName: String = "FileWithPestTest.php"): PestRunConfiguration {
         val file = myFixture.configureByFile(fileName)

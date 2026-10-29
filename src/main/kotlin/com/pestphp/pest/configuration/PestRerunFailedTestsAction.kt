@@ -79,12 +79,7 @@ class PestRerunFailedTestsAction(
 
                 val rootPath = ComposerConfigManager.getInstance(project).getConfig(null as PsiElement?)?.parent?.path ?: command.workingDirectory
 
-                val testcases = failed.mapNotNull { it.toPestTestRegex(rootPath) }
-                    .reduce { result, testName -> "$result|$testName" }
-
-                command.addArgument(
-                    "--filter=/$testcases/"
-                )
+                command.addArgument(createFailedTestsFilterArgument(failed, rootPath))
 
                 return peerRunConfiguration.getState(
                     environment,
@@ -105,4 +100,14 @@ class PestRerunFailedTestsAction(
             else -> mutableListOf()
         }
     }
+}
+
+/**
+ * Returns the `--filter` argument that selects [failedTests] in one Pest run.
+ * Each test regex is relative to [rootPath].
+ */
+internal fun createFailedTestsFilterArgument(failedTests: List<PsiElement>, rootPath: String): String {
+    val testcases = failedTests.mapNotNull { it.toPestTestRegex(rootPath) }
+        .reduce { result, testName -> "$result|$testName" }
+    return "--filter=/$testcases/"
 }

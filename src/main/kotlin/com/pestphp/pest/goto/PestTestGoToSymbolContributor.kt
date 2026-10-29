@@ -100,7 +100,7 @@ class PestTestGoToSymbolContributor : ChooseByNameContributor {
 
         override fun canNavigate(): Boolean = functionReference.canNavigate()
 
-        override fun canNavigateToSource(): Boolean = canNavigateToSource()
+        override fun canNavigateToSource(): Boolean = functionReference.canNavigateToSource()
 
         override fun getName(): String? {
             return functionReference.getPestTestName()
