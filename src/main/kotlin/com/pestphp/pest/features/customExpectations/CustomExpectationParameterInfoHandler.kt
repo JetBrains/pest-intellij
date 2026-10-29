@@ -28,7 +28,7 @@ class CustomExpectationParameterInfoHandler : ParameterInfoHandlerWithTabActionS
         val references = PsiSymbolReferenceService.getService().getReferences(methodReference)
         val symbol = references.filterIsInstance<PestCustomExpectationReference>().flatMap { it.resolveReference() }
             .filterIsInstance<PestCustomExpectationSymbol>().firstOrNull() ?: return null
-        context.itemsToShow = arrayOf(symbol.methodDescriptor.parameters)
+        context.itemsToShow = arrayOf(symbol.methodDescriptor.parameters.map { it.global(methodReference.project) })
         return methodReference
     }
 

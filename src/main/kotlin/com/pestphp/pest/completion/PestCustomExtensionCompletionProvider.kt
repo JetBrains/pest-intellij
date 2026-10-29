@@ -74,7 +74,7 @@ private class CustomExtensionExpensiveRenderer(
         cheapRenderer.renderElement(element, presentation)
         val expectation = targetFile.findElementAt(expectationOffset)
         PhpPsiUtil.getParentOfClass(expectation, MethodReference::class.java)?.toMethod()?.let {
-            val params = it.parameters.map { p ->
+            val params = it.parameters.map { parameter -> parameter.global(targetFile.project) }.map { p ->
                 if (p.returnType.isEmpty) {
                     p.name
                 } else {

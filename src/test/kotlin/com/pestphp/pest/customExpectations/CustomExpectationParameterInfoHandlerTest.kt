@@ -6,6 +6,8 @@ import com.intellij.testFramework.TestDataPath
 import com.intellij.testFramework.junit5.TestApplication
 import com.intellij.testFramework.junit5.fixture.projectFixture
 import com.intellij.testFramework.utils.parameterInfo.MockCreateParameterInfoContext
+import com.intellij.testFramework.utils.parameterInfo.MockParameterInfoUIContext
+import com.jetbrains.php.lang.psi.elements.FunctionReference
 import com.pestphp.pest.PestTestUtil
 import com.pestphp.pest.features.customExpectations.CustomExpectationParameterInfoHandler
 import com.pestphp.pest.features.customExpectations.generators.Parameter
@@ -37,6 +39,23 @@ class CustomExpectationParameterInfoHandlerTest {
         val parameterNames = runReadActionBlocking { findParameters()?.map { it.name } }
 
         assertEquals(listOf("value", "label"), parameterNames)
+    }
+
+    @Test
+    fun testParameterInfoPresentsResolvedParameterTypes() {
+        myFixture.configureByFiles("ParameterInfo.php", "Expectations.php")
+
+        val text = runReadActionBlocking {
+            val context = MockCreateParameterInfoContext(myFixture.editor, myFixture.file)
+            val element = handler.findElementForParameterInfo(context)!!
+            @Suppress("UNCHECKED_CAST")
+            val parameters = context.itemsToShow!!.single() as List<Parameter>
+            val uiContext = MockParameterInfoUIContext<FunctionReference>(element)
+            handler.updateUI(parameters, uiContext)
+            uiContext.text
+        }
+
+        assertEquals("value: int, label: string", text)
     }
 
     @Test

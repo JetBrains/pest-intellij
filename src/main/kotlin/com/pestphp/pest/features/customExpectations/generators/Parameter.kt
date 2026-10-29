@@ -1,8 +1,15 @@
 package com.pestphp.pest.features.customExpectations.generators
 
+import com.intellij.openapi.project.Project
 import com.jetbrains.php.lang.psi.resolve.types.PhpType
 
 class Parameter(val name: String, val returnType: PhpType, val defaultValue: String? = null) {
+    /**
+     * Returns a copy of this parameter with [returnType] resolved in [project].
+     * Resolve the type before you show it: the unresolved type holds raw type signatures.
+     */
+    fun global(project: Project): Parameter = Parameter(name, returnType.global(project), defaultValue)
+
     override fun toString(): String {
         val defaultValue = defaultValue ?: ""
 
