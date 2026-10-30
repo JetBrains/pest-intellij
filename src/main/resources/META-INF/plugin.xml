@@ -156,10 +156,6 @@
         <psi.referenceContributor
                 implementation="com.pestphp.pest.features.configuration.ConfigurationReferenceContributor"
                 language="PHP"/>
-        <registryKey defaultValue="true"
-                     description="Whether custom expectation file generation should happen."
-                     key="pestphp.custom-expectations"
-        />
         <internalFileTemplate name="Pest It"/>
         <internalFileTemplate name="Pest Test"/>
         <internalFileTemplate name="Pest Scoped Dataset"/>
