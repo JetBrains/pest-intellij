@@ -122,6 +122,7 @@ jvm_library(
         "@community//platform/testRunner/plugin",
         "@community//platform/vcs/plugin",
         "@community//platform/main/intellij.platform.monolith.main:monolith-main",
+        "@community//json/plugin",
         "@community//xml/plugin",
     ],
     deps = [

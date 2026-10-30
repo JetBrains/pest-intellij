@@ -19,7 +19,11 @@ jvm_library(
         ["testData/**/*"],
     ),
     visibility = ["//visibility:public"],
-    runtime_deps = ["@community//platform/main/intellij.platform.monolith.main:monolith-main"],
+    runtime_deps = [
+        # do not sort,
+        "@community//json/plugin",
+        "@community//platform/main/intellij.platform.monolith.main:monolith-main",
+    ],
     deps = [
         # do not sort,
         "//phpstorm/pest:pest-tests_test_lib",
