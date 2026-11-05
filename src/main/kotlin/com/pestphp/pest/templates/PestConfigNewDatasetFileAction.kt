@@ -1,5 +1,6 @@
 package com.pestphp.pest.templates
 
+import com.intellij.ide.actions.CreateFileAction
 import com.intellij.ide.actions.CreateFileFromTemplateDialog
 import com.intellij.ide.fileTemplates.FileTemplate
 import com.intellij.openapi.project.Project
@@ -38,8 +39,7 @@ internal class PestConfigNewDatasetFileAction : PestConfigNewFileAction() {
                 parentDir = parentDir.parentDirectory ?: break
             }
 
-            val datasetDir = parentDir.findSubdirectory("Datasets")
-                ?: parentDir.createSubdirectory("Datasets")
+            val datasetDir = CreateFileAction.findOrCreateSubdirectory(parentDir, "Datasets")
 
             // Check if first character is lowercase in name
             var newName = name
