@@ -37,6 +37,11 @@ jvm_library(
         ["src/main/resources/**/*"],
     ),
     visibility = ["//visibility:public"],
+    runtime_deps = [
+        # do not sort,
+        "@community//platform/remote-core",
+        "@community//xml/dom-impl",
+    ],
     deps = [
         # do not sort,
         "@community//platform/core-api:core",
@@ -50,7 +55,6 @@ jvm_library(
         "@community//platform/analysis-api:analysis",
         "@community//platform/lang-core",
         "@community//platform/projectModel-api:projectModel",
-        "@community//platform/remote-core",
         "@community//platform/structure-view-impl:structureView",
         "@community//platform/util",
         "@community//platform/indexing-api:indexing",
@@ -64,7 +68,6 @@ jvm_library(
         "@community//platform/lang-impl",
         "@community//xml/xml-psi-impl:psi-impl",
         "@community//libraries/fastutil",
-        "@community//xml/dom-impl",
         "@community//platform/core-ui",
         "@community//platform/core-impl",
         "@community//platform/util/text-matching",
