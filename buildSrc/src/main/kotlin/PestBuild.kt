@@ -22,7 +22,7 @@ fun IntelliJPlatformDependenciesExtension.platform(project: Project) {
     bundledPlugin("com.intellij.structureView")
     bundledPlugin("com.intellij.platform.testRunner")
     bundledPlugin("com.intellij.structuralSearch")
-    bundledModule("intellij.platform.coverage")
+    bundledPlugin("com.intellij.platform.coverage")
     bundledModule("intellij.xml.psi.impl")
 }
 
