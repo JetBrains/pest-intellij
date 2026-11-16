@@ -12,6 +12,7 @@
       <plugin id="com.jetbrains.php"/>
       <!-- region Generated dependencies - run `Generate Product Layouts` to regenerate -->
       <module name="intellij.libraries.fastutil"/>
+      <module name="intellij.php"/>
       <module name="intellij.php.backend"/>
       <module name="intellij.platform.analysis"/>
       <module name="intellij.platform.analysis.impl"/>
