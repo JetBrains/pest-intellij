@@ -1,7 +1,10 @@
 package com.pestphp.pest.features.customExpectations
 
 import com.intellij.openapi.application.runWriteAction
+import com.intellij.openapi.components.Service
+import com.intellij.openapi.components.service
 import com.intellij.openapi.project.Project
+import com.intellij.openapi.project.waitForSmartMode
 import com.intellij.openapi.startup.ProjectActivity
 import com.intellij.openapi.util.Disposer
 import com.intellij.openapi.vfs.VirtualFile
@@ -9,15 +12,20 @@ import com.jetbrains.php.composer.ComposerConfigListener
 import com.jetbrains.php.composer.ComposerDataService
 import com.jetbrains.php.composer.lib.ComposerLibraryServiceFactory
 import com.pestphp.pest.PestPluginDisposable
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.launch
 
 class CustomExpectationRemoveGeneratedFileStartupActivity : ProjectActivity {
     override suspend fun execute(project: Project) {
-        tryDeleteGeneratedExpectationFile(project)
         val composerDataService = ComposerDataService.getInstance(project)
+        val coroutineScope = project.service<CustomExpectationCleanupScope>().coroutineScope
         val listener = object : ComposerConfigListener {
             override fun configPathChanged(oldPath: String?, newPath: String?, isWellConfigured: Boolean) {
                 if (newPath != null) {
-                    tryDeleteGeneratedExpectationFile(project)
+                    coroutineScope.launch {
+                        project.waitForSmartMode()
+                        tryDeleteGeneratedExpectationFile(project)
+                    }
                 }
             }
         }
@@ -25,6 +33,8 @@ class CustomExpectationRemoveGeneratedFileStartupActivity : ProjectActivity {
         Disposer.register(PestPluginDisposable.getInstance(project)) {
             composerDataService.removeConfigListener(listener)
         }
+        project.waitForSmartMode()
+        tryDeleteGeneratedExpectationFile(project)
     }
 
     private fun tryDeleteGeneratedExpectationFile(project: Project) {
@@ -33,3 +43,6 @@ class CustomExpectationRemoveGeneratedFileStartupActivity : ProjectActivity {
         }
     }
 }
+
+@Service(Service.Level.PROJECT)
+private class CustomExpectationCleanupScope(val coroutineScope: CoroutineScope)
