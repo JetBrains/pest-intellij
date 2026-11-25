@@ -1,18 +1,26 @@
+load("@community//build:jps_module.bzl", "jps_module")
 load("@community//build:tests-options.bzl", "jps_test")
+load("@community//platform/build-scripts/bazel-rules:dist_plugin.bzl", "dist_plugin")
 load("@community//platform/build-scripts/bazel-rules:ij_plugin.bzl", "ij_plugin")
-load("@jps_dynamic_deps_ultimate//:targets.bzl", "dist_plugin")
 load("@rules_jvm//:jvm.bzl", "jvm_library")
 
 ### auto-generated section `dev intellij.pest` start
 dist_plugin(
     content_modules = ["intellij.pest.coverage"],
     descriptor = "src/main/resources/META-INF/plugin.xml",
+    descriptors = {
+        "//phpstorm/pest/coverage:resources/intellij.pest.coverage.xml": "intellij.pest.coverage.xml",
+    },
     jars = {
         "lib/pest.jar": ["intellij.pest"],
     },
     main_module = "intellij.pest",
     mode_refused_content_modules = {
         "frontend": ["intellij.pest.coverage"],
+    },
+    module_labels = {
+        "intellij.pest": "//phpstorm/pest:pest",
+        "intellij.pest.coverage": "//phpstorm/pest/coverage:coverage",
     },
 )
 ### auto-generated section `dev intellij.pest` end
@@ -89,13 +97,12 @@ ij_plugin(
 ### auto-generated section `plugin intellij.pest` end
 
 ### auto-generated section `iml intellij.pest` start
-exports_files(
-    [
-        "intellij.pest.iml",
-        "src/main/resources/META-INF/plugin.xml",
-        "src/main/resources/liveTemplates/PestPHP.xml",
-    ],
-    visibility = ["//visibility:public"],
+jps_module(
+    name = "intellij.pest",
+    descriptors = ["src/main/resources/META-INF/plugin.xml"],
+    plugin = True,
+    target = "pest",
+    exports = ["src/main/resources/liveTemplates/PestPHP.xml"],
 )
 ### auto-generated section `iml intellij.pest` end
 
@@ -175,11 +182,9 @@ jvm_library(
 ### auto-generated section `build intellij.pest.tests` end
 
 ### auto-generated section `iml intellij.pest.tests` start
-exports_files(
-    [
-        "intellij.pest.tests.iml",
-    ],
-    visibility = ["//visibility:public"],
+jps_module(
+    name = "intellij.pest.tests",
+    target = "pest-tests_test_lib",
 )
 ### auto-generated section `iml intellij.pest.tests` end
 
