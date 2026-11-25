@@ -11,7 +11,6 @@ dist_plugin(
     jars = {"lib/pest.jar": ["intellij.pest"]},
     main_module = "intellij.pest",
     mode_refused_content_modules = {"frontend": ["intellij.pest.coverage"]},
-    module_descriptors = ["//phpstorm/pest/coverage:resources/intellij.pest.coverage.xml"],
     module_labels = {"intellij.pest": "//phpstorm/pest"},
 )
 ### auto-generated section `dev intellij.pest` end
